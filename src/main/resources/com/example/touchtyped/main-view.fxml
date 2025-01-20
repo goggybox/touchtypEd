@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.Controller">
+
+   <center>
+      <!-- ScrollPane to allow vertical scrolling -->
+      <ScrollPane fitToWidth="true">
+         <VBox alignment="TOP_CENTER">
+            <ImageView pickOnBounds="true" preserveRatio="true">
+               <Image url="@images/learn-content/divider line.png" />
+            </ImageView>
+            <GridPane fx:id="buttonGrid" alignment="CENTER" hgap="50" minWidth="5.0" styleClass="button-grid" vgap="35">
+               <!-- Buttons will be added dynamically here -->
+            </GridPane>
+         </VBox>
+      </ScrollPane>
+   </center>
+
+   <top>
+      <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Left Spacer -->
+            <Region fx:id="leftSpacer" HBox.hgrow="ALWAYS" />
+
+            <!-- Central Area (1200px fixed width) -->
+            <AnchorPane prefHeight="120.0" prefWidth="1200.0">
+               <children>
+                  <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@images/logo.png" />
+                  </ImageView>
+                  <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@images/nav-bar/learn.png" />
+                  </ImageView>
+                  <ImageView fitHeight="69.0" fitWidth="71.0" layoutX="1022.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@images/nav-bar/games.png" />
+                  </ImageView>
+                  <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@images/nav-bar/options.png" />
+                  </ImageView>
+               </children>
+            </AnchorPane>
+
+            <!-- Right Spacer -->
+            <Region fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </top>
+
+</BorderPane>
