@@ -106,7 +106,7 @@ public class KeyboardInterface {
      */
     public void sendHapticCommand(String key, int duration, int strength) {
         // for now, this method will simply output to the console.
-        System.out.println(STR."Key \{key} is vibrating for \{duration}ms at strength \{strength}");
+        System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
     }
 
 }

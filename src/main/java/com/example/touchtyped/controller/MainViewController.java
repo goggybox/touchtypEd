@@ -1,16 +1,21 @@
 package com.example.touchtyped.controller;
 
-import com.example.touchtyped.model.ExampleKeypressListener;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class MainViewController {
     @FXML
     private Button learnButton;
 
     @FXML
-    private Button gamesButton;
+    private ImageView gamesButton;
 
     @FXML
     private Button optionsButton;
@@ -45,8 +50,14 @@ public class MainViewController {
 
     @FXML
     public void onGamesButtonClick() {
-        System.out.println("Games button clicked!");
-        // Navigate to the "Games" screen
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) gamesButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
