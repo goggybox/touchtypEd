@@ -5,30 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/Controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Lesson.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Level.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/learn-content/divider line.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/games.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/learn.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/options.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/main-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/style.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/lessons.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeyboardInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeypressListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Module.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" afterDir="false" />
@@ -37,6 +16,11 @@
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/MainViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Lesson.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/main-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,8 +31,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
-        <option value="Class" />
         <option value="package.json" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -129,7 +114,10 @@
       <workItem from="1737300471936" duration="1820000" />
       <workItem from="1737302304538" duration="941000" />
       <workItem from="1737311512513" duration="2666000" />
-      <workItem from="1737330802549" duration="3043000" />
+      <workItem from="1737330802549" duration="3219000" />
+      <workItem from="1737820064233" duration="687000" />
+      <workItem from="1737897682852" duration="5119000" />
+      <workItem from="1737902836711" duration="171000" />
     </task>
     <servers />
   </component>
