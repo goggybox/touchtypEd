@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ExampleKeypressListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/gamesSelected.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/optionsSelected.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" afterDir="false" />
@@ -15,8 +16,8 @@
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/MainViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/learn.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/learnSelected.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,29 +55,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Run Application.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/com/example/touchtyped/images/learn-content&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Application.executor": "Run",
+    "Application.Run Application.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/com/example/touchtyped/images/nav-bar",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\learn-content" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\nav-bar" />
+      <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\learn-content" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -115,6 +116,7 @@
       <workItem from="1737897682852" duration="5119000" />
       <workItem from="1737902836711" duration="171000" />
       <workItem from="1737903416723" duration="539000" />
+      <workItem from="1737932660119" duration="782000" />
     </task>
     <servers />
   </component>

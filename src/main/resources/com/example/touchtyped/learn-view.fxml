@@ -33,7 +33,7 @@
                      <Image url="@images/logo.png" />
                   </ImageView>
                   <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-                     <Image url="@images/nav-bar/learn.png" />
+                     <Image url="@images/nav-bar/learnSelected.png" />
                   </ImageView>
                   <ImageView fx:id="gamesButton" 
                              fitHeight="69.0" fitWidth="71.0" 
