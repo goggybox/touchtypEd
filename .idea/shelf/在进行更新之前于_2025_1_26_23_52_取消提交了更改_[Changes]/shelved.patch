@@ -1,0 +1,89 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0f6ed382-6455-40cb-bb2f-32f4695b66d6\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 1/BEng Software Engineering.url\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 1/BEng Software Engineering.url\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/MainViewController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"CSS File\" />\r\n        <option value=\"package.json\" />\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2rmCoJVTJag4PpPlGBZBSZODTvu\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.Application.executor&quot;: &quot;Run&quot;,\r\n    &quot;Application.Run Application.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/com/example/touchtyped/images/nav-bar&quot;,\r\n    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\\images\\nav-bar\" />\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\\images\\learn-content\" />\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\\images\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\\images\\\" />\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\" />\r\n      <recent name=\"C:\\Users\\gibed\\OneDrive\\Uni\\touchtypEd\\src\\main\\resources\\com\\example\\touchtyped\\images\\nav-bar\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"Run Application\" type=\"Application\" factoryName=\"Application\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.example.touchtyped.app.Application\" />\r\n      <module name=\"touchtypEd\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0f6ed382-6455-40cb-bb2f-32f4695b66d6\" name=\"Changes\" comment=\"\" />\r\n      <created>1737155036594</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1737155036594</updated>\r\n      <workItem from=\"1737155037637\" duration=\"459000\" />\r\n      <workItem from=\"1737155503642\" duration=\"1431000\" />\r\n      <workItem from=\"1737239896982\" duration=\"1895000\" />\r\n      <workItem from=\"1737298670569\" duration=\"1746000\" />\r\n      <workItem from=\"1737300426572\" duration=\"38000\" />\r\n      <workItem from=\"1737300471936\" duration=\"1820000\" />\r\n      <workItem from=\"1737302304538\" duration=\"941000\" />\r\n      <workItem from=\"1737311512513\" duration=\"2666000\" />\r\n      <workItem from=\"1737330802549\" duration=\"3219000\" />\r\n      <workItem from=\"1737820064233\" duration=\"687000\" />\r\n      <workItem from=\"1737897682852\" duration=\"5119000\" />\r\n      <workItem from=\"1737902836711\" duration=\"171000\" />\r\n      <workItem from=\"1737903416723\" duration=\"539000\" />\r\n      <workItem from=\"1737932660119\" duration=\"782000\" />\r\n      <workItem from=\"1737933489517\" duration=\"47000\" />\r\n      <workItem from=\"1737933719915\" duration=\"61000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision c574393fb8248e480df7920cb79a4b8ad2bc0f5b)
++++ b/.idea/workspace.xml	(date 1737935517294)
+@@ -4,18 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+-      <change beforePath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" afterDir="false" />
++    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="1. Add navigation bar to game view with identical layout to learn view&#10;2. Add click handler for learn button in game view&#10;3. Set correct button states (selected/unselected) in navigation bar&#10;&#10;By Yuhang and Owen. 1.26">
++      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/images/nav-bar/learn.png" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/MainViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -53,25 +44,25 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
+-    &quot;Application.Run Application.executor&quot;: &quot;Run&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/com/example/touchtyped/images/nav-bar&quot;,
+-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Application.Application.executor": "Run",
++    "Application.Run Application.executor": "Run",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "git-widget-placeholder": "正在合并 master",
++    "kotlin-language-version-configured": "true",
++    "last_opened_file_path": "C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/com/example/touchtyped/images/nav-bar",
++    "list.type.of.created.stylesheet": "CSS",
++    "node.js.detected.package.eslint": "true",
++    "node.js.detected.package.tslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\nav-bar" />
+@@ -123,4 +114,12 @@
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="1. Add navigation bar to game view with identical layout to learn view&#10;2. Add click handler for learn button in game view&#10;3. Set correct button states (selected/unselected) in navigation bar&#10;&#10;By Yuhang and Owen. 1.26" />
++    <option name="LAST_COMMIT_MESSAGE" value="1. Add navigation bar to game view with identical layout to learn view&#10;2. Add click handler for learn button in game view&#10;3. Set correct button states (selected/unselected) in navigation bar&#10;&#10;By Yuhang and Owen. 1.26" />
++  </component>
++  <component name="XSLT-Support.FileAssociations.UIState">
++    <expand />
++    <select />
++  </component>
+ </project>
+\ No newline at end of file
