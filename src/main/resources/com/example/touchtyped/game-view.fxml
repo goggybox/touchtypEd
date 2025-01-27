@@ -20,7 +20,7 @@
                   </ImageView>
                   <ImageView fx:id="learnButton"
                            fitHeight="69.0" fitWidth="175.0" 
-                           layoutX="933.0" layoutY="26.0" 
+                           layoutX="933.0" layoutY="26.0"
                            pickOnBounds="true" 
                            preserveRatio="true"
                            onMouseClicked="#onLearnButtonClick">
@@ -44,7 +44,18 @@
    </top>
 
    <center>
-      <VBox fx:id="gameContainer" alignment="CENTER" spacing="10.0" prefHeight="400.0"/>
+      <VBox fx:id="gameContainer" alignment="CENTER" spacing="20" prefHeight="400.0">
+         <!-- Task, Input Field, Score, Timer -->
+         <Label fx:id="taskLabel" text="Task will appear here" style="-fx-font-size: 24px;" />
+         <TextField fx:id="inputField" promptText="Type here..." style="-fx-font-size: 18px;" />
+         <Label fx:id="scoreLabel" text="Score: 0" style="-fx-font-size: 20px;" />
+         <Label fx:id="timerLabel" text="Time left: 60s" style="-fx-font-size: 20px;" />
+         <!-- Buttons -->
+         <HBox alignment="CENTER" spacing="20">
+            <Button fx:id="startButton" text="Start Game" onAction="#startGame" />
+            <Button fx:id="endButton" text="End Game" onAction="#endGame" />
+         </HBox>
+      </VBox>
    </center>
 
 </BorderPane> 
