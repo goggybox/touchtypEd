@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLogsStructure.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../1. Professional Issues/CW2/.~lock.CW2 ideas.odt#" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeyboardInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeyboardInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
