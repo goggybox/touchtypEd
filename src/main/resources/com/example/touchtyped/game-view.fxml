@@ -24,7 +24,7 @@
                            pickOnBounds="true" 
                            preserveRatio="true"
                            onMouseClicked="#onLearnButtonClick">
-                     <Image url="@images/nav-bar/learnSelected.png" />
+                     <Image url="@images/nav-bar/learn.png" />
                   </ImageView>
                   <ImageView fx:id="gamesButton" 
                            fitHeight="69.0" fitWidth="71.0" 
