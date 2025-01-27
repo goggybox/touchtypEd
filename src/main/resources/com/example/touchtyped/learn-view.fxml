@@ -40,8 +40,7 @@
                              layoutX="1022.0" layoutY="26.0" 
                              pickOnBounds="true" 
                              preserveRatio="true" 
-                             onMouseClicked="#onGamesButtonClick"
-                             styleClass="nav-button">
+                             onMouseClicked="#onGamesButtonClick">
                      <Image url="@images/nav-bar/games.png" />
                   </ImageView>
                   <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
