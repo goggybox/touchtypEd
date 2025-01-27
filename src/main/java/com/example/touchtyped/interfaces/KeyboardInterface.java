@@ -28,12 +28,13 @@ public class KeyboardInterface {
      */
     public void attachToScene(Scene scene) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            String key = event.getText();
-            if (!key.isEmpty()) {
+            KeyCode keyCode = event.getCode();
+
+            if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
+                String key = event.getText();
                 notifyListeners(key);
             } else {
-                // check for special keys
-                switch (event.getCode()) {
+                switch (keyCode) {
                     case BACK_SPACE:
                         notifyListeners("BACK_SPACE");
                         break;
