@@ -1,5 +1,6 @@
 package com.example.touchtyped.app;
 
+import com.example.touchtyped.controller.LearnViewController;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
 import javafx.fxml.FXMLLoader;
@@ -20,13 +21,6 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
-
-        // create the keyboard interface and attach to scene
-        KeyboardInterface keyboardInterface = new KeyboardInterface();
-        keyboardInterface.attachToScene(scene);
-
-        // Example keypress listener
-        new ExampleKeypressListener(keyboardInterface);
     }
 
     public static void main(String[] args) {
