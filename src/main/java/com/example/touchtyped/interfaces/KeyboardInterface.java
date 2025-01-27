@@ -27,7 +27,7 @@ public class KeyboardInterface {
      * @param scene is the scene to attach to
      */
     public void attachToScene(Scene scene) {
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode keyCode = event.getCode();
 
             if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
