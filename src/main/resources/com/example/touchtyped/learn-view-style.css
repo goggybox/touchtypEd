@@ -4,14 +4,18 @@
     -fx-font-weight: bold;
 }
 
-.nav-button {
-    -fx-cursor: hand;
-    -fx-effect: null;
-    -fx-transition: -fx-scale-x 0.2s, -fx-scale-y 0.2s, -fx-effect 0.2s;
+/* styling for the ScrollPane */
+.scroll-pane {
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+}
+.scroll-pane:focused {
+    -fx-focus-color: transparent;
 }
 
-.nav-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
+/* styling for the dynamically generated buttons */
+.dynamic-button {
+    -fx-border-color: transparent;
+    -fx-background-color: #E5E5E5;
+    -fx-border-width: 0;
 }

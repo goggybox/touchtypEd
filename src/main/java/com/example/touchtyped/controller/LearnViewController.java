@@ -34,6 +34,7 @@ public class LearnViewController {
             Button button = new Button("Button "+(i+1));
             button.setOnAction(event -> System.out.println(button.getText() + " clicked!"));
             button.setPrefSize(130, 150);
+            button.getStyleClass().add("dynamic-button");
 
             int row = i / buttonsPerRow;
             int col = i % buttonsPerRow;
