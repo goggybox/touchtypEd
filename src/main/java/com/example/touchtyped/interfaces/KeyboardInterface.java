@@ -109,4 +109,13 @@ public class KeyboardInterface {
         System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
     }
 
+    /**
+     * sends a command to the keyboard to turn the LED lights on for a certain amount of time.
+     * @param duration is the duration to turn lights on for (in milliseconds)
+     */
+    public void activateLights(int duration) {
+        // for now, this method will simply output to the console
+        System.out.println(String.format("Turned LED lights on for %d milliseconds", duration));
+    }
+
 }
