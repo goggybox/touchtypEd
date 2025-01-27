@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
-            prefHeight="700.0" prefWidth="1200.0" stylesheets="@style.css" 
+            prefHeight="700.0" prefWidth="1200.0" stylesheets="@game-view-style.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.example.touchtyped.controller.GameViewController">
 
