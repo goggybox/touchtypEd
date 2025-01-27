@@ -27,17 +27,19 @@ public class KeyboardInterface {
      * @param scene is the scene to attach to
      */
     public void attachToScene(Scene scene) {
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            String key = event.getText();
-            if (!key.isEmpty()) {
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            KeyCode keyCode = event.getCode();
+            System.out.println(keyCode);
+
+            if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
+                String key = event.getText();
                 notifyListeners(key);
             } else {
-                // check for special keys
-                switch (event.getCode()) {
+                switch (keyCode) {
                     case BACK_SPACE:
                         notifyListeners("BACK_SPACE");
                         break;
-                    case KeyCode.ENTER:
+                    case ENTER:
                         notifyListeners("ENTER");
                         break;
                     case ESCAPE:
@@ -52,6 +54,9 @@ public class KeyboardInterface {
                     case ALT:
                         notifyListeners("ALT");
                         break;
+                    case TAB:
+                        notifyListeners("TAB");
+                        break;
                     case LEFT:
                         notifyListeners("LEFT");
                         break;
@@ -63,6 +68,45 @@ public class KeyboardInterface {
                         break;
                     case DOWN:
                         notifyListeners("DOWN");
+                        break;
+                    case SPACE:
+                        notifyListeners("SPACE");
+                        break;
+                    case SEMICOLON:
+                        notifyListeners("SEMICOLON");
+                        break;
+                    case QUOTE:
+                        notifyListeners("QUOTE");
+                        break;
+                    case NUMBER_SIGN: // this key represents the key with # on a British keyboard
+                        notifyListeners("HASHTAG");
+                        break;
+                    case OPEN_BRACKET:
+                        notifyListeners("OPEN_BRACKET");
+                        break;
+                    case CLOSE_BRACKET:
+                        notifyListeners("CLOSE_BRACKET");
+                        break;
+                    case COMMA:
+                        notifyListeners("COMMA");
+                        break;
+                    case PERIOD:
+                        notifyListeners("PERIOD");
+                        break;
+                    case SLASH:
+                        notifyListeners("SLASH");
+                        break;
+                    case BACK_SLASH:
+                        notifyListeners("BACK_SLASH");
+                        break;
+                    case BACK_QUOTE:
+                        notifyListeners("BACK_QUOTE");
+                        break;
+                    case EQUALS:
+                        notifyListeners("EQUALS");
+                        break;
+                    case MINUS:
+                        notifyListeners("MINUS");
                         break;
                     default:
                         notifyListeners("UNKNOWN");
@@ -107,6 +151,15 @@ public class KeyboardInterface {
     public void sendHapticCommand(String key, int duration, int strength) {
         // for now, this method will simply output to the console.
         System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
+    }
+
+    /**
+     * sends a command to the keyboard to turn the LED lights on for a certain amount of time.
+     * @param duration is the duration to turn lights on for (in milliseconds)
+     */
+    public void activateLights(int duration) {
+        // for now, this method will simply output to the console
+        System.out.println(String.format("Turned LED lights on for %d milliseconds", duration));
     }
 
 }

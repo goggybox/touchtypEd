@@ -16,7 +16,7 @@ public class ExampleKeypressListener implements KeypressListener {
     @Override
     public void onKeypress(String key) {
 
-        System.out.println(String.format("ExampleKeypressListener has received key: %s", key));
+        System.out.println(String.format("ExampleKeypressListener has received key: (%s)", key));
 
     }
 
