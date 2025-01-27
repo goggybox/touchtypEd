@@ -44,12 +44,6 @@ public class LearnViewController {
     }
 
     @FXML
-    public void onLearnButtonClick() {
-        System.out.println("Learn button clicked!");
-        // Navigate to the "Learn" screen
-    }
-
-    @FXML
     public void onGamesButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
