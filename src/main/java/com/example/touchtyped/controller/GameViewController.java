@@ -47,15 +47,14 @@ public class GameViewController extends KeyboardInterface {
     @FXML private LineChart<Number, Number> statsChart;
     
     // Chart data
-    private XYChart.Series<Number, Number> wpmSeries = new XYChart.Series<>();
-    private List<Double> wpmHistory = new ArrayList<>();
+    private final XYChart.Series<Number, Number> wpmSeries = new XYChart.Series<>();
+    private final List<Double> wpmHistory = new ArrayList<>();
 
     // Game state variables
     private int timeLeft = 60;
     private Timeline timeline;
     private final Random random = new Random();
     private StringBuilder currentSentence;
-    private int visibleTextLength = 50;
     private int currentCharIndex;
     private int selectedTimeOption = 60;
     private boolean gameStarted = false;
@@ -65,7 +64,7 @@ public class GameViewController extends KeyboardInterface {
     private int totalKeystrokes = 0;
     private int correctKeystrokes = 0;
     private int wrongKeystrokes = 0;
-    private StringBuilder typingHistory = new StringBuilder();
+    private final StringBuilder typingHistory = new StringBuilder();
 
     // Word bank for typing practice
     private final String[] words = {
@@ -236,7 +235,8 @@ public class GameViewController extends KeyboardInterface {
         taskLabel.getChildren().clear();
         
         // Calculate visible text range
-        int start = Math.max(0, currentCharIndex - visibleTextLength/2);
+        int visibleTextLength = 50;
+        int start = Math.max(0, currentCharIndex - visibleTextLength /2);
         int end = Math.min(currentSentence.length(), start + visibleTextLength);
         
         // Calculate cursor position
@@ -276,7 +276,7 @@ public class GameViewController extends KeyboardInterface {
             updateTaskDisplay();
             
             // Provide haptic feedback for first character
-            if (currentSentence.length() > 0) {
+            if (!currentSentence.isEmpty()) {
                 String nextChar = String.valueOf(currentSentence.charAt(0));
                 if (nextChar.equals(" ")) {
                     nextChar = "space";
@@ -292,7 +292,7 @@ public class GameViewController extends KeyboardInterface {
      */
     private void addNewWord() {
         // Add space between words
-        if (currentSentence.length() > 0) {
+        if (!currentSentence.isEmpty()) {
             currentSentence.append(" ");
         }
         currentSentence.append(words[random.nextInt(words.length)]);
@@ -483,14 +483,5 @@ public class GameViewController extends KeyboardInterface {
                 wpmSeries.getData().add(new XYChart.Data<>(i, wpmHistory.get(i)));
             }
         }
-    }
-
-    /**
-     * Gets the game start timestamp.
-     *
-     * @return The timestamp when the game started
-     */
-    public long getGameStartTime() {
-        return gameStartTime;
     }
 }

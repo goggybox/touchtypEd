@@ -48,14 +48,18 @@ public class GameResultViewController {
      */
     public void setGameData(List<Double> wpmHistory, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
         // 计算最终统计数据
-        double wpm = wpmHistory.isEmpty() ? 0 : wpmHistory.get(wpmHistory.size() - 1);
+        double wpm = 0;  // 默认为0
+        if (!wpmHistory.isEmpty()) {
+            double lastWpm = wpmHistory.get(wpmHistory.size() - 1);
+            wpm = Double.isInfinite(lastWpm) || Double.isNaN(lastWpm) ? 0 : lastWpm;
+        }
+
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
         // 更新标签
         finalWpmLabel.setText(String.format("%.0f", wpm));
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
-        finalCharLabel.setText(String.format("%d/%d/%d/%d", 
-            totalKeystrokes, correctKeystrokes, wrongKeystrokes, 
-            totalKeystrokes - correctKeystrokes - wrongKeystrokes));
+        finalCharLabel.setText(String.format("%d/%d/%d",
+            totalKeystrokes, correctKeystrokes, wrongKeystrokes));
     }
 } 

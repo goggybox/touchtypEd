@@ -61,11 +61,11 @@
             <!-- 主要统计数据 -->
             <HBox alignment="CENTER" spacing="80" styleClass="result-info">
                 <VBox alignment="CENTER" styleClass="result-item">
-                    <Label text="words/min" styleClass="result-label"/>
+                    <Label text="words/min(wpm)" styleClass="result-label"/>
                     <Label fx:id="finalWpmLabel" styleClass="result-value"/>
                 </VBox>
                 <VBox alignment="CENTER" styleClass="result-item">
-                    <Label text="accuracy" styleClass="result-label"/>
+                    <Label text="Accuracy" styleClass="result-label"/>
                     <Label fx:id="finalAccLabel" styleClass="result-value"/>
                 </VBox>
                 <VBox alignment="CENTER" styleClass="result-item">
