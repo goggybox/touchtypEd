@@ -217,23 +217,24 @@ public class GameViewController extends KeyboardInterface {
             timeline.stop();
         }
 
-        inputField.setDisable(true);
-
-        // Calculate final statistics
-        double wpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);
-        double accuracy = (double) correctKeystrokes / totalKeystrokes * 100;
+        // 生成游戏数据
+        generateGameData();
         
-        // Update result display
-        finalWpmLabel.setText(String.format("%.0f", wpm));
-        finalAccLabel.setText(String.format("%.0f%%", accuracy));
-        finalCharLabel.setText(String.format("%d/%d/%d/%d", 
-            totalKeystrokes, correctKeystrokes, wrongKeystrokes, 
-            totalKeystrokes - correctKeystrokes - wrongKeystrokes));
-        
-        // Show chart and results
-        statsChart.getData().clear();
-        statsChart.getData().add(wpmSeries);
-        resultContainer.setVisible(true);
+        // 加载结果视图
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-result-view.fxml"));
+            Scene resultScene = new Scene(loader.load(), 1200, 700);
+            
+            // 获取结果控制器并设置数据
+            GameResultViewController resultController = loader.getController();
+            resultController.setGameData(wpmHistory, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+            
+            // 显示结果场景
+            Stage stage = (Stage) gameContainer.getScene().getWindow();
+            stage.setScene(resultScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
