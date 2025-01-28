@@ -21,7 +21,6 @@ import java.util.List;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 /**
@@ -34,10 +33,7 @@ public class GameViewController extends KeyboardInterface {
     @FXML private VBox gameContainer;
     @FXML private TextFlow taskLabel;
     @FXML private TextField inputField;
-    @FXML private Label scoreLabel;
     @FXML private Label timerLabel;
-    @FXML private Label wpmLabel;
-    @FXML private Label accuracyLabel;
     @FXML private Text cursorLabel;
     
     // Time selection buttons
@@ -48,9 +44,6 @@ public class GameViewController extends KeyboardInterface {
     
     // Result display components
     @FXML private VBox resultContainer;
-    @FXML private Label finalWpmLabel;
-    @FXML private Label finalAccLabel;
-    @FXML private Label finalCharLabel;
     @FXML private LineChart<Number, Number> statsChart;
     
     // Chart data
@@ -58,7 +51,6 @@ public class GameViewController extends KeyboardInterface {
     private List<Double> wpmHistory = new ArrayList<>();
 
     // Game state variables
-    private int score = 0;
     private int timeLeft = 60;
     private Timeline timeline;
     private final Random random = new Random();
@@ -157,7 +149,6 @@ public class GameViewController extends KeyboardInterface {
         
         // Reset game state
         gameStarted = false;
-        score = 0;
         timeLeft = selectedTimeOption;
         currentCharIndex = 0;
         totalKeystrokes = 0;
