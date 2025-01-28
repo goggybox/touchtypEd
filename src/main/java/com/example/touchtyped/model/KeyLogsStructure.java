@@ -40,7 +40,7 @@ public class KeyLogsStructure {
      * constructor. This class must be given a wordsGiven.
      */
     public KeyLogsStructure(String wordsGiven) {
-        this.wordsGiven = wordsGiven;
+        this.wordsGiven = wordsGiven.toUpperCase(); // force the words to uppercase
     }
 
     /**
@@ -61,7 +61,7 @@ public class KeyLogsStructure {
 
         // determine whether this keypress was an error based on the expected character
         boolean error = false;
-        if (expected == null || Objects.equals(key, expected)) {
+        if (expected == null || !Objects.equals(key, expected)) {
             error = true;
         }
 
@@ -80,6 +80,16 @@ public class KeyLogsStructure {
 
     }
 
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        for (KeyLog keyLog : keyLogs) {
+            output.append(keyLog.toString()).append("\n");
+        }
+
+        output.append("Session Duration: " + sessionDuration + "\nWords Given: " + wordsGiven);
+        return output.toString();
+    }
 
 
 

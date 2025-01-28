@@ -17,6 +17,11 @@ public class KeyLog {
         this.error = error;
     }
 
+    @Override
+    public String toString() {
+        return String.format("key: %s, timestamp: %d, expected: %s, error: %b", key, timestamp, expected, error);
+    }
+
 
     /**
      * Getters and setters
