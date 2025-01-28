@@ -2,6 +2,7 @@ package com.example.touchtyped.controller;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
+import com.example.touchtyped.model.LessonButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,6 +44,8 @@ public class LearnViewController {
             }
         });
 
+        // load font
+        Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
 
         int numberOfButtons = 10;
         addButtons(numberOfButtons);
@@ -49,10 +54,15 @@ public class LearnViewController {
     private void addButtons(int number) {
         int buttonsPerRow = 3;
         for (int i = 0; i < number; i++) {
-            Button button = new Button("Button "+(i+1));
-            button.setOnAction(event -> System.out.println(button.getText() + " clicked!"));
-            button.setPrefSize(130, 150);
-            button.getStyleClass().add("dynamic-button");
+            double completion = (double) (number - i) / number;
+
+            // define the action to be performed when the button is clicked
+            int finalI = i;
+            Runnable onClickAction = () -> {
+                System.out.println("Lesson " + (finalI +1) + " clicked!");
+            };
+
+            StackPane button = LessonButton.createLessonButton("Lesson "+(i+1), completion, onClickAction);
 
             int row = i / buttonsPerRow;
             int col = i % buttonsPerRow;

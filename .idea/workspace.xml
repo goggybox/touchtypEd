@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/LessonButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/fonts/AntipastoPro.ttf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" afterDir="false" />
@@ -13,13 +15,11 @@
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeyboardInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/interfaces/KeyboardInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ExampleKeypressListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ExampleKeypressListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLogsStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/KeyLogsStructure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Level.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Level.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +78,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "learn",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/yangyuanchao/Desktop/touchtypEd",
+    "last_opened_file_path": "C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/fonts",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -93,6 +93,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\fonts" />
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/touchtyped" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\nav-bar" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\learn-content" />
@@ -112,14 +113,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -150,6 +143,7 @@
       <workItem from="1737972444243" duration="2280000" />
       <workItem from="1737997376624" duration="256000" />
       <workItem from="1737998058840" duration="1565000" />
+      <workItem from="1738091261160" duration="6307000" />
     </task>
     <servers />
   </component>

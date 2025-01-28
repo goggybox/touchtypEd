@@ -13,7 +13,7 @@
             <ImageView pickOnBounds="true" preserveRatio="true">
                <Image url="@images/learn-content/divider line.png" />
             </ImageView>
-            <GridPane fx:id="buttonGrid" alignment="CENTER" hgap="50" minWidth="5.0" styleClass="button-grid" vgap="35">
+            <GridPane fx:id="buttonGrid" alignment="CENTER" hgap="60" minWidth="5.0" styleClass="button-grid" vgap="55">
                <!-- Buttons will be added dynamically here -->
             </GridPane>
          </VBox>
@@ -35,11 +35,11 @@
                   <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                      <Image url="@images/nav-bar/learnSelected.png" />
                   </ImageView>
-                  <ImageView fx:id="gamesButton" 
-                             fitHeight="69.0" fitWidth="71.0" 
-                             layoutX="1022.0" layoutY="26.0" 
-                             pickOnBounds="true" 
-                             preserveRatio="true" 
+                  <ImageView fx:id="gamesButton"
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="1022.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
                              onMouseClicked="#onGamesButtonClick">
                      <Image url="@images/nav-bar/games.png" />
                   </ImageView>
