@@ -3,6 +3,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
             prefHeight="700.0" prefWidth="1200.0" stylesheets="@game-view-style.css"
@@ -44,17 +46,92 @@
    </top>
 
    <center>
-      <VBox fx:id="gameContainer" alignment="CENTER" spacing="20" prefHeight="400.0">
-         <!-- Task, Input Field, Score, Timer -->
-         <Label fx:id="taskLabel" text="Task will appear here" style="-fx-font-size: 24px;" />
-         <TextField fx:id="inputField" promptText="Type here..." style="-fx-font-size: 18px;" />
-         <Label fx:id="scoreLabel" text="Score: 0" style="-fx-font-size: 20px;" />
-         <Label fx:id="timerLabel" text="Time left: 60s" style="-fx-font-size: 20px;" />
-         <!-- Buttons -->
-         <HBox alignment="CENTER" spacing="20">
-            <Button fx:id="startButton" text="Start Game" onAction="#startGame" />
-            <Button fx:id="endButton" text="End Game" onAction="#endGame" />
+      <VBox fx:id="gameContainer" alignment="CENTER" spacing="40" styleClass="game-container">
+         <HBox alignment="CENTER" spacing="15" styleClass="time-options">
+            <Label text="Time:" styleClass="time-label"/>
+            <Button fx:id="time15Button" text="15s" onAction="#select15s" styleClass="time-button"/>
+            <Button fx:id="time30Button" text="30s" onAction="#select30s" styleClass="time-button"/>
+            <Button fx:id="time60Button" text="60s" onAction="#select60s" styleClass="time-button"/>
+            <Button fx:id="time120Button" text="120s" onAction="#select120s" styleClass="time-button"/>
          </HBox>
+
+         <HBox alignment="CENTER" spacing="30" styleClass="game-info">
+            <Label fx:id="timerLabel" text="60"/>
+         </HBox>
+
+         <VBox alignment="CENTER" styleClass="typing-area">
+            <StackPane minWidth="800" maxWidth="800" 
+                       minHeight="40" maxHeight="40"
+                       alignment="CENTER">
+                <TextFlow fx:id="taskLabel" styleClass="task-text"/>
+                <Text fx:id="cursorLabel" styleClass="cursor" visible="false">│</Text>
+            </StackPane>
+            <TextField fx:id="inputField" styleClass="input-field"/>
+         </VBox>
+
+         <!-- 添加返回按钮 -->
+         <HBox alignment="CENTER" spacing="20">
+            <Button fx:id="returnButton" 
+                    onAction="#resetGame"
+                    styleClass="control-button"
+                    focusTraversable="false">
+                <graphic>
+                    <ImageView fitHeight="24" fitWidth="24">
+                        <Image url="@images/game-content/return.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+         </HBox>
+
+         <!-- 添加结果显示区域 -->
+         <VBox fx:id="resultContainer" alignment="CENTER" spacing="20" visible="false">
+            <HBox alignment="CENTER" spacing="30" styleClass="result-info">
+                <VBox alignment="CENTER" styleClass="result-item">
+                    <Label text="wpm" styleClass="result-label"/>
+                    <Label fx:id="finalWpmLabel" styleClass="result-value"/>
+                </VBox>
+                <VBox alignment="CENTER" styleClass="result-item">
+                    <Label text="acc" styleClass="result-label"/>
+                    <Label fx:id="finalAccLabel" styleClass="result-value"/>
+                </VBox>
+                <VBox alignment="CENTER" styleClass="result-item">
+                    <Label text="char" styleClass="result-label"/>
+                    <Label fx:id="finalCharLabel" styleClass="result-value"/>
+                </VBox>
+            </HBox>
+
+            <!-- 添加图表区域 -->
+            <LineChart fx:id="statsChart" 
+                      createSymbols="false" 
+                      legendVisible="false" 
+                      animated="false"
+                      styleClass="stats-chart"
+                      prefHeight="200.0">
+                <xAxis>
+                    <NumberAxis side="BOTTOM" tickLabelsVisible="false" tickMarkVisible="false"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT" tickLabelsVisible="false" tickMarkVisible="false"/>
+                </yAxis>
+            </LineChart>
+
+            <!-- 添加按钮区域 -->
+            <HBox alignment="CENTER" spacing="20" styleClass="result-buttons">
+                <Button fx:id="restartButton" 
+                        onAction="#resetGame" 
+                        styleClass="result-button"
+                        focusTraversable="false">
+                    <graphic>
+                        <ImageView fitHeight="24" fitWidth="24">
+                            <Image url="@images/game-content/return.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip>
+                        <Tooltip text="restart"/>
+                    </tooltip>
+                </Button>
+            </HBox>
+         </VBox>
       </VBox>
    </center>
 
