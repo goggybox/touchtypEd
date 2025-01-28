@@ -12,7 +12,7 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.touchtyped.controller.GameResultViewController">
 
-    <!-- 导航栏 -->
+    <!-- Navigation Bar -->
     <top>
         <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
             <children>
@@ -55,17 +55,17 @@
 
     <center>
         <VBox alignment="CENTER" spacing="40" styleClass="game-container">
-            <!-- 结果标题 -->
+            <!-- Result Title -->
             <Label text="Results" styleClass="result-title"/>
             
-            <!-- 主要统计数据 -->
+            <!-- Main Statistics -->
             <HBox alignment="CENTER" spacing="80" styleClass="result-info">
                 <VBox alignment="CENTER" styleClass="result-item">
                     <Label text="words/min(wpm)" styleClass="result-label"/>
                     <Label fx:id="finalWpmLabel" styleClass="result-value"/>
                 </VBox>
                 <VBox alignment="CENTER" styleClass="result-item">
-                    <Label text="Accuracy" styleClass="result-label"/>
+                    <Label text="accuracy" styleClass="result-label"/>
                     <Label fx:id="finalAccLabel" styleClass="result-value"/>
                 </VBox>
                 <VBox alignment="CENTER" styleClass="result-item">
@@ -74,7 +74,7 @@
                 </VBox>
             </HBox>
 
-            <!-- 返回按钮 -->
+            <!-- Return Button -->
             <HBox alignment="CENTER" spacing="20">
                 <Button fx:id="returnButton" 
                         onAction="#onReturnButtonClick"

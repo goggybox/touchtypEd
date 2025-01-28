@@ -132,7 +132,7 @@
     -fx-font-size: 16px;
 }
 
-/* 可选：当鼠标悬停在时间选择区域时让标签也变亮 */
+/* Optional: Highlight the time label when hovering over time options */
 .time-options:hover .time-label {
     -fx-text-fill: #e2b714;
 }
@@ -171,17 +171,17 @@
     -fx-padding: 20;
 }
 
-/* 修改图表背景 */
+/* Modify chart background */
 .stats-chart .chart-plot-background {
-    -fx-background-color: rgba(40, 42, 45, 0.8);  /* 深色背景 */
-    -fx-border-color: rgba(136, 136, 136, 0.1);   /* 浅灰色边框 */
+    -fx-background-color: rgba(40, 42, 45, 0.8);  /* Dark background */
+    -fx-border-color: rgba(136, 136, 136, 0.1);   /* Light gray border */
     -fx-border-width: 1;
 }
 
-/* 修改网格线 */
+/* Modify grid lines */
 .stats-chart .chart-horizontal-grid-lines {
     -fx-stroke: rgba(136, 136, 136, 0.1);
-    -fx-stroke-dash-array: 1 5;  /* 虚线效果 */
+    -fx-stroke-dash-array: 1 5;  /* Dashed line effect */
 }
 
 .stats-chart .chart-vertical-grid-lines {
@@ -189,9 +189,9 @@
     -fx-stroke-dash-array: 1 5;
 }
 
-/* 修改坐标轴 */
+/* Modify axis */
 .stats-chart .axis {
-    -fx-tick-label-fill: #646669;  /* 坐标轴文字颜色 */
+    -fx-tick-label-fill: #646669;  /* Axis text color */
     -fx-tick-length: 3;
     -fx-minor-tick-length: 0;
 }
@@ -201,25 +201,25 @@
     -fx-stroke-width: 1;
 }
 
-/* 修改图表线条 */
+/* Modify chart lines */
 .stats-chart .chart-series-line {
-    -fx-stroke: #e2b714;  /* 黄色线条 */
+    -fx-stroke: #e2b714;  /* Yellow line */
     -fx-stroke-width: 2px;
 }
 
-/* 添加数据点样式 */
-.stats-chart .chart-symbol {  /* 数据点样式 */
+/* Add data point styles */
+.stats-chart .chart-symbol {  /* Data point style */
     -fx-background-color: #e2b714;
     -fx-background-radius: 3px;
     -fx-padding: 3px;
 }
 
 .stats-chart .default-color0.chart-series-line {
-    -fx-stroke: #e2b714;  /* 主线条为黄色 */
+    -fx-stroke: #e2b714;  /* Main line in yellow */
 }
 
 .stats-chart .default-color1.chart-series-line {
-    -fx-stroke: rgba(255, 255, 255, 0.3);  /* 次要线条为半透明白色 */
+    -fx-stroke: rgba(255, 255, 255, 0.3);  /* Secondary line in semi-transparent white */
 }
 
 .restart-button {

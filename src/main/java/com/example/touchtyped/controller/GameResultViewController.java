@@ -14,7 +14,7 @@ public class GameResultViewController {
     @FXML private Label finalCharLabel;
 
     /**
-     * 导航到学习视图
+     * Navigate to learn view
      */
     @FXML
     public void onLearnButtonClick() {
@@ -29,7 +29,7 @@ public class GameResultViewController {
     }
 
     /**
-     * 返回游戏视图
+     * Return to game view
      */
     @FXML
     public void onReturnButtonClick() {
@@ -44,11 +44,11 @@ public class GameResultViewController {
     }
 
     /**
-     * 设置游戏结果数据
+     * Set game result data and update the display
      */
     public void setGameData(List<Double> wpmHistory, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
-        // 计算最终统计数据
-        double wpm = 0;  // 默认为0
+        // Calculate final statistics
+        double wpm = 0;  // Default to 0
         if (!wpmHistory.isEmpty()) {
             double lastWpm = wpmHistory.get(wpmHistory.size() - 1);
             wpm = Double.isInfinite(lastWpm) || Double.isNaN(lastWpm) ? 0 : lastWpm;
@@ -56,7 +56,7 @@ public class GameResultViewController {
 
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
-        // 更新标签
+        // Update labels
         finalWpmLabel.setText(String.format("%.0f", wpm));
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
