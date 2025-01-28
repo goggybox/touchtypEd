@@ -1,14 +1,12 @@
 package com.example.touchtyped.controller;
 
-import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.DividerLine;
 import com.example.touchtyped.model.ExampleKeypressListener;
-import com.example.touchtyped.model.LessonButton;
+import com.example.touchtyped.model.ModuleButton;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,11 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -71,7 +65,8 @@ public class LearnViewController {
         Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
 
         displayPhase("Phase 1: Foundations", 9);
-        displayPhase("Phase 2: Your MotherARARAR", 3);
+        HBox divider = DividerLine.createDividerLineWithText("");
+        vbox.getChildren().add(divider);
     }
 
     /**
@@ -113,7 +108,7 @@ public class LearnViewController {
                 System.out.println("Lesson " + (finalI + 1) + " clicked!");
             };
 
-            StackPane button = LessonButton.createLessonButton("Lesson " + (i + 1), completion, onClickAction);
+            StackPane button = ModuleButton.createModuleButton("Lesson " + (i + 1), completion, onClickAction);
 
             int row = i / buttonsPerRow;
             int col = i % buttonsPerRow;

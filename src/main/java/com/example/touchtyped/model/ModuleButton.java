@@ -12,9 +12,19 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeLineCap;
 
-public class LessonButton {
+/**
+ * this class contains the createLessonButton method
+ */
+public class ModuleButton {
 
-    public static StackPane createLessonButton(String lessonName, double completion, Runnable onClickAction) {
+    /**
+     * returns a StackPane that represents a module in the Learn page.
+     * @param moduleName is the name of the module to display
+     * @param completion is the level of completion of the module, represented by the red arc
+     * @param onClickAction is the action to perform when the button is clicked
+     * @return a StackPane to be displayed
+     */
+    public static StackPane createModuleButton(String moduleName, double completion, Runnable onClickAction) {
 
         int arcRadius = 53;
         int arcWidth = 10;
@@ -59,7 +69,7 @@ public class LessonButton {
         pane.getChildren().addAll(greyArc, redArc, blueCircle);
 
         // Lesson label
-        Label label = new Label(lessonName);
+        Label label = new Label(moduleName);
         label.setStyle("-fx-font-family: 'Antipasto'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #3C3C3C;");
 
         // Wrap in VBox to include the label
