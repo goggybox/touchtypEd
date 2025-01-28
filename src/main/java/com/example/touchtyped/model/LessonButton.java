@@ -1,5 +1,6 @@
 package com.example.touchtyped.model;
 
+import com.example.touchtyped.constants.StyleConstants;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -35,7 +36,7 @@ public class LessonButton {
         greyArc.setLength(360);
         greyArc.setType(ArcType.OPEN);
         greyArc.setFill(Color.TRANSPARENT);
-        greyArc.setStroke(Color.web("#E5E5E5"));
+        greyArc.setStroke(Color.web(StyleConstants.GREY_COLOUR));
         greyArc.setStrokeWidth(arcWidth);
 
         // Red progress arc (half circle)
@@ -47,19 +48,19 @@ public class LessonButton {
         redArc.setLength(-(360 * completion));
         redArc.setType(ArcType.OPEN);
         redArc.setFill(Color.TRANSPARENT);
-        redArc.setStroke(Color.web("#F5102F"));
+        redArc.setStroke(Color.web(StyleConstants.RED_COLOUR));
         redArc.setStrokeWidth(arcWidth);
         redArc.setStrokeLineCap(StrokeLineCap.ROUND); // rounded edge
 
         // Blue circle background
-        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web("#263F68"));
+        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web(StyleConstants.BLUE_COLOUR));
 
         // Add the arcs and circle to the Pane
         pane.getChildren().addAll(greyArc, redArc, blueCircle);
 
         // Lesson label
         Label label = new Label(lessonName);
-        label.setStyle("-fx-font-family: 'Antipasto'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #3C3C3C;");
+        label.setStyle("-fx-font-family: 'Antipasto'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #3C3C3C;");
 
         // Wrap in VBox to include the label
         VBox vbox = new VBox(pane, label);

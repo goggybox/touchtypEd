@@ -9,13 +9,8 @@
    <center>
       <!-- ScrollPane to allow vertical scrolling -->
       <ScrollPane fitToWidth="true">
-         <VBox alignment="TOP_CENTER">
-            <ImageView pickOnBounds="true" preserveRatio="true">
-               <Image url="@images/learn-content/divider line.png" />
-            </ImageView>
-            <GridPane fx:id="buttonGrid" alignment="CENTER" hgap="60" minWidth="5.0" styleClass="button-grid" vgap="55">
-               <!-- Buttons will be added dynamically here -->
-            </GridPane>
+         <VBox fx:id="vbox" alignment="TOP_CENTER">
+            <!-- Buttons will appear here dynamically -->
          </VBox>
       </ScrollPane>
    </center>
