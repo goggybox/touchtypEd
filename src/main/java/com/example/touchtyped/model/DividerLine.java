@@ -22,8 +22,15 @@ public class DividerLine {
         int lineWidth = 5;
         double totalWidth = 530.0; // the total width of the HBox (lines + text + spacing)
         double spacing = 10.0; // the spacing between the lines and text
+        int maxTextLength = 25;
 
         if (!text.isEmpty()) {
+
+            // truncate the text
+            if (text.length() > maxTextLength) {
+                text = text.substring(0, maxTextLength) + "...";
+            }
+
             // create the text
             Text dividerText = new Text(text);
             dividerText.setFont(Font.font("Antipasto", 32));
