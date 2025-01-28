@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeLineCap;
 
 public class LessonButton {
 
@@ -48,6 +49,7 @@ public class LessonButton {
         redArc.setFill(Color.TRANSPARENT);
         redArc.setStroke(Color.web("#F5102F"));
         redArc.setStrokeWidth(arcWidth);
+        redArc.setStrokeLineCap(StrokeLineCap.ROUND); // rounded edge
 
         // Blue circle background
         Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web("#263F68"));
