@@ -16,9 +16,12 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.List;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
+import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.KeyLog;
 
 /**
  * Controller for the typing game view.
@@ -56,10 +59,11 @@ public class GameViewController {
     private int totalKeystrokes = 0;
     private int correctKeystrokes = 0;
     private int wrongKeystrokes = 0;
-    private final StringBuilder typingHistory = new StringBuilder();
 
     private KeyboardInterface keyboardInterface;
     private GameKeypressListener keyPressListener;
+
+    private KeyLogsStructure keyLogsStructure;
 
     // Word bank for typing practice
     private final String[] words = {
@@ -110,7 +114,7 @@ public class GameViewController {
      * Array to track error states for each character in the typing sequence.
      * True indicates an error at that position.
      */
-    private boolean[] charErrorStates = new boolean[1000];  // Assume max length of 1000
+    private final boolean[] charErrorStates = new boolean[1000];  // Assume max length of 1000
 
     /** Flag to track if the first character input was incorrect */
     private boolean hasFirstError = false;
@@ -166,7 +170,6 @@ public class GameViewController {
         totalKeystrokes = 0;
         correctKeystrokes = 0;
         wrongKeystrokes = 0;
-        typingHistory.setLength(0);
         currentSentence = null;
 
         // Reset UI
@@ -177,6 +180,7 @@ public class GameViewController {
 
         // Generate new typing task
         generateNewTask();
+        keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
         cursorLabel.setVisible(false);
     }
 
@@ -199,8 +203,7 @@ public class GameViewController {
             }));
             timeline.setCycleCount(selectedTimeOption);
             timeline.play();
-            
-            gameStartTime = System.currentTimeMillis();
+
             updateTaskDisplay();
         }
     }
@@ -215,8 +218,7 @@ public class GameViewController {
             timeline.stop();
         }
 
-        // Generate game statistics
-        generateGameData();
+        System.out.println(keyLogsStructure.toString());
         
         // Load result view
         try {
@@ -309,7 +311,7 @@ public class GameViewController {
             
             // Provide haptic feedback for first character
             if (!currentSentence.isEmpty() && keyboardInterface != null) {  // 添加空检查
-                String nextChar = String.valueOf(currentSentence.charAt(0));
+                String nextChar = String.valueOf(currentSentence.charAt(0)).toUpperCase();
                 if (nextChar.equals(" ")) {
                     nextChar = "space";
                 }
@@ -322,12 +324,14 @@ public class GameViewController {
      * Adds a new word to the current sentence.
      * Includes space separator if not the first word.
      */
-    private void addNewWord() {
+    private String addNewWord() {
         // Add space between words
         if (!currentSentence.isEmpty()) {
             currentSentence.append(" ");
         }
-        currentSentence.append(words[random.nextInt(words.length)]);
+        String newWord = words[random.nextInt(words.length)];
+        currentSentence.append(newWord);
+        return newWord;
     }
 
     /**
@@ -348,14 +352,8 @@ public class GameViewController {
 
     /**
      * Handles keyboard input during the typing game.
-     * This method processes each keystroke, validates it against the expected character,
-     * and provides appropriate feedback.
+     * Records each keystroke in the KeyLogsStructure and provides feedback.
      *
-     * The method handles several cases:
-     * - Special character filtering (only allows letters, numbers, space, and backspace)
-     * - Backspace for error correction
-     * - Correct character input
-     * - Incorrect character input
      * @param key The string representation of the pressed key
      */
     public void handleKeyPress(String key) {
@@ -363,15 +361,30 @@ public class GameViewController {
             return;
         }
 
-        // Only process letters, numbers, space and backspace
-        if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
-            return;  // Ignore special characters
+        // Before game starts, only process letters and numbers
+        if (!gameStarted) {
+            if (!key.matches("[a-zA-Z0-9]")) {
+                return;  // Ignore special characters and space before game starts
+            }
+        } else {
+            // After game starts, process letters, numbers, space and backspace
+            if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
+                return;  // Ignore special characters
+            }
         }
 
         // Get the expected character
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
         
+        // Record the keystroke with current timestamp
+        long currentTime = System.currentTimeMillis();
+        if (!gameStarted) {
+            gameStartTime = currentTime;
+        }
+
+        keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
+
         // Handle backspace
         if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
             currentCharIndex--;
@@ -383,11 +396,6 @@ public class GameViewController {
             return;
         }
 
-        // Only count keystrokes after game has started
-        if (gameStarted) {
-            totalKeystrokes++;
-        }
-
         // Handle correct input
         if (key.equalsIgnoreCase(expectedKey)) {
             if (!gameStarted) {
@@ -395,11 +403,7 @@ public class GameViewController {
                 hasFirstError = false;
             }
             
-            if (gameStarted) {
-                correctKeystrokes++;
-            }
             currentCharIndex++;
-            typingHistory.append(String.format("+%s,", key));
             
             if (hasUnresolvedError) {
                 provideErrorFeedback(key);
@@ -412,21 +416,21 @@ public class GameViewController {
             if (!gameStarted) {
                 hasFirstError = true;
             } else {
-                wrongKeystrokes++;
                 charErrorStates[currentCharIndex] = true;
                 hasUnresolvedError = true;
                 currentCharIndex++;
             }
-            typingHistory.append(String.format("-%s,", key));
             provideErrorFeedback(key);
         }
         
         // Add new words when running low on text
         if (currentSentence.length() - currentCharIndex < 30) {
-            addNewWord();
+            String newWord = addNewWord();
+            keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + newWord);
         }
         
         updateTaskDisplay();
+        updateStatistics();
     }
 
     /**
@@ -453,42 +457,6 @@ public class GameViewController {
             }
             keyboardInterface.sendHapticCommand(nextChar.toUpperCase(), 200, 50);
         }
-    }
-
-    /**
-     * Generates JSON formatted game data.
-     * Includes timestamp, duration, WPM, accuracy, and keystroke statistics.
-     */
-    private void generateGameData() {
-        long gameEndTime = System.currentTimeMillis();
-        double accuracy = (double) correctKeystrokes / totalKeystrokes * 100;
-        double wpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);  // Standard WPM calculation
-
-        // Create JSON data
-        String gameData = String.format("""
-            {
-                "timestamp": %d,
-                "duration": %d,
-                "wpm": %.2f,
-                "accuracy": %.2f,
-                "keystrokes": {
-                    "total": %d,
-                    "correct": %d,
-                    "wrong": %d
-                },
-                "history": "%s"
-            }""",
-            gameEndTime,
-            selectedTimeOption,
-            wpm,
-            accuracy,
-            totalKeystrokes,
-            correctKeystrokes,
-            wrongKeystrokes,
-            typingHistory.toString()
-        );
-
-        System.out.println(gameData);  // Temporary output, can be saved to file or sent to server
     }
 
     /**
@@ -557,5 +525,29 @@ public class GameViewController {
 
     public boolean isInputDisabled() {
         return inputField.isDisabled();
+    }
+
+    /**
+     * Updates the statistics display based on KeyLogsStructure data
+     */
+    private void updateStatistics() {
+        if (!gameStarted) return;
+
+        List<KeyLog> logs = keyLogsStructure.getKeyLogs();
+        int total = 0;
+        int correct = 0;
+
+        for (KeyLog log : logs) {
+            if (!log.getKey().equals("BACK_SPACE")) {
+                total++;
+                if (!log.isError()) {
+                    correct++;
+                }
+            }
+        }
+
+        totalKeystrokes = total;
+        correctKeystrokes = correct;
+        wrongKeystrokes = total - correct;
     }
 }

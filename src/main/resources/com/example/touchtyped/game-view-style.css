@@ -1,5 +1,5 @@
 .nav-bar {
-    -fx-background-color: #E5E5E5;
+    -fx-background-color: #D8D8D8;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
@@ -17,7 +17,7 @@
 }
 
 .game-container {
-    -fx-background-color: #f8f7f7;
+    -fx-background-color: white;
     -fx-padding: 0;
     -fx-spacing: 20;
     -fx-min-height: 580;
@@ -30,7 +30,7 @@
 
 .time-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #888888;
+    -fx-text-fill: #D8D8D8;
     -fx-font-size: 16px;
     -fx-cursor: hand;
     -fx-padding: 5 10;
@@ -38,20 +38,20 @@
 }
 
 .time-button:hover {
-    -fx-text-fill: #007AFF;
-    -fx-background-color: rgba(0, 122, 255, 0.1);
+    -fx-text-fill: #263F68;
+    -fx-background-color: rgba(38, 63, 104, 0.1);
 }
 
 .time-button.selected {
-    -fx-text-fill: #007AFF;
-    -fx-background-color: rgba(0, 122, 255, 0.2);
-    -fx-border-color: #007AFF;
+    -fx-text-fill: #263F68;
+    -fx-background-color: rgba(38, 63, 104, 0.2);
+    -fx-border-color: #263F68;
     -fx-border-width: 1;
     -fx-border-radius: 4;
 }
 
 .game-info {
-    -fx-text-fill: #666666;
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 32px;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .task-text {
-    -fx-text-fill: #888888;
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 28px;
     -fx-font-family: "Consolas";
     -fx-alignment: center;
@@ -80,15 +80,17 @@
 }
 
 .typed-text {
-    -fx-fill: #007AFF;
+    -fx-fill: #263F68;
+    -fx-font-weight: bold;
 }
 
 .remaining-text {
-    -fx-fill: #888888;
+    -fx-fill: #9B9B9B;
+    -fx-opacity: 0.8;
 }
 
 .cursor {
-    -fx-fill: #007AFF;
+    -fx-fill: #263F68;
     -fx-font-family: "Consolas";
     -fx-font-size: 28px;
     -fx-translate-y: -4;
@@ -98,15 +100,13 @@
 }
 
 .current-text {
-    -fx-fill: #007AFF;
-    -fx-font-family: "Consolas";
-    -fx-font-size: 28px;
+    -fx-fill: #263F68;
+    -fx-font-weight: bold;
 }
 
 .error-text {
-    -fx-fill: #FF3B30;
-    -fx-font-family: "Consolas";
-    -fx-font-size: 28px;
+    -fx-fill: #F5102F;
+    -fx-font-weight: bold;
 }
 
 .input-field {
@@ -117,28 +117,28 @@
 
 .control-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 16px;
     -fx-cursor: hand;
 }
 
 .control-button:hover {
-    -fx-text-fill: #007AFF;
+    -fx-text-fill: #263F68;
 }
 
 #timerLabel, #wpmLabel, #accuracyLabel, #scoreLabel {
-    -fx-text-fill: #007AFF;
+    -fx-text-fill: #263F68;
     -fx-font-weight: bold;
 }
 
 .time-label {
-    -fx-text-fill: #666666;
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 16px;
 }
 
 /* Optional: Highlight the time label when hovering over time options */
 .time-options:hover .time-label {
-    -fx-text-fill: #007AFF;
+    -fx-text-fill: #263F68;
 }
 
 /* Results display */
@@ -149,40 +149,40 @@
 }
 
 .result-title {
-    -fx-text-fill: #007AFF;  /* Blue from logo */
+    -fx-text-fill: #263F68;
     -fx-font-size: 48px;
     -fx-font-weight: bold;
 }
 
 .result-category {
-    -fx-text-fill: #666666;  /* Dark gray for category labels */
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 20px;
 }
 
 .result-value {
-    -fx-text-fill: #007AFF;  /* Blue for values */
+    -fx-text-fill: #263F68;
     -fx-font-size: 42px;
     -fx-font-weight: bold;
 }
 
 .result-unit {
-    -fx-text-fill: #666666;  /* Dark gray for units */
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 18px;
 }
 
 .result-button {
     -fx-background-color: transparent;
-    -fx-border-color: #007AFF;
+    -fx-border-color: #263F68;
     -fx-border-width: 2;
     -fx-border-radius: 5;
-    -fx-text-fill: #007AFF;
+    -fx-text-fill: #263F68;
     -fx-font-size: 16px;
     -fx-padding: 10 20;
     -fx-cursor: hand;
 }
 
 .result-button:hover {
-    -fx-background-color: #007AFF;
+    -fx-background-color: #263F68;
     -fx-text-fill: white;
 }
 
@@ -198,7 +198,7 @@
 }
 
 .result-label {
-    -fx-text-fill: #888888;
+    -fx-text-fill: #3C3C3C;
     -fx-font-size: 24px;
 }
 
@@ -210,8 +210,8 @@
 
 /* Modify chart background */
 .stats-chart .chart-plot-background {
-    -fx-background-color: rgba(40, 42, 45, 0.8);  /* Dark background */
-    -fx-border-color: rgba(136, 136, 136, 0.1);   /* Light gray border */
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(136, 136, 136, 0.1);
     -fx-border-width: 1;
 }
 
@@ -228,13 +228,13 @@
 
 /* Modify axis */
 .stats-chart .axis {
-    -fx-tick-label-fill: #646669;  /* Axis text color */
+    -fx-tick-label-fill: #3C3C3C;
     -fx-tick-length: 3;
     -fx-minor-tick-length: 0;
 }
 
 .stats-chart .axis-tick-mark {
-    -fx-stroke: #646669;
+    -fx-stroke: #3C3C3C;
     -fx-stroke-width: 1;
 }
 
