@@ -23,6 +23,13 @@ public class Module {
         this.name = name;
     }
 
+    /**
+     * needed for JSON deserialiser
+     */
+    public Module() {
+
+    }
+
 
     // getters and setters
 

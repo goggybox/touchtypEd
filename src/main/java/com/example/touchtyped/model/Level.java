@@ -13,6 +13,9 @@ public class Level {
         this.completed = completed;
     }
 
+    /**
+     * needed for JSON deserialiser
+     */
     public Level () {
     }
 

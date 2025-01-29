@@ -1,0 +1,48 @@
+{
+  "pdf": "PDF",
+  "personalized_typing_plan": {
+    "phases": [
+      {
+        "phase": "Phase 1: Foundation",
+        "duration": "Week 1-2",
+        "goal": "Build muscle memory and accuracy.",
+        "modules": [
+          {
+            "name": "F & J Keys",
+            "focus": "",
+            "displayText": "Just like in the last lesson, without looking at the keyboard, rest your fingers in the correct position. Try to complete these tasks without looking!",
+            "id": 1,
+            "levels": [
+              {
+                "taskString": "fj"
+              },
+              {
+                "taskString": "ffffjjjj"
+              },
+              {
+                "taskString": "ffjfjjfj"
+              }
+            ]
+          },
+          {
+            "name": "Module 1: Home Row Mastery",
+            "focus": "Learn proper hand positioning (ASDF JKL)",
+            "displayText": "",
+            "id": 2,
+            "levels": [
+              {
+                "taskString": "fjfj dkdk slsl a;a;"
+              },
+              {
+                "taskString": "sad lad dad fad"
+              },
+              {
+                "taskString": "dad had a salad"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

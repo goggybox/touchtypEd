@@ -4,6 +4,8 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.DividerLine;
 import com.example.touchtyped.model.ExampleKeypressListener;
 import com.example.touchtyped.model.ModuleButton;
+import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -90,6 +92,16 @@ public class LearnViewController {
 
         // Add buttons
         addButtons(numButtons, buttonGrid);
+
+        // TEST TYPINGPLAN PARSER
+        TypingPlan typingPlan = TypingPlanDeserialiser.parseTypingPlan("src/main/resources/com/example/touchtyped/testTypingPlan.json");
+        if (typingPlan != null) {
+            System.out.println("Successfully parsed TypingPlan.");
+        } else {
+            System.out.println("Failed to parse TypingPlan.");
+        }
+
+        System.out.println(typingPlan.toString());
     }
 
     /**

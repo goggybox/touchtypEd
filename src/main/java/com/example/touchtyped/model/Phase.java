@@ -1,5 +1,7 @@
 package com.example.touchtyped.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,7 @@ import java.util.List;
  */
 public class Phase {
 
+    @JsonProperty("phase")
     private String name;
     private String duration;
     private String goal;
@@ -17,6 +20,13 @@ public class Phase {
         this.duration = duration;
         this.goal = goal;
         this.modules = modules;
+    }
+
+    /**
+     * needed for JSON deserialiser
+     */
+    public Phase() {
+
     }
 
     /**
