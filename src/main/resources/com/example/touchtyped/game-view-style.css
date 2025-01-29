@@ -17,7 +17,7 @@
 }
 
 .game-container {
-    -fx-background-color: #2c2e31;
+    -fx-background-color: #f8f7f7;
     -fx-padding: 0;
     -fx-spacing: 20;
     -fx-min-height: 580;
@@ -38,20 +38,20 @@
 }
 
 .time-button:hover {
-    -fx-text-fill: #e2b714;
-    -fx-background-color: rgba(226, 183, 20, 0.1);
+    -fx-text-fill: #007AFF;
+    -fx-background-color: rgba(0, 122, 255, 0.1);
 }
 
 .time-button.selected {
-    -fx-text-fill: #e2b714;
-    -fx-background-color: rgba(226, 183, 20, 0.2);
-    -fx-border-color: #e2b714;
+    -fx-text-fill: #007AFF;
+    -fx-background-color: rgba(0, 122, 255, 0.2);
+    -fx-border-color: #007AFF;
     -fx-border-width: 1;
     -fx-border-radius: 4;
 }
 
 .game-info {
-    -fx-text-fill: #888888;
+    -fx-text-fill: #666666;
     -fx-font-size: 32px;
 }
 
@@ -80,7 +80,7 @@
 }
 
 .typed-text {
-    -fx-fill: #ffffff;
+    -fx-fill: #007AFF;
 }
 
 .remaining-text {
@@ -88,7 +88,7 @@
 }
 
 .cursor {
-    -fx-fill: #e2b714;
+    -fx-fill: #007AFF;
     -fx-font-family: "Consolas";
     -fx-font-size: 28px;
     -fx-translate-y: -4;
@@ -98,11 +98,11 @@
 }
 
 .current-text {
-    -fx-fill: #e2b714;
+    -fx-fill: #007AFF;
 }
 
 .error-text {
-    -fx-fill: #ff4444;
+    -fx-fill: #FF3B30;
 }
 
 .input-field {
@@ -113,34 +113,73 @@
 
 .control-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #888888;
+    -fx-text-fill: #666666;
     -fx-font-size: 16px;
     -fx-cursor: hand;
 }
 
 .control-button:hover {
-    -fx-text-fill: #e2b714;
+    -fx-text-fill: #007AFF;
 }
 
 #timerLabel, #wpmLabel, #accuracyLabel, #scoreLabel {
-    -fx-text-fill: #e2b714;
+    -fx-text-fill: #007AFF;
     -fx-font-weight: bold;
 }
 
 .time-label {
-    -fx-text-fill: #888888;
+    -fx-text-fill: #666666;
     -fx-font-size: 16px;
 }
 
 /* Optional: Highlight the time label when hovering over time options */
 .time-options:hover .time-label {
-    -fx-text-fill: #e2b714;
+    -fx-text-fill: #007AFF;
+}
+
+/* Results display */
+.result-container {
+    -fx-background-color: white;
+    -fx-padding: 40;
+    -fx-spacing: 30;
 }
 
 .result-title {
-    -fx-text-fill: #e2b714;
-    -fx-font-size: 36px;
+    -fx-text-fill: #007AFF;  /* Blue from logo */
+    -fx-font-size: 48px;
     -fx-font-weight: bold;
+}
+
+.result-category {
+    -fx-text-fill: #666666;  /* Dark gray for category labels */
+    -fx-font-size: 20px;
+}
+
+.result-value {
+    -fx-text-fill: #007AFF;  /* Blue for values */
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+}
+
+.result-unit {
+    -fx-text-fill: #666666;  /* Dark gray for units */
+    -fx-font-size: 18px;
+}
+
+.result-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #007AFF;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-text-fill: #007AFF;
+    -fx-font-size: 16px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.result-button:hover {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
 }
 
 .result-info {
@@ -157,12 +196,6 @@
 .result-label {
     -fx-text-fill: #888888;
     -fx-font-size: 24px;
-}
-
-.result-value {
-    -fx-text-fill: #e2b714;
-    -fx-font-size: 48px;
-    -fx-font-weight: bold;
 }
 
 .stats-chart {
@@ -234,17 +267,6 @@
 
 .result-buttons {
     -fx-padding: 20;
-}
-
-.result-button {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-padding: 10;
-    -fx-background-radius: 5;
-}
-
-.result-button:hover {
-    -fx-background-color: rgba(226, 183, 20, 0.1);
 }
 
 .result-button ImageView {

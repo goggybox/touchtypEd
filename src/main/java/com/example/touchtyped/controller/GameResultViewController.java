@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.List;
 
 public class GameResultViewController {
     @FXML private Label finalWpmLabel;
@@ -22,6 +23,21 @@ public class GameResultViewController {
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
             stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Navigate to options view
+     */
+    @FXML
+    public void onOptionButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/option-view.fxml"));
+            Scene optionScene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            stage.setScene(optionScene);
         } catch (IOException e) {
             e.printStackTrace();
         }

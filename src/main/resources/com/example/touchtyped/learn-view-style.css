@@ -8,6 +8,7 @@
 .scroll-pane {
     -fx-border-color: transparent;
     -fx-background-insets: 0;
+    -fx-background-color: white;
 }
 .scroll-pane:focused {
     -fx-focus-color: transparent;
@@ -16,6 +17,6 @@
 /* styling for the dynamically generated buttons */
 .dynamic-button {
     -fx-border-color: transparent;
-    -fx-background-color: #E5E5E5;
+    -fx-background-color: white;
     -fx-border-width: 0;
 }

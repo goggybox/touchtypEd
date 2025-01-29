@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="1. Fix the problem of navigation bar in game-view.fxml">
+    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameResultViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameResultViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view-style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/learn-view-style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,7 +146,7 @@
       <workItem from="1738026702806" duration="12000" />
       <workItem from="1738067761409" duration="4201000" />
       <workItem from="1738073707789" duration="2767000" />
-      <workItem from="1738150814623" duration="3000000" />
+      <workItem from="1738150814623" duration="4689000" />
     </task>
     <task id="LOCAL-00001" summary="1. Add one more view for game result.&#10;2. Adjust the position of Navigation bar and center.">
       <option name="closed" value="true" />
@@ -173,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738084552964</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java.">
+      <option name="closed" value="true" />
+      <created>1738154326746</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1738154326746</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +200,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1. Add one more view for game result.&#10;2. Adjust the position of Navigation bar and center." />
     <MESSAGE value="1. Fix the problem of navigation bar in game-view.fxml" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. Fix the problem of navigation bar in game-view.fxml" />
+    <MESSAGE value="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
