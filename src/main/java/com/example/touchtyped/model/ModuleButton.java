@@ -28,7 +28,7 @@ public class ModuleButton {
 
         int arcRadius = 53;
         int arcWidth = 10;
-        int blueCircleRadius = 37;
+        int blueCircleRadius = 40;
 
         // create pane; this allows us to manually centre arcs and circle
         Pane pane = new Pane();
