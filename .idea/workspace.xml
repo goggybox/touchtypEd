@@ -4,9 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="1. Change the color scheme in game page.">
+    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Maths Summer Course/Maths Summer Course.url" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 1/BEng Software Engineering.url" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 2/BEng Software Engineering - Y2.url" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Semester 1 Daily Log.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/core-plugins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/.obsidian/workspace.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/2. Computer Security/Week 1 - Network Security/L2 - Network Principles/Consolidation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Year 3/Third Year Notes/SEMESTER 1/4. Introduction to Mobile Robotics/Week 2/L5 - Graphs, Bayes Nets/Consolidation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ModuleButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ModuleButton.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,34 +69,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Application.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Run Application.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;game__part&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/SchoolMaterial/touchtypEd/src/main/resources/com/example/touchtyped/images/game-content&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.fonts.default&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;应用程序.Run Application.executor&quot;: &quot;Run&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Application.executor": "Run",
+    "Application.Run Application.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/gibed/OneDrive/Uni/touchtypEd/src/main/resources/fonts",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\SchoolMaterial\touchtypEd\src\main\resources\com\example\touchtyped\images\game-content" />
+      <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\fonts" />
+      <recent name="$PROJECT_DIR$/src/main/resources/com/example/touchtyped" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\nav-bar" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\learn-content" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images" />
@@ -106,14 +113,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -141,45 +140,12 @@
       <workItem from="1737933719915" duration="61000" />
       <workItem from="1737935957750" duration="14000" />
       <workItem from="1737936023206" duration="9000" />
-      <workItem from="1737972444243" duration="1679000" />
-      <workItem from="1738026702806" duration="12000" />
-      <workItem from="1738067761409" duration="4201000" />
-      <workItem from="1738073707789" duration="2767000" />
-      <workItem from="1738150814623" duration="5021000" />
-      <workItem from="1738156135673" duration="36000" />
-      <workItem from="1738156753295" duration="299000" />
-    </task>
-    <task id="LOCAL-00001" summary="1. Add one more view for game result.&#10;2. Adjust the position of Navigation bar and center.">
-      <option name="closed" value="true" />
-      <created>1738075861288</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1738075861288</updated>
-    </task>
-    <task id="LOCAL-00002" summary="1. Add one more view for game result.&#10;2. Adjust the position of Navigation bar and center.">
-      <option name="closed" value="true" />
-      <created>1738075943275</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1738075943275</updated>
-    </task>
-    <task id="LOCAL-00003" summary="1. Fix the problem of navigation bar in game-view.fxml">
-      <option name="closed" value="true" />
-      <created>1738084552964</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1738084552964</updated>
-    </task>
-    <task id="LOCAL-00004" summary="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java.">
-      <option name="closed" value="true" />
-      <created>1738154326746</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1738154326746</updated>
+      <workItem from="1737972444243" duration="2280000" />
+      <workItem from="1737997376624" duration="256000" />
+      <workItem from="1737998058840" duration="1565000" />
+      <workItem from="1738091261160" duration="6396000" />
+      <workItem from="1738098995364" duration="5155000" />
+      <workItem from="1738107806314" duration="2402000" />
     </task>
     <task id="LOCAL-00005" summary="1. Change the color scheme in game page.">
       <option name="closed" value="true" />

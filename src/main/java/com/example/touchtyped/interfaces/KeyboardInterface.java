@@ -29,11 +29,10 @@ public class KeyboardInterface {
     public void attachToScene(Scene scene) {
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode keyCode = event.getCode();
-            System.out.println(keyCode);
 
             if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
                 String key = event.getText();
-                notifyListeners(key);
+                notifyListeners(key.toUpperCase());
             } else {
                 switch (keyCode) {
                     case BACK_SPACE:
@@ -70,7 +69,7 @@ public class KeyboardInterface {
                         notifyListeners("DOWN");
                         break;
                     case SPACE:
-                        notifyListeners("SPACE");
+                        notifyListeners(" ");
                         break;
                     case SEMICOLON:
                         notifyListeners("SEMICOLON");
@@ -89,6 +88,9 @@ public class KeyboardInterface {
                         break;
                     case COMMA:
                         notifyListeners("COMMA");
+                        break;
+                    case CAPS:
+                        notifyListeners("CAPS");
                         break;
                     case PERIOD:
                         notifyListeners("PERIOD");

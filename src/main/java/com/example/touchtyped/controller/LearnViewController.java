@@ -1,37 +1,58 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
-import com.example.touchtyped.model.ExampleKeypressListener;
+import com.example.touchtyped.model.*;
+import com.example.touchtyped.model.Module;
+import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class LearnViewController {
+
+    /**
+     * reference to the learnButton in learn-view.fxml
+     */
     @FXML
     private Button learnButton;
 
+    /**
+     * reference to the gamesButton in learn-view.fxml
+     */
     @FXML
     private ImageView gamesButton;
 
+    /**
+     * reference to the optionsButton in learn-view.fxml
+     */
     @FXML
     private Button optionsButton;
 
+    /**
+     * reference to the VBox in learn-view.fxml
+     */
     @FXML
-    private GridPane buttonGrid;
+    private VBox vbox;
 
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
 
     public void initialize() {
-        // attach keyboard interface to scene, when scene is available
+        // Attach keyboard interface to scene, when scene is available
         Platform.runLater(() -> {
-            Scene scene = buttonGrid.getScene();
+            Scene scene = vbox.getScene(); // Use vbox's scene instead of buttonGrid's
             if (scene != null) {
                 keyboardInterface.attachToScene(scene);
                 // Example keypress listener
@@ -41,24 +62,14 @@ public class LearnViewController {
             }
         });
 
+        // Load font
+        Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
 
-        int numberOfButtons = 10;
-        addButtons(numberOfButtons);
-    }
-
-    private void addButtons(int number) {
-        int buttonsPerRow = 3;
-        for (int i = 0; i < number; i++) {
-            Button button = new Button("Button "+(i+1));
-            button.setOnAction(event -> System.out.println(button.getText() + " clicked!"));
-            button.setPrefSize(130, 150);
-            button.getStyleClass().add("dynamic-button");
-
-            int row = i / buttonsPerRow;
-            int col = i % buttonsPerRow;
-
-            buttonGrid.add(button, col, row);
-        }
+        // load TypingPlan from JSON and display.
+        TypingPlan typingPlan = TypingPlanDeserialiser.getTypingPlan();
+        typingPlan.display(vbox);
+        HBox divider = DividerLine.createDividerLineWithText("");
+        vbox.getChildren().add(divider);
     }
 
     @FXML
