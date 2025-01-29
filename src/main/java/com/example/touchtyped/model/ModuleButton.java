@@ -70,7 +70,11 @@ public class ModuleButton {
 
         // Lesson label
         Label label = new Label(moduleName);
-        label.setStyle("-fx-font-family: 'Antipasto'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #3C3C3C;");
+        label.setStyle(String.format(
+                "-fx-font-family: 'Antipasto'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: %s;",
+                StyleConstants.TEXT_COLOUR
+        ));
+
 
         // Wrap in VBox to include the label
         VBox vbox = new VBox(pane, label);
