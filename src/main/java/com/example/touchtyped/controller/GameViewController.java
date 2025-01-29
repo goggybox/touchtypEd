@@ -196,34 +196,34 @@ public class GameViewController {
     /**
      * Ends the current game session.
      * Calculates final statistics and displays results.
-     * TODO: Graph is not ready finished now.
+     * TODO: Graph is not finished now.
      */
     private void endGame() {
         if (timeline != null) {
             timeline.stop();
         }
 
-        // 生成游戏数据
+        // Generate game statistics
         generateGameData();
         
-        // 加载结果视图
+        // Load result view
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-result-view.fxml"));
             Scene resultScene = new Scene(loader.load(), 1200, 700);
             
-            // 获取结果控制器并设置数据
+            // Get result controller and set data
             GameResultViewController resultController = loader.getController();
             
-            // 计算最终的 WPM
+            // Calculate final WPM
             double finalWpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);
             resultController.setGameData(
-                (int)finalWpm,  // 传入计算好的 WPM
+                (int)finalWpm,  // Pass calculated WPM
                 correctKeystrokes, 
                 wrongKeystrokes, 
                 totalKeystrokes
             );
             
-            // 显示结果场景
+            // Display result scene
             Stage stage = (Stage) gameContainer.getScene().getWindow();
             stage.setScene(resultScene);
         } catch (IOException e) {
