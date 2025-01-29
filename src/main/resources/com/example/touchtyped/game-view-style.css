@@ -15,3 +15,268 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
 }
+
+.game-container {
+    -fx-background-color: #f8f7f7;
+    -fx-padding: 0;
+    -fx-spacing: 20;
+    -fx-min-height: 580;
+    -fx-max-height: 580;
+}
+
+.time-options {
+    -fx-padding: 10;
+}
+
+.time-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #888888;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 5 10;
+    -fx-background-radius: 4;
+}
+
+.time-button:hover {
+    -fx-text-fill: #007AFF;
+    -fx-background-color: rgba(0, 122, 255, 0.1);
+}
+
+.time-button.selected {
+    -fx-text-fill: #007AFF;
+    -fx-background-color: rgba(0, 122, 255, 0.2);
+    -fx-border-color: #007AFF;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+}
+
+.game-info {
+    -fx-text-fill: #666666;
+    -fx-font-size: 32px;
+}
+
+.typing-area {
+    -fx-padding: 20;
+    -fx-alignment: center;
+}
+
+.task-text {
+    -fx-text-fill: #888888;
+    -fx-font-size: 28px;
+    -fx-font-family: "Consolas";
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 0;
+    -fx-min-height: 40;
+    -fx-max-height: 40;
+    -fx-min-width: 800;
+    -fx-max-width: 800;
+}
+
+.typed-text, .remaining-text, .cursor {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
+    -fx-text-alignment: center;
+}
+
+.typed-text {
+    -fx-fill: #007AFF;
+}
+
+.remaining-text {
+    -fx-fill: #888888;
+}
+
+.cursor {
+    -fx-fill: #007AFF;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
+    -fx-translate-y: -4;
+    -fx-opacity: 0.8;
+    -fx-stroke: none;
+    -fx-mouse-transparent: true;
+}
+
+.current-text {
+    -fx-fill: #007AFF;
+}
+
+.error-text {
+    -fx-fill: #FF3B30;
+}
+
+.input-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+    -fx-cursor: none;
+}
+
+.control-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666666;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+.control-button:hover {
+    -fx-text-fill: #007AFF;
+}
+
+#timerLabel, #wpmLabel, #accuracyLabel, #scoreLabel {
+    -fx-text-fill: #007AFF;
+    -fx-font-weight: bold;
+}
+
+.time-label {
+    -fx-text-fill: #666666;
+    -fx-font-size: 16px;
+}
+
+/* Optional: Highlight the time label when hovering over time options */
+.time-options:hover .time-label {
+    -fx-text-fill: #007AFF;
+}
+
+/* Results display */
+.result-container {
+    -fx-background-color: white;
+    -fx-padding: 40;
+    -fx-spacing: 30;
+}
+
+.result-title {
+    -fx-text-fill: #007AFF;  /* Blue from logo */
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+}
+
+.result-category {
+    -fx-text-fill: #666666;  /* Dark gray for category labels */
+    -fx-font-size: 20px;
+}
+
+.result-value {
+    -fx-text-fill: #007AFF;  /* Blue for values */
+    -fx-font-size: 42px;
+    -fx-font-weight: bold;
+}
+
+.result-unit {
+    -fx-text-fill: #666666;  /* Dark gray for units */
+    -fx-font-size: 18px;
+}
+
+.result-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #007AFF;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-text-fill: #007AFF;
+    -fx-font-size: 16px;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.result-button:hover {
+    -fx-background-color: #007AFF;
+    -fx-text-fill: white;
+}
+
+.result-info {
+    -fx-padding: 20;
+    -fx-spacing: 80;
+}
+
+.result-item {
+    -fx-spacing: 10;
+    -fx-min-width: 150;
+    -fx-alignment: center;
+}
+
+.result-label {
+    -fx-text-fill: #888888;
+    -fx-font-size: 24px;
+}
+
+.stats-chart {
+    -fx-background-color: transparent;
+    -fx-plot-background-color: transparent;
+    -fx-padding: 20;
+}
+
+/* Modify chart background */
+.stats-chart .chart-plot-background {
+    -fx-background-color: rgba(40, 42, 45, 0.8);  /* Dark background */
+    -fx-border-color: rgba(136, 136, 136, 0.1);   /* Light gray border */
+    -fx-border-width: 1;
+}
+
+/* Modify grid lines */
+.stats-chart .chart-horizontal-grid-lines {
+    -fx-stroke: rgba(136, 136, 136, 0.1);
+    -fx-stroke-dash-array: 1 5;  /* Dashed line effect */
+}
+
+.stats-chart .chart-vertical-grid-lines {
+    -fx-stroke: rgba(136, 136, 136, 0.1);
+    -fx-stroke-dash-array: 1 5;
+}
+
+/* Modify axis */
+.stats-chart .axis {
+    -fx-tick-label-fill: #646669;  /* Axis text color */
+    -fx-tick-length: 3;
+    -fx-minor-tick-length: 0;
+}
+
+.stats-chart .axis-tick-mark {
+    -fx-stroke: #646669;
+    -fx-stroke-width: 1;
+}
+
+/* Modify chart lines */
+.stats-chart .chart-series-line {
+    -fx-stroke: #e2b714;  /* Yellow line */
+    -fx-stroke-width: 2px;
+}
+
+/* Add data point styles */
+.stats-chart .chart-symbol {  /* Data point style */
+    -fx-background-color: #e2b714;
+    -fx-background-radius: 3px;
+    -fx-padding: 3px;
+}
+
+.stats-chart .default-color0.chart-series-line {
+    -fx-stroke: #e2b714;  /* Main line in yellow */
+}
+
+.stats-chart .default-color1.chart-series-line {
+    -fx-stroke: rgba(255, 255, 255, 0.3);  /* Secondary line in semi-transparent white */
+}
+
+.restart-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 10;
+}
+
+.restart-button:hover {
+    -fx-effect: dropshadow(gaussian, #e2b714, 10, 0, 0, 0);
+}
+
+.result-buttons {
+    -fx-padding: 20;
+}
+
+.result-button ImageView {
+    -fx-opacity: 0.6;
+}
+
+.result-button:hover ImageView {
+    -fx-opacity: 1;
+}
+
+.large-region {
+    -fx-pref-height: 200;
+}
