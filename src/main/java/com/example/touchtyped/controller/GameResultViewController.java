@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.List;
 
 public class GameResultViewController {
     @FXML private Label finalWpmLabel;
@@ -44,20 +43,18 @@ public class GameResultViewController {
     }
 
     /**
-     * Set game result data and update the display
+     * Set game result data and update the display.
+     * @param wpm Words per minute achieved
+     * @param correctKeystrokes Number of correctly typed keystrokes
+     * @param wrongKeystrokes Number of incorrectly typed keystrokes
+     * @param totalKeystrokes Total number of keystrokes
      */
-    public void setGameData(List<Double> wpmHistory, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
-        // Calculate final statistics
-        double wpm = 0;  // Default to 0
-        if (!wpmHistory.isEmpty()) {
-            double lastWpm = wpmHistory.get(wpmHistory.size() - 1);
-            wpm = Double.isInfinite(lastWpm) || Double.isNaN(lastWpm) ? 0 : lastWpm;
-        }
-
+    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
+        // Calculate accuracy percentage
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
-        // Update labels
-        finalWpmLabel.setText(String.format("%.0f", wpm));
+        // Update result labels
+        finalWpmLabel.setText(String.format("%d", wpm));
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
             totalKeystrokes, correctKeystrokes, wrongKeystrokes));

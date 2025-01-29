@@ -16,18 +16,15 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Random;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.XYChart;
+import com.example.touchtyped.model.GameKeypressListener;
 
 /**
  * Controller for the typing game view.
  * Handles game logic, user input, and statistics tracking.
  */
-public class GameViewController extends KeyboardInterface {
+public class GameViewController {
 
     // UI Components
     @FXML private VBox gameContainer;
@@ -44,11 +41,6 @@ public class GameViewController extends KeyboardInterface {
     
     // Result display components
     @FXML private VBox resultContainer;
-    @FXML private LineChart<Number, Number> statsChart;
-    
-    // Chart data
-    private final XYChart.Series<Number, Number> wpmSeries = new XYChart.Series<>();
-    private final List<Double> wpmHistory = new ArrayList<>();
 
     // Game state variables
     private int timeLeft = 60;
@@ -65,6 +57,9 @@ public class GameViewController extends KeyboardInterface {
     private int correctKeystrokes = 0;
     private int wrongKeystrokes = 0;
     private final StringBuilder typingHistory = new StringBuilder();
+
+    private KeyboardInterface keyboardInterface;
+    private GameKeypressListener keyPressListener;
 
     // Word bank for typing practice
     private final String[] words = {
@@ -117,22 +112,28 @@ public class GameViewController extends KeyboardInterface {
      */
     @FXML
     public void initialize() {
-        // Disable focus traversal for time selection buttons
+        // Initialize keyboard interface
+        keyboardInterface = new KeyboardInterface();
+        keyPressListener = new GameKeypressListener(this, keyboardInterface);
+        
+        // Set up UI components
         time15Button.setFocusTraversable(false);
         time30Button.setFocusTraversable(false);
         time60Button.setFocusTraversable(false);
         time120Button.setFocusTraversable(false);
         
-        // Set default time and initialize game
+        // Set default time
         updateTimeButtonStyle(60);
-        resetGame();
-
-        // Attach keyboard interface to scene
+        
+        // Attach keyboard listener when scene is available
         gameContainer.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {
-                attachToScene(newScene);
+                keyboardInterface.attachToScene(newScene);
             }
         });
+
+        // Initialize game state
+        resetGame();
     }
 
     /**
@@ -165,11 +166,6 @@ public class GameViewController extends KeyboardInterface {
         // Generate new typing task
         generateNewTask();
         cursorLabel.setVisible(false);
-
-        // Clear statistics
-        wpmHistory.clear();
-        wpmSeries.getData().clear();
-        statsChart.getData().clear();
     }
 
     /**
@@ -217,7 +213,15 @@ public class GameViewController extends KeyboardInterface {
             
             // 获取结果控制器并设置数据
             GameResultViewController resultController = loader.getController();
-            resultController.setGameData(wpmHistory, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+            
+            // 计算最终的 WPM
+            double finalWpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);
+            resultController.setGameData(
+                (int)finalWpm,  // 传入计算好的 WPM
+                correctKeystrokes, 
+                wrongKeystrokes, 
+                totalKeystrokes
+            );
             
             // 显示结果场景
             Stage stage = (Stage) gameContainer.getScene().getWindow();
@@ -276,12 +280,12 @@ public class GameViewController extends KeyboardInterface {
             updateTaskDisplay();
             
             // Provide haptic feedback for first character
-            if (!currentSentence.isEmpty()) {
+            if (!currentSentence.isEmpty() && keyboardInterface != null) {  // 添加空检查
                 String nextChar = String.valueOf(currentSentence.charAt(0));
                 if (nextChar.equals(" ")) {
                     nextChar = "space";
                 }
-                sendHapticCommand(nextChar, 200, 50);
+                keyboardInterface.sendHapticCommand(nextChar, 200, 50);
             }
         }
     }
@@ -315,14 +319,10 @@ public class GameViewController extends KeyboardInterface {
     }
 
     /**
-     * Processes keyboard input during the typing game.
-     * Handles correct/incorrect inputs and updates statistics.
-     *
-     * @param key The key pressed by the user
+     * Handles keyboard input during the typing game.
+     * Called by GameKeypressListener when a key is pressed.
      */
-    @Override
-    public void notifyListeners(String key) {
-        super.notifyListeners(key);
+    public void handleKeyPress(String key) {
         if (!inputField.isDisabled()) {
             totalKeystrokes++;
             char expectedChar = currentSentence.charAt(currentCharIndex);
@@ -352,17 +352,14 @@ public class GameViewController extends KeyboardInterface {
                     if (nextChar.equals(" ")) {
                         nextChar = "space";
                     }
-                    sendHapticCommand(nextChar, 200, 50);
+                    keyboardInterface.sendHapticCommand(nextChar, 200, 50);
                 }
-                
-                updateStats();
             } else {
                 // Handle incorrect input
                 wrongKeystrokes++;
                 typingHistory.append(String.format("-%s,", key));
-                sendHapticCommand(key, 500, 100);
-                activateLights(1000);
-                updateStats();
+                keyboardInterface.sendHapticCommand(key, 500, 100);
+                keyboardInterface.activateLights(1000);
             }
         }
     }
@@ -467,21 +464,7 @@ public class GameViewController extends KeyboardInterface {
         resetGame();
     }
 
-    /**
-     * Updates game statistics and chart display.
-     * Calculates current WPM and updates history chart.
-     */
-    private void updateStats() {
-        if (totalKeystrokes > 0) {
-            // Calculate current WPM and accuracy
-            double wpm = (correctKeystrokes / 5.0) / ((selectedTimeOption - timeLeft) / 60.0);
-            
-            // Update WPM history and chart
-            wpmHistory.add(wpm);
-            wpmSeries.getData().clear();
-            for (int i = 0; i < wpmHistory.size(); i++) {
-                wpmSeries.getData().add(new XYChart.Data<>(i, wpmHistory.get(i)));
-            }
-        }
+    public boolean isInputDisabled() {
+        return inputField.isDisabled();
     }
 }
