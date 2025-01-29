@@ -1,5 +1,9 @@
 package com.example.touchtyped.model;
 
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+
 import java.util.List;
 
 public class Module {
@@ -28,6 +32,24 @@ public class Module {
      */
     public Module() {
 
+    }
+
+    /**
+     * display the Module on the screen as a button
+     * @param buttonGrid is the GridPane to add the button to
+     * @param row is the row in the GridPane to add the button to
+     * @param col is the column in the GridPane to add the button is
+     */
+    public void display(GridPane buttonGrid, int row, int col) {
+        double completion = getCompletion();
+
+        // TODO: implement clickable action better
+        Runnable onClickAction = () -> {
+            System.out.println(name + " button clicked.");
+        };
+
+        StackPane button = ModuleButton.createModuleButton(name, completion, onClickAction);
+        buttonGrid.add(button, col, row);
     }
 
     /**

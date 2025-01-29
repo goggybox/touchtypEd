@@ -1,5 +1,7 @@
 package com.example.touchtyped.model;
 
+import javafx.scene.layout.VBox;
+
 import java.util.List;
 
 /**
@@ -36,6 +38,16 @@ public class TypingPlan {
         }
 
         return output.toString();
+    }
+
+    /**
+     * display the TypingPlan on screen
+     * @param vbox is the VBox component to display the TypingPlan in
+     */
+    public void display(VBox vbox) {
+        for (Phase phase : phases) {
+            phase.display(vbox);
+        }
     }
 
     /**

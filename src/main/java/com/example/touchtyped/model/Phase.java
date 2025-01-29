@@ -1,6 +1,10 @@
 package com.example.touchtyped.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import javafx.geometry.Pos;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.List;
 
@@ -26,6 +30,38 @@ public class Phase {
      * needed for JSON deserialiser
      */
     public Phase() {
+
+    }
+
+    /**
+     * display the Phase on screen
+     * @param vbox is the VBox component to display the phase in
+     */
+    public void display(VBox vbox) {
+        // create and display the divider line
+        HBox divider = DividerLine.createDividerLineWithText(name);
+        vbox.getChildren().add(divider);
+
+        // create the GridPane for the buttons
+        GridPane buttonGrid = new GridPane();
+        buttonGrid.setAlignment(Pos.CENTER);
+        buttonGrid.setHgap(60);
+        buttonGrid.setVgap(60);
+        buttonGrid.setMinWidth(5.0);
+        buttonGrid.getStyleClass().add("button-grid");
+
+        // add the GridPane to the VBox
+        vbox.getChildren().add(buttonGrid);
+
+        // add buttons for the modules
+        int numButtons = modules.size();
+        int buttonsPerRow = 3;
+        for (int i = 0; i < numButtons; i++) {
+            int row = i / buttonsPerRow;
+            int col = i % buttonsPerRow;
+
+            modules.get(i).display(buttonGrid, row, col);
+        }
 
     }
 
