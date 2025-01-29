@@ -30,6 +30,19 @@ public class Module {
 
     }
 
+    /**
+     * determine what percentage of levels are completed
+     * @return the fraction of completed levels (like 3/4 - 0.75)
+     */
+    public double getCompletion() {
+        int numCompletedLevels = 0;
+        for (Level level : levels) {
+            if (level.isCompleted()) { numCompletedLevels++; }
+        }
+
+        return (double) numCompletedLevels / (double) levels.size();
+    }
+
 
     // getters and setters
 

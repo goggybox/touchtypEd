@@ -1,10 +1,8 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
-import com.example.touchtyped.model.DividerLine;
-import com.example.touchtyped.model.ExampleKeypressListener;
-import com.example.touchtyped.model.ModuleButton;
-import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.model.*;
+import com.example.touchtyped.model.Module;
 import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,6 +19,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class LearnViewController {
 
@@ -66,9 +65,69 @@ public class LearnViewController {
         // Load font
         Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
 
-        displayPhase("Phase 1: Foundations", 9);
+        // displayPhase("Phase 1: Foundations", 9);
+        TypingPlan typingPlan = TypingPlanDeserialiser.getTypingPlan();
+        displayTypingPlan(typingPlan);
         HBox divider = DividerLine.createDividerLineWithText("");
         vbox.getChildren().add(divider);
+    }
+
+    /**
+     * sets up the typing plan UI
+     * @param typingPlan is the TypingPlan to display
+     */
+    private void displayTypingPlan(TypingPlan typingPlan) {
+        for (Phase phase : typingPlan.getPhases()) {
+            displayPhase(phase);
+        }
+    }
+
+    private void displayPhase(Phase phase) {
+        String phaseName = phase.getName();
+        List<Module> modules = phase.getModules();
+
+        // create and display the divider line
+        HBox divider = DividerLine.createDividerLineWithText(phaseName);
+        vbox.getChildren().add(divider);
+
+        // create the GridPane for the buttons
+        GridPane buttonGrid = new GridPane();
+        buttonGrid.setAlignment(Pos.CENTER);
+        buttonGrid.setHgap(60);
+        buttonGrid.setVgap(60);
+        buttonGrid.setMinWidth(5.0);
+        buttonGrid.getStyleClass().add("button-grid");
+
+        // add the GridPane to the VBox
+        vbox.getChildren().add(buttonGrid);
+
+        // add buttons for the modules
+        addModuleButtons(modules, buttonGrid);
+
+    }
+
+    private void addModuleButtons(List<Module> modules, GridPane buttonGrid) {
+
+        int numButtons = modules.size();
+        int buttonsPerRow = 3;
+        for (int i = 0; i < numButtons; i++) {
+            Module module = modules.get(i);
+            double completion = module.getCompletion();
+
+            // TODO: implement clickable action better
+            Runnable onClickAction = () -> {
+                System.out.println(module.getName() + " button clicked.");
+            };
+
+            StackPane button = ModuleButton.createModuleButton(module.getName(), completion, onClickAction);
+
+            int row = i / buttonsPerRow;
+            int col = i % buttonsPerRow;
+
+            buttonGrid.add(button, col, row);
+
+        }
+
     }
 
     /**
@@ -94,7 +153,7 @@ public class LearnViewController {
         addButtons(numButtons, buttonGrid);
 
         // TEST TYPINGPLAN PARSER
-        TypingPlan typingPlan = TypingPlanDeserialiser.parseTypingPlan("src/main/resources/com/example/touchtyped/testTypingPlan.json");
+        TypingPlan typingPlan = TypingPlanDeserialiser.getTypingPlan();
         if (typingPlan != null) {
             System.out.println("Successfully parsed TypingPlan.");
         } else {

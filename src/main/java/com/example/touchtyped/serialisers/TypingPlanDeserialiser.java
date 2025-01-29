@@ -9,10 +9,10 @@ public class TypingPlanDeserialiser {
 
     /**
      * gets a TypingPlan from a given JSON file
-     * @param filePath is the JSON file to read from
      * @return a TypingPlan
      */
-    public static TypingPlan parseTypingPlan(String filePath) {
+    public static TypingPlan getTypingPlan() {
+        String filePath = "src/main/resources/com/example/touchtyped/testTypingPlan.json";
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();
