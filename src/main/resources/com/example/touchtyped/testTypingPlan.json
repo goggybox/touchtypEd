@@ -10,7 +10,7 @@
           {
             "name": "F & J Keys",
             "focus": "",
-            "displayText": "Just like in the last lesson, without looking at the keyboard, rest your fingers in the correct position. Try to complete these tasks without looking!",
+            "displayText": "F & J Keys",
             "id": 1,
             "levels": [
               {
@@ -26,18 +26,89 @@
           },
           {
             "name": "D & K Keys",
-            "focus": "Learn proper hand positioning (ASDF JKL)",
-            "displayText": "",
+            "focus": "",
+            "displayText": "D & K Keys",
             "id": 2,
             "levels": [
               {
-                "taskString": "fjfj dkdk slsl a;a;"
+                "taskString": "dk"
               },
               {
-                "taskString": "sad lad dad fad"
+                "taskString": "ddddkkkk"
               },
               {
-                "taskString": "dad had a salad"
+                "taskString": "ddkdkdkdkkdk"
+              },
+              {
+                "taskString": "dkdkddkdkdkdkkkdkdkkkdkdk"
+              }
+            ]
+          },
+          {
+            "name": "S & L Keys",
+            "focus": "",
+            "displayText": "S & L Keys",
+            "id": 3,
+            "levels": [
+              {
+                "taskString": "sl"
+              },
+              {
+                "taskString": "ssssllll"
+              },
+              {
+                "taskString": "slslslslllslllsssslslssllsll"
+              }
+            ]
+          },
+          {
+            "name": "A & ; Keys",
+            "focus": "",
+            "displayText": "A & ; Keys",
+            "id": 4,
+            "levels": [
+              {
+                "taskString": "a;"
+              },
+              {
+                "taskString": "aaaa;;;;"
+              },
+              {
+                "taskString": "aa;a;a;;;;a;;;aaaaa;a;;;a;a;"
+              }
+            ]
+          },
+          {
+            "name": "G & H Keys",
+            "focus": "",
+            "displayText": "G & H Keys",
+            "id": 5,
+            "levels": [
+              {
+                "taskString": "gh"
+              },
+              {
+                "taskString": "gggghhhh"
+              },
+              {
+                "taskString": "ghghghghghhghhghhhghhghg"
+              }
+            ]
+          },
+          {
+            "name": "Home Row",
+            "focus": "",
+            "displayText": "Home Row",
+            "id": 5,
+            "levels": [
+              {
+                "taskString": "asdfghjkl;"
+              },
+              {
+                "taskString": "alslsakdf;jlksjflask"
+              },
+              {
+                "taskString": "sad lad had salad"
               }
             ]
           }

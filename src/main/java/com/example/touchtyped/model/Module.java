@@ -1,9 +1,15 @@
 package com.example.touchtyped.model;
 
+import com.example.touchtyped.controller.ModuleViewController;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Module {
@@ -43,9 +49,20 @@ public class Module {
     public void display(GridPane buttonGrid, int row, int col) {
         double completion = getCompletion();
 
-        // TODO: implement clickable action better
         Runnable onClickAction = () -> {
             System.out.println(name + " button clicked.");
+            try {
+                // Go to the Module View, and give it this module to display.
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/module-view.fxml"));
+                Scene scene = new Scene(loader.load(), 1200, 700);
+                Stage stage = (Stage) buttonGrid.getScene().getWindow();
+                ModuleViewController controller = loader.getController();
+
+                Platform.runLater(() -> controller.setModule(this));
+                stage.setScene(scene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         };
 
         StackPane button = ModuleButton.createModuleButton(name, completion, onClickAction);
