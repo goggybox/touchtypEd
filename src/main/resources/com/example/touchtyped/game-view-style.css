@@ -99,10 +99,14 @@
 
 .current-text {
     -fx-fill: #007AFF;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
 }
 
 .error-text {
     -fx-fill: #FF3B30;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
 }
 
 .input-field {

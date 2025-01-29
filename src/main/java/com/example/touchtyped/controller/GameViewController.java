@@ -107,6 +107,18 @@ public class GameViewController {
     };
 
     /**
+     * Array to track error states for each character in the typing sequence.
+     * True indicates an error at that position.
+     */
+    private boolean[] charErrorStates = new boolean[1000];  // Assume max length of 1000
+
+    /** Flag to track if the first character input was incorrect */
+    private boolean hasFirstError = false;
+
+    /** Flag to track if there's an unresolved typing error */
+    private boolean hasUnresolvedError = false;
+
+    /**
      * Initializes the game controller.
      * Sets up UI components and default game state.
      */
@@ -243,27 +255,43 @@ public class GameViewController {
         int start = Math.max(0, currentCharIndex - visibleTextLength /2);
         int end = Math.min(currentSentence.length(), start + visibleTextLength);
         
-        // Calculate cursor position
+        // Display typed text (已完成的文本)
+        if (currentCharIndex > start) {
+            for (int i = start; i < currentCharIndex; i++) {
+                Text charText = new Text(String.valueOf(currentSentence.charAt(i)));
+                charText.getStyleClass().add(charErrorStates[i] ? "error-text" : "typed-text");
+                taskLabel.getChildren().add(charText);
+            }
+        }
+        
+        // Display current character
+        if (currentCharIndex < currentSentence.length()) {
+            Text currentChar = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
+            // 只有在第一个字符输入错误时才显示红色
+            if (!gameStarted && hasFirstError) {
+                currentChar.getStyleClass().add("error-text");
+            } else if (gameStarted && charErrorStates[currentCharIndex]) {
+                currentChar.getStyleClass().add("error-text");
+            } else {
+                currentChar.getStyleClass().add("remaining-text");
+            }
+            taskLabel.getChildren().add(currentChar);
+        }
+        
+        // Display remaining text
+        if (currentCharIndex + 1 < end) {
+            Text remainingText = new Text(currentSentence.substring(currentCharIndex + 1, end));
+            remainingText.getStyleClass().add("remaining-text");
+            taskLabel.getChildren().add(remainingText);
+        }
+        
+        // Update cursor position
         Text sampleText = new Text("W");
         sampleText.setFont(cursorLabel.getFont());
         double charWidth = sampleText.getLayoutBounds().getWidth();
         double baseX = -(visibleTextLength * charWidth) / 2;
         double offset = (currentCharIndex - start) * charWidth;
         cursorLabel.setTranslateX(baseX + offset);
-        
-        // Display typed text
-        if (currentCharIndex > start) {
-            Text typedText = new Text(currentSentence.substring(start, currentCharIndex));
-            typedText.getStyleClass().add("typed-text");
-            taskLabel.getChildren().add(typedText);
-        }
-        
-        // Display remaining text
-        if (currentCharIndex < currentSentence.length()) {
-            Text remainingText = new Text(currentSentence.substring(currentCharIndex, end));
-            remainingText.getStyleClass().add("remaining-text");
-            taskLabel.getChildren().add(remainingText);
-        }
     }
 
     /**
@@ -320,47 +348,110 @@ public class GameViewController {
 
     /**
      * Handles keyboard input during the typing game.
-     * Called by GameKeypressListener when a key is pressed.
+     * This method processes each keystroke, validates it against the expected character,
+     * and provides appropriate feedback.
+     *
+     * The method handles several cases:
+     * - Special character filtering (only allows letters, numbers, space, and backspace)
+     * - Backspace for error correction
+     * - Correct character input
+     * - Incorrect character input
+     * @param key The string representation of the pressed key
      */
     public void handleKeyPress(String key) {
-        if (!inputField.isDisabled()) {
+        if (inputField.isDisabled()) {
+            return;
+        }
+
+        // Only process letters, numbers, space and backspace
+        if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
+            return;  // Ignore special characters
+        }
+
+        // Get the expected character
+        char expectedChar = currentSentence.charAt(currentCharIndex);
+        String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
+        
+        // Handle backspace
+        if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
+            currentCharIndex--;
+            charErrorStates[currentCharIndex] = false;
+            hasFirstError = false;
+            hasUnresolvedError = false;
+            updateTaskDisplay();
+            provideNextCharacterHint();
+            return;
+        }
+
+        // Only count keystrokes after game has started
+        if (gameStarted) {
             totalKeystrokes++;
-            char expectedChar = currentSentence.charAt(currentCharIndex);
-            String expectedKey = expectedChar == ' ' ? "space" : String.valueOf(expectedChar);
-            
-            if (key.equalsIgnoreCase(expectedKey)) {
-                // Start game on first correct input
-                if (!gameStarted) {
-                    startGame();
-                }
-                
-                correctKeystrokes++;
-                currentCharIndex++;
-                inputField.setText(currentSentence.substring(0, currentCharIndex));
-                
-                // Add new words when running low on text
-                if (currentSentence.length() - currentCharIndex < 30) {
-                    addNewWord();
-                }
-                
-                updateTaskDisplay();
-                typingHistory.append(String.format("+%s,", key));
-                
-                // Provide haptic feedback for next character
-                if (currentCharIndex < currentSentence.length()) {
-                    String nextChar = String.valueOf(currentSentence.charAt(currentCharIndex));
-                    if (nextChar.equals(" ")) {
-                        nextChar = "space";
-                    }
-                    keyboardInterface.sendHapticCommand(nextChar, 200, 50);
-                }
-            } else {
-                // Handle incorrect input
-                wrongKeystrokes++;
-                typingHistory.append(String.format("-%s,", key));
-                keyboardInterface.sendHapticCommand(key, 500, 100);
-                keyboardInterface.activateLights(1000);
+        }
+
+        // Handle correct input
+        if (key.equalsIgnoreCase(expectedKey)) {
+            if (!gameStarted) {
+                startGame();
+                hasFirstError = false;
             }
+            
+            if (gameStarted) {
+                correctKeystrokes++;
+            }
+            currentCharIndex++;
+            typingHistory.append(String.format("+%s,", key));
+            
+            if (hasUnresolvedError) {
+                provideErrorFeedback(key);
+            } else {
+                provideNextCharacterHint();
+            }
+        } 
+        // Handle incorrect input
+        else {
+            if (!gameStarted) {
+                hasFirstError = true;
+            } else {
+                wrongKeystrokes++;
+                charErrorStates[currentCharIndex] = true;
+                hasUnresolvedError = true;
+                currentCharIndex++;
+            }
+            typingHistory.append(String.format("-%s,", key));
+            provideErrorFeedback(key);
+        }
+        
+        // Add new words when running low on text
+        if (currentSentence.length() - currentCharIndex < 30) {
+            addNewWord();
+        }
+        
+        updateTaskDisplay();
+    }
+
+    /**
+     * Provides error feedback through haptic vibration and LED lights.
+     * Used when an incorrect key is pressed or when typing with unresolved errors.
+     *
+     * @param key The key that triggered the error feedback
+     */
+    private void provideErrorFeedback(String key) {
+        keyboardInterface.sendHapticCommand(key, 500, 100);
+        keyboardInterface.activateLights(1000);
+    }
+
+    /**
+     * Provides haptic hint for the next character to be typed.
+     * This helps users locate the next key they need to press.
+     * For space character, sends "SPACE" as the hint.
+     */
+    private void provideNextCharacterHint() {
+        if (currentCharIndex < currentSentence.length()) {
+            String nextChar = String.valueOf(currentSentence.charAt(currentCharIndex));
+            if (nextChar.equals(" ")) {
+                nextChar = "SPACE";
+            }
+            keyboardInterface.sendHapticCommand(nextChar.toUpperCase(), 200, 50);
         }
     }
 
