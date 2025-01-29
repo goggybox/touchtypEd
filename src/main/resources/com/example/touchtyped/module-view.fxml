@@ -6,10 +6,65 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.touchtyped.controller.ModuleViewController">
-    <Label fx:id="moduleName" text="Module Name" style="-fx-font-size: 24px;"/>
-    <Label fx:id="moduleFocus" text="Focus Area" />
-    <Label fx:id="moduleLevels" text="Levels Content" />
-    <Button text="Back" onAction="#onBackButtonClick"/>
-</VBox>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0"
+            prefWidth="1200.0" stylesheets="@learn-view-style.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.ModuleViewController">
+
+    <center>
+        <!-- StackPane to center the VBox -->
+        <StackPane alignment="CENTER">
+            <!-- Fixed width VBox centered within StackPane -->
+            <VBox fx:id="vbox" alignment="TOP_LEFT" style="-fx-padding: 20px; -fx-pref-width: 1200px; -fx-max-width: 1200px;">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="moduleDisplayText" style="-fx-font-size: 20px; -fx-padding: 40px 0px 0px 80px;"/>
+                    <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+                    <Label text="✕" fx:id="closeButton" style="-fx-font-size: 20px; -fx-cursor: hand; -fx-padding: 40px 80px 0px 0px"
+                           onMouseClicked="#onBackButtonClick"/>
+                </HBox>
+
+                <!-- Centered character grid -->
+                <StackPane alignment="CENTER" VBox.vgrow="ALWAYS">
+                    <HBox fx:id="charContainer" spacing="5" alignment="CENTER" style="-fx-translate-y: -20px;"/>
+                </StackPane>
+            </VBox>
+        </StackPane>
+    </center>
+
+    <top>
+        <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Left Spacer -->
+                <Region fx:id="leftSpacer" HBox.hgrow="ALWAYS" />
+
+                <!-- Central Area (fixed width) -->
+                <AnchorPane prefHeight="120.0" prefWidth="1200.0">
+                    <children>
+                        <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/logo.png" />
+                        </ImageView>
+                        <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/nav-bar/learnSelected.png" />
+                        </ImageView>
+                        <ImageView fx:id="gamesButton"
+                                   fitHeight="69.0" fitWidth="71.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onGamesButtonClick">
+                            <Image url="@images/nav-bar/games.png" />
+                        </ImageView>
+                        <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/nav-bar/options.png" />
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+
+                <!-- Right Spacer -->
+                <Region fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </top>
+
+</BorderPane>
