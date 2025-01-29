@@ -36,17 +36,18 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
     &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;yuanchaoyang&quot;
+    &quot;assignee&quot;: &quot;YuHangN&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;git@github.com:Georgeinio/touchtypEd.git&quot;,
-    &quot;accountId&quot;: &quot;8e72e200-7a33-4ca4-81fa-0da43d49dc5a&quot;
+    &quot;url&quot;: &quot;https://github.com/Georgeinio/touchtypEd.git&quot;,
+    &quot;accountId&quot;: &quot;30bfa27e-bd8c-4536-afe7-93fe7df17fd4&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -55,6 +56,9 @@
         <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -145,9 +149,40 @@
       <workItem from="1738098995364" duration="5155000" />
       <workItem from="1738107806314" duration="2402000" />
     </task>
+    <task id="LOCAL-00005" summary="1. Change the color scheme in game page.">
+      <option name="closed" value="true" />
+      <created>1738155974106</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1738155974106</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="1. Add one more view for game result.&#10;2. Adjust the position of Navigation bar and center." />
+    <MESSAGE value="1. Fix the problem of navigation bar in game-view.fxml" />
+    <MESSAGE value="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java." />
+    <MESSAGE value="1. Change the color scheme in game page." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Change the color scheme in game page." />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
