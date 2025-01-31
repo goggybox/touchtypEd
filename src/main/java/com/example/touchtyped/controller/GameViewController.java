@@ -287,12 +287,20 @@ public class GameViewController {
             taskLabel.getChildren().add(remainingText);
         }
         
-        // Update cursor position
-        Text sampleText = new Text("W");
+        // Update cursor position with platform-independent calculation
+        Text sampleText = new Text("W");  // Use 'W' as it's typically the widest character
         sampleText.setFont(cursorLabel.getFont());
-        double charWidth = sampleText.getLayoutBounds().getWidth();
-        double baseX = -(visibleTextLength * charWidth) / 2;
+        double charWidth = sampleText.getBoundsInLocal().getWidth();
+        
+        // Calculate base position
+        double baseX = -(visibleTextLength * charWidth) / 2.0;
         double offset = (currentCharIndex - start) * charWidth;
+        
+        // Add small adjustment for different platforms
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            baseX += charWidth / 2;  // Mac 系统需要额外偏移
+        }
+        
         cursorLabel.setTranslateX(baseX + offset);
     }
 

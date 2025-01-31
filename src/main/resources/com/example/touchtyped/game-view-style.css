@@ -71,6 +71,7 @@
     -fx-max-height: 40;
     -fx-min-width: 800;
     -fx-max-width: 800;
+    -fx-padding: 0;
 }
 
 .typed-text, .remaining-text, .cursor {
@@ -97,6 +98,7 @@
     -fx-opacity: 0.8;
     -fx-stroke: none;
     -fx-mouse-transparent: true;
+    -fx-text-alignment: center;
 }
 
 .current-text {
