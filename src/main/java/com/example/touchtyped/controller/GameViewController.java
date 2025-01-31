@@ -310,7 +310,7 @@ public class GameViewController {
             updateTaskDisplay();
             
             // Provide haptic feedback for first character
-            if (!currentSentence.isEmpty() && keyboardInterface != null) {  // 添加空检查
+            if (!currentSentence.isEmpty() && keyboardInterface != null) {
                 String nextChar = String.valueOf(currentSentence.charAt(0)).toUpperCase();
                 if (nextChar.equals(" ")) {
                     nextChar = "space";

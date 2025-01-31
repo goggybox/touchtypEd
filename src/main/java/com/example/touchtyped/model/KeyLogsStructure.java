@@ -117,7 +117,7 @@ public class KeyLogsStructure {
     }
 
     public void setWordsGiven(String wordsGiven) {
-        this.wordsGiven = wordsGiven;
+        this.wordsGiven = wordsGiven.toUpperCase();
     }
 
 }
