@@ -22,9 +22,6 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.KeyLog;
-import com.example.touchtyped.constants.StyleConstants;
-
-import static com.example.touchtyped.constants.StyleConstants.charWidth;
 
 /**
  * Controller for the typing game view.
@@ -272,6 +269,7 @@ public class GameViewController {
         // Display current character
         if (currentCharIndex < currentSentence.length()) {
             Text currentChar = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
+            // 只有在第一个字符输入错误时才显示红色
             if (!gameStarted && hasFirstError) {
                 currentChar.getStyleClass().add("error-text");
             } else if (gameStarted && charErrorStates[currentCharIndex]) {
@@ -288,18 +286,15 @@ public class GameViewController {
             remainingText.getStyleClass().add("remaining-text");
             taskLabel.getChildren().add(remainingText);
         }
-
-        System.out.println("charWidth: " + charWidth);
         
-        // Calculate base position
-        double baseX = -(visibleTextLength * charWidth) / 2.0;
+        // Update cursor position
+        Text sampleText = new Text("W");
+        sampleText.setFont(cursorLabel.getFont());
+        double charWidth = sampleText.getLayoutBounds().getWidth();
+        double baseX = -(visibleTextLength * charWidth) / 2;
         double offset = (currentCharIndex - start) * charWidth;
-        double finalX = baseX + offset;
-        System.out.println("finalX: " + finalX);
-
-        cursorLabel.setTranslateX(finalX);
+        cursorLabel.setTranslateX(baseX + offset);
     }
-
 
     /**
      * Generates a new typing task.
