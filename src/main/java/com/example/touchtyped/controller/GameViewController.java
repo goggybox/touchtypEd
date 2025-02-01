@@ -22,6 +22,9 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.KeyLog;
+import com.example.touchtyped.constants.StyleConstants;
+
+import static com.example.touchtyped.constants.StyleConstants.charWidth;
 
 /**
  * Controller for the typing game view.
@@ -269,7 +272,6 @@ public class GameViewController {
         // Display current character
         if (currentCharIndex < currentSentence.length()) {
             Text currentChar = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
-            // 只有在第一个字符输入错误时才显示红色
             if (!gameStarted && hasFirstError) {
                 currentChar.getStyleClass().add("error-text");
             } else if (gameStarted && charErrorStates[currentCharIndex]) {
@@ -286,23 +288,18 @@ public class GameViewController {
             remainingText.getStyleClass().add("remaining-text");
             taskLabel.getChildren().add(remainingText);
         }
-        
-        // Update cursor position with platform-independent calculation
-        Text sampleText = new Text("W");  // Use 'W' as it's typically the widest character
-        sampleText.setFont(cursorLabel.getFont());
-        double charWidth = sampleText.getBoundsInLocal().getWidth();
+
+        System.out.println("charWidth: " + charWidth);
         
         // Calculate base position
         double baseX = -(visibleTextLength * charWidth) / 2.0;
         double offset = (currentCharIndex - start) * charWidth;
-        
-        // Add small adjustment for different platforms
-        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            baseX += charWidth / 2;  // Mac 系统需要额外偏移
-        }
-        
-        cursorLabel.setTranslateX(baseX + offset);
+        double finalX = baseX + offset;
+        System.out.println("finalX: " + finalX);
+
+        cursorLabel.setTranslateX(finalX);
     }
+
 
     /**
      * Generates a new typing task.

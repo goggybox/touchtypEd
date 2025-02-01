@@ -4,10 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+    <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="1. Fix the bug of cursor position between different system (macOS and Windows)">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/constants/StyleConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/constants/StyleConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view-style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/game-view-style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +68,7 @@
     "Application.Run Application.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
@@ -107,6 +109,14 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.117" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -139,6 +149,7 @@
       <workItem from="1738091261160" duration="6396000" />
       <workItem from="1738098995364" duration="5155000" />
       <workItem from="1738107806314" duration="2402000" />
+      <workItem from="1738416827189" duration="2053000" />
     </task>
     <task id="LOCAL-00005" summary="1. Change the color scheme in game page.">
       <option name="closed" value="true" />
@@ -148,7 +159,23 @@
       <option name="project" value="LOCAL" />
       <updated>1738155974106</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="1. Small bug fixed">
+      <option name="closed" value="true" />
+      <created>1738364308506</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1738364308506</updated>
+    </task>
+    <task id="LOCAL-00007" summary="1. Fix the bug of cursor position between different system (macOS and Windows)">
+      <option name="closed" value="true" />
+      <created>1738364443607</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1738364443607</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,7 +197,9 @@
     <MESSAGE value="1. Fix the problem of navigation bar in game-view.fxml" />
     <MESSAGE value="1. Delete some unnecessary code in game-view.fxml&#10;2. Add comment in GameResultViewController.java and change the setGameData logic.&#10;3. Fix the problem of implementing interface directly, but use a new listener GameKeyPressListener.java." />
     <MESSAGE value="1. Change the color scheme in game page." />
-    <option name="LAST_COMMIT_MESSAGE" value="1. Change the color scheme in game page." />
+    <MESSAGE value="1. Small bug fixed" />
+    <MESSAGE value="1. Fix the bug of cursor position between different system (macOS and Windows)" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. Fix the bug of cursor position between different system (macOS and Windows)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
