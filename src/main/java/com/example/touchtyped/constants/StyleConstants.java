@@ -6,5 +6,5 @@ public class StyleConstants {
     public static final String RED_COLOUR = "#F5102F";
     public static final String GREY_COLOUR = "#D8D8D8";
     public static final String TEXT_COLOUR = "#3C3C3C";
-    public static final double charWidth = 15.39453125;
+    public static final double charWidth = 16.802734375;
 }

@@ -63,7 +63,7 @@
 .task-text {
     -fx-text-fill: #3C3C3C;
     -fx-font-size: 28px;
-    -fx-font-family: "Consolas";
+    -fx-font-family: "Courier New";
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-line-spacing: 0;
@@ -74,7 +74,7 @@
 }
 
 .typed-text, .remaining-text, .cursor {
-    -fx-font-family: "Consolas";
+    -fx-font-family: "Courier New";
     -fx-font-size: 28px;
     -fx-text-alignment: center;
 }
@@ -91,7 +91,7 @@
 
 .cursor {
     -fx-fill: #263F68;
-    -fx-font-family: "Consolas";
+    -fx-font-family: "Courier New";
     -fx-font-size: 28px;
     -fx-translate-y: -4;
     -fx-opacity: 0.8;

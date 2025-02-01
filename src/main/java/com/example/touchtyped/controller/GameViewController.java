@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.constants.StyleConstants;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -253,7 +254,7 @@ public class GameViewController {
         taskLabel.getChildren().clear();
         
         // Calculate visible text range
-        int visibleTextLength = 50;
+        int visibleTextLength = 40;
         int start = Math.max(0, currentCharIndex - visibleTextLength /2);
         int end = Math.min(currentSentence.length(), start + visibleTextLength);
         
@@ -288,13 +289,23 @@ public class GameViewController {
         }
         
         // Update cursor position
-        Text sampleText = new Text("W");
-        sampleText.setFont(cursorLabel.getFont());
-        double charWidth = sampleText.getLayoutBounds().getWidth();
-        double baseX = -(visibleTextLength * charWidth) / 2;
-        double offset = (currentCharIndex - start) * charWidth;
-        cursorLabel.setTranslateX(baseX + offset);
+//        Text sampleText = new Text("W");
+//        sampleText.setFont(cursorLabel.getFont());
+//        double charWidth = sampleText.getLayoutBounds().getWidth();
+//        System.out.println("charWidth: " + charWidth);
+//
+//        double baseX = -(visibleTextLength * charWidth) / 2;
+//        double offset = (currentCharIndex - start) * charWidth;
+//        double finalX = baseX + offset;
+//        System.out.println("finalX: " + finalX);
+
+        double baseX = -(visibleTextLength * StyleConstants.charWidth / 2.0);
+        double offset = (currentCharIndex - start) * StyleConstants.charWidth;
+        double finalX = baseX + offset;
+
+        cursorLabel.setTranslateX(finalX);
     }
+
 
     /**
      * Generates a new typing task.
