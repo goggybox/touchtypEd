@@ -258,7 +258,7 @@ public class GameViewController {
         int start = Math.max(0, currentCharIndex - visibleTextLength /2);
         int end = Math.min(currentSentence.length(), start + visibleTextLength);
         
-        // Display typed text (已完成的文本)
+        // Display typed text (completed text)
         if (currentCharIndex > start) {
             for (int i = start; i < currentCharIndex; i++) {
                 Text charText = new Text(String.valueOf(currentSentence.charAt(i)));
@@ -270,7 +270,7 @@ public class GameViewController {
         // Display current character
         if (currentCharIndex < currentSentence.length()) {
             Text currentChar = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
-            // 只有在第一个字符输入错误时才显示红色
+            // Only show red color when the first character is typed incorrectly
             if (!gameStarted && hasFirstError) {
                 currentChar.getStyleClass().add("error-text");
             } else if (gameStarted && charErrorStates[currentCharIndex]) {
