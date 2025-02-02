@@ -389,7 +389,7 @@ public class GameViewController {
         // Get the expected character
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
-        
+
         // Record the keystroke with current timestamp
         long currentTime = System.currentTimeMillis();
         if (!gameStarted) {
@@ -402,8 +402,16 @@ public class GameViewController {
         if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
             currentCharIndex--;
             charErrorStates[currentCharIndex] = false;
+            // Check if there are remaining errors
+            boolean anyRemainingErrors = false;
+            for (int i = 0; i < currentCharIndex; i++) {
+                if (charErrorStates[i]) {
+                    anyRemainingErrors = true;
+                    break;
+                }
+            }
+            hasUnresolvedError = anyRemainingErrors;
             hasFirstError = false;
-            hasUnresolvedError = false;
             updateTaskDisplay();
             provideNextCharacterHint();
             return;
@@ -415,15 +423,15 @@ public class GameViewController {
                 startGame();
                 hasFirstError = false;
             }
-            
+
             currentCharIndex++;
-            
+
             if (hasUnresolvedError) {
                 provideErrorFeedback(key);
             } else {
                 provideNextCharacterHint();
             }
-        } 
+        }
         // Handle incorrect input
         else {
             if (!gameStarted) {
@@ -435,13 +443,13 @@ public class GameViewController {
             }
             provideErrorFeedback(key);
         }
-        
+
         // Add new words when running low on text
         if (currentSentence.length() - currentCharIndex < 30) {
             String newWord = addNewWord();
             keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + newWord);
         }
-        
+
         updateTaskDisplay();
         updateStatistics();
     }
