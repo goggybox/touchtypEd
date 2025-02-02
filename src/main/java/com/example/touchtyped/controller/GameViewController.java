@@ -394,35 +394,51 @@ public class GameViewController {
         long currentTime = System.currentTimeMillis();
         if (!gameStarted) {
             gameStartTime = currentTime;
+            startGame();
         }
 
         keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
 
 
-        // Handle correct input
+//         Handle correct input
+//        if (key.equalsIgnoreCase(expectedKey)) {
+//            if (!gameStarted) {
+//                startGame();
+//                hasFirstError = false;
+//            }
+//
+//            currentCharIndex++;
+//
+//            if (hasUnresolvedError) {
+//                provideErrorFeedback(key);
+//            } else {
+//                provideNextCharacterHint();
+//            }
+//        }
+//        // Handle incorrect input
+//        else {
+//            if (!gameStarted) {
+//                hasFirstError = true;
+//            } else {
+//                charErrorStates[currentCharIndex] = true;
+//                hasUnresolvedError = true;
+//                currentCharIndex++;
+//            }
+//            provideErrorFeedback(key);
+//        }
+
+
         if (key.equalsIgnoreCase(expectedKey)) {
-            if (!gameStarted) {
-                startGame();
-                hasFirstError = false;
-            }
-
+            // correct inout
+            hasUnresolvedError = false;
+            charErrorStates[currentCharIndex] = false;
             currentCharIndex++;
-
-            if (hasUnresolvedError) {
-                provideErrorFeedback(key);
-            } else {
-                provideNextCharacterHint();
-            }
-        }
-        // Handle incorrect input
-        else {
-            if (!gameStarted) {
-                hasFirstError = true;
-            } else {
-                charErrorStates[currentCharIndex] = true;
-                hasUnresolvedError = true;
-                currentCharIndex++;
-            }
+            provideNextCharacterHint();
+        } else {
+            // incorrect input
+            charErrorStates[currentCharIndex] = true;
+            hasUnresolvedError = true;
+            currentCharIndex++;
             provideErrorFeedback(key);
         }
 
@@ -434,6 +450,14 @@ public class GameViewController {
 
         updateTaskDisplay();
         updateStatistics();
+
+        System.out.println(
+                "currentIndex=" + currentCharIndex +
+                        ", expected=" + currentSentence.charAt(currentCharIndex < currentSentence.length()
+                        ? currentCharIndex : currentSentence.length()-1) +
+                        ", hasUnresolvedError=" + hasUnresolvedError
+        );
+
     }
 
     /**
