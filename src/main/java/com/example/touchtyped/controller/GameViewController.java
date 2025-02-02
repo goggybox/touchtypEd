@@ -254,7 +254,7 @@ public class GameViewController {
         taskLabel.getChildren().clear();
         
         // Calculate visible text range
-        int visibleTextLength = 40;
+        int visibleTextLength = 50;
         int start = Math.max(0, currentCharIndex - visibleTextLength /2);
         int end = Math.min(currentSentence.length(), start + visibleTextLength);
         
@@ -293,15 +293,17 @@ public class GameViewController {
 //        sampleText.setFont(cursorLabel.getFont());
 //        double charWidth = sampleText.getLayoutBounds().getWidth();
 //        System.out.println("charWidth: " + charWidth);
+//        System.out.println("Current font: " + sampleText.getFont().getName());
+//        System.out.println("Current font family: " + sampleText.getFont().getFamily());
 //
 //        double baseX = -(visibleTextLength * charWidth) / 2;
 //        double offset = (currentCharIndex - start) * charWidth;
 //        double finalX = baseX + offset;
 //        System.out.println("finalX: " + finalX);
 
-        double baseX = -(visibleTextLength * StyleConstants.charWidth / 2.0);
-        double offset = (currentCharIndex - start) * StyleConstants.charWidth;
-        double finalX = baseX + offset;
+         double baseX = -(visibleTextLength * StyleConstants.charWidth / 2.0);
+         double offset = (currentCharIndex - start) * StyleConstants.charWidth;
+         double finalX = baseX + offset;
 
         cursorLabel.setTranslateX(finalX);
     }

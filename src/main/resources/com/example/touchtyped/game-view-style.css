@@ -63,7 +63,7 @@
 .task-text {
     -fx-text-fill: #3C3C3C;
     -fx-font-size: 28px;
-    -fx-font-family: "Courier New";
+    -fx-font-family: 'Consolas';
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-line-spacing: 0;
@@ -74,7 +74,7 @@
 }
 
 .typed-text, .remaining-text, .cursor {
-    -fx-font-family: "Courier New";
+    -fx-font-family: 'Consolas';
     -fx-font-size: 28px;
     -fx-text-alignment: center;
 }
@@ -91,7 +91,7 @@
 
 .cursor {
     -fx-fill: #263F68;
-    -fx-font-family: "Courier New";
+    -fx-font-family: 'Consolas';
     -fx-font-size: 28px;
     -fx-translate-y: -4;
     -fx-opacity: 0.8;
@@ -284,3 +284,15 @@
 .large-region {
     -fx-pref-height: 200;
 }
+
+/* 首先声明所有字体 */
+@font-face {
+    font-family: 'Consolas';
+    src: url('/fonts/consola.ttf');
+}
+
+@font-face {
+    font-family: 'Consolas Bold';
+    src: url('/fonts/consolab.ttf');
+}
+
