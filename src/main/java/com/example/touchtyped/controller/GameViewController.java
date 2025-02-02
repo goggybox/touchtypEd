@@ -381,7 +381,7 @@ public class GameViewController {
             }
         } else {
             // After game starts, process letters, numbers, space and backspace
-            if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
+            if (!key.matches("[a-zA-Z0-9 ]")) {
                 return;  // Ignore special characters
             }
         }
@@ -398,24 +398,6 @@ public class GameViewController {
 
         keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
 
-        // Handle backspace
-        if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
-            currentCharIndex--;
-            charErrorStates[currentCharIndex] = false;
-            // Check if there are remaining errors
-            boolean anyRemainingErrors = false;
-            for (int i = 0; i < currentCharIndex; i++) {
-                if (charErrorStates[i]) {
-                    anyRemainingErrors = true;
-                    break;
-                }
-            }
-            hasUnresolvedError = anyRemainingErrors;
-            hasFirstError = false;
-            updateTaskDisplay();
-            provideNextCharacterHint();
-            return;
-        }
 
         // Handle correct input
         if (key.equalsIgnoreCase(expectedKey)) {
