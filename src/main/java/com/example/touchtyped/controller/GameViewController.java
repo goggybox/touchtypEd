@@ -381,7 +381,7 @@ public class GameViewController {
             }
         } else {
             // After game starts, process letters, numbers, space and backspace
-            if (!key.matches("[a-zA-Z0-9 ]")) {
+            if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
                 return;  // Ignore special characters
             }
         }
@@ -389,76 +389,66 @@ public class GameViewController {
         // Get the expected character
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
-
         // Record the keystroke with current timestamp
         long currentTime = System.currentTimeMillis();
         if (!gameStarted) {
             gameStartTime = currentTime;
-            startGame();
         }
 
         keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
 
-
-//         Handle correct input
-//        if (key.equalsIgnoreCase(expectedKey)) {
-//            if (!gameStarted) {
-//                startGame();
-//                hasFirstError = false;
-//            }
-//
-//            currentCharIndex++;
-//
-//            if (hasUnresolvedError) {
-//                provideErrorFeedback(key);
-//            } else {
-//                provideNextCharacterHint();
-//            }
-//        }
-//        // Handle incorrect input
-//        else {
-//            if (!gameStarted) {
-//                hasFirstError = true;
-//            } else {
-//                charErrorStates[currentCharIndex] = true;
-//                hasUnresolvedError = true;
-//                currentCharIndex++;
-//            }
-//            provideErrorFeedback(key);
-//        }
-
-
-        if (key.equalsIgnoreCase(expectedKey)) {
-            // correct inout
-            hasUnresolvedError = false;
+        // Handle backspace
+        if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
+            currentCharIndex--;
             charErrorStates[currentCharIndex] = false;
-            currentCharIndex++;
+            // Check if there are remaining errors
+            boolean anyRemainingErrors = false;
+            for (int i = 0; i < currentCharIndex; i++) {
+                if (charErrorStates[i]) {
+                    anyRemainingErrors = true;
+                    break;
+                }
+            }
+            hasUnresolvedError = anyRemainingErrors;
+            hasFirstError = false;
+            updateTaskDisplay();
             provideNextCharacterHint();
-        } else {
-            // incorrect input
-            charErrorStates[currentCharIndex] = true;
-            hasUnresolvedError = true;
-            currentCharIndex++;
-            provideErrorFeedback(key);
+            return;
         }
 
+        // Handle correct input
+        if (key.equalsIgnoreCase(expectedKey)) {
+            if (!gameStarted) {
+                startGame();
+                hasFirstError = false;
+            }
+            currentCharIndex++;
+            if (hasUnresolvedError) {
+                provideErrorFeedback(key);
+            } else {
+                provideNextCharacterHint();
+            }
+        }
+        // Handle incorrect input
+        else {
+            if (!gameStarted) {
+                hasFirstError = true;
+            } else {
+                charErrorStates[currentCharIndex] = true;
+                hasUnresolvedError = true;
+                currentCharIndex++;
+            }
+            provideErrorFeedback(key);
+        }
         // Add new words when running low on text
         if (currentSentence.length() - currentCharIndex < 30) {
             String newWord = addNewWord();
             keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + newWord);
         }
-
         updateTaskDisplay();
         updateStatistics();
-
-        System.out.println(
-                "currentIndex=" + currentCharIndex +
-                        ", expected=" + currentSentence.charAt(currentCharIndex < currentSentence.length()
-                        ? currentCharIndex : currentSentence.length()-1) +
-                        ", hasUnresolvedError=" + hasUnresolvedError
-        );
-
     }
+
 
     /**
      * Provides error feedback through haptic vibration and LED lights.
