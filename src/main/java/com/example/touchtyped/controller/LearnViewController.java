@@ -66,7 +66,7 @@ public class LearnViewController {
         Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
 
         // load TypingPlan from JSON and display.
-        TypingPlan typingPlan = TypingPlanDeserialiser.getTypingPlan();
+        TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
         typingPlan.display(vbox);
         HBox divider = DividerLine.createDividerLineWithText("");
         vbox.getChildren().add(divider);

@@ -34,6 +34,25 @@ public class Phase {
     }
 
     /**
+     * replace a module with the provided Module. USES THE MODULE ID
+     * @param module is the module to update
+     * @return whether successfully replaced
+     */
+    public boolean updateModule(Module module) {
+        // search through the modules list for matching ID
+        int id = module.getId();
+        for (int i = 0; i < modules.size(); i++) {
+            if (modules.get(i).getId() == id) {
+                modules.set(i, module);
+                return true;
+            }
+        }
+
+        // the provided Module doesn't exist in this Phase.
+        return false;
+    }
+
+    /**
      * display the Phase on screen
      * @param vbox is the VBox component to display the phase in
      */

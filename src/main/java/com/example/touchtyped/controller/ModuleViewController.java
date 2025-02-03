@@ -3,8 +3,7 @@ package com.example.touchtyped.controller;
 import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.interfaces.KeypressListener;
-import com.example.touchtyped.model.ExampleKeypressListener;
-import com.example.touchtyped.model.Level;
+import com.example.touchtyped.model.*;
 import com.example.touchtyped.model.Module;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -175,7 +174,9 @@ public class ModuleViewController implements KeypressListener {
     public void onBackButtonClick() {
         try {
 
-            // update the Module in the module list.
+            // update the module in the TypingPlan
+            TypingPlanManager manager = TypingPlanManager.getInstance();
+            manager.updateModule(module);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
