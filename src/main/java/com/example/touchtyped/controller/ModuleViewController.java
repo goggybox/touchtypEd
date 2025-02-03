@@ -36,9 +36,6 @@ public class ModuleViewController implements KeypressListener {
     @FXML
     private Label moduleDisplayText;
 
-    /**
-     * reference to the gamesButton in learn-view.fxml
-     */
     @FXML
     private ImageView gamesButton;
 
@@ -127,29 +124,30 @@ public class ModuleViewController implements KeypressListener {
 
     @Override
     public void onKeypress(String key) {
-        System.out.println(key);
-        Label currentLetter = letterLabels.get(currentIndex);
-        StackPane currentLetterBox = (StackPane) charContainer.getChildren().get(currentIndex);
-        Rectangle currentLetterRectangle = (Rectangle) currentLetterBox.getChildren().get(0);
-        char expectedChar = level.getTaskString().charAt(currentIndex);
+        if (currentIndex < letterLabels.size()) {
+            Label currentLetter = letterLabels.get(currentIndex);
+            StackPane currentLetterBox = (StackPane) charContainer.getChildren().get(currentIndex);
+            Rectangle currentLetterRectangle = (Rectangle) currentLetterBox.getChildren().get(0);
+            char expectedChar = level.getTaskString().charAt(currentIndex);
 
-        if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
-            // the user typed the expected character.
-            currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.BLUE_COLOUR));
-            currentLetterRectangle.setStroke(Color.web(StyleConstants.BLUE_COLOUR));
-            currentIndex++;
-        } else {
-            // the user typed the wrong character.
-            currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.RED_COLOUR));
-            currentLetterRectangle.setStroke(Color.web(StyleConstants.RED_COLOUR));
-            currentIndex++;
-        }
+            if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
+                // the user typed the expected character.
+                currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.BLUE_COLOUR));
+                currentLetterRectangle.setStroke(Color.web(StyleConstants.BLUE_COLOUR));
+                currentIndex++;
+            } else {
+                // the user typed the wrong character.
+                currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.RED_COLOUR));
+                currentLetterRectangle.setStroke(Color.web(StyleConstants.RED_COLOUR));
+                currentIndex++;
+            }
 
-        if (currentIndex >= letterLabels.size()) {
-            level.setCompleted(true);
+            if (currentIndex >= letterLabels.size()) {
+                level.setCompleted(true);
 
-            // display the NEXT button
-            nextButton.setVisible(true);
+                // display the NEXT button
+                nextButton.setVisible(true);
+            }
         }
     }
 
