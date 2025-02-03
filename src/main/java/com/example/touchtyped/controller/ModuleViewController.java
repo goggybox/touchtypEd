@@ -40,9 +40,6 @@ public class ModuleViewController implements KeypressListener {
     private ImageView gamesButton;
 
     @FXML
-    private Region spacer;
-
-    @FXML
     private Label closeButton;
 
     @FXML
@@ -54,6 +51,7 @@ public class ModuleViewController implements KeypressListener {
     private List<Label> letterLabels = new ArrayList<>();
     private int currentIndex;
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private String typedString = "";
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -71,6 +69,19 @@ public class ModuleViewController implements KeypressListener {
 
         closeButton.setStyle(String.format("-fx-font-size: 20px; -fx-cursor: hand; -fx-text-fill: %s;", StyleConstants.GREY_COLOUR));
         StackPane.setMargin(closeButton, new Insets(40, 80, 0, 0));
+
+        moduleDisplayText.setStyle(String.format("-fx-text-fill: %s; -fx-font-size: 36px; " +
+                "-fx-font-family: 'Antipasto'; -fx-padding: 40px 0px 0px 80px;", StyleConstants.GREY_COLOUR));
+
+        // style next button
+        nextButton.setStyle(String.format(
+                "-fx-background-color: %s; " +
+                "-fx-text-fill: white; " +
+                "-fx-font-size: 34px; " +
+                "-fx-font-family: 'Antipasto';" +
+                "-fx-background-radius: 30px;",
+                StyleConstants.BLUE_COLOUR
+        ));
 
     }
 
@@ -92,8 +103,10 @@ public class ModuleViewController implements KeypressListener {
             return;
         }
 
+        // reset vars for next level
         charContainer.getChildren().clear();
         letterLabels.clear();
+        typedString = "";
         currentIndex = 0;
 
         for (char c : level.getTaskString().toCharArray()) {
@@ -124,31 +137,58 @@ public class ModuleViewController implements KeypressListener {
 
     @Override
     public void onKeypress(String key) {
+        // ignore any key press except for alphanumeric or BACK_SPACE
+        if (!key.matches("[a-zA-Z0-9]") && !key.equals("BACK_SPACE")) {
+            return;
+        }
+
+        // check if BACK_SPACE , and that the level hasn't already been completed
+        if (key.equals("BACK_SPACE") && currentIndex > 0 && !level.isCompleted()) {
+            // move back a character, and turn the previous character grey
+            currentIndex--;
+            setLetterColour(currentIndex, StyleConstants.GREY_COLOUR);
+            typedString = typedString.substring(0, typedString.length() - 1);
+            return;
+        }
+
+        // check if all characters have already been typed
         if (currentIndex < letterLabels.size()) {
-            Label currentLetter = letterLabels.get(currentIndex);
-            StackPane currentLetterBox = (StackPane) charContainer.getChildren().get(currentIndex);
-            Rectangle currentLetterRectangle = (Rectangle) currentLetterBox.getChildren().get(0);
             char expectedChar = level.getTaskString().charAt(currentIndex);
+
+            // keep track of typed string
+            typedString += key;
 
             if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
                 // the user typed the expected character.
-                currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.BLUE_COLOUR));
-                currentLetterRectangle.setStroke(Color.web(StyleConstants.BLUE_COLOUR));
+                setLetterColour(currentIndex, StyleConstants.BLUE_COLOUR);
                 currentIndex++;
             } else {
                 // the user typed the wrong character.
-                currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.RED_COLOUR));
-                currentLetterRectangle.setStroke(Color.web(StyleConstants.RED_COLOUR));
+                setLetterColour(currentIndex, StyleConstants.RED_COLOUR);
                 currentIndex++;
             }
 
             if (currentIndex >= letterLabels.size()) {
-                level.setCompleted(true);
+                if (typedString.equalsIgnoreCase(level.getTaskString())) {
+                    // level has been completed
+                    level.setCompleted(true);
 
-                // display the NEXT button
-                nextButton.setVisible(true);
+                    // display the NEXT button
+                    nextButton.setVisible(true);
+                } else {
+                    // user typed the whole string, but made a mistake.
+                }
             }
         }
+    }
+
+    private void setLetterColour(int index, String colour) {
+        Label currentLetter = letterLabels.get(index);
+        StackPane currentLetterBox = (StackPane) charContainer.getChildren().get(index);
+        Rectangle currentLetterRectangle = (Rectangle) currentLetterBox.getChildren().get(0);
+
+        currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", colour));
+        currentLetterRectangle.setStroke(Color.web(colour));
     }
 
     @FXML
