@@ -82,6 +82,19 @@ public class Module {
         return (double) numCompletedLevels / (double) levels.size();
     }
 
+    /**
+     * gets the next level for the user to complete.
+     * @return the next uncompleted level
+     */
+    public Level getNextUncompletedLevel() {
+        for (int i = 0; i < levels.size(); i++) {
+            if (!levels.get(i).isCompleted()) { return levels.get(i); }
+        }
+
+        // if not returned by this point, the Module is complete.
+        return null;
+    }
+
 
     // getters and setters
 

@@ -20,14 +20,20 @@
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <Label fx:id="moduleDisplayText" style="-fx-font-size: 20px; -fx-padding: 40px 0px 0px 80px;"/>
                     <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-                    <Label text="✕" fx:id="closeButton" style="-fx-font-size: 20px; -fx-cursor: hand; -fx-padding: 40px 80px 0px 0px"
-                           onMouseClicked="#onBackButtonClick"/>
+                    <StackPane alignment="TOP_RIGHT">
+                        <Label text="✕" fx:id="closeButton"
+                               style="-fx-font-size: 20px; -fx-cursor: hand;"
+                               onMouseClicked="#onBackButtonClick"/>
+                    </StackPane>
                 </HBox>
 
-                <!-- Centered character grid -->
                 <StackPane alignment="CENTER" VBox.vgrow="ALWAYS">
                     <HBox fx:id="charContainer" spacing="5" alignment="CENTER" style="-fx-translate-y: -20px;"/>
                 </StackPane>
+
+                <HBox alignment="CENTER" style="-fx-padding: 20px 0 40px 0;">
+                    <Button fx:id="nextButton" text="NEXT" visible="false" onAction="#onNextButtonClick" style="-fx-font-size: 18px; -fx-cursor: hand;"/>
+                </HBox>
             </VBox>
         </StackPane>
     </center>

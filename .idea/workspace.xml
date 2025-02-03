@@ -11,7 +11,9 @@
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ModuleButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/ModuleButton.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/ModuleViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/ModuleViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/module-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/module-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
