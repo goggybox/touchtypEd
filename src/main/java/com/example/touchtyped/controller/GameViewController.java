@@ -386,35 +386,42 @@ public class GameViewController {
             }
         }
 
-        // Get the expected character
-        char expectedChar = currentSentence.charAt(currentCharIndex);
-        String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
-        // Record the keystroke with current timestamp
+        // Record the keystroke timestamp
         long currentTime = System.currentTimeMillis();
         if (!gameStarted) {
             gameStartTime = currentTime;
+            keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
         }
 
-        keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
+        // Handle backspace separately
+        if (key.equals("BACK_SPACE")) {
+            if (currentCharIndex > 0) {
+                // Record backspace operation
+                keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
 
-        // Handle backspace
-        if (key.equals("BACK_SPACE") && currentCharIndex > 0) {
-            currentCharIndex--;
-            charErrorStates[currentCharIndex] = false;
-            // Check if there are remaining errors
-            boolean anyRemainingErrors = false;
-            for (int i = 0; i < currentCharIndex; i++) {
-                if (charErrorStates[i]) {
-                    anyRemainingErrors = true;
-                    break;
+                currentCharIndex--;
+                charErrorStates[currentCharIndex] = false;
+                // Check if there are remaining errors
+                hasUnresolvedError = false;
+                for (int i = 0; i < currentCharIndex; i++) {
+                    if (charErrorStates[i]) {
+                        hasUnresolvedError = true;
+                        break;
+                    }
                 }
+                hasFirstError = false;
+                updateTaskDisplay();
+                provideNextCharacterHint();
             }
-            hasUnresolvedError = anyRemainingErrors;
-            hasFirstError = false;
-            updateTaskDisplay();
-            provideNextCharacterHint();
             return;
         }
+
+        // Get the expected character
+        char expectedChar = currentSentence.charAt(currentCharIndex);
+        String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
+
+        // Add key log
+        keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
 
         // Handle correct input
         if (key.equalsIgnoreCase(expectedKey)) {
@@ -440,11 +447,13 @@ public class GameViewController {
             }
             provideErrorFeedback(key);
         }
+
         // Add new words when running low on text
         if (currentSentence.length() - currentCharIndex < 30) {
             String newWord = addNewWord();
             keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + newWord);
         }
+
         updateTaskDisplay();
         updateStatistics();
     }
