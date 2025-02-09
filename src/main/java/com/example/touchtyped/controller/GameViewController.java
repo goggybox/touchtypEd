@@ -379,6 +379,14 @@ public class GameViewController {
             if (!key.matches("[a-zA-Z0-9]")) {
                 return;  // Ignore special characters and space before game starts
             }
+            
+            // Check if the first character is correct
+            char expectedChar = currentSentence.charAt(currentCharIndex);
+            String expectedKey = String.valueOf(expectedChar);
+            
+            if (!key.equalsIgnoreCase(expectedKey)) {
+                return;  // Don't process incorrect first character
+            }
         } else {
             // After game starts, process letters, numbers, space and backspace
             if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
