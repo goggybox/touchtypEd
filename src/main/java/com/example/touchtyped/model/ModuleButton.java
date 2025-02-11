@@ -11,6 +11,7 @@ import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 
 /**
  * this class contains the createLessonButton method
@@ -32,6 +33,8 @@ public class ModuleButton {
 
         // create pane; this allows us to manually centre arcs and circle
         Pane pane = new Pane();
+
+        Font antipastoFont = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 26);
 
         // centre position
         double centerX = arcRadius + arcWidth / 2;
@@ -70,10 +73,7 @@ public class ModuleButton {
 
         // Lesson label
         Label label = new Label(moduleName);
-        label.setStyle(String.format(
-                "-fx-font-family: 'Antipasto'; -fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: %s;",
-                StyleConstants.TEXT_COLOUR
-        ));
+        label.setFont(antipastoFont);
 
 
         // Wrap in VBox to include the label

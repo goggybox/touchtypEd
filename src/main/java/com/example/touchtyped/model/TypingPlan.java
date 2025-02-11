@@ -41,6 +41,23 @@ public class TypingPlan {
     }
 
     /**
+     * replace a module within the TypingPlan with the provided Module. USES THE MODULE ID
+     * @param module is the module to update
+     * @return whether successfully replaced
+     */
+    public boolean updateModule(Module module) {
+        // try each Phase.
+        for (Phase phase : phases) {
+            if (phase.updateModule(module)) {
+                return true;
+            }
+        }
+
+        // the provided Module doesn't exist in the TypingPlan.
+        return false;
+    }
+
+    /**
      * display the TypingPlan on screen
      * @param vbox is the VBox component to display the TypingPlan in
      */

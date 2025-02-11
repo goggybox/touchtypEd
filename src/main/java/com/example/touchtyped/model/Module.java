@@ -1,6 +1,7 @@
 package com.example.touchtyped.model;
 
 import com.example.touchtyped.controller.ModuleViewController;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Module {
 
     private String name;
@@ -50,18 +52,22 @@ public class Module {
         double completion = getCompletion();
 
         Runnable onClickAction = () -> {
-            System.out.println(name + " button clicked.");
-            try {
-                // Go to the Module View, and give it this module to display.
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/module-view.fxml"));
-                Scene scene = new Scene(loader.load(), 1200, 700);
-                Stage stage = (Stage) buttonGrid.getScene().getWindow();
-                ModuleViewController controller = loader.getController();
+            if (completion != 1.0) {
+                System.out.println(name + " button clicked.");
+                try {
+                    // Go to the Module View, and give it this module to display.
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/module-view.fxml"));
+                    Scene scene = new Scene(loader.load(), 1200, 700);
+                    Stage stage = (Stage) buttonGrid.getScene().getWindow();
+                    ModuleViewController controller = loader.getController();
 
-                Platform.runLater(() -> controller.setModule(this));
-                stage.setScene(scene);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    Platform.runLater(() -> controller.setModule(this));
+                    stage.setScene(scene);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println(name + " is complete!");
             }
         };
 
@@ -80,6 +86,19 @@ public class Module {
         }
 
         return (double) numCompletedLevels / (double) levels.size();
+    }
+
+    /**
+     * gets the next level for the user to complete.
+     * @return the next uncompleted level
+     */
+    public Level getNextUncompletedLevel() {
+        for (int i = 0; i < levels.size(); i++) {
+            if (!levels.get(i).isCompleted()) { return levels.get(i); }
+        }
+
+        // if not returned by this point, the Module is complete.
+        return null;
     }
 
 

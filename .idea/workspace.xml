@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../1. Professional Issues/CW2/.~lock.CW2 ideas.odt#" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Third Year Notes/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/.obsidian/core-plugins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/GameViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/app/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Module.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/Module.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/TypingPlanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/TypingPlanManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,9 +31,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="master" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="MIXED" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -33,12 +45,12 @@
     &quot;assignee&quot;: &quot;YuHangN&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:Georgeinio/touchtypEd.git",
-    "accountId": "8e72e200-7a33-4ca4-81fa-0da43d49dc5a"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:Georgeinio/touchtypEd.git&quot;,
+    &quot;accountId&quot;: &quot;8e72e200-7a33-4ca4-81fa-0da43d49dc5a&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -68,9 +80,9 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "learn",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/yangyuanchao/Desktop/touchtypEd",
+    "last_opened_file_path": "/home/george/Documents/third-year/touchtypEd/src/main/resources/fonts",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -86,11 +98,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/fonts" />
       <recent name="D:\SchoolMaterial\touchtypEd\src\main\resources\fonts" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\fonts" />
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/touchtyped" />
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\nav-bar" />
-      <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\learn-content" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\gibed\OneDrive\Uni\touchtypEd\src\main\resources\com\example\touchtyped\images\" />
@@ -220,6 +232,16 @@
     <MESSAGE value="Revert &quot;1. Fix the bug of cursor position between different system (macOS and Windows)&quot;&#10;&#10;This reverts commit 678b6159" />
     <MESSAGE value="1. Fix the bug of cursor position. The problem is in Mac there is no Consolas font." />
     <option name="LAST_COMMIT_MESSAGE" value="1. Fix the bug of cursor position. The problem is in Mac there is no Consolas font." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ClassCastException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
