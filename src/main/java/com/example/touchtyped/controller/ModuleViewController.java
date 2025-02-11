@@ -115,6 +115,11 @@ public class ModuleViewController implements KeypressListener {
 
         // initially hide next button
         nextButton.setVisible(false);
+
+        // vibrate first key
+        char key = level.getTaskString().toCharArray()[0];
+        keyboardInterface.sendHapticCommand(String.valueOf(key), 200, 50);
+
     }
 
     private HBox createNewRow() {
@@ -172,6 +177,9 @@ public class ModuleViewController implements KeypressListener {
                 // the user typed the wrong character.
                 setLetterColour(currentIndex, StyleConstants.RED_COLOUR);
                 currentIndex++;
+
+                // turn on LEDs
+                keyboardInterface.activateLights(1000);
             }
 
             if (currentIndex >= letterLabels.size()) {
@@ -184,6 +192,10 @@ public class ModuleViewController implements KeypressListener {
                 } else {
                     // user typed the whole string, but made a mistake.
                 }
+            } else {
+                // vibrate next key to be pressed
+                char keyToVibrate = level.getTaskString().charAt(currentIndex);
+                keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
             }
         }
     }
