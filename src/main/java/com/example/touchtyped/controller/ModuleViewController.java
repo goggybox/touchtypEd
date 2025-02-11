@@ -19,8 +19,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * displays the Module that was clicked on in the Learn view.
@@ -51,6 +50,7 @@ public class ModuleViewController implements KeypressListener {
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
     private String typedString = "";
     private final int MAX_BOXES_PER_ROW = 16;
+    private Map<String, Character> keyMap = new HashMap<String, Character>();
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -81,6 +81,18 @@ public class ModuleViewController implements KeypressListener {
                 "-fx-background-radius: 30px;",
                 StyleConstants.BLUE_COLOUR
         ));
+
+        // populate special character key map
+        keyMap.put("COMMA", ',');
+        keyMap.put("PERIOD", '.');
+        keyMap.put("SLASH", '/');
+        keyMap.put("SEMICOLON", ';');
+        keyMap.put("QUOTE", '\'');
+        keyMap.put("HASHTAG", '#');
+        keyMap.put("OPEN_BRACKET", '[');
+        keyMap.put("CLOSE_BRACKET", ']');
+        keyMap.put("MINUS", '-');
+        keyMap.put("EQUALS", '=');
 
     }
 
@@ -148,8 +160,13 @@ public class ModuleViewController implements KeypressListener {
 
     @Override
     public void onKeypress(String key) {
+
+        // convert special characters to the character equivalent (so "OPEN_BRACKET" to '[')
+        key = (keyMap.containsKey(key)) ? convertKeyToChar(key) : key;
+
         // ignore any key press except for alphanumeric or BACK_SPACE
-        if (!key.matches("[a-zA-Z0-9]") && !key.equals("BACK_SPACE")) {
+        System.out.println(key);
+        if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE")) {
             return;
         }
 
@@ -198,6 +215,10 @@ public class ModuleViewController implements KeypressListener {
                 keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
             }
         }
+    }
+
+    private String convertKeyToChar(String key) {
+        return String.valueOf(keyMap.getOrDefault(key, null));
     }
 
     private void setLetterColour(int index, String colour) {
