@@ -1,0 +1,156 @@
+{
+  "phases" : [ {
+    "duration" : "Week 1-2",
+    "goal" : "Build muscle memory and accuracy.",
+    "modules" : [ {
+      "name" : "F & J Keys",
+      "focus" : "",
+      "displayText" : "F & J Keys",
+      "id" : 1,
+      "levels" : [ {
+        "taskString" : "fj",
+        "displayText" : null,
+        "completed" : true
+      }, {
+        "taskString" : "ffffjjjj",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ffjfjjfj",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.3333333333333333,
+      "nextUncompletedLevel" : {
+        "taskString" : "ffffjjjj",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "D & K Keys",
+      "focus" : "",
+      "displayText" : "D & K Keys",
+      "id" : 2,
+      "levels" : [ {
+        "taskString" : "dk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ddddkkkk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ddkdkdkdkkdk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "dkdkddkdkdkdkkkdkdkkkdkdk",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "dk",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "S & L Keys",
+      "focus" : "",
+      "displayText" : "S & L Keys",
+      "id" : 3,
+      "levels" : [ {
+        "taskString" : "sl",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ssssllll",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "slslslslllslllsssslslssllsll",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "sl",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "A & ; Keys",
+      "focus" : "",
+      "displayText" : "A & ; Keys",
+      "id" : 4,
+      "levels" : [ {
+        "taskString" : "a;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "aaaa;;;;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "aa;a;a;;;;a;;;aaaaa;a;;;a;a;",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "a;",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "G & H Keys",
+      "focus" : "",
+      "displayText" : "G & H Keys",
+      "id" : 5,
+      "levels" : [ {
+        "taskString" : "gh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "gggghhhh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ghghghghghhghhghhhghhghg",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "gh",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "Home Row",
+      "focus" : "",
+      "displayText" : "Home Row",
+      "id" : 5,
+      "levels" : [ {
+        "taskString" : "asdfghjkl;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "alslsakdf;jlksjflask",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "sad lad had salad",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "asdfghjkl;",
+        "displayText" : null,
+        "completed" : false
+      }
+    } ],
+    "phase" : "Phase 1: Foundation"
+  } ]
+}

@@ -28,7 +28,6 @@ public class TypingPlanManager {
         File saveFile = new File(SAVED_TYPING_PLAN_FILE);
         if (saveFile.exists()) {
             // if the TypingPlan has been saved, retrieve it.
-            System.out.println("TypingPlan loaded from save file.");
             typingPlan = loadTypingPlan();
             if (typingPlan == null) {
                 // Fallback to default TypingPlan if loading fails
