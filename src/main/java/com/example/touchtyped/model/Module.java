@@ -52,7 +52,7 @@ public class Module {
         double completion = getCompletion();
 
         Runnable onClickAction = () -> {
-            if (completion != 1.0) {
+            if (completion != 1.0 && !isLocked()) {
                 System.out.println(name + " button clicked.");
                 try {
                     // Go to the Module View, and give it this module to display.
@@ -66,12 +66,14 @@ public class Module {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            } else {
+            } else if (completion == 1.0) {
                 System.out.println(name + " is complete!");
+            } else if (isLocked()) {
+                System.out.println(name + " is locked!");
             }
         };
 
-        StackPane button = ModuleButton.createModuleButton(name, completion, onClickAction);
+        StackPane button = ModuleButton.createModuleButton(this, onClickAction);
         buttonGrid.add(button, col, row);
     }
 
@@ -98,6 +100,19 @@ public class Module {
         }
 
         // if not returned by this point, the Module is complete.
+        return null;
+    }
+
+    public Boolean isLocked() {
+        TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
+        for (Phase phase : typingPlan.getPhases()) {
+            if (phase.getModules().contains(this)) {
+                int index = phase.getModules().indexOf(this);
+                if (index == 0) { return false; }
+                if (phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+                return true;
+            }
+        }
         return null;
     }
 

@@ -20,13 +20,14 @@ public class ModuleButton {
 
     /**
      * returns a StackPane that represents a module in the Learn page.
-     * @param moduleName is the name of the module to display
-     * @param completion is the level of completion of the module, represented by the red arc
+     * @param module is the module to display
      * @param onClickAction is the action to perform when the button is clicked
      * @return a StackPane to be displayed
      */
-    public static StackPane createModuleButton(String moduleName, double completion, Runnable onClickAction) {
+    public static StackPane createModuleButton(Module module, Runnable onClickAction) {
 
+        String moduleName = module.getName();
+        double completion = module.getCompletion();
         int arcRadius = 53;
         int arcWidth = 10;
         int blueCircleRadius = 40;
@@ -40,6 +41,9 @@ public class ModuleButton {
         double centerX = arcRadius + arcWidth / 2;
         double centerY = arcRadius + arcWidth / 2;
 
+        // is module locked?
+        boolean locked = module.isLocked();
+
         // Gray arc (full circle)
         Arc greyArc = new Arc();
         greyArc.setCenterX(centerX);
@@ -49,7 +53,7 @@ public class ModuleButton {
         greyArc.setLength(360);
         greyArc.setType(ArcType.OPEN);
         greyArc.setFill(Color.TRANSPARENT);
-        greyArc.setStroke(Color.web(StyleConstants.GREY_COLOUR));
+        greyArc.setStroke(Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.GREY_COLOUR));
         greyArc.setStrokeWidth(arcWidth);
 
         // Red progress arc (half circle)
@@ -66,7 +70,7 @@ public class ModuleButton {
         redArc.setStrokeLineCap(StrokeLineCap.ROUND); // rounded edge
 
         // Blue circle background
-        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web(StyleConstants.BLUE_COLOUR));
+        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.BLUE_COLOUR));
 
         // Add the arcs and circle to the Pane
         pane.getChildren().addAll(greyArc, redArc, blueCircle);
@@ -74,6 +78,7 @@ public class ModuleButton {
         // Lesson label
         Label label = new Label(moduleName);
         label.setFont(antipastoFont);
+        label.setTextFill(Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.GREY_COLOUR));
 
 
         // Wrap in VBox to include the label
