@@ -37,6 +37,9 @@ public class ModuleViewController implements KeypressListener {
     private Label moduleDisplayText;
 
     @FXML
+    private ImageView learnButton;
+
+    @FXML
     private ImageView gamesButton;
 
     @FXML
@@ -84,7 +87,8 @@ public class ModuleViewController implements KeypressListener {
                 "-fx-text-fill: white; " +
                 "-fx-font-size: 34px; " +
                 "-fx-font-family: 'Antipasto';" +
-                "-fx-background-radius: 30px;",
+                "-fx-background-radius: 30px;" +
+                "-fx-cursor: hand;",
                 StyleConstants.BLUE_COLOUR
         ));
 
@@ -249,6 +253,22 @@ public class ModuleViewController implements KeypressListener {
     @FXML
     public void onNextButtonClick() {
         loadLevel();
+    }
+
+    /**
+     * Handles navigation to learn view.
+     * Loads and displays the learn-view.fxml scene.
+     */
+    @FXML
+    public void onLearnButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) gamesButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
