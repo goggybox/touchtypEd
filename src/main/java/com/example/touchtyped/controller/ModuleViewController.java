@@ -166,7 +166,7 @@ public class ModuleViewController implements KeypressListener {
 
         // ignore any key press except for alphanumeric or BACK_SPACE
         System.out.println(key);
-        if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE")) {
+        if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE") && !key.equals(" ")) {
             return;
         }
 
@@ -176,6 +176,11 @@ public class ModuleViewController implements KeypressListener {
             currentIndex--;
             setLetterColour(currentIndex, StyleConstants.GREY_COLOUR);
             typedString = typedString.substring(0, typedString.length() - 1);
+
+            // vibrate the next character to be pressed
+            char keyToVibrate = level.getTaskString().charAt(currentIndex);
+            keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+
             return;
         }
 
@@ -190,6 +195,12 @@ public class ModuleViewController implements KeypressListener {
                 // the user typed the expected character.
                 setLetterColour(currentIndex, StyleConstants.BLUE_COLOUR);
                 currentIndex++;
+
+                if (currentIndex < letterLabels.size()) {
+                    // vibrate the next key to be pressed
+                    char keyToVibrate = level.getTaskString().charAt(currentIndex);
+                    keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+                }
             } else {
                 // the user typed the wrong character.
                 setLetterColour(currentIndex, StyleConstants.RED_COLOUR);
@@ -197,6 +208,9 @@ public class ModuleViewController implements KeypressListener {
 
                 // turn on LEDs
                 keyboardInterface.activateLights(1000);
+
+                // vibrate the BACK_SPACE key
+                keyboardInterface.sendHapticCommand("BACK_SPACE", 200, 50);
             }
 
             if (currentIndex >= letterLabels.size()) {
@@ -209,10 +223,6 @@ public class ModuleViewController implements KeypressListener {
                 } else {
                     // user typed the whole string, but made a mistake.
                 }
-            } else {
-                // vibrate next key to be pressed
-                char keyToVibrate = level.getTaskString().charAt(currentIndex);
-                keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
             }
         }
     }
