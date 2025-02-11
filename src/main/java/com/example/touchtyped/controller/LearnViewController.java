@@ -63,7 +63,7 @@ public class LearnViewController {
         });
 
         // Load font
-        Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 50);
+        Font antipastoFont = Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 26);
 
         // load TypingPlan from JSON and display.
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();

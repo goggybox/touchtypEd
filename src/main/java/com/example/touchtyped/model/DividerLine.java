@@ -33,9 +33,11 @@ public class DividerLine {
 
             // create the text
             Text dividerText = new Text(text);
-            dividerText.setFont(Font.font("Antipasto", 32));
+            Font antipastoFont = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), 40);
+            dividerText.setFont(antipastoFont);
             dividerText.setFill(Color.web(StyleConstants.GREY_COLOUR));
             dividerText.setTranslateY(-2);
+
 
             // get width of the text
             double textWidth = dividerText.getLayoutBounds().getWidth();
