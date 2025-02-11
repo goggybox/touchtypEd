@@ -3,6 +3,8 @@ package com.example.touchtyped.app;
 import com.example.touchtyped.controller.LearnViewController;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
+import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.model.TypingPlanManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -38,6 +40,18 @@ public class Application extends javafx.application.Application {
     }
 
     public static void main(String[] args) {
+
+        // shutdown hook to save TypingPlan if it has been modified
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            TypingPlanManager manager = TypingPlanManager.getInstance();
+            if (manager.getModified()) {
+                manager.saveTypingPlan();
+                System.out.println("SAVING TYPING PLAN");
+            } else {
+                System.out.println("TypingPlan not changed. Not saving.");
+            }
+        }));
+
         launch();
     }
 }
