@@ -165,7 +165,6 @@ public class ModuleViewController implements KeypressListener {
         key = (keyMap.containsKey(key)) ? convertKeyToChar(key) : key;
 
         // ignore any key press except for alphanumeric or BACK_SPACE
-        System.out.println(key);
         if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE") && !key.equals(" ")) {
             return;
         }

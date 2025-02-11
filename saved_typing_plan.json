@@ -14,15 +14,15 @@
       }, {
         "taskString" : "ffffjjjj",
         "displayText" : null,
-        "completed" : true
+        "completed" : false
       }, {
         "taskString" : "ffjfjjfj",
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.6666666666666666,
+      "completion" : 0.3333333333333333,
       "nextUncompletedLevel" : {
-        "taskString" : "ffjfjjfj",
+        "taskString" : "ffffjjjj",
         "displayText" : null,
         "completed" : false
       }
