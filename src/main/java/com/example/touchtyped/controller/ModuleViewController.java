@@ -13,9 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
@@ -31,7 +29,7 @@ public class ModuleViewController implements KeypressListener {
 
 
     @FXML
-    private HBox charContainer;
+    private FlowPane charContainer;
 
     @FXML
     private Label moduleDisplayText;
@@ -52,6 +50,7 @@ public class ModuleViewController implements KeypressListener {
     private int currentIndex;
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
     private String typedString = "";
+    private final int MAX_BOXES_PER_ROW = 16;
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -116,6 +115,13 @@ public class ModuleViewController implements KeypressListener {
 
         // initially hide next button
         nextButton.setVisible(false);
+    }
+
+    private HBox createNewRow() {
+        HBox newRow = new HBox();
+        newRow.setAlignment(javafx.geometry.Pos.CENTER);
+        newRow.setSpacing(10);
+        return newRow;
     }
 
     private StackPane createLetterBox(char c) {

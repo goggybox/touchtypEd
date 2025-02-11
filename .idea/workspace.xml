@@ -5,20 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f6ed382-6455-40cb-bb2f-32f4695b66d6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fonts/Antipasto_extrabold.otf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/fonts/Antipasto_regular.otf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../1. Professional Issues/CW2/.~lock.CW2 ideas.odt#" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/.obsidian/core-plugins.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/.obsidian/workspace.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 2 - Network Security/L4 - Application layer &amp; DNS/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L15 - TLS/Consolidation.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Third Year Notes/SEMESTER 1/2. Computer Security/Week 6 - Secure Communications/L17 - Anonymous Communications/Consolidation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/_2025_1_26_23_52___Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/LearnViewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/DividerLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/model/DividerLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/lessons.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/ModuleViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/touchtyped/controller/ModuleViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/module-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/touchtyped/module-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -236,6 +231,16 @@
     <MESSAGE value="Revert &quot;1. Fix the bug of cursor position between different system (macOS and Windows)&quot;&#10;&#10;This reverts commit 678b6159" />
     <MESSAGE value="1. Fix the bug of cursor position. The problem is in Mac there is no Consolas font." />
     <option name="LAST_COMMIT_MESSAGE" value="1. Fix the bug of cursor position. The problem is in Mac there is no Consolas font." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ClassCastException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -28,7 +28,7 @@
                 </HBox>
 
                 <StackPane alignment="CENTER" VBox.vgrow="ALWAYS">
-                    <HBox fx:id="charContainer" spacing="5" alignment="CENTER" style="-fx-translate-y: -20px;"/>
+                    <FlowPane fx:id="charContainer" hgap="5" vgap="5" alignment="CENTER" style="-fx-translate-y: -20px;" maxWidth="875"/>
                 </StackPane>
 
                 <HBox alignment="CENTER" style="-fx-padding: 20px 0 40px 0;">
