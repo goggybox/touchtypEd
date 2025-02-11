@@ -17,15 +17,23 @@
         <StackPane alignment="CENTER">
             <!-- Fixed width VBox centered within StackPane -->
             <VBox fx:id="vbox" alignment="TOP_LEFT" style="-fx-padding: 20px; -fx-pref-width: 1200px; -fx-max-width: 1200px;">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label fx:id="moduleDisplayText" style="-fx-font-size: 20px; -fx-padding: 40px 0px 0px 80px;"/>
-                    <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
-                    <StackPane alignment="TOP_RIGHT">
-                        <Label text="✕" fx:id="closeButton"
-                               style="-fx-font-size: 20px; -fx-cursor: hand;"
-                               onMouseClicked="#onBackButtonClick"/>
-                    </StackPane>
-                </HBox>
+                <VBox alignment="CENTER_LEFT" spacing="10">
+                    <HBox>
+                        <Label fx:id="moduleDisplayName" style="-fx-font-size: 20px; -fx-padding: 40px 0px 0px 80px;"/>
+                        <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+                        <StackPane alignment="TOP_RIGHT">
+                            <Label text="✕" fx:id="closeButton"
+                                   style="-fx-font-size: 20px; -fx-cursor: hand;"
+                                   onMouseClicked="#onBackButtonClick"/>
+                        </StackPane>
+                    </HBox>
+
+                    <!-- Module Display Text -->
+                    <Label fx:id="moduleDisplayText"
+                           style="-fx-font-size: 20px; -fx-font-family: 'Manjari'; -fx-text-fill: #666666; -fx-wrap-text: true; -fx-padding: 0px 40px 0px 80px;"
+                           maxWidth="1200"
+                           textAlignment="CENTER" />
+                </VBox>
 
                 <StackPane alignment="CENTER" VBox.vgrow="ALWAYS">
                     <FlowPane fx:id="charContainer" hgap="5" vgap="5" alignment="CENTER" style="-fx-translate-y: -20px;" maxWidth="875"/>

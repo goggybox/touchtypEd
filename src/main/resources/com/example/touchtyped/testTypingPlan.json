@@ -10,7 +10,7 @@
           {
             "name": "F & J Keys",
             "focus": "",
-            "displayText": "F & J Keys",
+            "displayText": "Without looking at the keyboard, rest your index fingers on the F and J key. You will be able to find them by feeling for the bump on the keys!",
             "id": 1,
             "levels": [
               {
@@ -27,7 +27,7 @@
           {
             "name": "D & K Keys",
             "focus": "",
-            "displayText": "D & K Keys",
+            "displayText": "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
             "id": 2,
             "levels": [
               {
@@ -47,7 +47,7 @@
           {
             "name": "S & L Keys",
             "focus": "",
-            "displayText": "S & L Keys",
+            "displayText": "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
             "id": 3,
             "levels": [
               {
@@ -64,7 +64,7 @@
           {
             "name": "A & ; Keys",
             "focus": "",
-            "displayText": "A & ; Keys",
+            "displayText": "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
             "id": 4,
             "levels": [
               {
@@ -81,7 +81,7 @@
           {
             "name": "G & H Keys",
             "focus": "",
-            "displayText": "G & H Keys",
+            "displayText": "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
             "id": 5,
             "levels": [
               {
@@ -98,7 +98,7 @@
           {
             "name": "Home Row",
             "focus": "",
-            "displayText": "Home Row",
+            "displayText": "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
             "id": 5,
             "levels": [
               {

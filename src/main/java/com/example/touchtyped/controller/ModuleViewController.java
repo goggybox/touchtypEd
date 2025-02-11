@@ -31,6 +31,9 @@ public class ModuleViewController implements KeypressListener {
     private FlowPane charContainer;
 
     @FXML
+    private Label moduleDisplayName;
+
+    @FXML
     private Label moduleDisplayText;
 
     @FXML
@@ -66,11 +69,14 @@ public class ModuleViewController implements KeypressListener {
         // register as a keypress listener
         keyboardInterface.addKeypressListener(this);
 
-        closeButton.setStyle(String.format("-fx-font-size: 20px; -fx-cursor: hand; -fx-text-fill: %s;", StyleConstants.GREY_COLOUR));
+        closeButton.setStyle(String.format("-fx-font-size: 20px; -fx-cursor: hand; -fx-text-fill: %s; -fx-padding: 10px 0px 0px 0px;", StyleConstants.GREY_COLOUR));
         StackPane.setMargin(closeButton, new Insets(40, 80, 0, 0));
 
-        moduleDisplayText.setStyle(String.format("-fx-text-fill: %s; -fx-font-size: 36px; " +
+        moduleDisplayName.setStyle(String.format("-fx-text-fill: %s; -fx-font-size: 36px; " +
                 "-fx-font-family: 'Antipasto'; -fx-padding: 40px 0px 0px 80px;", StyleConstants.GREY_COLOUR));
+
+        moduleDisplayText.setStyle(String.format("-fx-text-fill: %s; -fx-font-size: 26px; " +
+                "-fx-font-family: 'Antipasto'; -fx-padding: 10px 80px 0px 80px; -fx-wrap-text: true;", StyleConstants.GREY_COLOUR));
 
         // style next button
         nextButton.setStyle(String.format(
@@ -102,6 +108,7 @@ public class ModuleViewController implements KeypressListener {
      */
     public void setModule(Module module) {
         this.module = module;
+        moduleDisplayName.setText(module.getName());
         moduleDisplayText.setText(module.getDisplayText());
         loadLevel();
     }
