@@ -6,9 +6,29 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.example.touchtyped.controller.DifficultyViewController"
+            fx:id="rootPane"
+            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+    <!-- 顶部区域 (Top) -->
+    <top>
+        <Label text="Choose Difficulty (Time Limit)"
+               style="-fx-font-size: 20;"
+               BorderPane.alignment="CENTER" />
+    </top>
+
+    <!-- 中心区域 (Center) -->
+    <center>
+        <HBox alignment="CENTER" spacing="15">
+            <children>
+                <Button text="15s"  onAction="#on15sSelect"/>
+                <Button text="30s"  onAction="#on30sSelect"/>
+                <Button text="60s"  onAction="#on60sSelect"/>
+                <Button text="120s" onAction="#on120sSelect"/>
+            </children>
+        </HBox>
+    </center>
+
+</BorderPane>
