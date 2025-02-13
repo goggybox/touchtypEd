@@ -46,6 +46,12 @@ public class GameViewController {
     // Result display components
     @FXML private VBox resultContainer;
 
+    @FXML
+    private Label wpmLabel;
+    @FXML
+    private Label accuracyLabel;
+
+
     // Game state variables
     private int timeLeft = 60;
     private Timeline timeline;
@@ -464,6 +470,7 @@ public class GameViewController {
 
         updateTaskDisplay();
         updateStatistics();
+        updateRealtimeStats();
     }
 
 
@@ -584,4 +591,36 @@ public class GameViewController {
         correctKeystrokes = correct;
         wrongKeystrokes = total - correct;
     }
+
+    private void updateRealtimeStats() {
+        // Only compute if the game has started
+        if (!gameStarted || gameStartTime == 0) {
+            return;
+        }
+
+        long currentTime = System.currentTimeMillis();
+        double elapsedTimeInSeconds = (currentTime - gameStartTime) / 1000.0;
+        // Avoid division by zero
+        if (elapsedTimeInSeconds <= 0) {
+            return;
+        }
+
+        // Calculate WPM:
+        // correctKeystrokes / 5.0 gives number of "words" typed,
+        // divided by elapsed minutes to get words/minute
+        double elapsedMinutes = elapsedTimeInSeconds / 60.0;
+        double currentWPM = (correctKeystrokes / 5.0) / elapsedMinutes;
+
+        // Update WPM label (format to one decimal place if you like)
+        wpmLabel.setText(String.format("WPM: %.1f", currentWPM));
+
+        // (Optional) Calculate accuracy: correct / total
+        int total = correctKeystrokes + wrongKeystrokes;
+        double accuracyPercent = 0.0;
+        if (total > 0) {
+            accuracyPercent = correctKeystrokes * 100.0 / total;
+        }
+        accuracyLabel.setText(String.format("Accuracy: %.1f%%", accuracyPercent));
+    }
+
 }
