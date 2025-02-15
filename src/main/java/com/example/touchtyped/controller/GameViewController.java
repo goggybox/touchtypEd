@@ -1,206 +1,225 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.constants.StyleConstants;
+import com.example.touchtyped.interfaces.KeyboardInterface;
+import com.example.touchtyped.model.GameKeypressListener;
+import com.example.touchtyped.model.KeyLog;
+import com.example.touchtyped.model.KeyLogsStructure;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextFlow;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.Random;
-import java.util.List;
+import java.util.*;
 
-import com.example.touchtyped.interfaces.KeyboardInterface;
-import com.example.touchtyped.model.GameKeypressListener;
-import com.example.touchtyped.model.KeyLogsStructure;
-import com.example.touchtyped.model.KeyLog;
-
-/**
- * Controller for the typing game view.
- * Handles game logic, user input, and statistics tracking.
- */
 public class GameViewController {
 
-    // UI Components
     @FXML private VBox gameContainer;
     @FXML private TextFlow taskLabel;
     @FXML private TextField inputField;
     @FXML private Label timerLabel;
     @FXML private Text cursorLabel;
-    
-    // Time selection buttons
+
     @FXML private Button time15Button;
     @FXML private Button time30Button;
     @FXML private Button time60Button;
     @FXML private Button time120Button;
-    
-    // Result display components
+
     @FXML private VBox resultContainer;
 
-    @FXML
-    private Label wpmLabel;
-    @FXML
-    private Label accuracyLabel;
+    @FXML private Label wpmLabel;
+    @FXML private Label accuracyLabel;
 
-
-    // Game state variables
+    // ----------------- Core Game Variables -------------------
     private int timeLeft = 60;
     private Timeline timeline;
-    private final Random random = new Random();
-    private StringBuilder currentSentence;
-    private int currentCharIndex;
-    private int selectedTimeOption = 60;
     private boolean gameStarted = false;
-
-    // Statistics tracking
     private long gameStartTime;
+
     private int totalKeystrokes = 0;
     private int correctKeystrokes = 0;
     private int wrongKeystrokes = 0;
 
+    private int selectedTimeOption = 60;
+
     private KeyboardInterface keyboardInterface;
     private GameKeypressListener keyPressListener;
-
     private KeyLogsStructure keyLogsStructure;
 
-    // Word bank for typing practice
-    private final String[] words = {
-            // Length 5
-            "apple", "music", "dream", "water", "cloud",
-            "happy", "train", "fruit", "stone", "heart",
-            "night", "sweet", "grace", "voice", "world",
-            "space", "smile", "field", "power", "green",
-            "light", "river", "peace", "youth", "house",
+    // ================== Multiple-line multiple-word structure ==================
+    // A list of sentences used to randomly generate typing tasks
+    private List<String> sentencePool = new ArrayList<>();
 
-            // Length 6
-            "simple", "travel", "orange", "stream", "global",
-            "summer", "bridge", "beacon", "flight", "island",
-            "nature", "action", "vision", "larger", "breeze",
-            "matter", "garden", "beauty", "bright", "source",
-            "family", "friend", "spirit", "memory", "window",
+    // Maximum number of words per line
+    private static final int WORDS_PER_LINE = 8;
+    // lines[lineIndex] => The words in that line
+    private List<List<String>> lines = new ArrayList<>();
 
-            // Length 7
-            "project", "crystal", "thunder", "freedom", "example",
-            "journey", "harmony", "weather", "forever", "teacher",
-            "gateway", "network", "village", "science", "student",
-            "rainbow", "program", "mystery", "magical", "picture",
-            "fantasy", "history", "justice", "captain", "library",
+    // typedWords[lineIndex][wordIndex] = The user's actual input
+    private List<List<StringBuilder>> typedWords = new ArrayList<>();
+    private List<List<List<Boolean>>> errorFlags = new ArrayList<>();
 
-            // Length 8
-            "notebook", "sunshine", "mountain", "paradigm", "umbrella",
-            "rainbow", "evergreen", "explorer", "pleasant", "strength",
-            "platform", "activity", "horizon", "emphasis", "survivor",
-            "football", "software", "universe", "operator", "lifetime",
-            "original", "movement", "champion", "decision", "discover",
+    // The current line and word indices
+    private int currentLineIndex = 0;
+    private int currentWordIndex = 0;
 
-            // Length 9
-            "adventure", "champion", "education", "fantastic", "motivator",
-            "beautiful", "volcanoes", "disaster", "insurance", "highlight",
-            "president", "important", "christmas", "stronger", "backpacks",
-            "character", "sunflower", "godfather", "wonderful", "solutions",
-            "marketing", "collector", "blueprint", "backstage", "backspace",
+    // A mapping table for special keys to characters
+    private static final Map<String, String> SPECIAL_KEY_TO_CHAR = Map.ofEntries(
+            Map.entry("SEMICOLON", ";"),
+            Map.entry("QUOTE", "'"),
+            Map.entry("COMMA", ","),
+            Map.entry("PERIOD", "."),
+            Map.entry("SLASH", "/"),
+            Map.entry("BACK_SLASH", "\\"),
+            Map.entry("OPEN_BRACKET", "["),
+            Map.entry("CLOSE_BRACKET", "]"),
+            Map.entry("MINUS", "-"),
+            Map.entry("EQUALS", "=")
+    );
 
-            // Length 10
-            "revolution", "impression", "generation", "technology", "illuminati",
-            "motivation", "destination", "exploration", "performance", "journalism",
-            "importance", "foundation", "connection", "application", "reflection",
-            "discovery", "landscapes", "overcoming", "abandoned", "friendship",
-            "assessment", "commander", "incredible", "environment", "membership"
-    };
-
-    /**
-     * Array to track error states for each character in the typing sequence.
-     * True indicates an error at that position.
-     */
-    private final boolean[] charErrorStates = new boolean[1000];  // Assume max length of 1000
-
-    /** Flag to track if the first character input was incorrect */
-    private boolean hasFirstError = false;
-
-    /** Flag to track if there's an unresolved typing error */
-    private boolean hasUnresolvedError = false;
-
-    /**
-     * Initializes the game controller.
-     * Sets up UI components and default game state.
-     */
     @FXML
     public void initialize() {
-        // Initialize keyboard interface
         keyboardInterface = new KeyboardInterface();
         keyPressListener = new GameKeypressListener(this, keyboardInterface);
-        
-        // Set up UI components
+
+        loadSentencesFromFile();
+
         time15Button.setFocusTraversable(false);
         time30Button.setFocusTraversable(false);
         time60Button.setFocusTraversable(false);
         time120Button.setFocusTraversable(false);
-        
-        // Set default time
+
+        // Default selection: 60 seconds
         updateTimeButtonStyle(60);
-        
-        // Attach keyboard listener when scene is available
-        gameContainer.sceneProperty().addListener((observable, oldScene, newScene) -> {
+
+        // After the scene is ready, attach the keyboard listener
+        gameContainer.sceneProperty().addListener((ob, oldScene, newScene) -> {
             if (newScene != null) {
                 keyboardInterface.attachToScene(newScene);
             }
         });
 
-        // Initialize game state
         resetGame();
     }
 
     /**
-     * Resets the game to its initial state.
-     * Clears all statistics, stops timer, and generates new typing task.
+     * Resets the game to its initial state
      */
     @FXML
     public void resetGame() {
-        // Stop existing timer if running
         if (timeline != null) {
             timeline.stop();
         }
-        
-        // Reset game state
         gameStarted = false;
         timeLeft = selectedTimeOption;
-        currentCharIndex = 0;
-        totalKeystrokes = 0;
-        correctKeystrokes = 0;
-        wrongKeystrokes = 0;
-        currentSentence = null;
 
-        // Reset UI
         timerLabel.setText(String.valueOf(timeLeft));
         inputField.clear();
         inputField.setDisable(false);
         resultContainer.setVisible(false);
 
-        // Generate new typing task
+        totalKeystrokes = 0;
+        correctKeystrokes = 0;
+        wrongKeystrokes = 0;
+
+        currentLineIndex = 0;
+        currentWordIndex = 0;
+
+        wpmLabel.setText("WPM: 0.0");
+        accuracyLabel.setText("Accuracy: 0.0%");
+
         generateNewTask();
-        keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
+
+        keyLogsStructure = new KeyLogsStructure("MultilineWithCharErrors");
         cursorLabel.setVisible(false);
     }
 
     /**
-     * Starts the typing game.
-     * Initializes timer and begins tracking user input.
+     * Loads external file sentences.txt for generating random sentences
+     */
+    private void loadSentencesFromFile() {
+        try {
+            var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/sentences.txt");
+            if (inputStream == null) {
+                System.out.println("sentences.txt not found!");
+                return;
+            }
+            try (var scanner = new Scanner(inputStream)) {
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine().trim();
+                    if (!line.isEmpty()) {
+                        sentencePool.add(line);
+                    }
+                }
+            }
+            System.out.println("Loaded " + sentencePool.size() + " sentences from file.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Randomly generate multi-line text tasks
+     */
+    private void generateNewTask() {
+        if (sentencePool.isEmpty()) {
+            System.out.println("Sentence pool is empty, falling back to default words array.");
+            return;
+        }
+
+        lines.clear();
+        typedWords.clear();
+        errorFlags.clear();
+
+        Random random = new Random();
+        String randomSentence = sentencePool.get(random.nextInt(sentencePool.size()));
+        System.out.println("Selected sentence: " + randomSentence);
+
+        // Split into words
+        String[] splitted = randomSentence.split("\\s+");
+        List<String> allWords = new ArrayList<>(List.of(splitted));
+
+        // Each line has 8 words
+        for (int i = 0; i < allWords.size(); i += WORDS_PER_LINE) {
+            int end = Math.min(i + WORDS_PER_LINE, allWords.size());
+            List<String> lineWords = new ArrayList<>(allWords.subList(i, end));
+            lines.add(lineWords);
+
+            // Initialize typedLine & errorLine
+            List<StringBuilder> typedLine = new ArrayList<>();
+            List<List<Boolean>> errorLine = new ArrayList<>();
+
+            for (String word : lineWords) {
+                // Each word corresponds to a StringBuilder (user input)
+                typedLine.add(new StringBuilder());
+                // Plan A: errorFlags starts as an empty list, without pre-filling false values
+                List<Boolean> charErrors = new ArrayList<>();
+                errorLine.add(charErrors);
+            }
+
+            typedWords.add(typedLine);
+            errorFlags.add(errorLine);
+        }
+
+        updateTaskDisplay();
+    }
+
+    /**
+     * Starts the game: begins the timer, records the start time
      */
     private void startGame() {
         if (!gameStarted) {
             gameStarted = true;
-            cursorLabel.setVisible(true);
-            
-            // Start countdown timer
+            gameStartTime = System.currentTimeMillis();
+
             timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
                 timeLeft--;
                 timerLabel.setText(String.valueOf(timeLeft));
@@ -210,41 +229,25 @@ public class GameViewController {
             }));
             timeline.setCycleCount(selectedTimeOption);
             timeline.play();
-
-            updateTaskDisplay();
         }
     }
 
     /**
-     * Ends the current game session.
-     * Calculates final statistics and displays results.
-     * TODO: Graph is not finished now.
+     * Ends the game and navigates to the results screen
      */
     private void endGame() {
         if (timeline != null) {
             timeline.stop();
         }
+        double finalWpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);
 
-        System.out.println(keyLogsStructure.toString());
-        
-        // Load result view
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-result-view.fxml"));
             Scene resultScene = new Scene(loader.load(), 1200, 700);
-            
-            // Get result controller and set data
+
             GameResultViewController resultController = loader.getController();
-            
-            // Calculate final WPM
-            double finalWpm = (correctKeystrokes / 5.0) / (selectedTimeOption / 60.0);
-            resultController.setGameData(
-                (int)finalWpm,  // Pass calculated WPM
-                correctKeystrokes, 
-                wrongKeystrokes, 
-                totalKeystrokes
-            );
-            
-            // Display result scene
+            resultController.setGameData((int) finalWpm, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+
             Stage stage = (Stage) gameContainer.getScene().getWindow();
             stage.setScene(resultScene);
         } catch (IOException e) {
@@ -253,110 +256,269 @@ public class GameViewController {
     }
 
     /**
-     * Updates the display of the typing task.
-     * Shows typed and remaining text with appropriate styling.
+     * Renders 3 lines of text, highlighting incorrect characters in red, and displays the current cursor
      */
     private void updateTaskDisplay() {
         taskLabel.getChildren().clear();
-        
-        // Calculate visible text range
-        int visibleTextLength = 50;
-        int start = Math.max(0, currentCharIndex - visibleTextLength /2);
-        int end = Math.min(currentSentence.length(), start + visibleTextLength);
-        
-        // Display typed text (completed text)
-        if (currentCharIndex > start) {
-            for (int i = start; i < currentCharIndex; i++) {
-                Text charText = new Text(String.valueOf(currentSentence.charAt(i)));
-                charText.getStyleClass().add(charErrorStates[i] ? "error-text" : "typed-text");
-                taskLabel.getChildren().add(charText);
-            }
-        }
-        
-        // Display current character
-        if (currentCharIndex < currentSentence.length()) {
-            Text currentChar = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
-            // Only show red color when the first character is typed incorrectly
-            if (!gameStarted && hasFirstError) {
-                currentChar.getStyleClass().add("error-text");
-            } else if (gameStarted && charErrorStates[currentCharIndex]) {
-                currentChar.getStyleClass().add("error-text");
-            } else {
-                currentChar.getStyleClass().add("remaining-text");
-            }
-            taskLabel.getChildren().add(currentChar);
-        }
-        
-        // Display remaining text
-        if (currentCharIndex + 1 < end) {
-            Text remainingText = new Text(currentSentence.substring(currentCharIndex + 1, end));
-            remainingText.getStyleClass().add("remaining-text");
-            taskLabel.getChildren().add(remainingText);
-        }
-        
-        // Update cursor position
-//        Text sampleText = new Text("W");
-//        sampleText.setFont(cursorLabel.getFont());
-//        double charWidth = sampleText.getLayoutBounds().getWidth();
-//        System.out.println("charWidth: " + charWidth);
-//        System.out.println("Current font: " + sampleText.getFont().getName());
-//        System.out.println("Current font family: " + sampleText.getFont().getFamily());
-//
-//        double baseX = -(visibleTextLength * charWidth) / 2;
-//        double offset = (currentCharIndex - start) * charWidth;
-//        double finalX = baseX + offset;
-//        System.out.println("finalX: " + finalX);
 
-         double baseX = -(visibleTextLength * StyleConstants.charWidth / 2.0);
-         double offset = (currentCharIndex - start) * StyleConstants.charWidth;
-         double finalX = baseX + offset;
+        for (int offset = 0; offset < 3; offset++) {
+            int lineIdx = currentLineIndex + offset;
+            if (lineIdx < 0 || lineIdx >= lines.size()) break;
 
-        cursorLabel.setTranslateX(finalX);
-    }
+            List<String> lineWords = lines.get(lineIdx);
+            List<StringBuilder> typedLine = typedWords.get(lineIdx);
+            List<List<Boolean>> errorLine = errorFlags.get(lineIdx);
 
+            for (int w = 0; w < lineWords.size(); w++) {
+                if (w >= typedLine.size() || w >= errorLine.size()) break;
 
-    /**
-     * Generates a new typing task.
-     * Creates initial sentence from word bank if none exists.
-     */
-    private void generateNewTask() {
-        // Initialize sentence with initial words
-        if (currentSentence == null) {
-            currentSentence = new StringBuilder();
-            for (int i = 0; i < 10; i++) {
-                addNewWord();
-            }
-            updateTaskDisplay();
-            
-            // Provide haptic feedback for first character
-            if (!currentSentence.isEmpty() && keyboardInterface != null) {
-                String nextChar = String.valueOf(currentSentence.charAt(0)).toUpperCase();
-                if (nextChar.equals(" ")) {
-                    nextChar = "space";
+                String targetWord = lineWords.get(w);
+                StringBuilder userInput = typedLine.get(w);
+                List<Boolean> errorList = errorLine.get(w);
+
+                int typedLen = userInput.length();
+
+                // Render the user-typed characters
+                for (int i = 0; i < typedLen; i++) {
+                    Text charNode;
+                    char thisChar = userInput.charAt(i);
+
+                    // If the i-th entry in errorList is true => highlight red
+                    boolean isError = (i < errorList.size()) && errorList.get(i);
+                    if (isError) {
+                        charNode = new Text(String.valueOf(thisChar));
+                        charNode.getStyleClass().add("error-text");
+                    } else {
+                        charNode = new Text(String.valueOf(thisChar));
+                        charNode.getStyleClass().add("typed-text");
+                    }
+
+                    taskLabel.getChildren().add(charNode);
                 }
-                keyboardInterface.sendHapticCommand(nextChar, 200, 50);
+
+                // Insert the cursor into the currently typed word
+                boolean isCurrentWord = (lineIdx == currentLineIndex && w == currentWordIndex);
+                if (isCurrentWord) {
+                    Text cursorNode = new Text("|");
+                    cursorNode.getStyleClass().add("cursor");
+                    taskLabel.getChildren().add(cursorNode);
+                }
+
+                // Show the untyped portion
+                if (typedLen < targetWord.length()) {
+                    String remainPart = targetWord.substring(typedLen);
+                    Text remainText = new Text(remainPart);
+                    remainText.getStyleClass().add("remaining-text");
+                    taskLabel.getChildren().add(remainText);
+                }
+                // Space between words
+                taskLabel.getChildren().add(new Text(" "));
+            }
+            taskLabel.getChildren().add(new Text("\n"));
+        }
+    }
+
+    /**
+     * Handles the logic for key input
+     */
+    public void handleKeyPress(String key) {
+        // If the key is a special key like "SEMICOLON," replace it with the actual character
+        if (SPECIAL_KEY_TO_CHAR.containsKey(key)) {
+            key = SPECIAL_KEY_TO_CHAR.get(key);
+        }
+
+        if (inputField.isDisabled()) return;
+
+        // If the game hasn't started, only allow input [a-zA-Z0-9] to start
+        if (!gameStarted) {
+            if (!key.matches("[a-zA-Z0-9]")) return;
+            startGame();
+        }
+
+        // If it's neither backspace nor matches [a-zA-Z0-9,\\.;:'\"?! ], ignore
+        if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?! ]")) {
+            System.out.println("Ignored input: " + key);
+            return;
+        }
+
+        if (currentLineIndex < 0 || currentLineIndex >= lines.size()) {
+            return;
+        }
+        List<String> curLine = lines.get(currentLineIndex);
+        if (currentWordIndex < 0 || currentWordIndex >= curLine.size()) {
+            moveToNextLine();
+            updateAllUI();
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if (keyLogsStructure != null) {
+            keyLogsStructure.addKeyLog(key, now - gameStartTime);
+        }
+
+        if (key.equals("BACK_SPACE")) {
+            handleBackspace();
+            updateAllUI();
+            return;
+        }
+
+        // Target word
+        String targetWord = curLine.get(currentWordIndex);
+        StringBuilder userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
+        List<Boolean> charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
+
+        // If the word is fully typed
+        if (userInput.length() >= targetWord.length()) {
+            if (key.equals(" ")) {
+                moveToNextWord();
+            } else {
+                // If it exceeds the length => count as an error
+                wrongKeystrokes++;
+                provideErrorFeedback(key);
+            }
+            updateAllUI();
+            return;
+        }
+
+        // If space is typed but the word is not yet fully typed => error
+        if (key.equals(" ")) {
+            wrongKeystrokes++;
+            provideErrorFeedback(key);
+            updateAllUI();
+            return;
+        }
+
+        // Compare characters
+        int idx = userInput.length();
+        char typedChar = key.charAt(0);
+        char expectedChar = targetWord.charAt(idx);
+
+        // Plan A: Replace the user's typed character with the 'target word's corresponding character',
+        //         or whichever strategy you want:
+        // If you want to truly display the user's typed characters: userInput.append(typedChar);
+        // If you only want to show the correct character: userInput.append(expectedChar);
+        // Replace as needed. The following example only shows the 'correct character'
+        userInput.append(expectedChar);
+
+        if (Character.toLowerCase(typedChar) == Character.toLowerCase(expectedChar)) {
+            // dynamically add false
+            charErrFlags.add(false);
+            correctKeystrokes++;
+        } else {
+            // dynamically add true
+            charErrFlags.add(true);
+            wrongKeystrokes++;
+            provideErrorFeedback(key);
+        }
+
+        updateAllUI();
+    }
+
+    /**
+     * Moves to the next word
+     */
+    private void moveToNextWord() {
+        currentWordIndex++;
+        if (currentWordIndex >= lines.get(currentLineIndex).size()) {
+            currentWordIndex = 0;
+            currentLineIndex++;
+        }
+        if (currentLineIndex >= lines.size()) {
+            endGame();
+        }
+    }
+
+    /**
+     * Moves to the next line
+     */
+    private void moveToNextLine() {
+        currentLineIndex++;
+        currentWordIndex = 0;
+        if (currentLineIndex >= lines.size()) {
+            endGame();
+        }
+    }
+
+    /**
+     * Handles backspace logic
+     */
+    private void handleBackspace() {
+        if (currentLineIndex >= lines.size()) return;
+        List<String> curLine = lines.get(currentLineIndex);
+        if (currentWordIndex >= curLine.size()) {
+            return;
+        }
+
+        StringBuilder userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
+        List<Boolean> charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
+
+        if (userInput.length() > 0) {
+            userInput.deleteCharAt(userInput.length() - 1);
+            // Plan A: correspondingly remove the last error flag
+            charErrFlags.remove(charErrFlags.size() - 1);
+        } else {
+            // If already at the start of the current word, move back to the previous word
+            if (currentWordIndex > 0) {
+                currentWordIndex--;
+            } else if (currentLineIndex > 0) {
+                currentLineIndex--;
+                currentWordIndex = lines.get(currentLineIndex).size() - 1;
             }
         }
     }
 
-    /**
-     * Adds a new word to the current sentence.
-     * Includes space separator if not the first word.
-     */
-    private String addNewWord() {
-        // Add space between words
-        if (!currentSentence.isEmpty()) {
-            currentSentence.append(" ");
-        }
-        String newWord = words[random.nextInt(words.length)];
-        currentSentence.append(newWord);
-        return newWord;
+    // ----------------- Statistics & UI -----------------
+    private void updateAllUI() {
+        updateTaskDisplay();
+        updateStatistics();
+        updateRealtimeStats();
     }
 
     /**
-     * Handles navigation to learn view.
-     * Loads and displays the learn-view.fxml scene.
+     * Update statistical information (total keystrokes, errors, etc.)
      */
+    private void updateStatistics() {
+        if (!gameStarted) return;
+        totalKeystrokes = correctKeystrokes + wrongKeystrokes;
+    }
+
+    /**
+     * Calculate WPM and accuracy in real time
+     */
+    private void updateRealtimeStats() {
+        if (!gameStarted || gameStartTime == 0) return;
+
+        long now = System.currentTimeMillis();
+        double elapsedSec = (now - gameStartTime) / 1000.0;
+        if (elapsedSec <= 0) return;
+
+        double elapsedMin = elapsedSec / 60.0;
+        double wpm = (correctKeystrokes / 5.0) / elapsedMin;
+        wpmLabel.setText(String.format("WPM: %.1f", wpm));
+
+        int total = correctKeystrokes + wrongKeystrokes;
+        double acc = (total > 0)
+                ? (correctKeystrokes * 100.0 / total)
+                : 0.0;
+        accuracyLabel.setText(String.format("Accuracy: %.1f%%", acc));
+    }
+
+    /**
+     * Suggests the next character (optional)
+     */
+    private void provideNextCharacterHint() {
+        // Optional feature
+    }
+
+    /**
+     * Provides feedback for incorrect input (vibration, lighting, etc.)
+     */
+    private void provideErrorFeedback(String key) {
+        keyboardInterface.sendHapticCommand(key, 500, 100);
+        keyboardInterface.activateLights(1000);
+    }
+
+    // ----------------- Time buttons & navigation -----------------
     @FXML
     public void onLearnButtonClick() {
         try {
@@ -370,196 +532,38 @@ public class GameViewController {
     }
 
     /**
-     * Handles keyboard input during the typing game.
-     * Records each keystroke in the KeyLogsStructure and provides feedback.
-     *
-     * @param key The string representation of the pressed key
-     */
-    public void handleKeyPress(String key) {
-        if (inputField.isDisabled()) {
-            return;
-        }
-
-        // Before game starts, only process letters and numbers
-        if (!gameStarted) {
-            if (!key.matches("[a-zA-Z0-9]")) {
-                return;  // Ignore special characters and space before game starts
-            }
-            
-            // Check if the first character is correct
-            char expectedChar = currentSentence.charAt(currentCharIndex);
-            String expectedKey = String.valueOf(expectedChar);
-            
-            if (!key.equalsIgnoreCase(expectedKey)) {
-                return;  // Don't process incorrect first character
-            }
-        } else {
-            // After game starts, process letters, numbers, space and backspace
-            if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9 ]")) {
-                return;  // Ignore special characters
-            }
-        }
-
-        // Record the keystroke timestamp
-        long currentTime = System.currentTimeMillis();
-        if (!gameStarted) {
-            gameStartTime = currentTime;
-            keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
-        }
-
-        // Handle backspace separately
-        if (key.equals("BACK_SPACE")) {
-            if (currentCharIndex > 0) {
-                // Record backspace operation
-                keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
-
-                currentCharIndex--;
-                charErrorStates[currentCharIndex] = false;
-                // Check if there are remaining errors
-                hasUnresolvedError = false;
-                for (int i = 0; i < currentCharIndex; i++) {
-                    if (charErrorStates[i]) {
-                        hasUnresolvedError = true;
-                        break;
-                    }
-                }
-                hasFirstError = false;
-                updateTaskDisplay();
-                provideNextCharacterHint();
-            }
-            return;
-        }
-
-        // Get the expected character
-        char expectedChar = currentSentence.charAt(currentCharIndex);
-        String expectedKey = expectedChar == ' ' ? " " : String.valueOf(expectedChar);
-
-        // Add key log
-        keyLogsStructure.addKeyLog(key, currentTime - gameStartTime);
-
-        // Handle correct input
-        if (key.equalsIgnoreCase(expectedKey)) {
-            if (!gameStarted) {
-                startGame();
-                hasFirstError = false;
-            }
-            currentCharIndex++;
-            if (hasUnresolvedError) {
-                provideErrorFeedback(key);
-            } else {
-                provideNextCharacterHint();
-            }
-        }
-        // Handle incorrect input
-        else {
-            if (!gameStarted) {
-                hasFirstError = true;
-            } else {
-                charErrorStates[currentCharIndex] = true;
-                hasUnresolvedError = true;
-                currentCharIndex++;
-            }
-            provideErrorFeedback(key);
-        }
-
-        // Add new words when running low on text
-        if (currentSentence.length() - currentCharIndex < 30) {
-            String newWord = addNewWord();
-            keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + newWord);
-        }
-
-        updateTaskDisplay();
-        updateStatistics();
-        updateRealtimeStats();
-    }
-
-
-    /**
-     * Provides error feedback through haptic vibration and LED lights.
-     * Used when an incorrect key is pressed or when typing with unresolved errors.
-     *
-     * @param key The key that triggered the error feedback
-     */
-    private void provideErrorFeedback(String key) {
-        keyboardInterface.sendHapticCommand(key, 500, 100);
-        keyboardInterface.activateLights(1000);
-    }
-
-    /**
-     * Provides haptic hint for the next character to be typed.
-     * This helps users locate the next key they need to press.
-     * For space character, sends "SPACE" as the hint.
-     */
-    private void provideNextCharacterHint() {
-        if (currentCharIndex < currentSentence.length()) {
-            String nextChar = String.valueOf(currentSentence.charAt(currentCharIndex));
-            if (nextChar.equals(" ")) {
-                nextChar = "SPACE";
-            }
-            keyboardInterface.sendHapticCommand(nextChar.toUpperCase(), 200, 50);
-        }
-    }
-
-    /**
-     * Updates the visual style of time selection buttons.
-     * Highlights selected time option and updates game settings.
-     *
-     * @param selectedTime The selected time duration in seconds
+     * Update the selection state of the time buttons
      */
     private void updateTimeButtonStyle(int selectedTime) {
-        // Remove selection style from all buttons
         time15Button.getStyleClass().remove("selected");
         time30Button.getStyleClass().remove("selected");
         time60Button.getStyleClass().remove("selected");
         time120Button.getStyleClass().remove("selected");
-        
-        // Add selection style to chosen button
+
         switch (selectedTime) {
             case 15 -> time15Button.getStyleClass().add("selected");
             case 30 -> time30Button.getStyleClass().add("selected");
             case 60 -> time60Button.getStyleClass().add("selected");
             case 120 -> time120Button.getStyleClass().add("selected");
         }
-        
-        // Update time settings
-        selectedTimeOption = selectedTime;
+        this.selectedTimeOption = selectedTime;
         timeLeft = selectedTime;
         timerLabel.setText(String.valueOf(timeLeft));
     }
 
-    // Time selection handlers
-    /**
-     * Sets game duration to 15 seconds.
-     */
     @FXML public void select15s() {
-        selectedTimeOption = 15;
         updateTimeButtonStyle(15);
         resetGame();
     }
-
-    /**
-     * Sets game duration to 30 seconds.
-     */
     @FXML public void select30s() {
-        selectedTimeOption = 30;
         updateTimeButtonStyle(30);
         resetGame();
     }
-
-    /**
-     * Sets game duration to 60 seconds.
-     */
     @FXML public void select60s() {
-        selectedTimeOption = 60;
         updateTimeButtonStyle(60);
         resetGame();
     }
-
-    /**
-     * Sets game duration to 120 seconds.
-     */
     @FXML public void select120s() {
-        selectedTimeOption = 120;
         updateTimeButtonStyle(120);
         resetGame();
     }
@@ -567,60 +571,4 @@ public class GameViewController {
     public boolean isInputDisabled() {
         return inputField.isDisabled();
     }
-
-    /**
-     * Updates the statistics display based on KeyLogsStructure data
-     */
-    private void updateStatistics() {
-        if (!gameStarted) return;
-
-        List<KeyLog> logs = keyLogsStructure.getKeyLogs();
-        int total = 0;
-        int correct = 0;
-
-        for (KeyLog log : logs) {
-            if (!log.getKey().equals("BACK_SPACE")) {
-                total++;
-                if (!log.isError()) {
-                    correct++;
-                }
-            }
-        }
-
-        totalKeystrokes = total;
-        correctKeystrokes = correct;
-        wrongKeystrokes = total - correct;
-    }
-
-    private void updateRealtimeStats() {
-        // Only compute if the game has started
-        if (!gameStarted || gameStartTime == 0) {
-            return;
-        }
-
-        long currentTime = System.currentTimeMillis();
-        double elapsedTimeInSeconds = (currentTime - gameStartTime) / 1000.0;
-        // Avoid division by zero
-        if (elapsedTimeInSeconds <= 0) {
-            return;
-        }
-
-        // Calculate WPM:
-        // correctKeystrokes / 5.0 gives number of "words" typed,
-        // divided by elapsed minutes to get words/minute
-        double elapsedMinutes = elapsedTimeInSeconds / 60.0;
-        double currentWPM = (correctKeystrokes / 5.0) / elapsedMinutes;
-
-        // Update WPM label (format to one decimal place if you like)
-        wpmLabel.setText(String.format("WPM: %.1f", currentWPM));
-
-        // (Optional) Calculate accuracy: correct / total
-        int total = correctKeystrokes + wrongKeystrokes;
-        double accuracyPercent = 0.0;
-        if (total > 0) {
-            accuracyPercent = correctKeystrokes * 100.0 / total;
-        }
-        accuracyLabel.setText(String.format("Accuracy: %.1f%%", accuracyPercent));
-    }
-
 }

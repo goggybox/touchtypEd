@@ -32,7 +32,7 @@ public class KeyboardInterface {
 
             if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
                 String key = event.getText();
-                notifyListeners(key.toUpperCase());
+                notifyListeners(key);
             } else {
                 switch (keyCode) {
                     case BACK_SPACE:

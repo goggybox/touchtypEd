@@ -296,3 +296,22 @@
     src: url('/fonts/consolab.ttf');
 }
 
+.error-text {
+    -fx-fill: #ff5555;     /* 红色 */
+    -fx-underline: true;   /* 加下划线，可选 */
+}
+
+.typed-text {
+    -fx-fill: #dddddd;     /* 浅灰 */
+}
+
+.remaining-text {
+    -fx-fill: #777777;     /* 深灰 */
+}
+
+.cursor {
+    -fx-fill: #ffd700;     /* 金黄色光标 */
+    -fx-font-weight: bold;
+}
+
+
