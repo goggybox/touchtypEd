@@ -50,6 +50,11 @@ public class KeyLogsStructure {
      * @param timestamp is the timestamp at which the key was pressed
      */
     public void addKeyLog(String key, long timestamp) {
+        if (charPosition < 0) {
+            charPosition = 0;
+        } else if (charPosition > wordsGiven.length()) {
+            charPosition = wordsGiven.length();
+        }
 
         // determine the expected keypress based on the expected character in wordsGiven at charPosition
         String expected = null;
@@ -76,7 +81,21 @@ public class KeyLogsStructure {
         }
 
         // if the key is a BACK_SPACE, increment charPosition, otherwise increment it.
-        charPosition += (Objects.equals(key, "BACK_SPACE")) ? -1 : 1;
+        if (Objects.equals(key, "BACK_SPACE")) {
+            // avoid -1 index
+            if (charPosition > 0) {
+                charPosition--;
+            }
+        } else {
+            charPosition++;
+        }
+
+        // clamp again
+        if (charPosition < 0) {
+            charPosition = 0;
+        } else if (charPosition > wordsGiven.length()) {
+            charPosition = wordsGiven.length();
+        }
 
     }
 
