@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -32,11 +33,18 @@ public class GameViewController {
     @FXML private Button time30Button;
     @FXML private Button time60Button;
     @FXML private Button time120Button;
+    @FXML private HBox timeBox;
+
 
     @FXML private VBox resultContainer;
 
     @FXML private Label wpmLabel;
     @FXML private Label accuracyLabel;
+
+    @FXML private ToggleGroup modeToggleGroup;
+    @FXML private RadioButton timedModeRadio;
+    @FXML private RadioButton articleModeRadio;
+
 
     // ----------------- Core Game Variables -------------------
     private int timeLeft = 60;
@@ -55,8 +63,9 @@ public class GameViewController {
     private KeyLogsStructure keyLogsStructure;
 
     // ================== Multiple-line multiple-word structure ==================
-    // A list of sentences used to randomly generate typing tasks
+    // outside resources
     private List<String> sentencePool = new ArrayList<>();
+    private List<String> articles = new ArrayList<>();
 
     // Maximum number of words per line
     private static final int WORDS_PER_LINE = 8;
@@ -91,6 +100,7 @@ public class GameViewController {
         keyPressListener = new GameKeypressListener(this, keyboardInterface);
 
         loadSentencesFromFile();
+        loadArticlesFromFile();
 
         time15Button.setFocusTraversable(false);
         time30Button.setFocusTraversable(false);
@@ -107,6 +117,10 @@ public class GameViewController {
             }
         });
 
+        modeToggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            resetGame();
+        });
+
         resetGame();
     }
 
@@ -119,9 +133,21 @@ public class GameViewController {
             timeline.stop();
         }
         gameStarted = false;
-        timeLeft = selectedTimeOption;
 
-        timerLabel.setText(String.valueOf(timeLeft));
+        // Article Mode
+        if (isArticleMode()) {
+            timeBox.setVisible(false);
+            timeBox.setManaged(false);
+            timeLeft = 0;
+            timerLabel.setText("Article Mode");
+        } else {
+            // Timed Mode
+            timeBox.setVisible(true);
+            timeBox.setManaged(true);
+            timeLeft = selectedTimeOption;
+            timerLabel.setText(String.valueOf(timeLeft));
+        }
+
         inputField.clear();
         inputField.setDisable(false);
         resultContainer.setVisible(false);
@@ -167,58 +193,107 @@ public class GameViewController {
     }
 
     /**
+     * Loads external file article.txt for generating paragraph-based text
+     */
+    private void loadArticlesFromFile() {
+        try {
+            var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/articles.txt");
+            if (inputStream == null) {
+                System.out.println("article.txt not found!");
+                return;
+            }
+            try (var scanner = new Scanner(inputStream)) {
+                StringBuilder paragraphBuilder = new StringBuilder();
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    if (line.trim().isEmpty()) {
+                        if (paragraphBuilder.length() > 0) {
+                            articles.add(paragraphBuilder.toString().trim());
+                            paragraphBuilder.setLength(0);
+                        }
+                    } else {
+                        paragraphBuilder.append(line).append(" ");
+                    }
+                }
+                if (paragraphBuilder.length() > 0) {
+                    articles.add(paragraphBuilder.toString().trim());
+                }
+            }
+            System.out.println("Loaded " + articles.size() + " paragraphs from article.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Randomly generate multi-line text tasks
      */
     private void generateNewTask() {
-        if (sentencePool.isEmpty()) {
-            System.out.println("Sentence pool is empty, falling back to default words array.");
-            return;
-        }
-
         lines.clear();
         typedWords.clear();
         errorFlags.clear();
 
-        Random random = new Random();
-        StringBuilder combinedSentences = new StringBuilder();
+        String finalText;
 
-        int sentenceCount = 3;
-        for (int i = 0; i < sentenceCount; i++) {
-            String randomSentence = sentencePool.get(random.nextInt(sentencePool.size()));
-            combinedSentences.append(randomSentence).append(" ");
+        if (isArticleMode()) {
+            // Article Mode
+            if (articles.isEmpty()) {
+                System.out.println("No articles loaded. Fallback to default sentences mode.");
+                finalText = getRandomSentences();
+            } else {
+                Random random = new Random();
+                String chosenParagraph = articles.get(random.nextInt(articles.size()));
+                finalText = chosenParagraph.trim();
+                System.out.println("Selected article paragraph: " + finalText);
+            }
+        } else {
+            // Timed Mode
+            if (sentencePool.isEmpty()) {
+                System.out.println("Sentence pool is empty, fallback to default words array.");
+                return;
+            }
+            finalText = getRandomSentences();
         }
 
-        String finalText = combinedSentences.toString().trim();
-        System.out.println("Selected text: " + finalText);
+        // split, build lines
+        if (finalText == null || finalText.isEmpty()) {
+            System.out.println("Final text is empty, skip.");
+            return;
+        }
 
-        // Split into words
         String[] splitted = finalText.split("\\s+");
         List<String> allWords = new ArrayList<>(List.of(splitted));
 
-        // Each line has 8 words
         for (int i = 0; i < allWords.size(); i += WORDS_PER_LINE) {
             int end = Math.min(i + WORDS_PER_LINE, allWords.size());
             List<String> lineWords = new ArrayList<>(allWords.subList(i, end));
             lines.add(lineWords);
 
-            // Initialize typedLine & errorLine
             List<StringBuilder> typedLine = new ArrayList<>();
             List<List<Boolean>> errorLine = new ArrayList<>();
 
             for (String word : lineWords) {
-                // Each word corresponds to a StringBuilder (user input)
                 typedLine.add(new StringBuilder());
-                // Plan A: errorFlags starts as an empty list, without pre-filling false values
-                List<Boolean> charErrors = new ArrayList<>();
-                errorLine.add(charErrors);
+                errorLine.add(new ArrayList<>());
             }
-
             typedWords.add(typedLine);
             errorFlags.add(errorLine);
         }
 
         updateTaskDisplay();
     }
+
+    private String getRandomSentences() {
+        Random random = new Random();
+        StringBuilder combined = new StringBuilder();
+        int sentenceCount = 3;
+        for (int i = 0; i < sentenceCount; i++) {
+            String s = sentencePool.get(random.nextInt(sentencePool.size()));
+            combined.append(s).append(" ");
+        }
+        return combined.toString().trim();
+    }
+
 
     /**
      * Starts the game: begins the timer, records the start time
@@ -228,17 +303,21 @@ public class GameViewController {
             gameStarted = true;
             gameStartTime = System.currentTimeMillis();
 
-            timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-                timeLeft--;
-                timerLabel.setText(String.valueOf(timeLeft));
-                if (timeLeft <= 0) {
-                    endGame();
-                }
-            }));
-            timeline.setCycleCount(selectedTimeOption);
-            timeline.play();
+            // 只有在 Timed Mode 下才启动倒计时
+            if (!isArticleMode()) {
+                timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                    timeLeft--;
+                    timerLabel.setText(String.valueOf(timeLeft));
+                    if (timeLeft <= 0) {
+                        endGame();
+                    }
+                }));
+                timeline.setCycleCount(selectedTimeOption);
+                timeline.play();
+            }
         }
     }
+
 
     /**
      * Ends the game and navigates to the results screen
@@ -414,7 +493,6 @@ public class GameViewController {
             updateAllUI();
             return;
         }
-
 
         // Compare characters
         int idx = userInput.length();
@@ -593,4 +671,9 @@ public class GameViewController {
     public boolean isInputDisabled() {
         return inputField.isDisabled();
     }
+
+    private boolean isArticleMode() {
+        return modeToggleGroup.getSelectedToggle() == articleModeRadio;
+    }
+
 }
