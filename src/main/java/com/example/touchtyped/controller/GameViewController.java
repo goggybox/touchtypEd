@@ -203,20 +203,12 @@ public class GameViewController {
                 return;
             }
             try (var scanner = new Scanner(inputStream)) {
-                StringBuilder paragraphBuilder = new StringBuilder();
                 while (scanner.hasNextLine()) {
-                    String line = scanner.nextLine();
-                    if (line.trim().isEmpty()) {
-                        if (paragraphBuilder.length() > 0) {
-                            articles.add(paragraphBuilder.toString().trim());
-                            paragraphBuilder.setLength(0);
-                        }
-                    } else {
-                        paragraphBuilder.append(line).append(" ");
+                    String line = scanner.nextLine().trim();
+                    if (!line.isEmpty()) {
+                        // 每一行视为一个完整段落
+                        articles.add(line);
                     }
-                }
-                if (paragraphBuilder.length() > 0) {
-                    articles.add(paragraphBuilder.toString().trim());
                 }
             }
             System.out.println("Loaded " + articles.size() + " paragraphs from article.txt");
@@ -242,8 +234,8 @@ public class GameViewController {
                 finalText = getRandomSentences();
             } else {
                 Random random = new Random();
-                String chosenParagraph = articles.get(random.nextInt(articles.size()));
-                finalText = chosenParagraph.trim();
+                int idx = random.nextInt(articles.size());
+                finalText = articles.get(idx);  // ★ 随机选一篇文章段落
                 System.out.println("Selected article paragraph: " + finalText);
             }
         } else {
