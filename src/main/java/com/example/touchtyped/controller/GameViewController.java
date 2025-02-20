@@ -180,11 +180,19 @@ public class GameViewController {
         errorFlags.clear();
 
         Random random = new Random();
-        String randomSentence = sentencePool.get(random.nextInt(sentencePool.size()));
-        System.out.println("Selected sentence: " + randomSentence);
+        StringBuilder combinedSentences = new StringBuilder();
+
+        int sentenceCount = 3;
+        for (int i = 0; i < sentenceCount; i++) {
+            String randomSentence = sentencePool.get(random.nextInt(sentencePool.size()));
+            combinedSentences.append(randomSentence).append(" ");
+        }
+
+        String finalText = combinedSentences.toString().trim();
+        System.out.println("Selected text: " + finalText);
 
         // Split into words
-        String[] splitted = randomSentence.split("\\s+");
+        String[] splitted = finalText.split("\\s+");
         List<String> allWords = new ArrayList<>(List.of(splitted));
 
         // Each line has 8 words
@@ -382,25 +390,35 @@ public class GameViewController {
 
         // If space is typed but the word is not yet fully typed => error
         if (key.equals(" ")) {
-            wrongKeystrokes++;
-            provideErrorFeedback(key);
+            targetWord = curLine.get(currentWordIndex);
+            userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
+            charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
+
+            int typedLen = userInput.length();
+            int wordLen = targetWord.length();
+            if (typedLen < wordLen) {
+                for (int i = typedLen; i < wordLen; i++) {
+                    char leftoverChar = targetWord.charAt(i);
+                    userInput.append(leftoverChar);
+                    charErrFlags.add(true);
+                    wrongKeystrokes++;
+                }
+            }
+
+
+            moveToNextWord();
             updateAllUI();
             return;
         }
+
 
         // Compare characters
         int idx = userInput.length();
         char typedChar = key.charAt(0);
         char expectedChar = targetWord.charAt(idx);
-
-        // Plan A: Replace the user's typed character with the 'target word's corresponding character',
-        //         or whichever strategy you want:
-        // If you want to truly display the user's typed characters: userInput.append(typedChar);
-        // If you only want to show the correct character: userInput.append(expectedChar);
-        // Replace as needed. The following example only shows the 'correct character'
         userInput.append(expectedChar);
 
-        if (Character.toLowerCase(typedChar) == Character.toLowerCase(expectedChar)) {
+        if (typedChar == expectedChar) {
             // dynamically add false
             charErrFlags.add(false);
             correctKeystrokes++;
@@ -414,7 +432,7 @@ public class GameViewController {
         updateAllUI();
     }
 
-    /**
+    /**aaaa
      * Moves to the next word
      */
     private void moveToNextWord() {
