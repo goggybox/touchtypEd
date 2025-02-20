@@ -5,9 +5,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="700.0" maxWidth="1200.0" 
-            minHeight="700.0" minWidth="1200.0" 
-            prefHeight="700.0" prefWidth="1200.0" 
+<BorderPane maxHeight="700.0"
+            minHeight="300.0"
+            minWidth="500.0"
+            prefHeight="300.0"
             stylesheets="@game-view-style.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.example.touchtyped.controller.GameViewController">
@@ -75,9 +76,9 @@
           </HBox>
 
          <VBox alignment="CENTER" styleClass="typing-area">
-            <StackPane minWidth="800" maxWidth="800" 
-                       minHeight="120" maxHeight="120"
-                       alignment="CENTER">
+            <StackPane minWidth="500"
+                       minHeight="200"
+                       VBox.vgrow="ALWAYS">
                 <TextFlow fx:id="taskLabel" styleClass="task-text"/>
                 <Text fx:id="cursorLabel" styleClass="cursor" visible="false">│</Text>
             </StackPane>

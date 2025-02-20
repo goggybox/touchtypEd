@@ -394,6 +394,10 @@ public class GameViewController {
             userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
             charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
 
+            if (userInput.length() == 0) {
+                return;
+            }
+
             int typedLen = userInput.length();
             int wordLen = targetWord.length();
             if (typedLen < wordLen) {
