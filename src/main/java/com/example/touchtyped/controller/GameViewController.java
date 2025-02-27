@@ -3,8 +3,8 @@ package com.example.touchtyped.controller;
 import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
-import com.example.touchtyped.model.KeyLog;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.KeyLog;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -21,6 +21,9 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * 修改版：不管首字符对错都开始游戏；在每次正确/错误时累加 correctKeystrokes / wrongKeystrokes
+ */
 public class GameViewController {
 
     @FXML private VBox gameContainer;
@@ -34,10 +37,7 @@ public class GameViewController {
     @FXML private Button time60Button;
     @FXML private Button time120Button;
     @FXML private HBox timeBox;
-
-
     @FXML private VBox resultContainer;
-
     @FXML private Label wpmLabel;
     @FXML private Label accuracyLabel;
 
@@ -45,42 +45,34 @@ public class GameViewController {
     @FXML private RadioButton timedModeRadio;
     @FXML private RadioButton articleModeRadio;
 
-
-    // ----------------- Core Game Variables -------------------
-    private int timeLeft = 60;
+    // 计时
     private Timeline timeline;
     private boolean gameStarted = false;
     private long gameStartTime;
+    private int selectedTimeOption = 60;
+    private int timeLeft = 60;
 
+    // 统计
     private int totalKeystrokes = 0;
     private int correctKeystrokes = 0;
     private int wrongKeystrokes = 0;
 
-    private int selectedTimeOption = 60;
-
+    // 其它
     private KeyboardInterface keyboardInterface;
     private GameKeypressListener keyPressListener;
     private KeyLogsStructure keyLogsStructure;
 
-    // ================== Multiple-line multiple-word structure ==================
-    // outside resources
     private List<String> sentencePool = new ArrayList<>();
     private List<String> articles = new ArrayList<>();
 
-    // Maximum number of words per line
-    private static final int WORDS_PER_LINE = 8;
-    // lines[lineIndex] => The words in that line
-    private List<List<String>> lines = new ArrayList<>();
+    // 单行逻辑
+    private StringBuilder currentSentence;
+    private int currentCharIndex;
+    private final boolean[] charErrorStates = new boolean[5000];
+    private boolean hasFirstError = false;
+    private boolean hasUnresolvedError = false;
 
-    // typedWords[lineIndex][wordIndex] = The user's actual input
-    private List<List<StringBuilder>> typedWords = new ArrayList<>();
-    private List<List<List<Boolean>>> errorFlags = new ArrayList<>();
-
-    // The current line and word indices
-    private int currentLineIndex = 0;
-    private int currentWordIndex = 0;
-
-    // A mapping table for special keys to characters
+    // 特殊字符映射
     private static final Map<String, String> SPECIAL_KEY_TO_CHAR = Map.ofEntries(
             Map.entry("SEMICOLON", ";"),
             Map.entry("QUOTE", "'"),
@@ -107,70 +99,23 @@ public class GameViewController {
         time60Button.setFocusTraversable(false);
         time120Button.setFocusTraversable(false);
 
-        // Default selection: 60 seconds
         updateTimeButtonStyle(60);
 
-        // After the scene is ready, attach the keyboard listener
-        gameContainer.sceneProperty().addListener((ob, oldScene, newScene) -> {
+        // 当 scene 就绪后，注册键盘监听
+        gameContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 keyboardInterface.attachToScene(newScene);
             }
         });
 
-        modeToggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+        // 监听模式切换
+        modeToggleGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
             resetGame();
         });
 
         resetGame();
     }
 
-    /**
-     * Resets the game to its initial state
-     */
-    @FXML
-    public void resetGame() {
-        if (timeline != null) {
-            timeline.stop();
-        }
-        gameStarted = false;
-
-        // Article Mode
-        if (isArticleMode()) {
-            timeBox.setVisible(false);
-            timeBox.setManaged(false);
-            timeLeft = 0;
-            timerLabel.setText("Article Mode");
-        } else {
-            // Timed Mode
-            timeBox.setVisible(true);
-            timeBox.setManaged(true);
-            timeLeft = selectedTimeOption;
-            timerLabel.setText(String.valueOf(timeLeft));
-        }
-
-        inputField.clear();
-        inputField.setDisable(false);
-        resultContainer.setVisible(false);
-
-        totalKeystrokes = 0;
-        correctKeystrokes = 0;
-        wrongKeystrokes = 0;
-
-        currentLineIndex = 0;
-        currentWordIndex = 0;
-
-        wpmLabel.setText("WPM: 0.0");
-        accuracyLabel.setText("Accuracy: 0.0%");
-
-        generateNewTask();
-
-        keyLogsStructure = new KeyLogsStructure("MultilineWithCharErrors");
-        cursorLabel.setVisible(false);
-    }
-
-    /**
-     * Loads external file sentences.txt for generating random sentences
-     */
     private void loadSentencesFromFile() {
         try {
             var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/sentences.txt");
@@ -178,7 +123,7 @@ public class GameViewController {
                 System.out.println("sentences.txt not found!");
                 return;
             }
-            try (var scanner = new Scanner(inputStream)) {
+            try (Scanner scanner = new Scanner(inputStream)) {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine().trim();
                     if (!line.isEmpty()) {
@@ -192,9 +137,6 @@ public class GameViewController {
         }
     }
 
-    /**
-     * Loads external file article.txt for generating paragraph-based text
-     */
     private void loadArticlesFromFile() {
         try {
             var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/articles.txt");
@@ -202,11 +144,10 @@ public class GameViewController {
                 System.out.println("article.txt not found!");
                 return;
             }
-            try (var scanner = new Scanner(inputStream)) {
+            try (Scanner scanner = new Scanner(inputStream)) {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine().trim();
                     if (!line.isEmpty()) {
-                        // 每一行视为一个完整段落
                         articles.add(line);
                     }
                 }
@@ -217,85 +158,98 @@ public class GameViewController {
         }
     }
 
-    /**
-     * Randomly generate multi-line text tasks
-     */
-    private void generateNewTask() {
-        lines.clear();
-        typedWords.clear();
-        errorFlags.clear();
+    @FXML
+    public void onLearnButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) taskLabel.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        String finalText;
+    @FXML
+    public void resetGame() {
+        if (timeline != null) {
+            timeline.stop();
+        }
+        gameStarted = false;
 
         if (isArticleMode()) {
-            // Article Mode
-            if (articles.isEmpty()) {
-                System.out.println("No articles loaded. Fallback to default sentences mode.");
-                finalText = getRandomSentences();
-            } else {
-                Random random = new Random();
-                int idx = random.nextInt(articles.size());
-                finalText = articles.get(idx);  // ★ 随机选一篇文章段落
-                System.out.println("Selected article paragraph: " + finalText);
-            }
+            timeBox.setVisible(false);
+            timeBox.setManaged(false);
+            timeLeft = 0;
+            timerLabel.setText("Article Mode");
         } else {
-            // Timed Mode
-            if (sentencePool.isEmpty()) {
-                System.out.println("Sentence pool is empty, fallback to default words array.");
-                return;
-            }
-            finalText = getRandomSentences();
+            timeBox.setVisible(true);
+            timeBox.setManaged(true);
+            timeLeft = selectedTimeOption;
+            timerLabel.setText(String.valueOf(timeLeft));
         }
 
-        // split, build lines
-        if (finalText == null || finalText.isEmpty()) {
-            System.out.println("Final text is empty, skip.");
-            return;
-        }
+        totalKeystrokes = 0;
+        correctKeystrokes = 0;
+        wrongKeystrokes = 0;
+        wpmLabel.setText("WPM: 0.0");
+        accuracyLabel.setText("Accuracy: 0.0%");
 
-        String[] splitted = finalText.split("\\s+");
-        List<String> allWords = new ArrayList<>(List.of(splitted));
+        inputField.clear();
+        inputField.setDisable(false);
+        resultContainer.setVisible(false);
 
-        for (int i = 0; i < allWords.size(); i += WORDS_PER_LINE) {
-            int end = Math.min(i + WORDS_PER_LINE, allWords.size());
-            List<String> lineWords = new ArrayList<>(allWords.subList(i, end));
-            lines.add(lineWords);
+        currentSentence = null;
+        currentCharIndex = 0;
+        Arrays.fill(charErrorStates, false);
+        hasFirstError = false;
+        hasUnresolvedError = false;
 
-            List<StringBuilder> typedLine = new ArrayList<>();
-            List<List<Boolean>> errorLine = new ArrayList<>();
+        keyLogsStructure = null;
+        cursorLabel.setVisible(false);
 
-            for (String word : lineWords) {
-                typedLine.add(new StringBuilder());
-                errorLine.add(new ArrayList<>());
-            }
-            typedWords.add(typedLine);
-            errorFlags.add(errorLine);
-        }
-
+        generateNewTask();
         updateTaskDisplay();
     }
 
-    private String getRandomSentences() {
-        Random random = new Random();
-        StringBuilder combined = new StringBuilder();
-        int sentenceCount = 3;
-        for (int i = 0; i < sentenceCount; i++) {
-            String s = sentencePool.get(random.nextInt(sentencePool.size()));
-            combined.append(s).append(" ");
+    private void generateNewTask() {
+        if (isArticleMode()) {
+            if (articles.isEmpty()) {
+                currentSentence = new StringBuilder("No article found.");
+            } else {
+                Random r = new Random();
+                int idx = r.nextInt(articles.size());
+                String paragraph = articles.get(idx).replaceAll("\\r?\\n", " ");
+                currentSentence = new StringBuilder(paragraph);
+            }
+        } else {
+            if (sentencePool.isEmpty()) {
+                currentSentence = new StringBuilder("Hello world!");
+            } else {
+                StringBuilder combined = new StringBuilder();
+                Random r = new Random();
+                for (int i = 0; i < 3; i++) {
+                    String s = sentencePool.get(r.nextInt(sentencePool.size()));
+                    combined.append(s).append(" ");
+                }
+                currentSentence = new StringBuilder(combined.toString().trim());
+            }
         }
-        return combined.toString().trim();
+        keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
+        currentCharIndex = 0;
+        System.out.println("Current text: " + currentSentence);
     }
 
+    private boolean isArticleMode() {
+        return modeToggleGroup.getSelectedToggle() == articleModeRadio;
+    }
 
-    /**
-     * Starts the game: begins the timer, records the start time
-     */
     private void startGame() {
         if (!gameStarted) {
             gameStarted = true;
             gameStartTime = System.currentTimeMillis();
+            cursorLabel.setVisible(true);
 
-            // 只有在 Timed Mode 下才启动倒计时
             if (!isArticleMode()) {
                 timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
                     timeLeft--;
@@ -310,10 +264,6 @@ public class GameViewController {
         }
     }
 
-
-    /**
-     * Ends the game and navigates to the results screen
-     */
     private void endGame() {
         if (timeline != null) {
             timeline.stop();
@@ -335,239 +285,160 @@ public class GameViewController {
     }
 
     /**
-     * Renders 3 lines of text, highlighting incorrect characters in red, and displays the current cursor
-     */
-    private void updateTaskDisplay() {
-        taskLabel.getChildren().clear();
-
-        for (int offset = 0; offset < 3; offset++) {
-            int lineIdx = currentLineIndex + offset;
-            if (lineIdx < 0 || lineIdx >= lines.size()) break;
-
-            List<String> lineWords = lines.get(lineIdx);
-            List<StringBuilder> typedLine = typedWords.get(lineIdx);
-            List<List<Boolean>> errorLine = errorFlags.get(lineIdx);
-
-            for (int w = 0; w < lineWords.size(); w++) {
-                if (w >= typedLine.size() || w >= errorLine.size()) break;
-
-                String targetWord = lineWords.get(w);
-                StringBuilder userInput = typedLine.get(w);
-                List<Boolean> errorList = errorLine.get(w);
-
-                int typedLen = userInput.length();
-
-                // Render the user-typed characters
-                for (int i = 0; i < typedLen; i++) {
-                    Text charNode;
-                    char thisChar = userInput.charAt(i);
-
-                    // If the i-th entry in errorList is true => highlight red
-                    boolean isError = (i < errorList.size()) && errorList.get(i);
-                    if (isError) {
-                        charNode = new Text(String.valueOf(thisChar));
-                        charNode.getStyleClass().add("error-text");
-                    } else {
-                        charNode = new Text(String.valueOf(thisChar));
-                        charNode.getStyleClass().add("typed-text");
-                    }
-
-                    taskLabel.getChildren().add(charNode);
-                }
-
-                // Insert the cursor into the currently typed word
-                boolean isCurrentWord = (lineIdx == currentLineIndex && w == currentWordIndex);
-                if (isCurrentWord) {
-                    Text cursorNode = new Text("|");
-                    cursorNode.getStyleClass().add("cursor");
-                    taskLabel.getChildren().add(cursorNode);
-                }
-
-                // Show the untyped portion
-                if (typedLen < targetWord.length()) {
-                    String remainPart = targetWord.substring(typedLen);
-                    Text remainText = new Text(remainPart);
-                    remainText.getStyleClass().add("remaining-text");
-                    taskLabel.getChildren().add(remainText);
-                }
-                // Space between words
-                taskLabel.getChildren().add(new Text(" "));
-            }
-            taskLabel.getChildren().add(new Text("\n"));
-        }
-    }
-
-    /**
-     * Handles the logic for key input
+     * 核心：不论第一键对错，都先 startGame()，再判断对错并累加统计
      */
     public void handleKeyPress(String key) {
-        // If the key is a special key like "SEMICOLON," replace it with the actual character
+        // 如果有特殊映射
         if (SPECIAL_KEY_TO_CHAR.containsKey(key)) {
             key = SPECIAL_KEY_TO_CHAR.get(key);
         }
-
         if (inputField.isDisabled()) return;
 
-        // If the game hasn't started, only allow input [a-zA-Z0-9] to start
+        // ================ 不管对错，都先 startGame() ================
         if (!gameStarted) {
-            if (!key.matches("[a-zA-Z0-9]")) return;
             startGame();
+            gameStartTime = System.currentTimeMillis();
+            keyLogsStructure = new KeyLogsStructure(currentSentence.toString());
         }
 
-        // If it's neither backspace nor matches [a-zA-Z0-9,\\.;:'\"?! ], ignore
-        if (!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?! ]")) {
-            System.out.println("Ignored input: " + key);
-            return;
-        }
-
-        if (currentLineIndex < 0 || currentLineIndex >= lines.size()) {
-            return;
-        }
-        List<String> curLine = lines.get(currentLineIndex);
-        if (currentWordIndex < 0 || currentWordIndex >= curLine.size()) {
-            moveToNextLine();
-            updateAllUI();
+        // 若要限制键盘输入，可写：
+        if (!key.equals("BACK_SPACE")
+                && !key.matches("[a-zA-Z0-9,\\.;:'\"?! ]")) {
             return;
         }
 
         long now = System.currentTimeMillis();
-        if (keyLogsStructure != null) {
-            keyLogsStructure.addKeyLog(key, now - gameStartTime);
-        }
+        keyLogsStructure.addKeyLog(key, now - gameStartTime);
 
+        // ============ 处理回退 ============
         if (key.equals("BACK_SPACE")) {
-            handleBackspace();
-            updateAllUI();
-            return;
-        }
-
-        // Target word
-        String targetWord = curLine.get(currentWordIndex);
-        StringBuilder userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
-        List<Boolean> charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
-
-        // If the word is fully typed
-        if (userInput.length() >= targetWord.length()) {
-            if (key.equals(" ")) {
-                moveToNextWord();
-            } else {
-                // If it exceeds the length => count as an error
-                wrongKeystrokes++;
-                provideErrorFeedback(key);
-            }
-            updateAllUI();
-            return;
-        }
-
-        // If space is typed but the word is not yet fully typed => error
-        if (key.equals(" ")) {
-            targetWord = curLine.get(currentWordIndex);
-            userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
-            charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
-
-            if (userInput.length() == 0) {
-                return;
-            }
-
-            int typedLen = userInput.length();
-            int wordLen = targetWord.length();
-            if (typedLen < wordLen) {
-                for (int i = typedLen; i < wordLen; i++) {
-                    char leftoverChar = targetWord.charAt(i);
-                    userInput.append(leftoverChar);
-                    charErrFlags.add(true);
-                    wrongKeystrokes++;
+            if (currentCharIndex > 0) {
+                currentCharIndex--;
+                charErrorStates[currentCharIndex] = false;
+                hasUnresolvedError = false;
+                for (int i = 0; i < currentCharIndex; i++) {
+                    if (charErrorStates[i]) {
+                        hasUnresolvedError = true;
+                        break;
+                    }
                 }
+                hasFirstError = false;
+
+                updateAllUI();
+                provideNextCharacterHint();
             }
-
-
-            moveToNextWord();
-            updateAllUI();
             return;
         }
 
-        // Compare characters
-        int idx = userInput.length();
-        char typedChar = key.charAt(0);
-        char expectedChar = targetWord.charAt(idx);
-        userInput.append(expectedChar);
-
-        if (typedChar == expectedChar) {
-            // dynamically add false
-            charErrFlags.add(false);
-            correctKeystrokes++;
-        } else {
-            // dynamically add true
-            charErrFlags.add(true);
+        // ============ 普通字符：比对 expectedChar ============
+        if (currentCharIndex >= currentSentence.length()) {
+            // 如果已经超出文本长度，就判错
             wrongKeystrokes++;
+            provideErrorFeedback(key);
+            // 也可以选择 endGame() 或 ignore
+            updateAllUI();
+            updateStatistics();
+            return;
+        }
+
+        char expectedChar = currentSentence.charAt(currentCharIndex);
+        String expectedKey = String.valueOf(expectedChar);
+
+        if (key.equals(expectedKey)) {
+            // 正确
+            correctKeystrokes++;
+            currentCharIndex++;
+            if (hasUnresolvedError) {
+                provideErrorFeedback(key);
+            } else {
+                provideNextCharacterHint();
+            }
+        } else {
+            // 错误
+            charErrorStates[currentCharIndex] = true;
+            hasUnresolvedError = true;
+            wrongKeystrokes++;
+            currentCharIndex++;
             provideErrorFeedback(key);
         }
 
+        // 如果是 Timed Mode，文本剩余不足30再补单词
+        if (!isArticleMode() && (currentSentence.length() - currentCharIndex < 30)) {
+            addNewWord();
+        }
+
         updateAllUI();
+        updateStatistics();
     }
 
-    /**aaaa
-     * Moves to the next word
-     */
-    private void moveToNextWord() {
-        currentWordIndex++;
-        if (currentWordIndex >= lines.get(currentLineIndex).size()) {
-            currentWordIndex = 0;
-            currentLineIndex++;
-        }
-        if (currentLineIndex >= lines.size()) {
-            endGame();
-        }
-    }
-
-    /**
-     * Moves to the next line
-     */
-    private void moveToNextLine() {
-        currentLineIndex++;
-        currentWordIndex = 0;
-        if (currentLineIndex >= lines.size()) {
-            endGame();
-        }
-    }
-
-    /**
-     * Handles backspace logic
-     */
-    private void handleBackspace() {
-        if (currentLineIndex >= lines.size()) return;
-        List<String> curLine = lines.get(currentLineIndex);
-        if (currentWordIndex >= curLine.size()) {
-            return;
-        }
-
-        StringBuilder userInput = typedWords.get(currentLineIndex).get(currentWordIndex);
-        List<Boolean> charErrFlags = errorFlags.get(currentLineIndex).get(currentWordIndex);
-
-        if (userInput.length() > 0) {
-            userInput.deleteCharAt(userInput.length() - 1);
-            // Plan A: correspondingly remove the last error flag
-            charErrFlags.remove(charErrFlags.size() - 1);
+    private String addNewWord() {
+        if (currentSentence.length() == 0) {
+            String w = getRandomWord();
+            currentSentence.append(w);
+            return w;
         } else {
-            // If already at the start of the current word, move back to the previous word
-            if (currentWordIndex > 0) {
-                currentWordIndex--;
-            } else if (currentLineIndex > 0) {
-                currentLineIndex--;
-                currentWordIndex = lines.get(currentLineIndex).size() - 1;
+            currentSentence.append(" ");
+            String w = getRandomWord();
+            currentSentence.append(w);
+            if (keyLogsStructure != null) {
+                keyLogsStructure.setWordsGiven(keyLogsStructure.getWordsGiven() + " " + w);
             }
+            return w;
         }
     }
 
-    // ----------------- Statistics & UI -----------------
+    private String getRandomWord() {
+        if (sentencePool.isEmpty()) return "word";
+        Random r = new Random();
+        return sentencePool.get(r.nextInt(sentencePool.size()));
+    }
+
     private void updateAllUI() {
         updateTaskDisplay();
         updateStatistics();
         updateRealtimeStats();
     }
 
+    private void updateTaskDisplay() {
+        taskLabel.getChildren().clear();
+        if (currentSentence == null) return;
+
+        int visibleLen = 50;
+        int start = Math.max(0, currentCharIndex - visibleLen / 2);
+        int end = Math.min(currentSentence.length(), start + visibleLen);
+
+        // 已打
+        for (int i = start; i < currentCharIndex; i++) {
+            Text t = new Text(String.valueOf(currentSentence.charAt(i)));
+            t.getStyleClass().add(charErrorStates[i] ? "error-text" : "typed-text");
+            taskLabel.getChildren().add(t);
+        }
+        // 当前字符
+        if (currentCharIndex < currentSentence.length()) {
+            Text curr = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
+            if (gameStarted && charErrorStates[currentCharIndex]) {
+                curr.getStyleClass().add("error-text");
+            } else {
+                curr.getStyleClass().add("remaining-text");
+            }
+            taskLabel.getChildren().add(curr);
+        }
+        // 剩余
+        if (currentCharIndex + 1 < end) {
+            Text remain = new Text(currentSentence.substring(currentCharIndex + 1, end));
+            remain.getStyleClass().add("remaining-text");
+            taskLabel.getChildren().add(remain);
+        }
+
+        double baseX = -(visibleLen * StyleConstants.charWidth / 2.0);
+        double offset = (currentCharIndex - start) * StyleConstants.charWidth;
+        cursorLabel.setTranslateX(baseX + offset);
+    }
+
+    // =========== 统计 & 提示相关 ===========
+
     /**
-     * Update statistical information (total keystrokes, errors, etc.)
+     * 每次按键都更新 totalKeystrokes
      */
     private void updateStatistics() {
         if (!gameStarted) return;
@@ -575,7 +446,7 @@ public class GameViewController {
     }
 
     /**
-     * Calculate WPM and accuracy in real time
+     * 实时更新 WPM / Accuracy
      */
     private void updateRealtimeStats() {
         if (!gameStarted || gameStartTime == 0) return;
@@ -585,6 +456,7 @@ public class GameViewController {
         if (elapsedSec <= 0) return;
 
         double elapsedMin = elapsedSec / 60.0;
+        // correctKeystrokes / 5 => typed words
         double wpm = (correctKeystrokes / 5.0) / elapsedMin;
         wpmLabel.setText(String.format("WPM: %.1f", wpm));
 
@@ -595,52 +467,19 @@ public class GameViewController {
         accuracyLabel.setText(String.format("Accuracy: %.1f%%", acc));
     }
 
-    /**
-     * Suggests the next character (optional)
-     */
-    private void provideNextCharacterHint() {
-        // Optional feature
-    }
-
-    /**
-     * Provides feedback for incorrect input (vibration, lighting, etc.)
-     */
     private void provideErrorFeedback(String key) {
         keyboardInterface.sendHapticCommand(key, 500, 100);
         keyboardInterface.activateLights(1000);
     }
 
-    // ----------------- Time buttons & navigation -----------------
-    @FXML
-    public void onLearnButtonClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1200, 700);
-            Stage stage = (Stage) taskLabel.getScene().getWindow();
-            stage.setScene(scene);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void provideNextCharacterHint() {
+        if (currentCharIndex < currentSentence.length()) {
+            String ch = String.valueOf(currentSentence.charAt(currentCharIndex));
+            if (ch.equals(" ")) {
+                ch = "SPACE";
+            }
+            keyboardInterface.sendHapticCommand(ch.toUpperCase(), 200, 50);
         }
-    }
-
-    /**
-     * Update the selection state of the time buttons
-     */
-    private void updateTimeButtonStyle(int selectedTime) {
-        time15Button.getStyleClass().remove("selected");
-        time30Button.getStyleClass().remove("selected");
-        time60Button.getStyleClass().remove("selected");
-        time120Button.getStyleClass().remove("selected");
-
-        switch (selectedTime) {
-            case 15 -> time15Button.getStyleClass().add("selected");
-            case 30 -> time30Button.getStyleClass().add("selected");
-            case 60 -> time60Button.getStyleClass().add("selected");
-            case 120 -> time120Button.getStyleClass().add("selected");
-        }
-        this.selectedTimeOption = selectedTime;
-        timeLeft = selectedTime;
-        timerLabel.setText(String.valueOf(timeLeft));
     }
 
     @FXML public void select15s() {
@@ -660,12 +499,24 @@ public class GameViewController {
         resetGame();
     }
 
+    private void updateTimeButtonStyle(int selectedTime) {
+        time15Button.getStyleClass().remove("selected");
+        time30Button.getStyleClass().remove("selected");
+        time60Button.getStyleClass().remove("selected");
+        time120Button.getStyleClass().remove("selected");
+
+        switch (selectedTime) {
+            case 15 -> time15Button.getStyleClass().add("selected");
+            case 30 -> time30Button.getStyleClass().add("selected");
+            case 60 -> time60Button.getStyleClass().add("selected");
+            case 120 -> time120Button.getStyleClass().add("selected");
+        }
+        this.selectedTimeOption = selectedTime;
+        timeLeft = selectedTime;
+        timerLabel.setText(String.valueOf(timeLeft));
+    }
+
     public boolean isInputDisabled() {
         return inputField.isDisabled();
     }
-
-    private boolean isArticleMode() {
-        return modeToggleGroup.getSelectedToggle() == articleModeRadio;
-    }
-
 }

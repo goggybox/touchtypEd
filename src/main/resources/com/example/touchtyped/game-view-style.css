@@ -285,11 +285,12 @@
     -fx-pref-height: 200;
 }
 
-/* 首先声明所有字体 */
-@font-face {
-    font-family: 'Consolas';
-    src: url('/fonts/consola.ttf');
+
+.task-text {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
 }
+
 
 @font-face {
     font-family: 'Consolas Bold';
@@ -297,20 +298,20 @@
 }
 
 .error-text {
-    -fx-fill: #ff5555;     /* 红色 */
-    -fx-underline: true;   /* 加下划线，可选 */
+    -fx-fill: #ff5555;
+    -fx-underline: true;
 }
 
 .typed-text {
-    -fx-fill: #dddddd;     /* 浅灰 */
+    -fx-fill: #dddddd;
 }
 
 .remaining-text {
-    -fx-fill: #777777;     /* 深灰 */
+    -fx-fill: #777777;
 }
 
 .cursor {
-    -fx-fill: #ffd700;     /* 金黄色光标 */
+    -fx-fill: #ffd700;
     -fx-font-weight: bold;
 }
 
