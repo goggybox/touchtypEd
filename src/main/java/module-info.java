@@ -3,7 +3,7 @@ module com.example.touchtyped {
     requires javafx.fxml;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
-    requires java.base;
+    requires com.fazecast.jSerialComm;
 
     opens com.example.touchtyped to javafx.fxml;
     exports com.example.touchtyped.app;

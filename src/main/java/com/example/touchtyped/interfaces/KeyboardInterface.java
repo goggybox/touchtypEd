@@ -6,6 +6,7 @@ import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fazecast.jSerialComm.*;
 
 /**
  * implements a mock keyboard interface for use during development.
