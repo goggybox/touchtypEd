@@ -303,7 +303,7 @@
 }
 
 .typed-text {
-    -fx-fill: #dddddd;
+    -fx-fill: #263F68;
 }
 
 .remaining-text {
@@ -314,5 +314,12 @@
     -fx-fill: #ffd700;
     -fx-font-weight: bold;
 }
+
+.stats-label {
+    -fx-text-fill: #263F68;
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+}
+
 
 
