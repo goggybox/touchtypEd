@@ -1,5 +1,6 @@
 package com.example.touchtyped.interfaces;
 
+import com.example.touchtyped.app.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -7,12 +8,15 @@ import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import com.fazecast.jSerialComm.*;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  * implements a mock keyboard interface for use during development.
  * provides sending haptic commands, registering listeners, removing listeners, notifying listeners
  */
 public class KeyboardInterface {
+
 
     private final List<KeypressListener> listeners;
 
@@ -154,6 +158,36 @@ public class KeyboardInterface {
     public void sendHapticCommand(String key, int duration, int strength) {
         // for now, this method will simply output to the console.
         System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
+        PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream(),true);
+        switch (key) {
+            case "b":
+                keyCommand.print(2);
+                break;
+            case "c":
+                keyCommand.print(3);
+                break;
+            case "d":
+                keyCommand.print(4);
+                break;
+            case "e":
+                keyCommand.print(5);
+                break;
+            case "f":
+                keyCommand.print(6);
+                break;
+            case "g":
+                keyCommand.print(7);
+                break;
+            case "h":
+                keyCommand.print(8);
+                break;
+        }
+
+    }
+
+    public void stopHaptic(){
+        PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream(),true);
+        keyCommand.print(-1);
     }
 
     /**

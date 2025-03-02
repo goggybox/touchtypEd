@@ -9,10 +9,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.text.Font;
+import com.fazecast.jSerialComm.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class Application extends javafx.application.Application {
+    public static SerialPort ioPort;
     @Override
     public void start(Stage stage) throws IOException {
         // Load custom fonts
@@ -37,6 +40,16 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
+
+
+        ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+        if(ioPort.openPort())
+            System.out.println("Port opened successfully.");
+        else {
+            System.out.println("Unable to open the port.");
+        }
+        ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+        ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
     }
 
     public static void main(String[] args) {
@@ -50,6 +63,12 @@ public class Application extends javafx.application.Application {
             } else {
                 System.out.println("TypingPlan not changed. Not saving.");
             }
+            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
+            keyCommand.print(-1);
+            keyCommand.flush();
+            try {Thread.sleep(1000);} catch (InterruptedException e) {}
+            ioPort.closePort();
+            System.out.println(ioPort.isOpen());
         }));
 
         launch();
