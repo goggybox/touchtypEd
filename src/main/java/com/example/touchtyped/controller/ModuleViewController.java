@@ -269,6 +269,7 @@ public class ModuleViewController implements KeypressListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        keyboardInterface.stopHaptic();
     }
 
     @FXML
@@ -277,6 +278,7 @@ public class ModuleViewController implements KeypressListener {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -294,6 +296,7 @@ public class ModuleViewController implements KeypressListener {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();

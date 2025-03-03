@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 
 public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
+    public static KeyboardInterface keyboardInterface;
     @Override
     public void start(Stage stage) throws IOException {
         // Load custom fonts
@@ -64,9 +65,8 @@ public class Application extends javafx.application.Application {
                 System.out.println("TypingPlan not changed. Not saving.");
             }
             PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
-            keyCommand.print(-1);
+            keyCommand.print(0);
             keyCommand.flush();
-            try {Thread.sleep(1000);} catch (InterruptedException e) {}
             ioPort.closePort();
             System.out.println(ioPort.isOpen());
         }));

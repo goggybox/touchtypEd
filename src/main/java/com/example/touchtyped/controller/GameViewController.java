@@ -131,6 +131,7 @@ public class GameViewController {
     public void initialize() {
         // Initialize keyboard interface
         keyboardInterface = new KeyboardInterface();
+        keyboardInterface.stopHaptic();
         keyPressListener = new GameKeypressListener(this, keyboardInterface);
         
         // Set up UI components
@@ -159,6 +160,7 @@ public class GameViewController {
      */
     @FXML
     public void resetGame() {
+        keyboardInterface.stopHaptic();
         // Stop existing timer if running
         if (timeline != null) {
             timeline.stop();
@@ -191,6 +193,7 @@ public class GameViewController {
      */
     private void startGame() {
         if (!gameStarted) {
+            keyboardInterface.stopHaptic();
             gameStarted = true;
             cursorLabel.setVisible(true);
             
@@ -215,6 +218,7 @@ public class GameViewController {
      * TODO: Graph is not finished now.
      */
     private void endGame() {
+        keyboardInterface.stopHaptic();
         if (timeline != null) {
             timeline.stop();
         }
@@ -357,6 +361,7 @@ public class GameViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) taskLabel.getScene().getWindow();
+            keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();

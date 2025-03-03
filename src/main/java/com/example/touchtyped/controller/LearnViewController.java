@@ -55,6 +55,7 @@ public class LearnViewController {
             Scene scene = vbox.getScene(); // Use vbox's scene instead of buttonGrid's
             if (scene != null) {
                 keyboardInterface.attachToScene(scene);
+                keyboardInterface.stopHaptic();
                 // Example keypress listener
                 new ExampleKeypressListener(keyboardInterface);
             } else {
