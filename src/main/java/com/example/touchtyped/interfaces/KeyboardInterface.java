@@ -160,7 +160,13 @@ public class KeyboardInterface {
         System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
         PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
         String keyLower = key.toLowerCase();
-        switch (keyLower) {
+        if (keyLower.matches("[a-z]")){
+            keyCommand.print(keyLower);
+            keyCommand.flush();
+        } else {
+            stopHaptic();
+        }
+        /*switch (keyLower) {
             case "b" :
                 keyCommand.print(2);
                 keyCommand.flush();
@@ -189,7 +195,9 @@ public class KeyboardInterface {
                 keyCommand.print(8);
                 keyCommand.flush();
                 break;
-        }
+            default:
+                stopHaptic();
+        }*/
         keyCommand.close();
 
     }

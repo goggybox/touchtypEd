@@ -44,10 +44,16 @@ public class Application extends javafx.application.Application {
 
 
         ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-        if(ioPort.openPort())
-            System.out.println("Port opened successfully.");
-        else {
-            System.out.println("Unable to open the port.");
+        SerialPort[] ports = SerialPort.getCommPorts();
+        int i = 0;
+        while (!ioPort.openPort() && i < ports.length){
+            ioPort = ports[i];
+            i++;
+        }
+        if (ioPort.isOpen()){
+            System.out.println("port opened successfully");
+        } else {
+            System.out.println("unable to open port");
         }
         ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
         ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
@@ -64,9 +70,7 @@ public class Application extends javafx.application.Application {
             } else {
                 System.out.println("TypingPlan not changed. Not saving.");
             }
-            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
-            keyCommand.print(0);
-            keyCommand.flush();
+            keyboardInterface.stopHaptic();
             ioPort.closePort();
             System.out.println(ioPort.isOpen());
         }));
