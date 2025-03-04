@@ -291,6 +291,7 @@ public class GameViewController {
 
     @FXML
     public void resetGame(){
+        keyboardInterface.stopHaptic();
         if(timeline!=null){
             timeline.stop();
         }
@@ -417,6 +418,7 @@ public class GameViewController {
     // ========== start/endGame ==========
 
     private void startGame(){
+        keyboardInterface.stopHaptic();
         if(!gameStarted){
             gameStarted=true;
             gameStartTime=System.currentTimeMillis();
@@ -444,6 +446,7 @@ public class GameViewController {
     }
 
     private void endGame(){
+        keyboardInterface.stopHaptic();
         if(timeline!=null){
             timeline.stop();
         }
