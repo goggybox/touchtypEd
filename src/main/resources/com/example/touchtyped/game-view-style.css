@@ -285,14 +285,41 @@
     -fx-pref-height: 200;
 }
 
-/* 首先声明所有字体 */
-@font-face {
-    font-family: 'Consolas';
-    src: url('/fonts/consola.ttf');
+
+.task-text {
+    -fx-font-family: "Consolas";
+    -fx-font-size: 28px;
 }
+
 
 @font-face {
     font-family: 'Consolas Bold';
     src: url('/fonts/consolab.ttf');
 }
+
+.error-text {
+    -fx-fill: #ff5555;
+    -fx-underline: true;
+}
+
+.typed-text {
+    -fx-fill: #263F68;
+}
+
+.remaining-text {
+    -fx-fill: #777777;
+}
+
+.cursor {
+    -fx-fill: #ffd700;
+    -fx-font-weight: bold;
+}
+
+.stats-label {
+    -fx-text-fill: #263F68;
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+}
+
+
 
