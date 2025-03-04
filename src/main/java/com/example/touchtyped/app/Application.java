@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
+    public static boolean keyboardConnected;
     public static KeyboardInterface keyboardInterface;
     @Override
     public void start(Stage stage) throws IOException {
@@ -41,21 +42,26 @@ public class Application extends javafx.application.Application {
         stage.setScene(scene);
         stage.show();
 
-        ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-        SerialPort[] ports = SerialPort.getCommPorts();
-        int i = 0;
-        while (!ioPort.openPort() && i < ports.length){
-            ioPort = ports[i];
-            i++;
+        keyboardConnected = false;
+        try {
+            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+            SerialPort[] ports = SerialPort.getCommPorts();
+            int i = 0;
+            while (!ioPort.openPort() && i < ports.length) {
+                ioPort = ports[i];
+                i++;
+            }
+            if (ioPort.isOpen()) {
+                System.out.println("port opened successfully");
+                keyboardConnected = true;
+                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+            } else {
+                System.out.println("unable to open port");
+            }
+        } catch (Exception e) {
+            System.out.println("no keyboard connected");
         }
-        if (ioPort.isOpen()){
-            System.out.println("port opened successfully");
-        } else {
-            System.out.println("unable to open port");
-        }
-
-        ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-        ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
     }
 
     public static void main(String[] args) {
@@ -69,9 +75,11 @@ public class Application extends javafx.application.Application {
             } else {
                 System.out.println("TypingPlan not changed. Not saving.");
             }
-            keyboardInterface.stopHaptic();
-            ioPort.closePort();
-            System.out.println(ioPort.isOpen());
+            if (keyboardConnected) {
+                keyboardInterface.stopHaptic();
+                ioPort.closePort();
+                System.out.println(ioPort.isOpen());
+            }
         }));
 
         launch();
