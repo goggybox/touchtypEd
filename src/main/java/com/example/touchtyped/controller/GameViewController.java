@@ -448,48 +448,6 @@ public class GameViewController {
             timeline.stop();
         }
 
-        // send keyLogsStructure to REST service and receive personalised TypingPlan and PDF.
-        if (keyLogsStructure != null) {
-            System.out.println("Game ended. Sending KeyLogsStructure to REST service...");
-
-            // Create a Task to handle the REST service call
-            Task<RESTResponseWrapper> restTask = new Task<>() {
-                @Override
-                protected RESTResponseWrapper call() throws Exception {
-                    RESTClient restService = new RESTClient();
-                    return restService.sendKeyLogs(keyLogsStructure);
-                }
-            };
-
-            // Handle the result of the Task on the JavaFX Application Thread
-            restTask.setOnSucceeded(event -> {
-                try {
-                    RESTResponseWrapper response = restTask.getValue();
-
-                    // handle pdf
-                    if (response.getPdfData() != null) {
-                        System.out.println("Decoded PDF size: " + response.getPdfData().length + " bytes");
-                    }
-
-                    // handle TypingPlan
-                    TypingPlan typingPlan = response.getTypingPlan();
-                    if (typingPlan != null) {
-                        System.out.println("Received Typing Plan: " + typingPlan);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-            restTask.setOnFailed(event -> {
-                Throwable exception = restTask.getException();
-                System.err.println("An error occurred while communicating with the REST service.");
-                exception.printStackTrace();
-            });
-
-            // Start the Task in a new thread
-            new Thread(restTask).start();
-        }
-
         if(isCompetitionMode()){
             if(!isSecondRound){
                 // first round end
@@ -569,6 +527,7 @@ public class GameViewController {
 
                 GameResultViewController resultController=loader.getController();
                 resultController.setGameData((int)finalWpm, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+                resultController.setKeyLogsStructure(keyLogsStructure);
 
                 Stage stage=(Stage)gameContainer.getScene().getWindow();
                 stage.setScene(resultScene);
