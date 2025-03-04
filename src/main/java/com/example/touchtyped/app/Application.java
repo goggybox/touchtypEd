@@ -43,6 +43,7 @@ public class Application extends javafx.application.Application {
         stage.show();
 
         keyboardConnected = false;
+        keyboardInterface = new KeyboardInterface();
         try {
             ioPort = SerialPort.getCommPort("/dev/ttyACM0");
             SerialPort[] ports = SerialPort.getCommPorts();
