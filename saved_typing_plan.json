@@ -20,9 +20,9 @@
         "displayText" : null,
         "completed" : true
       } ],
-      "completion" : 1.0,
+      "locked" : false,
       "nextUncompletedLevel" : null,
-      "locked" : false
+      "completion" : 1.0
     }, {
       "name" : "D & K Keys",
       "focus" : "",
@@ -45,9 +45,9 @@
         "displayText" : null,
         "completed" : true
       } ],
-      "completion" : 1.0,
+      "locked" : false,
       "nextUncompletedLevel" : null,
-      "locked" : false
+      "completion" : 1.0
     }, {
       "name" : "S & L Keys",
       "focus" : "",
@@ -56,23 +56,19 @@
       "levels" : [ {
         "taskString" : "sl",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ssssllll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "sl",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : false
+      "locked" : false,
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
       "name" : "A & ; Keys",
       "focus" : "",
@@ -81,23 +77,19 @@
       "levels" : [ {
         "taskString" : "a;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "aaaa;;;;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "aa;a;a;;;;a;;;aaaaa;a;;;a;a;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "a;",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
+      "locked" : false,
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
       "name" : "G & H Keys",
       "focus" : "",
@@ -116,13 +108,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : false,
       "nextUncompletedLevel" : {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.0
     }, {
       "name" : "Home Row",
       "focus" : "",
@@ -141,13 +133,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : true,
       "nextUncompletedLevel" : {
         "taskString" : "asdfghjkl;",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.0
     } ],
     "phase" : "Phase 1: Foundation"
   } ]
