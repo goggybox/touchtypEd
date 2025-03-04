@@ -4,9 +4,13 @@ import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.service.RESTClient;
+import com.example.touchtyped.service.RESTResponseWrapper;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.VPos;
@@ -444,9 +448,46 @@ public class GameViewController {
             timeline.stop();
         }
 
-        // Print the keyLogsStructure when the game ends
+        // send keyLogsStructure to REST service and receive personalised TypingPlan and PDF.
         if (keyLogsStructure != null) {
-            System.out.println("Key Logs: " + keyLogsStructure.toString());
+            System.out.println("Game ended. Sending KeyLogsStructure to REST service...");
+
+            // Create a Task to handle the REST service call
+            Task<RESTResponseWrapper> restTask = new Task<>() {
+                @Override
+                protected RESTResponseWrapper call() throws Exception {
+                    RESTClient restService = new RESTClient();
+                    return restService.sendKeyLogs(keyLogsStructure);
+                }
+            };
+
+            // Handle the result of the Task on the JavaFX Application Thread
+            restTask.setOnSucceeded(event -> {
+                try {
+                    RESTResponseWrapper response = restTask.getValue();
+
+                    // handle pdf
+                    if (response.getPdfData() != null) {
+                        System.out.println("Decoded PDF size: " + response.getPdfData().length + " bytes");
+                    }
+
+                    // handle TypingPlan
+                    TypingPlan typingPlan = response.getTypingPlan();
+                    if (typingPlan != null) {
+                        System.out.println("Received Typing Plan: " + typingPlan);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            restTask.setOnFailed(event -> {
+                Throwable exception = restTask.getException();
+                System.err.println("An error occurred while communicating with the REST service.");
+                exception.printStackTrace();
+            });
+
+            // Start the Task in a new thread
+            new Thread(restTask).start();
         }
 
         if(isCompetitionMode()){
