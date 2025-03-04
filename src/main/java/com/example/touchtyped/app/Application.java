@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
+    public static boolean keyboardConnected;
     public static KeyboardInterface keyboardInterface;
     @Override
     public void start(Stage stage) throws IOException {
@@ -41,40 +42,26 @@ public class Application extends javafx.application.Application {
         stage.setScene(scene);
         stage.show();
 
-//        ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-//        SerialPort[] ports = SerialPort.getCommPorts();
-//        int i = 0;
-//        while (!ioPort.openPort() && i < ports.length){
-//            ioPort = ports[i];
-//            i++;
-//        }
-//        if (ioPort.isOpen()){
-//            System.out.println("port opened successfully");
-//        } else {
-//            System.out.println("unable to open port");
-//        }
-//
-//        ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-//        ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-
-        SerialPort[] ports = SerialPort.getCommPorts();
-        SerialPort chosenPort = null;
-
-        for (SerialPort port : ports) {
-            System.out.println("Trying port: " + port.getSystemPortName());
-            if (port.openPort()) {
-                chosenPort = port;
-                break;
+        keyboardConnected = false;
+        keyboardInterface = new KeyboardInterface();
+        try {
+            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+            SerialPort[] ports = SerialPort.getCommPorts();
+            int i = 0;
+            while (!ioPort.openPort() && i < ports.length) {
+                ioPort = ports[i];
+                i++;
             }
-        }
-
-        if (chosenPort != null) {
-            ioPort = chosenPort;
-            System.out.println("opened port: " + chosenPort.getSystemPortName());
-            ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-            ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-        } else {
-            System.out.println("unable to open port");
+            if (ioPort.isOpen()) {
+                System.out.println("port opened successfully");
+                keyboardConnected = true;
+                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+            } else {
+                System.out.println("unable to open port");
+            }
+        } catch (Exception e) {
+            System.out.println("no keyboard connected");
         }
     }
 
@@ -89,9 +76,11 @@ public class Application extends javafx.application.Application {
             } else {
                 System.out.println("TypingPlan not changed. Not saving.");
             }
-            keyboardInterface.stopHaptic();
-            ioPort.closePort();
-            System.out.println(ioPort.isOpen());
+            if (keyboardConnected) {
+                keyboardInterface.stopHaptic();
+                ioPort.closePort();
+                System.out.println(ioPort.isOpen());
+            }
         }));
 
         launch();

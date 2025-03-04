@@ -3,6 +3,7 @@ package com.example.touchtyped.model;
 import com.example.touchtyped.constants.StyleConstants;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -34,11 +35,12 @@ public class ModuleButton {
 
         // create pane; this allows us to manually centre arcs and circle
         Pane pane = new Pane();
+        pane.setPrefWidth(250);
 
         Font antipastoFont = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 26);
 
         // centre position
-        double centerX = arcRadius + arcWidth / 2;
+        double centerX = pane.getPrefWidth() / 2;
         double centerY = arcRadius + arcWidth / 2;
 
         // is module locked?
@@ -80,6 +82,9 @@ public class ModuleButton {
         label.setFont(antipastoFont);
         label.setTextFill(Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.GREY_COLOUR));
 
+        // adjust font size and truncate if needed
+        adjustFontSizeAndTruncate(label, 300, 26, 22);
+        label.setAlignment(Pos.CENTER);
 
         // Wrap in VBox to include the label
         VBox vbox = new VBox(pane, label);
@@ -101,5 +106,25 @@ public class ModuleButton {
 
         // Return the final StackPane
         return stackPane;
+    }
+
+    private static void adjustFontSizeAndTruncate(Label label, double maxWidth, int maxFontSize, int minFontSize) {
+        String text = label.getText();
+        Font font = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), maxFontSize);
+
+        // start with the maximum font size, and decrease until text fits or the min font size is reached
+        while (font.getSize() > minFontSize && label.getFont().getSize() * text.length() > maxWidth) {
+            font = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), font.getSize() - 1);
+            label.setFont(font);
+        }
+
+        // if the text still doesn't fit, truncate it
+        if (label.getFont().getSize() == minFontSize && label.getWidth() > maxWidth) {
+            while (label.getWidth() > maxWidth && text.length() > 3) {
+                text = text.substring(0, text.length() - 3);
+                label.setText(text + "...");
+            }
+        }
+
     }
 }

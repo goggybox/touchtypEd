@@ -64,7 +64,7 @@ public class Phase {
         // create the GridPane for the buttons
         GridPane buttonGrid = new GridPane();
         buttonGrid.setAlignment(Pos.CENTER);
-        buttonGrid.setHgap(60);
+        buttonGrid.setHgap(0);
         buttonGrid.setVgap(60);
         buttonGrid.setMinWidth(5.0);
         buttonGrid.getStyleClass().add("button-grid");

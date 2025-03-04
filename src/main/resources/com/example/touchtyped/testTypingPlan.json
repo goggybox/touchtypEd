@@ -1,5 +1,5 @@
 {
-  "pdf": "PDF",
+  "PDF": "PDF",
   "personalized_typing_plan": {
     "phases": [
       {
@@ -9,8 +9,8 @@
         "modules": [
           {
             "name": "F & J Keys",
-            "focus": "",
-            "displayText": "Without looking at the keyboard, rest your index fingers on the F and J key. You will be able to find them by feeling for the bump on the keys!",
+            "focus": "Without looking at the keyboard, rest your index fingers on the F and J key. You will be able to find them by feeling for the bump on the keys!",
+            "displayText": "",
             "id": 1,
             "levels": [
               {
@@ -26,8 +26,8 @@
           },
           {
             "name": "D & K Keys",
-            "focus": "",
-            "displayText": "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
+            "focus": "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
+            "displayText": "",
             "id": 2,
             "levels": [
               {
@@ -46,8 +46,8 @@
           },
           {
             "name": "S & L Keys",
-            "focus": "",
-            "displayText": "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
+            "focus": "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
+            "displayText": "",
             "id": 3,
             "levels": [
               {
@@ -63,8 +63,8 @@
           },
           {
             "name": "A & ; Keys",
-            "focus": "",
-            "displayText": "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
+            "focus": "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
+            "displayText": "",
             "id": 4,
             "levels": [
               {
@@ -80,8 +80,8 @@
           },
           {
             "name": "G & H Keys",
-            "focus": "",
-            "displayText": "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
+            "focus": "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
+            "displayText": "",
             "id": 5,
             "levels": [
               {
@@ -97,8 +97,8 @@
           },
           {
             "name": "Home Row",
-            "focus": "",
-            "displayText": "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
+            "focus": "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
+            "displayText": "",
             "id": 5,
             "levels": [
               {

@@ -20,16 +20,11 @@ public class DividerLine {
      */
     public static HBox createDividerLineWithText(String text) {
         int lineWidth = 5;
-        double totalWidth = 530.0; // the total width of the HBox (lines + text + spacing)
+        double totalWidth = 730.0; // the total width of the HBox (lines + text + spacing)
         double spacing = 10.0; // the spacing between the lines and text
-        int maxTextLength = 25;
+        int maxTextLength = 28;
 
         if (!text.isEmpty()) {
-
-            // truncate the text
-            if (text.length() > maxTextLength) {
-                text = text.substring(0, maxTextLength) + "...";
-            }
 
             // create the text
             Text dividerText = new Text(text);
@@ -38,6 +33,8 @@ public class DividerLine {
             dividerText.setFill(Color.web(StyleConstants.GREY_COLOUR));
             dividerText.setTranslateY(-2);
 
+            // adjust and truncate if needed
+            adjustFontSize(dividerText, 530, 40, 26);
 
             // get width of the text
             double textWidth = dividerText.getLayoutBounds().getWidth();
@@ -85,6 +82,17 @@ public class DividerLine {
             dividerBox.getChildren().add(dividerLine);
 
             return dividerBox;
+        }
+    }
+
+    private static void adjustFontSize(Text text, double maxWidth, int maxFontSize, int minFontSize) {
+        String content = text.getText();
+        Font font = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), maxFontSize);
+
+        // Start with the maximum font size and decrease until the text fits or reaches the minimum size
+        while (font.getSize() > minFontSize && text.getLayoutBounds().getWidth() > maxWidth) {
+            font = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), font.getSize() - 1);
+            text.setFont(font);
         }
     }
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TypingPlanWrapper {
 
-    @JsonProperty("pdf")
+    @JsonProperty("PDF")
     private String pdf;
 
     @JsonProperty("personalized_typing_plan")

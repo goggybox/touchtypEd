@@ -4,9 +4,13 @@ import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.service.RESTClient;
+import com.example.touchtyped.service.RESTResponseWrapper;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.VPos;
@@ -287,6 +291,7 @@ public class GameViewController {
 
     @FXML
     public void resetGame(){
+        keyboardInterface.stopHaptic();
         if(timeline!=null){
             timeline.stop();
         }
@@ -413,6 +418,7 @@ public class GameViewController {
     // ========== start/endGame ==========
 
     private void startGame(){
+        keyboardInterface.stopHaptic();
         if(!gameStarted){
             gameStarted=true;
             gameStartTime=System.currentTimeMillis();
@@ -440,6 +446,7 @@ public class GameViewController {
     }
 
     private void endGame(){
+        keyboardInterface.stopHaptic();
         if(timeline!=null){
             timeline.stop();
         }
@@ -523,6 +530,7 @@ public class GameViewController {
 
                 GameResultViewController resultController=loader.getController();
                 resultController.setGameData((int)finalWpm, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+                resultController.setKeyLogsStructure(keyLogsStructure);
 
                 Stage stage=(Stage)gameContainer.getScene().getWindow();
                 stage.setScene(resultScene);
@@ -646,7 +654,7 @@ public class GameViewController {
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = String.valueOf(expectedChar);
 
-        if (key.equals(expectedKey)) {
+        if (key.equalsIgnoreCase(expectedKey)) {
             correctKeystrokes++;
             currentCharIndex++;
             if (hasUnresolvedError) {

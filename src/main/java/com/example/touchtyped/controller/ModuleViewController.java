@@ -113,7 +113,8 @@ public class ModuleViewController implements KeypressListener {
     public void setModule(Module module) {
         this.module = module;
         moduleDisplayName.setText(module.getName());
-        moduleDisplayText.setText(module.getDisplayText());
+        // TODO: properly move from using displayText to focus instead.
+        moduleDisplayText.setText(module.getFocus());
         loadLevel();
     }
 

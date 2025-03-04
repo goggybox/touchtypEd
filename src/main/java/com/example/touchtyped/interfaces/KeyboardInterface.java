@@ -158,14 +158,16 @@ public class KeyboardInterface {
     public void sendHapticCommand(String key, int duration, int strength) {
         // for now, this method will simply output to the console.
         System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
-        PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
-        String keyLower = key.toLowerCase();
-        if (keyLower.matches("[a-z]")){
-            keyCommand.print(keyLower);
-            keyCommand.flush();
-        } else {
-            stopHaptic();
-        }
+        if (Application.keyboardConnected) {
+            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
+            String keyLower = key.toLowerCase();
+            if (keyLower.matches("[a-z]")) {
+                keyCommand.print(keyLower);
+                keyCommand.flush();
+            } else {
+                stopHaptic();
+            }
+
         /*switch (keyLower) {
             case "b" :
                 keyCommand.print(2);
@@ -198,16 +200,18 @@ public class KeyboardInterface {
             default:
                 stopHaptic();
         }*/
-        keyCommand.close();
-
+            keyCommand.close();
+        }
     }
 
 
     public void stopHaptic(){
-        PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
-        keyCommand.print(0);
-        keyCommand.flush();
-        keyCommand.close();
+        if (Application.keyboardConnected) {
+            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
+            keyCommand.print(0);
+            keyCommand.flush();
+            keyCommand.close();
+        }
     }
 
     /**
