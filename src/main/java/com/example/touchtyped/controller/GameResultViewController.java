@@ -115,7 +115,8 @@ public class GameResultViewController {
             @Override
             protected RESTResponseWrapper call() throws Exception {
                 RESTClient restService = new RESTClient();
-                return restService.sendKeyLogs(keyLogsStructure);
+                return restService.sendKeyLogs(keyLogsStructure, () ->
+                        descriptionLabel.setText("Request failed. Trying again... (Please be patient!)"));
             }
         };
 
@@ -147,6 +148,9 @@ public class GameResultViewController {
             Throwable exception = restTask.getException();
             System.err.println("An error occurred while communicating with the REST service.");
             exception.printStackTrace();
+
+            // notify the user.
+            descriptionLabel.setText("REST Service failed to generate advanced statistics after multiple attempts. Please try again later.");
         });
 
         // Start the Task in a new thread
