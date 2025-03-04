@@ -12,7 +12,6 @@ import javafx.scene.text.Font;
 import com.fazecast.jSerialComm.*;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
@@ -41,7 +40,6 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
-
 
         ioPort = SerialPort.getCommPort("/dev/ttyACM0");
         SerialPort[] ports = SerialPort.getCommPorts();
