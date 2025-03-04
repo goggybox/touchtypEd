@@ -53,6 +53,7 @@ public class Application extends javafx.application.Application {
         } else {
             System.out.println("unable to open port");
         }
+
         ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
         ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
     }
