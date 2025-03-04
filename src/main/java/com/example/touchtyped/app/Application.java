@@ -41,21 +41,41 @@ public class Application extends javafx.application.Application {
         stage.setScene(scene);
         stage.show();
 
-        ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+//        ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+//        SerialPort[] ports = SerialPort.getCommPorts();
+//        int i = 0;
+//        while (!ioPort.openPort() && i < ports.length){
+//            ioPort = ports[i];
+//            i++;
+//        }
+//        if (ioPort.isOpen()){
+//            System.out.println("port opened successfully");
+//        } else {
+//            System.out.println("unable to open port");
+//        }
+//
+//        ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+//        ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+
         SerialPort[] ports = SerialPort.getCommPorts();
-        int i = 0;
-        while (!ioPort.openPort() && i < ports.length){
-            ioPort = ports[i];
-            i++;
+        SerialPort chosenPort = null;
+
+        for (SerialPort port : ports) {
+            System.out.println("Trying port: " + port.getSystemPortName());
+            if (port.openPort()) {
+                chosenPort = port;
+                break;
+            }
         }
-        if (ioPort.isOpen()){
-            System.out.println("port opened successfully");
+
+        if (chosenPort != null) {
+            ioPort = chosenPort;
+            System.out.println("opened port: " + chosenPort.getSystemPortName());
+            ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+            ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
         } else {
             System.out.println("unable to open port");
         }
-
-        ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-        ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
     }
 
     public static void main(String[] args) {
