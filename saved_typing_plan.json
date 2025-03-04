@@ -20,8 +20,8 @@
         "displayText" : null,
         "completed" : true
       } ],
-      "completion" : 1.0,
       "nextUncompletedLevel" : null,
+      "completion" : 1.0,
       "locked" : false
     }, {
       "name" : "D & K Keys",
@@ -45,8 +45,8 @@
         "displayText" : null,
         "completed" : true
       } ],
-      "completion" : 1.0,
       "nextUncompletedLevel" : null,
+      "completion" : 1.0,
       "locked" : false
     }, {
       "name" : "S & L Keys",
@@ -56,22 +56,18 @@
       "levels" : [ {
         "taskString" : "sl",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ssssllll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "sl",
-        "displayText" : null,
-        "completed" : false
-      },
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0,
       "locked" : false
     }, {
       "name" : "A & ; Keys",
@@ -91,13 +87,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "a;",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.0,
+      "locked" : false
     }, {
       "name" : "G & H Keys",
       "focus" : "",
@@ -116,12 +112,12 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
       },
+      "completion" : 0.0,
       "locked" : true
     }, {
       "name" : "Home Row",
@@ -141,12 +137,12 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "asdfghjkl;",
         "displayText" : null,
         "completed" : false
       },
+      "completion" : 0.0,
       "locked" : true
     } ],
     "phase" : "Phase 1: Foundation"

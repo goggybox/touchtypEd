@@ -35,12 +35,13 @@ public class KeyLogsStructure {
     private long sessionDuration = 0; // will update every time a KeyLog is added
     private String wordsGiven = "";
     private int charPosition = 0;
+    private int errors = 0;
 
     /**
      * constructor. This class must be given a wordsGiven.
      */
     public KeyLogsStructure(String wordsGiven) {
-        this.wordsGiven = wordsGiven.toUpperCase(); // force the words to uppercase
+        this.wordsGiven = wordsGiven; // force the words to uppercase
     }
 
     /**
@@ -56,18 +57,27 @@ public class KeyLogsStructure {
             charPosition = wordsGiven.length();
         }
 
-        // determine the expected keypress based on the expected character in wordsGiven at charPosition
+        // determine the expected keypress based on the expected character in wordsGiven at charPosition.
+        // if the last char was mistyped, errors == 1, and the user SHOULD be pressing BACK_SPACE to fix the error.
         String expected = null;
-        if (!Objects.equals(key, "BACK_SPACE")) {
+        if (errors > 0) {
+            expected = "BACK_SPACE";
+        } else {
             if (charPosition < wordsGiven.length()) {
                 expected = String.valueOf(wordsGiven.charAt(charPosition));
             }
+        }
+
+        // if the user HAS pressed BACK_SPACE, they are trying to fix the error.
+        if (expected != null && expected.equals("BACK_SPACE") && key.equals("BACK_SPACE")) {
+            errors = Math.max(errors - 1, 0);
         }
 
         // determine whether this keypress was an error based on the expected character
         boolean error = false;
         if (expected == null || !Objects.equals(key, expected)) {
             error = true;
+            if (!key.equals("BACK_SPACE")) { errors++; }
         }
 
         // build and add a new KeyLog
@@ -80,7 +90,7 @@ public class KeyLogsStructure {
             sessionDuration = timestamp - keyLogs.getFirst().getTimestamp();
         }
 
-        // if the key is a BACK_SPACE, increment charPosition, otherwise increment it.
+        // if the key is a BACK_SPACE, decrement charPosition, otherwise increment it.
         if (Objects.equals(key, "BACK_SPACE")) {
             // avoid -1 index
             if (charPosition > 0) {

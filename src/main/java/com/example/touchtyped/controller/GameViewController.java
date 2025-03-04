@@ -444,6 +444,11 @@ public class GameViewController {
             timeline.stop();
         }
 
+        // Print the keyLogsStructure when the game ends
+        if (keyLogsStructure != null) {
+            System.out.println("Key Logs: " + keyLogsStructure.toString());
+        }
+
         if(isCompetitionMode()){
             if(!isSecondRound){
                 // first round end
@@ -646,7 +651,7 @@ public class GameViewController {
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = String.valueOf(expectedChar);
 
-        if (key.equals(expectedKey)) {
+        if (key.equalsIgnoreCase(expectedKey)) {
             correctKeystrokes++;
             currentCharIndex++;
             if (hasUnresolvedError) {
