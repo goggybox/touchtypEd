@@ -10,30 +10,33 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.io.InputStream;
+
 public class DividerLine {
 
     /**
-     * creates a divider line with text in the middle
+     * Creates a divider line with text in the middle
      *
-     * @param text is the text to display in the middle of the divider line
+     * @param text the text to display in the middle of the divider line
      * @return an HBox container containing the divider lines and text
      */
     public static HBox createDividerLineWithText(String text) {
         int lineWidth = 5;
-        double totalWidth = 730.0; // the total width of the HBox (lines + text + spacing)
-        double spacing = 10.0; // the spacing between the lines and text
-        int maxTextLength = 28;
+        double totalWidth = 730.0; // The total width of the HBox (lines + text + spacing)
+        double spacing = 10.0; // The spacing between the lines and text
 
         if (!text.isEmpty()) {
 
-            // create the text
+            // Create the text
             Text dividerText = new Text(text);
-            Font antipastoFont = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), 40);
+
+            // Load the Antipasto_extrabold font at some initial size
+            Font antipastoFont = loadSafeFont("/fonts/Antipasto_extrabold.otf", 40);
             dividerText.setFont(antipastoFont);
             dividerText.setFill(Color.web(StyleConstants.GREY_COLOUR));
             dividerText.setTranslateY(-2);
 
-            // adjust and truncate if needed
+            // Adjust and truncate if needed
             adjustFontSize(dividerText, 530, 40, 26);
 
             // get width of the text
@@ -85,16 +88,36 @@ public class DividerLine {
         }
     }
 
+
     private static void adjustFontSize(Text text, double maxWidth, int maxFontSize, int minFontSize) {
         String content = text.getText();
-        Font font = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), maxFontSize);
+        Font font = loadSafeFont("/fonts/Antipasto_extrabold.otf", maxFontSize);
+        text.setFont(font);
 
-        // Start with the maximum font size and decrease until the text fits or reaches the minimum size
-        while (font.getSize() > minFontSize && text.getLayoutBounds().getWidth() > maxWidth) {
-            font = Font.loadFont(DividerLine.class.getResource("/fonts/Antipasto_extrabold.otf").toExternalForm(), font.getSize() - 1);
+        // Start with the maximum font size and decrease until the text fits or we hit the minimum size
+        while (text.getLayoutBounds().getWidth() > maxWidth && font.getSize() > minFontSize) {
+            font = loadSafeFont("/fonts/Antipasto_extrabold.otf", font.getSize() - 1);
             text.setFont(font);
         }
     }
 
+    /**
+     * Safely loads a font from the given path at the specified size.
+     * Falls back to a system font if the resource is not found or fails to load.
+     */
+    private static Font loadSafeFont(String resourcePath, double size) {
+        try (InputStream fontStream = DividerLine.class.getResourceAsStream(resourcePath)) {
+            if (fontStream != null) {
+                Font loadedFont = Font.loadFont(fontStream, size);
+                if (loadedFont != null) {
+                    return loadedFont;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Fallback to default system font if loading fails
+        return Font.font("System", size);
+    }
 
 }
