@@ -59,14 +59,9 @@ public class KeyLogsStructure {
 
         // determine the expected keypress based on the expected character in wordsGiven at charPosition.
         // if the last char was mistyped, errors == 1, and the user SHOULD be pressing BACK_SPACE to fix the error.
-        String expected = null;
-        if (errors > 0) {
-            expected = "BACK_SPACE";
-        } else {
-            if (charPosition < wordsGiven.length()) {
-                expected = String.valueOf(wordsGiven.charAt(charPosition));
-            }
-        }
+        String expected = (charPosition < wordsGiven.length())
+                ? String.valueOf(wordsGiven.charAt(charPosition))
+                : null;
 
         // if the user HAS pressed BACK_SPACE, they are trying to fix the error.
         if (expected != null && expected.equals("BACK_SPACE") && key.equals("BACK_SPACE")) {
