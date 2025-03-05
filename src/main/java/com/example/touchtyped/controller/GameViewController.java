@@ -7,6 +7,7 @@ import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -450,6 +451,17 @@ public class GameViewController {
         if(timeline!=null){
             timeline.stop();
         }
+//
+//        // Print key log for debug
+//        if(keyLogsStructure != null){
+//            try {
+//                ObjectMapper mapper = new ObjectMapper();
+//                String json = mapper.writeValueAsString(keyLogsStructure);
+//                System.out.println("Generated KeyLog JSON: " + json);
+//            } catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
 
         if(isCompetitionMode()){
             if(!isSecondRound){
