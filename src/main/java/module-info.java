@@ -14,4 +14,7 @@ module com.example.touchtyped {
     opens com.example.touchtyped.controller to javafx.fxml;
     exports com.example.touchtyped.serialisers to com.fasterxml.jackson.databind;
     exports com.example.touchtyped.model to com.fasterxml.jackson.databind;
+    
+    // Open model package to JavaFX for TableView PropertyValueFactory
+    opens com.example.touchtyped.model to javafx.base;
 }

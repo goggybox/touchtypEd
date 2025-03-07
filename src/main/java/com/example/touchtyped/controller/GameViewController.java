@@ -4,9 +4,12 @@ import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.model.UserProfile;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
+import com.example.touchtyped.service.RankingService;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -125,7 +128,7 @@ public class GameViewController {
     private static final char[] RIGHT_HAND_CHARS = {
             'y','u','i','o','p','h','j','k','l','n','m'
     };
-
+    
     // ========== 连击相关变量（修改） ==========
     /**
      * currentStreak, maxStreak 现在以“单词”为单位来统计
@@ -136,9 +139,10 @@ public class GameViewController {
      * 记录当前单词起始下标，以便判断整词是否正确
      */
     private int wordStartIndex = 0;
-
+    
     @FXML
     public void initialize(){
+        
         keyboardInterface = new KeyboardInterface();
         keyPressListener  = new GameKeypressListener(this, keyboardInterface);
 
@@ -529,6 +533,26 @@ public class GameViewController {
                 alert.setContentText(sb.toString());
                 Platform.runLater(() -> {
                     alert.showAndWait();
+                    
+                    // 添加竞争结果到排名
+                    String playerName = UserProfile.getInstance().getPlayerName();
+                    if (playerName != null && !playerName.isEmpty()) {
+                        PlayerRanking rankingA = new PlayerRanking(
+                            playerName + " (Player A)", 
+                            finalScoreA, 
+                            100.0, // 竞争模式没有准确度
+                            "Competition Mode"
+                        );
+                        RankingService.getInstance().addRanking(rankingA);
+                        
+                        PlayerRanking rankingB = new PlayerRanking(
+                            "Player B", 
+                            finalScoreB, 
+                            100.0, // 竞争模式没有准确度
+                            "Competition Mode"
+                        );
+                        RankingService.getInstance().addRanking(rankingB);
+                    }
                 });
 
                 resetGame();
@@ -541,7 +565,21 @@ public class GameViewController {
                 Scene resultScene=new Scene(loader.load(),1200,700);
 
                 GameResultViewController resultController=loader.getController();
-                resultController.setGameData((int)finalWpm, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
+                
+                // 获取游戏模式
+                String gameMode = isTimeMode() ? "Timed Mode" : "Article Mode";
+                
+                // 使用UserProfile获取玩家名称
+                String playerName = UserProfile.getInstance().getPlayerName();
+                
+                resultController.setGameData(
+                    (int)finalWpm, 
+                    correctKeystrokes, 
+                    wrongKeystrokes, 
+                    totalKeystrokes,
+                    gameMode,
+                    playerName
+                );
                 resultController.setKeyLogsStructure(keyLogsStructure);
 
                 Stage stage=(Stage)gameContainer.getScene().getWindow();
@@ -954,5 +992,17 @@ public class GameViewController {
         }catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 提示用户输入玩家名称
+     */
+    private void promptForPlayerName() {
+        // 使用我们新设计的对话框
+        String playerName = PlayerNameDialog.showDialog();
+        if (playerName == null || playerName.trim().isEmpty()) {
+            playerName = "Anonymous";
+        }
+        UserProfile.getInstance().setPlayerName(playerName);
     }
 }
