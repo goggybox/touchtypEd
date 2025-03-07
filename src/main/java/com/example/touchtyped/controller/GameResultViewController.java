@@ -1,10 +1,12 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
+import com.example.touchtyped.service.RankingService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +27,13 @@ public class GameResultViewController {
 
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
+    @FXML private Button viewRankingsButton;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
+    private int wpm;
+    private double accuracy;
+    private String playerName;
+    private String gameMode;
 
     /**
      * Navigate to learn view
@@ -74,13 +81,28 @@ public class GameResultViewController {
     }
 
     /**
+     * Navigate to rankings view
+     */
+    @FXML
+    public void onViewRankingsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
+            Scene rankingScene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            stage.setScene(rankingScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set game result data and update the display.
      * @param wpm Words per minute achieved
      * @param correctKeystrokes Number of correctly typed keystrokes
      * @param wrongKeystrokes Number of incorrectly typed keystrokes
      * @param totalKeystrokes Total number of keystrokes
      */
-    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
+    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes, String gameMode, String playerName) {
         // Calculate accuracy percentage
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
@@ -89,6 +111,18 @@ public class GameResultViewController {
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
             totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+            
+        // Save for ranking
+        this.wpm = wpm;
+        this.accuracy = accuracy;
+        this.playerName = playerName;
+        this.gameMode = gameMode;
+        
+        // Add to rankings
+        if (playerName != null && !playerName.isEmpty()) {
+            PlayerRanking ranking = new PlayerRanking(playerName, wpm, accuracy, gameMode);
+            RankingService.getInstance().addRanking(ranking);
+        }
     }
 
     /**
