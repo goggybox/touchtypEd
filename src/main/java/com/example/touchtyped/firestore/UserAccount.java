@@ -10,18 +10,28 @@ public class UserAccount {
     private String username;
     private TypingPlan typingPlan;
     private List<KeyLogsStructure> keyLogs;
+    private String password;
 
     public UserAccount() {}
 
-    public UserAccount(String classroomID, String username, TypingPlan typingPlan, List<KeyLogsStructure> keyLogs) {
+    public UserAccount(String classroomID, String username, TypingPlan typingPlan, List<KeyLogsStructure> keyLogs, String password) {
         this.classroomID = classroomID;
         this.username = username;
         this.typingPlan = typingPlan;
         this.keyLogs = keyLogs;
+        this.password = password;
     }
 
 
     // GETTERS AND SETTERS
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public List<KeyLogsStructure> getKeyLogs() {
         return keyLogs;

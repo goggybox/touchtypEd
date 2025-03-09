@@ -18,12 +18,12 @@ public final class UserDAO {
 
     private UserDAO() {}
 
-    public static void createUser(String classroomID, String username, TypingPlan typingPlan) throws InterruptedException, ExecutionException {
+    public static void createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
             CollectionReference usersCollection = db.collection(USER_COLLECTION);
 
-            UserAccount user = new UserAccount(classroomID, username, typingPlan, new ArrayList<>());
+            UserAccount user = new UserAccount(classroomID, username, typingPlan, new ArrayList<>(), password);
 
             // add to database
             usersCollection.document(classroomID+","+username).set(user).get();
