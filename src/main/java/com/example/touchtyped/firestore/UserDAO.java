@@ -18,15 +18,21 @@ public final class UserDAO {
 
     private UserDAO() {}
 
-    public static void createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
+    public static boolean createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
-            CollectionReference usersCollection = db.collection(USER_COLLECTION);
+            DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+username);
+
+            // check if a user with that username already exists in the classroom
+            DocumentSnapshot document = userDoc.get().get();
+            if (document.exists()) {
+                // already exists
+                return false;
+            }
 
             UserAccount user = new UserAccount(classroomID, username, typingPlan, new ArrayList<>(), password);
-
-            // add to database
-            usersCollection.document(classroomID+","+username).set(user).get();
+            userDoc.set(user).get();
+            return true;
 
         } catch (Exception e) {
             Thread.currentThread().interrupt();
