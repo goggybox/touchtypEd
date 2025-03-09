@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;

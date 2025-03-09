@@ -37,6 +37,8 @@ public class KeyLogsStructure {
     private int charPosition = 0;
     private int errors = 0;
 
+    public KeyLogsStructure() { }
+
     /**
      * constructor. This class must be given a wordsGiven.
      */

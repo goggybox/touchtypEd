@@ -1,5 +1,7 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.UserAccount;
+import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.*;
 import com.example.touchtyped.model.Module;
@@ -71,6 +73,21 @@ public class LearnViewController {
         typingPlan.display(vbox);
         HBox divider = DividerLine.createDividerLineWithText("");
         vbox.getChildren().add(divider);
+
+//        try {
+//            UserDAO.createUser("CA3B93D", "aidancheung", new TypingPlan());
+//            System.out.println("USER CREATED");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+        try {
+            UserAccount account = UserDAO.getAccount("CA3B93D", "aidancheung");
+            System.out.println("Got account "+account.getUsername());
+        } catch (Exception e) {
+            System.out.println("FAILED TO GET ACCOUNT");
+        }
+
     }
 
     @FXML
