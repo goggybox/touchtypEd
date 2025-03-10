@@ -75,18 +75,21 @@ public class LearnViewController {
         vbox.getChildren().add(divider);
 
 //        try {
-//            UserDAO.createUser("CA3B93D", "aidancheung", new TypingPlan());
+//            UserDAO.createUser("CA3B93D", "aidancheung", new TypingPlan(), "hello123");
 //            System.out.println("USER CREATED");
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
 
-        try {
-            UserAccount account = UserDAO.getAccount("CA3B93D", "aidancheung");
-            System.out.println("Got account "+account.getUsername());
-        } catch (Exception e) {
-            System.out.println("FAILED TO GET ACCOUNT");
-        }
+//        try {
+//            UserAccount account = UserDAO.getAccount("CA3B93D", "aidancheung", "hello123");
+//            if (account != null) { System.out.println("Got account "+account.getUsername()); }
+//            else {
+//                System.out.println("PASSWORD INCORRECT.");
+//            }
+//        } catch (Exception e) {
+//            System.out.println("FAILED TO GET ACCOUNT");
+//        }
 
     }
 

@@ -8,15 +8,17 @@ import java.util.List;
 public class UserAccount {
     private String classroomID;
     private String username;
+    private String userID;
     private TypingPlan typingPlan;
     private List<KeyLogsStructure> keyLogs;
     private String password;
 
     public UserAccount() {}
 
-    public UserAccount(String classroomID, String username, TypingPlan typingPlan, List<KeyLogsStructure> keyLogs, String password) {
+    public UserAccount(String classroomID, String userID, String username, TypingPlan typingPlan, List<KeyLogsStructure> keyLogs, String password) {
         this.classroomID = classroomID;
         this.username = username;
+        this.userID = userID;
         this.typingPlan = typingPlan;
         this.keyLogs = keyLogs;
         this.password = password;
@@ -24,6 +26,13 @@ public class UserAccount {
 
 
     // GETTERS AND SETTERS
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
 
     public void setPassword(String password) {
         this.password = password;
