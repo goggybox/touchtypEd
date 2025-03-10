@@ -27,7 +27,7 @@ public final class UserDAO {
      * @throws InterruptedException idk database stuff
      * @throws ExecutionException lol same
      */
-    public static boolean createUser(String classroomID, String username, TypingPlan typingPlan) throws InterruptedException, ExecutionException {
+    public static String createUser(String classroomID, String username, TypingPlan typingPlan) throws InterruptedException, ExecutionException {
         return createUser(classroomID, username, typingPlan, null);
     }
 
@@ -37,11 +37,11 @@ public final class UserDAO {
      * @param username is the username to give the user.
      * @param typingPlan is the user's personalised TypingPlan.
      * @param password is the user's password (only teachers will have passwords, for others this will be null).
-     * @return whether the creation was successful.
+     * @return the String user's ID, or null if unsuccessful.
      * @throws InterruptedException idk database stuff
      * @throws ExecutionException lol same
      */
-    public static boolean createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
+    public static String createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+username);
@@ -50,7 +50,7 @@ public final class UserDAO {
             DocumentSnapshot document = userDoc.get().get();
             if (document.exists()) {
                 // already exists
-                return false;
+                return null;
             }
 
             // generate random userID
@@ -58,7 +58,7 @@ public final class UserDAO {
 
             UserAccount user = new UserAccount(classroomID, userID, username, typingPlan, new ArrayList<>(), password);
             userDoc.set(user).get();
-            return true;
+            return userID;
 
         } catch (Exception e) {
             Thread.currentThread().interrupt();
