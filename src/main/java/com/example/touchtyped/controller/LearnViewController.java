@@ -82,7 +82,7 @@ public class LearnViewController {
 //        }
 
 //        try {
-//            UserAccount account = UserDAO.getAccount("CA3B93D", "aidancheung", "hello123");
+//            UserAccount account = UserDAO.getAccountByID("UYV16IY", "hello123");
 //            if (account != null) { System.out.println("Got account "+account.getUsername()); }
 //            else {
 //                System.out.println("PASSWORD INCORRECT.");

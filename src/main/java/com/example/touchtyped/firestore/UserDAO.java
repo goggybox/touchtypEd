@@ -104,6 +104,47 @@ public final class UserDAO {
 
     }
 
+    // make password optional
+    public static UserAccount getAccountByID(String userID) throws InterruptedException, ExecutionException {
+        return getAccountByID(userID, null);
+    }
+
+    /**
+     * same as getAccount but by using userID instead of unique classroomID+username combination.
+     * @param userID is the userID to check for
+     * @param password (OPTIONAL) is the user's password.
+     * @return the user's account.
+     */
+    public static UserAccount getAccountByID(String userID, String password) throws InterruptedException, ExecutionException {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            Query query = db.collection(USER_COLLECTION).whereEqualTo("userID", userID).limit(1);
+            QuerySnapshot snapshot = query.get().get();
+
+            if (snapshot.isEmpty()) {
+                System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist.");
+                return null;
+            }
+
+            DocumentSnapshot document = snapshot.getDocuments().get(0);
+            UserAccount userAccount = document.toObject(UserAccount.class);
+
+            // check for password
+            if (userAccount.getPassword() == null) {
+                return userAccount;
+            } else if (userAccount.getPassword() != null && userAccount.getPassword().equals(password)) {
+                return userAccount;
+            } else {
+                System.out.println("DATABASE FAILURE. Failed to get user account: password provided did not match stored password.");
+                return null;
+            }
+
+        } catch (Exception e) {
+            System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist.");
+            return null;
+        }
+    }
+
     // get a user account without needing a password.
     public static UserAccount getAccount(String classroomID, String username) throws InterruptedException, ExecutionException {
         return getAccount(classroomID, username, null);

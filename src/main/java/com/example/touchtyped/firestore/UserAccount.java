@@ -24,7 +24,6 @@ public class UserAccount {
         this.password = password;
     }
 
-
     // GETTERS AND SETTERS
     public void setUserID(String userID) {
         this.userID = userID;
