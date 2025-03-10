@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.interfaces.KeyboardInterface;
@@ -36,6 +37,12 @@ public class LearnViewController {
      */
     @FXML
     private ImageView gamesButton;
+
+    /**
+     * reference to the classroomButton in learn-view.fxml
+     */
+    @FXML
+    private ImageView classroomButton;
 
     /**
      * reference to the optionsButton in learn-view.fxml
@@ -109,5 +116,17 @@ public class LearnViewController {
     public void onOptionsButtonClick() {
         System.out.println("Options button clicked!");
         // Navigate to the "Options" screen
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.text.Text?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@classroom-view-style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.ClassroomViewController">
+
+    <center>
+        <!-- ScrollPane to allow vertical scrolling -->
+        <StackPane fx:id="stackPane">
+            <VBox fx:id="joinCreateContainer" alignment="CENTER" spacing="20">
+                <Label text="Click to join or create a classroom" style="-fx-font-size: 24px;"/>
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="Join Classroom" fx:id="joinButton" style="-fx-font-size: 18px;"
+                            prefWidth="200" onAction="#displayJoinForm"/>
+                    <Button text="Create Classroom" fx:id="createButton" style="-fx-font-size: 18px;"
+                            prefWidth="200"/>
+                </HBox>
+            </VBox>
+
+            <VBox fx:id="joinForm" alignment="CENTER" spacing="15" visible="false">
+                <Label text="Join Classroom" style="-fx-font-size: 26px;"/>
+                <Label fx:id="joinFormDescription" text="" style="-fx-font-size: 16px;"/>
+                <TextField fx:id="classroomIDField" promptText="Classroom ID"/>
+                <TextField fx:id="studentNameField" promptText="Your Name"/>
+                <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
+            </VBox>
+
+            <!-- Create form -->
+            <VBox fx:id="createForm" alignment="CENTER" spacing="15" visible="false">
+                <Label text="Create Classroom" style="-fx-font-size: 24px;"/>
+                <TextField fx:id="classNameField" promptText="Classroom Name"/>
+                <TextField fx:id="teacherNameField" promptText="Teacher Name"/>
+                <Button text="Create" style="-fx-font-size: 18px;"/>
+            </VBox>
+        </StackPane>
+
+    </center>
+
+    <top>
+        <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Left Spacer -->
+                <Region fx:id="leftSpacer" HBox.hgrow="ALWAYS" />
+
+                <!-- Central Area (1200px fixed width) -->
+                <AnchorPane prefHeight="120.0" prefWidth="1200.0">
+                    <children>
+                        <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/logo.png" />
+                        </ImageView>
+                        <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="844.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/learnSelected.png" />
+                        </ImageView>
+                        <ImageView fx:id="gamesButton"
+                                   fitHeight="69.0" fitWidth="71.0"
+                                   layoutX="933.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onGamesButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/games.png" />
+                        </ImageView>
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@images/nav-bar/games.png" />
+                        </ImageView>
+                        <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/nav-bar/options.png" />
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+
+                <!-- Right Spacer -->
+                <Region fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </top>
+
+</BorderPane>

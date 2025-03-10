@@ -31,6 +31,10 @@ public final class UserDAO {
         return createUser(classroomID, username, typingPlan, null);
     }
 
+    public static String createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
+        return createUser(classroomID, null, username, typingPlan, password);
+    }
+
     /***
      * create a user and add them to the database. will generate a unique random userID.
      * @param classroomID is the classroom the user is joining (all users must be associated with one classroom).
@@ -41,7 +45,7 @@ public final class UserDAO {
      * @throws InterruptedException idk database stuff
      * @throws ExecutionException lol same
      */
-    public static String createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
+    public static String createUser(String classroomID, String userID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+username);
@@ -54,7 +58,9 @@ public final class UserDAO {
             }
 
             // generate random userID
-            String userID = generateUserID();
+            if (userID == null) {
+                userID = generateUserID();
+            }
 
             UserAccount user = new UserAccount(classroomID, userID, username, typingPlan, new ArrayList<>(), password);
             userDoc.set(user).get();
