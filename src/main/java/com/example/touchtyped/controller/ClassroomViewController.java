@@ -55,16 +55,17 @@ public class ClassroomViewController {
     @FXML
     private StackPane stackPane;
 
-    private static final String file_path = "user_info.txt";
+    private static final String file_path = "user_cache.txt";
 
     public void initialize() {
 
-        displayStudentTeacherContainer();
+        hideAllForms();
 
+        System.out.println(localDataExists());
         if (localDataExists()) {
             displayClassroomInfo();
         } else {
-            showJoinCreateButtons();
+            displayStudentTeacherContainer();
         }
     }
 
@@ -146,6 +147,7 @@ public class ClassroomViewController {
                         } else {
                             // creating new account
                             ClassroomDAO.addStudentToClassroom(classroomID, username);
+                            UserDAO.createUser(classroomID, username, new TypingPlan());
                             ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
                                 joinFormDescription.setText("Joined classroom successfully!");

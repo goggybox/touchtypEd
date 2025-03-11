@@ -17,9 +17,7 @@ import java.util.concurrent.ExecutionException;
 public class ClassroomDAO {
 
     private static final String CLASSROOM_COLLECTION = "classrooms";
-
-    private static final String CACHE_DIR = ".touchtyped"; // stored at "~/.touchtyped/user_cache.properties
-    private static final String CACHE_FILE = "user_cache.properties";
+    private static final String CACHE_FILE = "user_cache.txt";
 
     private ClassroomDAO() {}
 
@@ -144,31 +142,16 @@ public class ClassroomDAO {
     }
 
     public static boolean saveUserCache(String classroomID, String username, String password) {
-        Properties props = new Properties();
-        Path cacheFile = Paths.get(System.getProperty("user.home"), CACHE_DIR, CACHE_FILE);
-
-        if (Files.exists(cacheFile)) {
-            try (InputStream input = Files.newInputStream(cacheFile)) {
-                props.load(input);
-            } catch (IOException e) {
-                System.err.println("Failed to load existing cache");
-            }
-        }
-
-        props.setProperty("classroomID", classroomID);
-        props.setProperty("username", username);
-
-        if (password != null) {
-            props.setProperty("password", password);
-        } else {
-            props.remove("password"); // explicitly remove if null
-        }
-
         try {
-            Files.createDirectories(cacheFile.getParent());
-            try (OutputStream output = Files.newOutputStream(cacheFile)) {
-                props.store(output, "User cache - DO NOT MODIFY");
+            List<String> lines = new ArrayList<>();
+            lines.add("classroomID=" + classroomID);
+            lines.add("username=" + username);
+
+            if (password != null && !password.isEmpty()) {
+                lines.add("password=" + password);
             }
+
+            Files.write(Paths.get(CACHE_FILE), lines);
             return true;
         } catch (IOException e) {
             System.err.println("CACHE ERROR: Failed to save user cache");
@@ -178,25 +161,24 @@ public class ClassroomDAO {
     }
 
     public static Map<String, String> loadUserCache() {
-        Path cacheFile = Paths.get(System.getProperty("user.home"), CACHE_DIR, CACHE_FILE);
-        if (!Files.exists(cacheFile)) return null;
+        Path cachePath = Paths.get(CACHE_FILE);
+        if (!Files.exists(cachePath)) {
+            return null; // No cache file exists
+        }
 
-        Properties props = new Properties();
-        Map<String, String> result = new HashMap<>();
-
-        try (InputStream input = Files.newInputStream(cacheFile)) {
-            props.load(input);
-            result.put("classroomID", props.getProperty("classroomID"));
-            result.put("username", props.getProperty("username"));
-
-            String password = props.getProperty("password");
-            if (password != null) {
-                result.put("password", password);
+        try {
+            Map<String, String> cacheData = new HashMap<>();
+            List<String> lines = Files.readAllLines(cachePath);
+            for (String line : lines) {
+                String[] parts = line.split("=", 2);
+                if (parts.length == 2) {
+                    cacheData.put(parts[0], parts[1]);
+                }
             }
-
-            return result;
+            return cacheData;
         } catch (IOException e) {
             System.err.println("CACHE ERROR: Failed to load user cache");
+            e.printStackTrace();
             return null;
         }
     }
