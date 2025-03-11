@@ -579,9 +579,6 @@ public class GameViewController {
     }
 
 
-    /**
-     * 处理所有按键输入
-     */
     @FXML
     public void handleKeyPress(String key){
         
@@ -592,21 +589,16 @@ public class GameViewController {
         
         // 1. If in competition mode
         if(isCompetitionMode()) {
-            System.out.println("进入比赛模式处理逻辑");
             // Check if waiting for space to start a round (either first round or between rounds)
             if(!gameStarted || waitingForSpaceToStartRound) {
-                System.out.println("游戏未开始或等待空格开始");
                 // In competition mode, when game hasn't started or waiting for next round, only space key can start
                 if(key.equals(" ")) {
-                    System.out.println("检测到空格键，开始游戏");
                     waitingForSpaceToStartRound = false;
                     betweenRounds = false;
                     startGame();
                     if(currentSentence!=null){
                         keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
                     }
-                } else {
-                    System.out.println("非空格键，忽略: " + key);
                 }
                 // In competition mode, if game hasn't started or waiting for next round, ignore non-space keys
                 return;
@@ -698,82 +690,65 @@ public class GameViewController {
     }
 
     // ========== Key handling in Timed/Article mode: now judging combos by word ==========
-    private void handleKeyForTimedOrArticle(String key){
+    private void handleKeyForTimedOrArticle(String key) {
         if (key.equals("BACK_SPACE")) {
             if (currentCharIndex > 0) {
                 currentCharIndex--;
                 charErrorStates[currentCharIndex] = false;
-                // Re-check if the current word still has errors
-                hasUnresolvedError = false;
-                for (int i = wordStartIndex; i < currentCharIndex; i++) {
-                    if (charErrorStates[i]) {
-                        hasUnresolvedError = true;
-                        break;
-                    }
-                }
-                hasFirstError = false;
-                updateAllUI();
             }
+            updateAllUI();
             return;
         }
 
         if (currentCharIndex >= currentSentence.length()) {
-            // Exceeding sentence length => count as error
             wrongKeystrokes++;
             provideErrorFeedback(key);
             updateAllUI();
             return;
         }
 
-        // Get expected character
         char expectedChar = currentSentence.charAt(currentCharIndex);
+        String expectedKey = String.valueOf(expectedChar);
 
-        // Check if input matches expected character
-        if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
+        if (key.equalsIgnoreCase(expectedKey)) {
+            // correct
             correctKeystrokes++;
-            currentCharIndex++;
-            if (hasUnresolvedError) {
-                provideErrorFeedback(key);
-            } else {
-                provideNextCharacterHint();
-            }
         } else {
-            // Incorrect input
-            charErrorStates[currentCharIndex] = true;
-            hasUnresolvedError = true;
+            // wrong
             wrongKeystrokes++;
-            currentCharIndex++;
+            charErrorStates[currentCharIndex] = true;
             currentWordHasMistake = true;
+            currentStreak = 0;
             provideErrorFeedback(key);
         }
 
-        // This word has no errors => increase streak
-        if(!currentWordHasMistake && !hasUnresolvedError){
-            currentStreak++;
-            maxStreak = Math.max(currentStreak, maxStreak);
-            
-            // If it's a multiple of 5, trigger animation/sound effect
-            if(currentStreak > 0 && currentStreak % 5 == 0){
-                triggerStreakEffect(currentStreak);
-            }
-        }
+        currentCharIndex++;
 
-        // Word ends, regardless of right or wrong, reset this flag and start the next word
-        if(expectedChar == ' '){
+        if (expectedChar == ' ' || currentCharIndex == currentSentence.length()) {
+            if (!currentWordHasMistake) {
+                currentStreak++;
+                if (currentStreak > maxStreak) {
+                    maxStreak = currentStreak;
+                }
+                if (currentStreak % 5 == 0) {
+                    triggerStreakEffect(currentStreak);
+                }
+            } else {
+                currentStreak = 0;
+            }
             currentWordHasMistake = false;
             wordStartIndex = currentCharIndex;
         }
 
-        // In Timed mode, if remaining characters are few => dynamically add more
-        if(isTimeMode() && currentSentence.length() - currentCharIndex < 30){
+        if (isTimeMode() && currentSentence.length() - currentCharIndex < 30) {
             addNewWord();
         }
+
         updateAllUI();
     }
 
-
     private void triggerStreakEffect(int streak) {
-        comboLabel.setText("Streak: " + streak);
+        comboLabel.setText("Combo: " + streak);
         comboLabel.setVisible(true); // Show label
 
         try {
@@ -786,7 +761,7 @@ public class GameViewController {
         }
 
         // 3. Create a simple scale up + scale down animation
-        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(150), comboLabel);
+        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(300), comboLabel);
         scaleUp.setFromX(1.0);
         scaleUp.setFromY(1.0);
         scaleUp.setToX(1.8);

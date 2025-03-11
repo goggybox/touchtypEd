@@ -26,7 +26,7 @@ public class Application extends javafx.application.Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-        // 初始化用户配置文件
+        // Initialize user profile
         initUserProfile();
         
         // Load custom fonts
@@ -76,45 +76,45 @@ public class Application extends javafx.application.Application {
     }
     
     /**
-     * 初始化用户配置文件，如果没有用户名则请求输入
+     * Initialize user profile, prompt for input if no username exists
      */
     private void initUserProfile() {
         UserProfile userProfile = UserProfile.getInstance();
-        System.out.println("正在检查用户配置文件...");
-        System.out.println("是否已有用户名: " + userProfile.hasPlayerName());
+        System.out.println("Checking user profile...");
+        System.out.println("Username exists: " + userProfile.hasPlayerName());
         
         if (!userProfile.hasPlayerName()) {
-            System.out.println("需要请求用户输入名称");
+            System.out.println("Need to request user to input name");
             
-            // 删除现有的配置文件（如果存在），确保重新请求输入名称
+            // Delete existing profile file (if exists) to ensure requesting name input again
             try {
                 java.io.File profileFile = new java.io.File("user_profile.dat");
                 if (profileFile.exists()) {
                     profileFile.delete();
-                    System.out.println("已删除现有配置文件");
+                    System.out.println("Deleted existing profile file");
                 }
             } catch (Exception e) {
-                System.err.println("删除配置文件时出错: " + e.getMessage());
+                System.err.println("Error deleting profile file: " + e.getMessage());
             }
             
-            // 直接显示对话框，不使用Platform.runLater
+            // Show dialog directly, without using Platform.runLater
             String playerName = PlayerNameDialog.showDialog();
-            System.out.println("用户输入的名称: " + playerName);
+            System.out.println("User input name: " + playerName);
             
             if (playerName == null || playerName.trim().isEmpty()) {
                 playerName = "Anonymous";
-                System.out.println("使用默认名称: Anonymous");
+                System.out.println("Using default name: Anonymous");
             }
             
             userProfile.setPlayerName(playerName);
-            System.out.println("已设置用户名称: " + playerName);
+            System.out.println("Username set: " + playerName);
         } else {
-            System.out.println("已有用户名称: " + userProfile.getPlayerName());
+            System.out.println("Existing username: " + userProfile.getPlayerName());
         }
     }
 
     public static void main(String[] args) {
-        // 测试RankingService
+        // Test RankingService
         testRankingService();
 
         // shutdown hook to save TypingPlan if it has been modified
@@ -137,39 +137,39 @@ public class Application extends javafx.application.Application {
     }
     
     /**
-     * 测试RankingService
+     * Test the RankingService
      */
     private static void testRankingService() {
         try {
-            System.out.println("测试RankingService...");
+            System.out.println("Testing RankingService...");
             RankingService rankingService = RankingService.getInstance();
             
-            // 测试添加新排名
+            // Test adding a new ranking
             PlayerRanking ranking1 = new PlayerRanking("TestUser", 50, 90.0, "Timed Mode");
             rankingService.addRanking(ranking1);
             
-            // 测试添加相同名字但更好的排名
+            // Test adding a ranking with the same name but better stats
             PlayerRanking ranking2 = new PlayerRanking("TestUser", 60, 95.0, "Timed Mode");
             rankingService.addRanking(ranking2);
             
-            // 测试添加相同名字但更差的排名
+            // Test adding a ranking with the same name but worse stats
             PlayerRanking ranking3 = new PlayerRanking("TestUser", 40, 85.0, "Timed Mode");
             rankingService.addRanking(ranking3);
             
-            // 打印所有排名
+            // Print all rankings
             List<PlayerRanking> rankings = rankingService.getRankings();
-            System.out.println("当前排名列表:");
+            System.out.println("Current rankings list:");
             for (int i = 0; i < rankings.size(); i++) {
                 PlayerRanking ranking = rankings.get(i);
                 System.out.println((i + 1) + ". " + ranking.getPlayerName() + 
                                   " - WPM: " + ranking.getWpm() + 
-                                  " - 准确率: " + ranking.getAccuracy() + "% - " + 
+                                  " - Accuracy: " + ranking.getAccuracy() + "% - " + 
                                   ranking.getGameMode());
             }
             
-            System.out.println("RankingService测试完成");
+            System.out.println("RankingService test completed");
         } catch (Exception e) {
-            System.err.println("RankingService测试出错: " + e.getMessage());
+            System.err.println("RankingService test error: " + e.getMessage());
             e.printStackTrace();
         }
     }

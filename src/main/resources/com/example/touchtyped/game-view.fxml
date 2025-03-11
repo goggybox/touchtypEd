@@ -13,7 +13,7 @@
             xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.touchtyped.controller.GameViewController">
-    
+
     <top>
         <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
             <children>
