@@ -13,8 +13,7 @@
             xmlns="http://javafx.com/javafx/17.0.2-ea"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.touchtyped.controller.GameViewController">
-
-    <!-- ======================= 顶部导航 ======================= -->
+    
     <top>
         <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
             <children>
@@ -92,7 +91,7 @@
                              toggleGroup="${modeToggleGroup}"/>
             </HBox>
 
-            <!-- ================== Competition 模式下的UI ================== -->
+            <!--  Competition -->
             <VBox fx:id="competitionContainer"
                   spacing="10"
                   visible="false"
@@ -103,16 +102,13 @@
                         onAction="#onCompetitionHelpButtonClick"
                         style="-fx-font-size: 14; -fx-cursor: hand;" />
 
-                <!-- 第一行: Time left -->
+                <!-- Time left -->
                 <HBox alignment="CENTER" spacing="30">
                     <Label fx:id="compTimerLabel"
                            text="Time Left: 60"
                            styleClass="stats-label" />
                 </HBox>
-
-                <!-- 第二行: 左侧 & 右侧 -->
                 <HBox alignment="CENTER" spacing="50">
-                    <!-- 左侧 VBox -->
                     <VBox fx:id="leftContainer" alignment="CENTER" spacing="10">
                         <Label fx:id="leftScoreLabel"
                                text="PlayerA Score: 0"
@@ -126,7 +122,6 @@
                               visible="false"/>
                     </VBox>
 
-                    <!-- 右侧 VBox -->
                     <VBox fx:id="rightContainer" alignment="CENTER" spacing="10">
                         <Label fx:id="rightScoreLabel"
                                text="PlayerB Score: 0"
@@ -143,7 +138,6 @@
             </VBox>
 
 
-            <!-- ================== 非 Competition 模式下的UI ================== -->
             <HBox fx:id="timeBox"
                   alignment="CENTER" spacing="15" styleClass="time-options">
                 <Label text="Time:" styleClass="time-label"/>
@@ -161,13 +155,11 @@
 
             <VBox alignment="CENTER" styleClass="typing-area">
                 <StackPane minWidth="500" minHeight="100" VBox.vgrow="ALWAYS">
-                    <!-- 正常模式下的文字任务显示区 -->
                     <TextFlow fx:id="taskLabel"
                               textAlignment="CENTER"
                               styleClass="task-text" />
                     <Text fx:id="cursorLabel" styleClass="cursor" visible="false">|</Text>
 
-                    <!-- ============== 新增: comboLabel, 用于连击提示 ============== -->
                     <Label fx:id="comboLabel"
                            text=""
                            visible="false"
@@ -196,7 +188,6 @@
                 </Button>
             </HBox>
 
-            <!-- 结果页面 -->
             <VBox fx:id="resultContainer" alignment="CENTER" spacing="20"
                   visible="false">
                 <HBox alignment="CENTER" spacing="30" styleClass="result-info">
