@@ -26,22 +26,23 @@ public class ClassroomDAO {
      * @param ownerID is the teacher's ID.
      * @return the classroomID.
      */
-    public static String createClassroom(String ownerID) throws InterruptedException, ExecutionException {
-        return createClassroom(ownerID, null);
+    public static String createClassroom(String ownerID, String classroomName) throws InterruptedException, ExecutionException {
+        return createClassroom(ownerID, classroomName, null);
     }
 
     /**
      * create a classroom. generateClassroomID() is used to generate a unique ID for the classroom.
      * @param ownerID is the teacher's ID.
+     * @param classroomName is the classroom name.
      * @param studentUsernames (OPTIONAL) is the list of students in the classroom.
      * @return the classroomID.
      */
-    public static String createClassroom(String ownerID, List<String> studentUsernames) throws InterruptedException, ExecutionException {
+    public static String createClassroom(String ownerID, String classroomName, List<String> studentUsernames) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
             String classroomID = generateClassroomID();
 
-            Classroom classroom = new Classroom(ownerID, classroomID, studentUsernames != null ? studentUsernames : new ArrayList<>());
+            Classroom classroom = new Classroom(ownerID, classroomID, classroomName, studentUsernames != null ? studentUsernames : new ArrayList<>());
 
             DocumentReference docRef = db.collection(CLASSROOM_COLLECTION).document(classroomID);
             docRef.set(classroom).get();

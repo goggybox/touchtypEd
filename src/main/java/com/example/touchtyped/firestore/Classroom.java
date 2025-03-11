@@ -6,18 +6,21 @@ public class Classroom {
 
     private String teacherID;
     private String classroomID;
+    private String classroomName;
     private List<String> studentUsernames;
 
     public Classroom() {}
 
-    public Classroom(String teacherID, String classroomID) {
+    public Classroom(String teacherID, String classroomID, String classroomName) {
         this.teacherID = teacherID;
         this.classroomID = classroomID;
+        this.classroomName = classroomName;
     }
 
-    public Classroom(String teacherID, String classroomID, List<String> studentUsernames) {
+    public Classroom(String teacherID, String classroomID, String classroomName, List<String> studentUsernames) {
         this.teacherID = teacherID;
         this.classroomID = classroomID;
+        this.classroomName = classroomName;
         this.studentUsernames = studentUsernames;
     }
 
@@ -37,6 +40,14 @@ public class Classroom {
 
     public void setClassroomID(String classroomID) {
         this.classroomID = classroomID;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
     }
 
     public List<String> getStudentUsernames() {

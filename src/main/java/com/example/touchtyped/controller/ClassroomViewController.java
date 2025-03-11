@@ -35,6 +35,9 @@ public class ClassroomViewController {
     private VBox studentTeacherContainer;
 
     @FXML
+    private VBox teacherSelectionForm;
+
+    @FXML
     private VBox joinForm;
 
     @FXML
@@ -44,7 +47,16 @@ public class ClassroomViewController {
     private ImageView gamesButton;
 
     @FXML
+    private ImageView learnButton;
+
+    @FXML
     private Label joinFormDescription;
+
+    @FXML
+    private Label teacherSelectionFormDescription;
+
+    @FXML
+    private Label createFormDescription;
 
     @FXML
     private TextField classroomIDField;
@@ -53,15 +65,25 @@ public class ClassroomViewController {
     private TextField studentNameField;
 
     @FXML
+    private TextField classroomNameField;
+
+    @FXML
+    private TextField teacherNameField;
+
+    @FXML
+    private TextField passwordField;
+
+    @FXML
     private StackPane stackPane;
 
     private static final String file_path = "user_cache.txt";
 
+    /**
+     * if the user has logged in before, and there account information is stored in the cache, load this information
+     * otherwise, display "Student" or "Teacher" buttons to allow them to join or create a class.
+     */
     public void initialize() {
-
         hideAllForms();
-
-        System.out.println(localDataExists());
         if (localDataExists()) {
             displayClassroomInfo();
         } else {
@@ -69,17 +91,18 @@ public class ClassroomViewController {
         }
     }
 
-    @FXML
-    private void displayStudentTeacherContainer() {
-        hideAllForms();
-        studentTeacherContainer.setVisible(true);
-    }
-
+    /**
+     * check if the user has account information cached
+     * @return whether cached information exists
+     */
     private boolean localDataExists() {
         File file = new File(file_path);
         return file.exists() && file.length() > 0;
     }
 
+    /**
+     * display cached information
+     */
     private void displayClassroomInfo() {
         try (Scanner scanner = new Scanner(new File(file_path))) {
             String classroomID = scanner.nextLine();
@@ -89,27 +112,66 @@ public class ClassroomViewController {
         }
     }
 
+    /**
+     * hide all forms
+     */
     private void hideAllForms() {
         studentTeacherContainer.setVisible(false);
+        teacherSelectionForm.setVisible(false);
         joinForm.setVisible(false);
         createForm.setVisible(false);
     }
 
-    private void showJoinCreateButtons() {
+    /**
+     * display the "Student" or "Teacher" buttons
+     */
+    @FXML
+    private void displayStudentTeacherContainer() {
+        hideAllForms();
+        studentTeacherContainer.setVisible(true);
     }
 
+    /**
+     * if "Student" button is clicked, display the student form to allow them to join a classroom.
+     */
     @FXML
     public void displayStudent() {
         hideAllForms();
         joinForm.setVisible(true);
         joinForm.requestFocus();
         joinFormDescription.setText("Enter the ID of the classroom you want to join, and choose a username!");
+        joinFormDescription.setTextFill(Color.BLACK);
         joinFormDescription.setMaxWidth(350);
         joinFormDescription.setPrefHeight(50);
         joinFormDescription.setTextAlignment(TextAlignment.CENTER);
         joinFormDescription.setWrapText(true);
     }
 
+    @FXML
+    public void displayTeacher() {
+        hideAllForms();
+        teacherSelectionForm.setVisible(true);
+        teacherSelectionForm.requestFocus();
+        joinFormDescription.setMaxWidth(350);
+        joinFormDescription.setPrefHeight(50);
+        joinFormDescription.setTextAlignment(TextAlignment.CENTER);
+        joinFormDescription.setWrapText(true);
+    }
+
+    @FXML
+    public void displayCreateForm() {
+        hideAllForms();
+        createForm.setVisible(true);
+        createForm.requestFocus();
+        createFormDescription.setMaxWidth(450);
+        createFormDescription.setPrefHeight(100);
+        createFormDescription.setTextAlignment(TextAlignment.CENTER);
+        createFormDescription.setWrapText(true);
+    }
+
+    /**
+     * take inputted information from the student form and add them to the classroom. cache account information.
+     */
     @FXML
     public void joinClassroom() {
         String classroomID = classroomIDField.getText();
@@ -169,7 +231,74 @@ public class ClassroomViewController {
         new Thread(joinTask).start();
     }
 
+    @FXML
+    public void createClassroom() {
+        String classroomName = classroomNameField.getText();
+        String teacherName = teacherNameField.getText();
+        String password = passwordField.getText();
 
+        // ensure fields are not empty
+        if (classroomName.isBlank() || teacherName.isBlank() || password.isBlank()) {
+            createFormDescription.setText("Please ensure all fields are filled in!");
+            createFormDescription.setTextFill(Color.RED);
+            return;
+        }
+
+        // ensure password is at least 6 characters and contains a number.
+        if (password.length() >= 6 && password.length() <= 16 && password.chars().anyMatch(Character::isDigit)) {
+            // do nothing
+        } else {
+            createFormDescription.setText("Password must be between 6 and 16 characters, and contain at least one digit.");
+            return;
+        }
+
+        // display loading message
+        createFormDescription.setText("Creating classroom...");
+        createFormDescription.setTextFill(Color.BLACK);
+        createFormDescription.setAlignment(Pos.CENTER);
+
+        Task<Void> createTask = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    String userID = UserDAO.generateUserID();
+                    String classroomID = ClassroomDAO.createClassroom(userID, classroomName);
+                    UserDAO.createUser(classroomID, userID, teacherName, new TypingPlan(), password);
+                    Platform.runLater(() -> {
+                        createFormDescription.setText("Classroom created! Classroom ID is: "+classroomID);
+                        createFormDescription.setTextFill(Color.GREEN);
+                    });
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        System.out.println("DATABASE FAILURE. Failed to create classroom.");
+                        createFormDescription.setText("An error occurred while creating the classroom. Please try again later...");
+                        createFormDescription.setTextFill(Color.RED);
+                    });
+                }
+                return null;
+            }
+
+        };
+        new Thread(createTask).start();
+
+    }
+
+
+    @FXML
+    public void onLearnButtonClick(){
+        try{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
+            Scene scene=new Scene(loader.load(),1200,700);
+            Stage stage= (Stage) learnButton.getScene().getWindow();
+            stage.setScene(scene);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * close scene and go to games scene
+     */
     @FXML
     public void onGamesButtonClick() {
         try {
