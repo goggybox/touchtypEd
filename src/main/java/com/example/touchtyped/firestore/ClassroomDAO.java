@@ -91,6 +91,24 @@ public class ClassroomDAO {
 
     }
 
+    public static Classroom getClassroom(String classroomID) {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference docRef = db.collection(CLASSROOM_COLLECTION).document(classroomID);
+            DocumentSnapshot doc = docRef.get().get();
+            if (doc.exists()) {
+                return doc.toObject(Classroom.class);
+            } else {
+                System.out.println("Failed to get classroom: classroomID does not exist.");
+                return null;
+            }
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
+            System.out.println("Failed to get classroom.");
+            return null;
+        }
+    }
+
     public static Boolean classroomExists(String classroomID) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();

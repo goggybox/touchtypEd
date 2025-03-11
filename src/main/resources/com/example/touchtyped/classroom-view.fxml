@@ -20,6 +20,17 @@
                 </HBox>
             </VBox>
 
+            <!-- Loading Message -->
+            <VBox fx:id="loadingContainer" alignment="CENTER" spacing="15">
+                <Label text="Loading..." style="-fx-font-size: 26px;"/>
+            </VBox>
+
+            <!-- Display Cached Information -->
+            <VBox fx:id="userAccountDisplayContainer" alignment="CENTER" spacing="15">
+                <Label fx:id="userGreeting" style="-fx-font-size: 26px;"/>
+                <Label fx:id="userDescription" style="-fx-font-size: 18px;"/>
+            </VBox>
+
             <!-- Student Join Classroom Form -->
             <VBox fx:id="joinForm" alignment="CENTER" spacing="15" visible="false">
                 <Label text="Join Classroom" style="-fx-font-size: 26px;"/>

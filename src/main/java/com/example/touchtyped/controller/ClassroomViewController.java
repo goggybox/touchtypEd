@@ -1,6 +1,8 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.Classroom;
 import com.example.touchtyped.firestore.ClassroomDAO;
+import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.TypingPlan;
 import javafx.application.Platform;
@@ -24,6 +26,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ClassroomViewController {
@@ -38,10 +42,16 @@ public class ClassroomViewController {
     private VBox teacherSelectionForm;
 
     @FXML
+    private VBox userAccountDisplayContainer;
+
+    @FXML
     private VBox joinForm;
 
     @FXML
     private VBox createForm;
+
+    @FXML
+    private VBox loadingContainer;
 
     @FXML
     private ImageView gamesButton;
@@ -57,6 +67,12 @@ public class ClassroomViewController {
 
     @FXML
     private Label createFormDescription;
+
+    @FXML
+    private Label userGreeting;
+
+    @FXML
+    private Label userDescription;
 
     @FXML
     private TextField classroomIDField;
@@ -84,10 +100,65 @@ public class ClassroomViewController {
      */
     public void initialize() {
         hideAllForms();
-        if (localDataExists()) {
-            displayClassroomInfo();
+        loadingContainer.setVisible(true);
+
+        Task<Void> initialisation = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+
+                    if (localDataExists()) {
+                        Map<String, String> userDetails = ClassroomDAO.loadUserCache();
+                        String classroomID = userDetails.get("classroomID");
+                        String username = userDetails.get("username");
+                        if (userDetails.containsKey("password")) {
+                            String password = userDetails.get("password");
+                            // check if the password matches the one saved in the database. try to get the UserAccount
+                            // - if it returns null, the password doesn't match
+                            UserAccount userAccount = UserDAO.getAccount(classroomID, username, password);
+                            if (userAccount == null) {
+                                // TODO: force user to log in again.
+                            } else {
+                                Platform.runLater(() -> {
+                                    displayUserAccount(userAccount);
+                                });
+                            }
+                        } else {
+                            UserAccount userAccount = UserDAO.getAccount(classroomID, username);
+                            if (userAccount == null) {
+                                // TODO: force user to log in again.
+                            } else {
+                                Platform.runLater(() -> {
+                                   displayUserAccount(userAccount);
+                                });
+                            }
+                        }
+                    } else {
+                        displayStudentTeacherContainer();
+                    }
+
+                } catch (Exception e) {
+                    System.out.println("DATABASE FAILURE. Failed to initialise.");
+                    Platform.runLater(() -> {
+                        displayStudentTeacherContainer();
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(initialisation).start();
+    }
+
+    public void displayUserAccount(UserAccount userAccount) {
+        hideAllForms();
+        userAccountDisplayContainer.setVisible(true);
+        userGreeting.setText("Hello, "+userAccount.getUsername());
+        Classroom classroom = ClassroomDAO.getClassroom(userAccount.getClassroomID());
+        boolean teacher = Objects.equals(classroom.getTeacherID(), userAccount.getUserID()); // is this user the owner of the classroom?
+        if (teacher) {
+            userDescription.setText("You are the owner of the classroom '" + classroom.getClassroomName() + "'. You can view your students' progress below.");
         } else {
-            displayStudentTeacherContainer();
+            userDescription.setText("You are already a part of the classroom '" + classroom.getClassroomName() + "'. Your progress will be sent to your teacher.");
         }
     }
 
@@ -100,17 +171,6 @@ public class ClassroomViewController {
         return file.exists() && file.length() > 0;
     }
 
-    /**
-     * display cached information
-     */
-    private void displayClassroomInfo() {
-        try (Scanner scanner = new Scanner(new File(file_path))) {
-            String classroomID = scanner.nextLine();
-            String username = scanner.nextLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * hide all forms
@@ -118,6 +178,8 @@ public class ClassroomViewController {
     private void hideAllForms() {
         studentTeacherContainer.setVisible(false);
         teacherSelectionForm.setVisible(false);
+        userAccountDisplayContainer.setVisible(false);
+        loadingContainer.setVisible(false);
         joinForm.setVisible(false);
         createForm.setVisible(false);
     }
@@ -264,6 +326,7 @@ public class ClassroomViewController {
                     String userID = UserDAO.generateUserID();
                     String classroomID = ClassroomDAO.createClassroom(userID, classroomName);
                     UserDAO.createUser(classroomID, userID, teacherName, new TypingPlan(), password);
+                    ClassroomDAO.saveUserCache(classroomID, teacherName, password);
                     Platform.runLater(() -> {
                         createFormDescription.setText("Classroom created! Classroom ID is: "+classroomID);
                         createFormDescription.setTextFill(Color.GREEN);

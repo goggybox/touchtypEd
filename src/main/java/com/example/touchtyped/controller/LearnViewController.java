@@ -82,6 +82,15 @@ public class LearnViewController {
         HBox divider = DividerLine.createDividerLineWithText("");
         vbox.getChildren().add(divider);
 
+//        ClassroomDAO.saveUserCache("C123456", "johndoe");
+//
+//        Map<String, String> cache = ClassroomDAO.loadUserCache();
+//        if (cache != null) {
+//            System.out.println(cache.get("classroomID"));
+//            System.out.println(cache.get("username"));
+//            System.out.println(cache.getOrDefault("password", "NO PASSWORD SAVED."));
+//        }
+
 //        try {
 //            UserDAO.createUser("CA3B93D", "aidancheung", new TypingPlan(), "hello123");
 //            System.out.println("USER CREATED");
