@@ -3,6 +3,8 @@ package com.example.touchtyped.controller;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.TypingPlan;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -30,7 +32,13 @@ public class ClassroomViewController {
     private VBox joinCreateContainer;
 
     @FXML
+    private VBox studentTeacherContainer;
+
+    @FXML
     private VBox joinForm;
+
+    @FXML
+    private VBox createForm;
 
     @FXML
     private ImageView gamesButton;
@@ -51,14 +59,19 @@ public class ClassroomViewController {
 
     public void initialize() {
 
-        joinCreateContainer.setVisible(true);
-        joinForm.setVisible(false);
+        displayStudentTeacherContainer();
 
         if (localDataExists()) {
             displayClassroomInfo();
         } else {
             showJoinCreateButtons();
         }
+    }
+
+    @FXML
+    private void displayStudentTeacherContainer() {
+        hideAllForms();
+        studentTeacherContainer.setVisible(true);
     }
 
     private boolean localDataExists() {
@@ -75,38 +88,23 @@ public class ClassroomViewController {
         }
     }
 
+    private void hideAllForms() {
+        studentTeacherContainer.setVisible(false);
+        joinForm.setVisible(false);
+        createForm.setVisible(false);
+    }
+
     private void showJoinCreateButtons() {
     }
 
     @FXML
-    public void onJoinButtonClick() {
-    }
-
-    @FXML
-    public void onCreateButtonClick() {
-    }
-
-    @FXML
-    public void onJoinAction() {
-//        String classroomID = classroomIDField.getText();
-//        String username = usernameField.getText();
-//
-//        try (FileWriter writer = new FileWriter(file_path)) {
-//            writer.write(classroomID + "\n");
-//            writer.write(username + "\n");
-//            displayClassroomInfo();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    @FXML
-    public void displayJoinForm() {
-        joinCreateContainer.setVisible(false);
+    public void displayStudent() {
+        hideAllForms();
         joinForm.setVisible(true);
         joinForm.requestFocus();
         joinFormDescription.setText("Enter the ID of the classroom you want to join, and choose a username!");
         joinFormDescription.setMaxWidth(350);
+        joinFormDescription.setPrefHeight(50);
         joinFormDescription.setTextAlignment(TextAlignment.CENTER);
         joinFormDescription.setWrapText(true);
     }
@@ -116,29 +114,59 @@ public class ClassroomViewController {
         String classroomID = classroomIDField.getText();
         String username = studentNameField.getText();
 
-        // check to ensure classroom exists.
-        try {
-            if (!ClassroomDAO.classroomExists(classroomID)) {
-                joinFormDescription.setText("That classroom doesn't exist! Please ensure you entered the ID correctly.");
-                joinFormDescription.setTextFill(Color.RED);
-            } else {
-                // join classroom - either creating a new student account for the classroom, or logging in to an existing account.
-                if (ClassroomDAO.usernameExistsInClassroom(classroomID, username)) {
-                    // logging in to existing account
-
-                } else {
-                    // creating new account
-                    ClassroomDAO.addStudentToClassroom(classroomID, username);
-                    ClassroomDAO.saveUserCache(classroomID, username);
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("DATABASE FAILURE. Failed to join classroom.");
-            joinFormDescription.setText("An error occurred while joining the classroom. Please try again later...");
-            joinFormDescription.setTextFill(Color.RED);
+        // check to ensure fields are not empty
+        if (classroomID.isBlank() || username.isBlank()) {
+            joinFormDescription.setText("Please enter the classroom ID and a username!");
+            joinFormDescription.setTextFill(Color.BLACK);
+            return;
         }
 
+        // display loading message
+        joinFormDescription.setText("Joining...");
+        joinFormDescription.setTextFill(Color.BLACK);
+        joinFormDescription.setAlignment(Pos.CENTER);
+
+        // run database operation in separate thread to ensure "Joining..." message is displayed.
+        Task<Void> joinTask = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    if (!ClassroomDAO.classroomExists(classroomID)) {
+                        Platform.runLater(() -> {
+                            joinFormDescription.setText("That classroom doesn't exist! Please ensure you entered the ID correctly.");
+                            joinFormDescription.setTextFill(Color.RED);
+                        });
+                    } else {
+                        if (ClassroomDAO.usernameExistsInClassroom(classroomID, username)) {
+                            // logging in to existing account
+                            Platform.runLater(() -> {
+                                joinFormDescription.setText("Logged in successfully!");
+                                joinFormDescription.setTextFill(Color.GREEN);
+                            });
+                        } else {
+                            // creating new account
+                            ClassroomDAO.addStudentToClassroom(classroomID, username);
+                            ClassroomDAO.saveUserCache(classroomID, username);
+                            Platform.runLater(() -> {
+                                joinFormDescription.setText("Joined classroom successfully!");
+                                joinFormDescription.setTextFill(Color.GREEN);
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        System.out.println("DATABASE FAILURE. Failed to join classroom.");
+                        joinFormDescription.setText("An error occurred while joining the classroom. Please try again later...");
+                        joinFormDescription.setTextFill(Color.RED);
+                    });
+                }
+                return null;
+            }
+        };
+
+        new Thread(joinTask).start();
     }
+
 
     @FXML
     public void onGamesButtonClick() {

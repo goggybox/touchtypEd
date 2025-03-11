@@ -10,12 +10,12 @@
     <center>
         <!-- ScrollPane to allow vertical scrolling -->
         <StackPane fx:id="stackPane">
-            <VBox fx:id="joinCreateContainer" alignment="CENTER" spacing="20">
-                <Label text="Click to join or create a classroom" style="-fx-font-size: 24px;"/>
+            <VBox fx:id="studentTeacherContainer" alignment="CENTER" spacing="20">
+                <Label text="Are you a student or a teacher?" style="-fx-font-size: 24px;"/>
                 <HBox spacing="20" alignment="CENTER">
-                    <Button text="Join Classroom" fx:id="joinButton" style="-fx-font-size: 18px;"
-                            prefWidth="200" onAction="#displayJoinForm"/>
-                    <Button text="Create Classroom" fx:id="createButton" style="-fx-font-size: 18px;"
+                    <Button text="Student" fx:id="studentButton" style="-fx-font-size: 18px;"
+                            prefWidth="200" onAction="#displayStudent"/>
+                    <Button text="Teacher" fx:id="teacherButton" style="-fx-font-size: 18px;"
                             prefWidth="200"/>
                 </HBox>
             </VBox>
@@ -25,7 +25,10 @@
                 <Label fx:id="joinFormDescription" text="" style="-fx-font-size: 16px;"/>
                 <TextField fx:id="classroomIDField" promptText="Classroom ID"/>
                 <TextField fx:id="studentNameField" promptText="Your Name"/>
-                <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
+                    <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayStudentTeacherContainer"/>
+                </HBox>
             </VBox>
 
             <!-- Create form -->
