@@ -807,10 +807,7 @@ public class GameViewController {
         }
         updateStatistics();
         updateRealtimeStats();
-
-        // Here you can update combo UI or print to console
-        System.out.println("Current Word Streak: " + currentStreak
-                + ", Max Streak: " + maxStreak);
+        
     }
 
     private void updateTaskDisplay() {
