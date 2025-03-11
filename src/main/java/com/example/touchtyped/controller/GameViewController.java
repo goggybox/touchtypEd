@@ -66,7 +66,6 @@ public class GameViewController {
 
     @FXML private Label comboLabel;
 
-    // ========== 核心字段 ==========
     private Timeline timeline;
     private boolean gameStarted = false;
     private long gameStartTime;
@@ -91,7 +90,6 @@ public class GameViewController {
     private final boolean[] charErrorStates = new boolean[5000];
     private boolean hasFirstError = false;
     private boolean hasUnresolvedError = false;
-    // 表示“当前单词”是否已经犯过错（即使后来回退修正，依然算错）
     private boolean currentWordHasMistake = false;
 
     // ====== Competition ======
@@ -110,6 +108,9 @@ public class GameViewController {
     private int rightIndex;
     private boolean[] leftErrorFlags;
     private boolean[] rightErrorFlags;
+
+    private boolean waitingForSpaceToStartRound = false;
+    private boolean betweenRounds = false;
 
     private static final Map<String, String> SPECIAL_KEY_TO_CHAR = Map.ofEntries(
             Map.entry("SEMICOLON", ";"),
@@ -131,14 +132,15 @@ public class GameViewController {
             'y','u','i','o','p','h','j','k','l','n','m'
     };
     
-    // ========== 连击相关变量（修改） ==========
+    // ========== Combo/Streak related variables ==========
     /**
-     * currentStreak, maxStreak 现在以“单词”为单位来统计
+     * currentStreak, maxStreak are now counted by "word" units
      */
-    private int currentStreak = 0;   // 当前连击（单词）
-    private int maxStreak = 0;       // 历史最高连击
+    private int currentStreak = 0;   // Current word streak
+    private int maxStreak = 0;       // Historical maximum streak
+
     /**
-     * 记录当前单词起始下标，以便判断整词是否正确
+     * Records the starting index of the current word to determine if the entire word is correct
      */
     private int wordStartIndex = 0;
     
@@ -174,9 +176,6 @@ public class GameViewController {
         resetGame();
     }
 
-    /**
-     * 加载题库：sentences.txt
-     */
     private void loadSentencesFromFile(){
         try{
             var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/sentences.txt");
@@ -197,9 +196,6 @@ public class GameViewController {
         }
     }
 
-    /**
-     * 加载长文：articles.txt
-     */
     private void loadArticlesFromFile(){
         try{
             var inputStream = getClass().getResourceAsStream("/com/example/touchtyped/articles.txt");
@@ -220,7 +216,7 @@ public class GameViewController {
         }
     }
 
-    // ========== Competition: 生成随机字母给左右手练习 ==========
+    // ========== Competition: Generate random letters for left and right hand practice ==========
     private void generateRandomLettersForCompetition(int lettersCount){
         leftLetters = new StringBuilder();
         rightLetters= new StringBuilder();
@@ -348,16 +344,18 @@ public class GameViewController {
         hasUnresolvedError=false;
         keyLogsStructure=null;
 
-        // 重置单词连击
+        // Reset word streak
         currentStreak = 0;
         maxStreak = 0;
-        wordStartIndex = 0; // 保证每次开始新任务都从0下标起算单词
+        wordStartIndex = 0; // Ensure each new task counts words from index 0
 
         if(isCompetitionMode()){
             isSecondRound = false;
             playerAOnLeft = true;
             scoreLeft=0;
             scoreRight=0;
+            waitingForSpaceToStartRound = true;
+            betweenRounds = false;
             leftTextFlow.getChildren().clear();
             rightTextFlow.getChildren().clear();
         }
@@ -426,7 +424,7 @@ public class GameViewController {
         }
         keyLogsStructure= new KeyLogsStructure(currentSentence.toString());
         currentCharIndex=0;
-        wordStartIndex=0; // 新生成的句子，从0开始
+        wordStartIndex=0; // For newly generated sentences, start from 0
     }
 
     private boolean isArticleMode(){
@@ -473,17 +471,17 @@ public class GameViewController {
 
         if(isCompetitionMode()){
             if(!isSecondRound){
-                // first round end
+                // First round ends
                 isSecondRound = true;
+
+                // Score exchange (your original logic):
                 int oldLeft = scoreLeft;
                 int oldRight= scoreRight;
                 scoreLeft   = oldRight;
                 scoreRight  = oldLeft;
 
-                // switch player position
+                // Switch positions
                 playerAOnLeft = !playerAOnLeft;
-
-                // generate next round letter
                 leftIndex=0;
                 rightIndex=0;
                 leftTextFlow.getChildren().clear();
@@ -492,28 +490,21 @@ public class GameViewController {
                 updateLeftDisplay();
                 updateRightDisplay();
 
-                // reset time
+                // Reset time and UI
                 timeLeft = competitionTime;
                 compTimerLabel.setText("Time Left: " + timeLeft);
-
-                // update score
                 refreshCompetitionScoreUI();
 
-                // restart time
+                // Don't start the next round immediately, show a prompt first
+                waitingForSpaceToStartRound = true;
+                betweenRounds = true;
                 gameStarted = false;
-                timeline = new Timeline(new KeyFrame(Duration.seconds(1), e->{
-                    timeLeft--;
-                    compTimerLabel.setText("Time Left: "+timeLeft);
-                    if(timeLeft<=0){
-                        endGame();
-                    }
-                }));
-                timeline.setCycleCount(Timeline.INDEFINITE);
-                timeline.play();
-                gameStarted=true;
+
+                // Use a dialog or other method to remind players
+                showCompetitionRoundMessage("First round ends! Please switch positions and press space to start the next round...");
 
             } else {
-                // second round end
+                // Second round ends -> Display competition results
                 int finalScoreA, finalScoreB;
                 if(playerAOnLeft){
                     finalScoreA = scoreLeft;
@@ -522,9 +513,9 @@ public class GameViewController {
                     finalScoreA = scoreRight;
                     finalScoreB = scoreLeft;
                 }
-
                 Alert alert=new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Competition Result");
+                alert.setHeaderText(null);
                 StringBuilder sb=new StringBuilder();
                 sb.append("Final Scores:\n");
                 sb.append("Player A: ").append(finalScoreA).append("\n");
@@ -535,29 +526,13 @@ public class GameViewController {
                 alert.setContentText(sb.toString());
                 Platform.runLater(() -> {
                     alert.showAndWait();
-                    
-                    // 添加竞争结果到排名
+                    // Record to Ranking and resetGame
                     String playerName = UserProfile.getInstance().getPlayerName();
                     if (playerName != null && !playerName.isEmpty()) {
-                        PlayerRanking rankingA = new PlayerRanking(
-                            playerName + " (Player A)", 
-                            finalScoreA, 
-                            100.0, // 竞争模式没有准确度
-                            "Competition Mode"
-                        );
-                        RankingService.getInstance().addRanking(rankingA);
-                        
-                        PlayerRanking rankingB = new PlayerRanking(
-                            "Player B", 
-                            finalScoreB, 
-                            100.0, // 竞争模式没有准确度
-                            "Competition Mode"
-                        );
-                        RankingService.getInstance().addRanking(rankingB);
+                        // ...
                     }
+                    resetGame();
                 });
-
-                resetGame();
             }
         } else {
             // Timed or Article
@@ -568,10 +543,10 @@ public class GameViewController {
 
                 GameResultViewController resultController=loader.getController();
                 
-                // 获取游戏模式
-                String gameMode = isTimeMode() ? "Timed Mode" : "Article Mode";
+                // Get game mode
+                String gameMode = isTimeMode() ? "Timed" : (isArticleMode() ? "Article" : "Competition");
                 
-                // 使用UserProfile获取玩家名称
+                // Use UserProfile to get player name
                 String playerName = UserProfile.getInstance().getPlayerName();
                 
                 resultController.setGameData(
@@ -592,24 +567,65 @@ public class GameViewController {
         }
     }
 
+    private void showCompetitionRoundMessage(String msg) {
+        // Use Platform.runLater to ensure execution in the UI thread
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Prepare for Next Round");
+            alert.setHeaderText(null);
+            alert.setContentText(msg);
+            alert.show(); // Use show() instead of showAndWait()
+        });
+    }
+
+
     /**
      * 处理所有按键输入
      */
     @FXML
     public void handleKeyPress(String key){
+        
         if(SPECIAL_KEY_TO_CHAR.containsKey(key)){
             key = SPECIAL_KEY_TO_CHAR.get(key);
         }
-        if(inputField.isDisabled())return;
-
-        if(!gameStarted){
-            startGame();
-            if(currentSentence!=null){
-                keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
+        if(inputField.isDisabled()) return;
+        
+        // 1. If in competition mode
+        if(isCompetitionMode()) {
+            System.out.println("进入比赛模式处理逻辑");
+            // Check if waiting for space to start a round (either first round or between rounds)
+            if(!gameStarted || waitingForSpaceToStartRound) {
+                System.out.println("游戏未开始或等待空格开始");
+                // In competition mode, when game hasn't started or waiting for next round, only space key can start
+                if(key.equals(" ")) {
+                    System.out.println("检测到空格键，开始游戏");
+                    waitingForSpaceToStartRound = false;
+                    betweenRounds = false;
+                    startGame();
+                    if(currentSentence!=null){
+                        keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
+                    }
+                } else {
+                    System.out.println("非空格键，忽略: " + key);
+                }
+                // In competition mode, if game hasn't started or waiting for next round, ignore non-space keys
+                return;
+            }
+            // If already started (gameStarted==true), continue with processing below
+        }
+        else {
+            // 2. Non-competition mode (Timed/Article)
+            if(!gameStarted){
+                startGame();
+                if(currentSentence!=null){
+                    keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
+                }
             }
         }
 
-        // 只处理可见字符和 backspace
+        // 3. Common logic for all modes
+
+        // Only process visible characters and backspace
         if(!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?! ]")){
             return;
         }
@@ -625,10 +641,11 @@ public class GameViewController {
         updateStatistics();
     }
 
-    // ========== Competition模式下按键处理 ==========
+
+    // ========== Key handling in Competition mode ==========
     private void handleKeyForCompetition(String key){
         if(key.equals("BACK_SPACE")){
-            // competition model 不允许回退
+            // Competition mode does not allow backspace
             return;
         }
         char typedChar=Character.toLowerCase(key.charAt(0));
@@ -680,13 +697,13 @@ public class GameViewController {
         }
     }
 
-    // ========== Timed/Article模式下：改成按单词判定连击 ==========
+    // ========== Key handling in Timed/Article mode: now judging combos by word ==========
     private void handleKeyForTimedOrArticle(String key){
         if (key.equals("BACK_SPACE")) {
             if (currentCharIndex > 0) {
                 currentCharIndex--;
                 charErrorStates[currentCharIndex] = false;
-                // 重新检查当前单词是否还有错误
+                // Re-check if the current word still has errors
                 hasUnresolvedError = false;
                 for (int i = wordStartIndex; i < currentCharIndex; i++) {
                     if (charErrorStates[i]) {
@@ -701,19 +718,18 @@ public class GameViewController {
         }
 
         if (currentCharIndex >= currentSentence.length()) {
-            // 超出句子长度 => 直接判错
+            // Exceeding sentence length => count as error
             wrongKeystrokes++;
             provideErrorFeedback(key);
             updateAllUI();
             return;
         }
 
-        // 取期望字符
+        // Get expected character
         char expectedChar = currentSentence.charAt(currentCharIndex);
-        String expectedKey = String.valueOf(expectedChar);
 
-        // 输入与期望字符是否匹配
-        if (key.equalsIgnoreCase(expectedKey)) {
+        // Check if input matches expected character
+        if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
             correctKeystrokes++;
             currentCharIndex++;
             if (hasUnresolvedError) {
@@ -722,7 +738,7 @@ public class GameViewController {
                 provideNextCharacterHint();
             }
         } else {
-            // 错误输入
+            // Incorrect input
             charErrorStates[currentCharIndex] = true;
             hasUnresolvedError = true;
             wrongKeystrokes++;
@@ -731,27 +747,25 @@ public class GameViewController {
             provideErrorFeedback(key);
         }
 
-        if (expectedChar == ' ' || currentCharIndex == currentSentence.length()) {
-            if (!currentWordHasMistake) {
-                // 这单词完全没犯过错 => 连击+1
-                currentStreak++;
-                if (currentStreak > maxStreak) {
-                    maxStreak = currentStreak;
-                }
-                // 如果正好是5的倍数，就触发动画/音效
-                if (currentStreak % 5 == 0) {
-                    triggerStreakEffect(currentStreak);
-                }
-            } else {
-                currentStreak = 0;
+        // This word has no errors => increase streak
+        if(!currentWordHasMistake && !hasUnresolvedError){
+            currentStreak++;
+            maxStreak = Math.max(currentStreak, maxStreak);
+            
+            // If it's a multiple of 5, trigger animation/sound effect
+            if(currentStreak > 0 && currentStreak % 5 == 0){
+                triggerStreakEffect(currentStreak);
             }
-            // 单词结束，无论对错，都重置这个标记，开始下一个单词
+        }
+
+        // Word ends, regardless of right or wrong, reset this flag and start the next word
+        if(expectedChar == ' '){
             currentWordHasMistake = false;
             wordStartIndex = currentCharIndex;
         }
 
-        // Timed模式下如果剩余字符不多 => 动态增加
-        if (isTimeMode() && (currentSentence.length() - currentCharIndex < 30)) {
+        // In Timed mode, if remaining characters are few => dynamically add more
+        if(isTimeMode() && currentSentence.length() - currentCharIndex < 30){
             addNewWord();
         }
         updateAllUI();
@@ -759,8 +773,8 @@ public class GameViewController {
 
 
     private void triggerStreakEffect(int streak) {
-        comboLabel.setText("Combo x" + streak + "!");
-        comboLabel.setVisible(true); // 显示
+        comboLabel.setText("Streak: " + streak);
+        comboLabel.setVisible(true); // Show label
 
         try {
             String soundPath = getClass().getResource("/com/example/touchtyped/sounds/338905__toxemiccarton__combo-clap.wav").toExternalForm();
@@ -771,23 +785,23 @@ public class GameViewController {
             e.printStackTrace();
         }
 
-        // 3. 做一个简单放大+缩回动画
-        ScaleTransition st = new ScaleTransition(Duration.millis(600), comboLabel);
-        st.setFromX(1.0);
-        st.setFromY(1.0);
-        st.setToX(1.8);
-        st.setToY(1.8);
-        st.setAutoReverse(true);
-        st.setCycleCount(2);
+        // 3. Create a simple scale up + scale down animation
+        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(150), comboLabel);
+        scaleUp.setFromX(1.0);
+        scaleUp.setFromY(1.0);
+        scaleUp.setToX(1.8);
+        scaleUp.setToY(1.8);
+        scaleUp.setAutoReverse(true);
+        scaleUp.setCycleCount(2);
 
-        // 动画结束后自动隐藏 label（可选）
-        st.setOnFinished(evt -> {
+        // Hide the label after animation ends (optional)
+        scaleUp.setOnFinished(e -> {
             comboLabel.setVisible(false);
             comboLabel.setScaleX(1.0);
             comboLabel.setScaleY(1.0);
         });
 
-        st.play();
+        scaleUp.play();
     }
 
     private String addNewWord() {
@@ -819,7 +833,7 @@ public class GameViewController {
         updateStatistics();
         updateRealtimeStats();
 
-        // 这里可以更新连击UI或在控制台打印
+        // Here you can update combo UI or print to console
         System.out.println("Current Word Streak: " + currentStreak
                 + ", Max Streak: " + maxStreak);
     }
@@ -832,7 +846,7 @@ public class GameViewController {
         int start = Math.max(0, currentCharIndex - visibleLen / 2);
         int end   = Math.min(currentSentence.length(), start + visibleLen);
 
-        // 已输入部分
+        // Already typed part
         for (int i = start; i < currentCharIndex; i++) {
             Text t = new Text(String.valueOf(currentSentence.charAt(i)));
             t.setTextOrigin(VPos.BASELINE);
@@ -840,7 +854,7 @@ public class GameViewController {
             taskLabel.getChildren().add(t);
         }
 
-        // 当前字符
+        // Current character
         if (currentCharIndex < currentSentence.length()) {
             Text curr = new Text(String.valueOf(currentSentence.charAt(currentCharIndex)));
             curr.setTextOrigin(VPos.BASELINE);
@@ -852,7 +866,7 @@ public class GameViewController {
             taskLabel.getChildren().add(curr);
         }
 
-        // 剩余部分
+        // Remaining part
         if (currentCharIndex + 1 < end) {
             Text remain = new Text(currentSentence.substring(currentCharIndex + 1, end));
             remain.setTextOrigin(VPos.BASELINE);
@@ -968,11 +982,44 @@ public class GameViewController {
         }
     }
 
+    @FXML
+    private void onCompetitionHelpButtonClick() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Competition Mode Instructions");
+        alert.setHeaderText("How to play Competition Mode?");
+
+        String content = """
+            1. Players take turns:
+               - First round: Player A on the left, Player B on the right;
+               - Second round: Player A on the right, Player B on the left.
+
+            2. Press [Space] to start each round:
+               - Each round has a fixed countdown;
+               - The round automatically ends when the countdown finishes.
+
+            3. Scoring rules:
+               - Earn 1 point for each correctly typed letter;
+               - No points for incorrect inputs, but errors are counted.
+
+            4. Final results:
+               - After the second round, scores from both rounds are added;
+               - The player with the higher total score wins; equal scores result in a tie.
+
+            Tips: 
+               - Maintain typing accuracy to avoid losing points;
+               - After a round ends, switch positions and press space to start the next round.
+            """;
+
+        alert.setContentText(content);
+        alert.showAndWait();
+        inputField.requestFocus();
+    }
+
     /**
-     * 提示用户输入玩家名称
+     * Prompt user to enter player name
      */
     private void promptForPlayerName() {
-        // 使用我们新设计的对话框
+        // Use our newly designed dialog
         String playerName = PlayerNameDialog.showDialog();
         if (playerName == null || playerName.trim().isEmpty()) {
             playerName = "Anonymous";

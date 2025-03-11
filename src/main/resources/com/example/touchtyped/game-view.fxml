@@ -99,6 +99,10 @@
                   managed="false"
                   alignment="CENTER">
 
+                <Button text="Competition Mode Instructions"
+                        onAction="#onCompetitionHelpButtonClick"
+                        style="-fx-font-size: 14; -fx-cursor: hand;" />
+
                 <!-- 第一行: Time left -->
                 <HBox alignment="CENTER" spacing="30">
                     <Label fx:id="compTimerLabel"
