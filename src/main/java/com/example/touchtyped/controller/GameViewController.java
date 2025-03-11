@@ -91,6 +91,8 @@ public class GameViewController {
     private final boolean[] charErrorStates = new boolean[5000];
     private boolean hasFirstError = false;
     private boolean hasUnresolvedError = false;
+    // 表示“当前单词”是否已经犯过错（即使后来回退修正，依然算错）
+    private boolean currentWordHasMistake = false;
 
     // ====== Competition ======
     private boolean isSecondRound = false;
@@ -725,15 +727,27 @@ public class GameViewController {
             hasUnresolvedError = true;
             wrongKeystrokes++;
             currentCharIndex++;
+            currentWordHasMistake = true;
             provideErrorFeedback(key);
         }
 
-        if (expectedChar == ' ') {
-            // 刚刚输入的字符是空格 => 单词实际末尾是 currentCharIndex - 2
-            checkWordCompletion(currentCharIndex - 2);
-        } else if (currentCharIndex == currentSentence.length()) {
-            // 到达句子末尾 => 单词末尾是 currentCharIndex - 1
-            checkWordCompletion(currentCharIndex - 1);
+        if (expectedChar == ' ' || currentCharIndex == currentSentence.length()) {
+            if (!currentWordHasMistake) {
+                // 这单词完全没犯过错 => 连击+1
+                currentStreak++;
+                if (currentStreak > maxStreak) {
+                    maxStreak = currentStreak;
+                }
+                // 如果正好是5的倍数，就触发动画/音效
+                if (currentStreak % 5 == 0) {
+                    triggerStreakEffect(currentStreak);
+                }
+            } else {
+                currentStreak = 0;
+            }
+            // 单词结束，无论对错，都重置这个标记，开始下一个单词
+            currentWordHasMistake = false;
+            wordStartIndex = currentCharIndex;
         }
 
         // Timed模式下如果剩余字符不多 => 动态增加
@@ -743,52 +757,12 @@ public class GameViewController {
         updateAllUI();
     }
 
-    /**
-     * 检查从 wordStartIndex 到 “当前字符 - 1” 这段是否出现错误
-     * 如果无错 => currentStreak++
-     * 如果有错 => currentStreak=0
-     * 然后让 wordStartIndex= currentCharIndex
-     */
-    private void checkWordCompletion(int endIndex){
-        // 如果 endIndex < wordStartIndex => 说明这个“单词”s是空的或越界
-        if (endIndex < wordStartIndex){
-            wordStartIndex = currentCharIndex;
-            return;
-        }
-
-        boolean wordHasError = false;
-        for(int i = wordStartIndex; i <= endIndex; i++){
-            if(charErrorStates[i]) {
-                wordHasError = true;
-                break;
-            }
-        }
-
-        if(!wordHasError){
-            currentStreak++;
-            if(currentStreak > maxStreak){
-                maxStreak = currentStreak;
-            }
-
-            if(currentStreak % 5 == 0){
-                triggerStreakEffect(currentStreak);
-            }
-        } else {
-            currentStreak = 0;
-        }
-
-        // 准备下一个单词
-        wordStartIndex = currentCharIndex;
-    }
 
     private void triggerStreakEffect(int streak) {
-        // 1. 设置文字，例如“Combo x5!”
         comboLabel.setText("Combo x" + streak + "!");
         comboLabel.setVisible(true); // 显示
 
-        // 2. 播放音效
         try {
-            // 假设 combo.wav 放在 /com/example/touchtyped/sounds/combo.wav
             String soundPath = getClass().getResource("/com/example/touchtyped/sounds/338905__toxemiccarton__combo-clap.wav").toExternalForm();
             Media sound = new Media(soundPath);
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
