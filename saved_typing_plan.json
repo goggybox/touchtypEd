@@ -3,38 +3,34 @@
     "duration" : "Week 1-2",
     "goal" : "Fix errors and gain accuracy",
     "modules" : [ {
-      "name" : "E & I",
-      "focus" : "Improve similar letter accuracy",
+      "name" : "ErrorCorrection",
+      "focus" : "Fix common mistakes",
       "displayText" : null,
       "id" : 1,
       "levels" : [ {
-        "taskString" : "ei",
+        "taskString" : "io practice",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eieie",
+        "taskString" : "yu typing",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eeiiee",
+        "taskString" : "op word",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eieieie",
+        "taskString" : "ad mix",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eeeeiiii",
+        "taskString" : "mt try",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
       "locked" : false,
-      "nextUncompletedLevel" : {
-        "taskString" : "ei",
-        "displayText" : null,
-        "completed" : false
-      },
-      "completion" : 0.0
+      "completion" : 1.0,
+      "nextUncompletedLevel" : null
     }, {
       "name" : "Y & U",
       "focus" : "Enhance similar letter distinction",
@@ -61,13 +57,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "locked" : true,
+      "locked" : false,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "yu",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "O & P",
       "focus" : "Strengthen finger independence",
@@ -95,12 +91,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "op",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "A & ;",
       "focus" : "Refine pinky precision",
@@ -128,12 +124,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "a;",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "G & H",
       "focus" : "Boost index finger control",
@@ -161,12 +157,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "F & J",
       "focus" : "Improve primary key accuracy",
@@ -194,12 +190,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "fj",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     } ],
     "phase" : "Foundation Phase"
   }, {
@@ -232,12 +228,12 @@
         "completed" : false
       } ],
       "locked" : false,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "tternpa",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "SequenceDrills",
       "focus" : "Improve sequence",
@@ -265,12 +261,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "opinio",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "AlternatingHands",
       "focus" : "Boost hand coord",
@@ -298,12 +294,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "qweru",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "HomeRowShifts",
       "focus" : "Smooth home row",
@@ -331,12 +327,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "homeo",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "PatternFluency",
       "focus" : "Increase pattern",
@@ -364,12 +360,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "pattern",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "SpeedEnhance",
       "focus" : "Enhance baseline",
@@ -397,12 +393,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "speedu",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     } ],
     "phase" : "Intermediate Drills Phase"
   }, {
@@ -416,31 +412,27 @@
       "levels" : [ {
         "taskString" : "io practice",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "yu typing",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "op word",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ad mix",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "mt try",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
       "locked" : false,
-      "nextUncompletedLevel" : {
-        "taskString" : "io practice",
-        "displayText" : null,
-        "completed" : false
-      },
-      "completion" : 0.0
+      "completion" : 1.0,
+      "nextUncompletedLevel" : null
     }, {
       "name" : "LetterPairs",
       "focus" : "Master letter pairs",
@@ -467,13 +459,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "locked" : true,
+      "locked" : false,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "oi together",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "WordExits",
       "focus" : "Improve word exits",
@@ -501,12 +493,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "tion words",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "ShortSentences",
       "focus" : "Build short sentences",
@@ -534,12 +526,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "I am happy",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "CommonPhrases",
       "focus" : "Drill familiar phrases",
@@ -567,12 +559,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "Hello friend",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     }, {
       "name" : "FluentTyping",
       "focus" : "Develop fluent typing",
@@ -600,12 +592,12 @@
         "completed" : false
       } ],
       "locked" : true,
+      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "The quick brown fox",
         "displayText" : null,
         "completed" : false
-      },
-      "completion" : 0.0
+      }
     } ],
     "phase" : "Real Vocabulary & Sentences Phase"
   } ]
