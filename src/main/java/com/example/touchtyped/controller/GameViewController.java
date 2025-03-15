@@ -127,7 +127,28 @@ public class GameViewController {
             Map.entry("OPEN_BRACKET", "["),
             Map.entry("CLOSE_BRACKET", "]"),
             Map.entry("MINUS", "-"),
-            Map.entry("EQUALS", "=")
+            Map.entry("EQUALS", "="),
+            Map.entry("BACK_QUOTE", "`"),
+            Map.entry("EXCLAMATION", "!"),
+            Map.entry("AT", "@"),
+            Map.entry("NUMBER_SIGN", "#"),
+            Map.entry("DOLLAR", "$"),
+            Map.entry("PERCENT", "%"),
+            Map.entry("CIRCUMFLEX", "^"),
+            Map.entry("AMPERSAND", "&"),
+            Map.entry("ASTERISK", "*"),
+            Map.entry("LEFT_PARENTHESIS", "("),
+            Map.entry("RIGHT_PARENTHESIS", ")"),
+            Map.entry("UNDERSCORE", "_"),
+            Map.entry("PLUS", "+"),
+            Map.entry("BRACELEFT", "{"),
+            Map.entry("BRACERIGHT", "}"),
+            Map.entry("COLON", ":"),
+            Map.entry("QUOTEDBL", "\""),
+            Map.entry("LESS", "<"),
+            Map.entry("GREATER", ">"),
+            Map.entry("QUESTION", "?"),
+            Map.entry("PIPE", "|")
     );
 
     private static final char[] LEFT_HAND_CHARS = {
@@ -613,9 +634,21 @@ public class GameViewController {
         else {
             // 2. Non-competition mode (Timed/Article)
             if(!gameStarted){
-                startGame();
-                if(currentSentence!=null){
-                    keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
+                // Check if the first letter is typed correctly
+                if(currentSentence != null && currentSentence.length() > 0) {
+                    char expectedFirstChar = currentSentence.charAt(0);
+                    String expectedFirstKey = String.valueOf(expectedFirstChar);
+                    
+                    // Only start the game if the first letter is typed correctly
+                    if(key.equals(expectedFirstKey)) {
+                        startGame();
+                        if(currentSentence!=null){
+                            keyLogsStructure=new KeyLogsStructure(currentSentence.toString());
+                        }
+                    } else {
+                        // First letter is wrong, don't start the game
+                        return;
+                    }
                 }
             }
         }
@@ -623,7 +656,7 @@ public class GameViewController {
         // 3. Common logic for all modes
 
         // Only process visible characters and backspace
-        if(!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?! ]")){
+        if(!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?!@#$%^&*()\\[\\]{}\\-_=+<>/\\\\|° ]")){
             return;
         }
         if(keyLogsStructure!=null){
@@ -645,14 +678,33 @@ public class GameViewController {
             // Competition mode does not allow backspace
             return;
         }
-        char typedChar=Character.toLowerCase(key.charAt(0));
-        boolean belongsToLeft=arrayContains(LEFT_HAND_CHARS, typedChar);
-        boolean belongsToRight=arrayContains(RIGHT_HAND_CHARS, typedChar);
+        char typedChar = key.charAt(0);
+        // 检查字符是否属于左手或右手，不转换为小写
+        boolean belongsToLeft = false;
+        boolean belongsToRight = false;
+        
+        // 检查字符是否属于左手字符（考虑大小写）
+        for (char c : LEFT_HAND_CHARS) {
+            if (c == Character.toLowerCase(typedChar) || c == Character.toUpperCase(typedChar)) {
+                belongsToLeft = true;
+                break;
+            }
+        }
+        
+        // 检查字符是否属于右手字符（考虑大小写）
+        if (!belongsToLeft) {
+            for (char c : RIGHT_HAND_CHARS) {
+                if (c == Character.toLowerCase(typedChar) || c == Character.toUpperCase(typedChar)) {
+                    belongsToRight = true;
+                    break;
+                }
+            }
+        }
 
         if(belongsToLeft){
             if(leftIndex<leftLetters.length()){
-                char expected= leftLetters.charAt(leftIndex);
-                if(typedChar==expected){
+                char expected = leftLetters.charAt(leftIndex);
+                if(typedChar == expected){
                     correctKeystrokes++;
                     scoreLeft++;
                     leftErrorFlags[leftIndex]=false;
@@ -668,8 +720,8 @@ public class GameViewController {
         }
         else if(belongsToRight){
             if(rightIndex<rightLetters.length()){
-                char expected= rightLetters.charAt(rightIndex);
-                if(typedChar==expected){
+                char expected = rightLetters.charAt(rightIndex);
+                if(typedChar == expected){
                     correctKeystrokes++;
                     scoreRight++;
                     rightErrorFlags[rightIndex]=false;
@@ -715,7 +767,7 @@ public class GameViewController {
         char expectedChar = currentSentence.charAt(currentCharIndex);
         String expectedKey = String.valueOf(expectedChar);
 
-        if (key.equalsIgnoreCase(expectedKey)) {
+        if (key.equals(expectedKey)) {
             // correct
             correctKeystrokes++;
         } else {
