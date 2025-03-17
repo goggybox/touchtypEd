@@ -1,25 +1,40 @@
 module com.example.touchtyped {
     requires javafx.controls;
     requires javafx.fxml;
-    requires com.fasterxml.jackson.annotation;
+    requires javafx.base;
+    requires javafx.graphics;
+    
+    // Jackson JSON
     requires com.fasterxml.jackson.databind;
-    requires com.fazecast.jSerialComm;
-    requires java.desktop;
-    requires spring.boot.autoconfigure;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.annotation;
+    
+    // Spring Boot
     requires spring.boot;
-    requires spring.beans;
-    requires spring.web;
-    requires jakarta.persistence;
-    requires spring.data.jpa;
-    requires spring.data.commons;
+    requires spring.boot.autoconfigure;
     requires spring.context;
+    requires spring.beans;
+    requires spring.core;
+    requires spring.web;
+    requires spring.data.commons;
     requires spring.tx;
 
-    opens com.example.touchtyped to javafx.fxml;
+    // JPA
+    requires java.persistence;
+    
+    // HTTP Server
+    requires jdk.httpserver;
+    requires spring.webmvc;
+    requires spring.data.jpa;
+    requires jakarta.persistence;
+
+    // 开放包供Spring反射访问
+    opens com.example.touchtyped.model to spring.core, spring.beans, com.fasterxml.jackson.databind;
+    opens com.example.touchtyped.server to spring.core, spring.beans, spring.context, spring.web;
+    opens com.example.touchtyped.service to spring.core, spring.beans;
+    
     exports com.example.touchtyped.app;
-    opens com.example.touchtyped.app to javafx.fxml;
-    exports com.example.touchtyped.controller;
-    opens com.example.touchtyped.controller to javafx.fxml;
-    exports com.example.touchtyped.serialisers to com.fasterxml.jackson.databind;
-    exports com.example.touchtyped.model to com.fasterxml.jackson.databind;
+    exports com.example.touchtyped.model;
+    exports com.example.touchtyped.service;
+    exports com.example.touchtyped.server;
 }
