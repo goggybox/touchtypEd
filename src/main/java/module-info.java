@@ -5,6 +5,15 @@ module com.example.touchtyped {
     requires com.fasterxml.jackson.databind;
     requires com.fazecast.jSerialComm;
     requires java.desktop;
+    requires spring.boot.autoconfigure;
+    requires spring.boot;
+    requires spring.beans;
+    requires spring.web;
+    requires jakarta.persistence;
+    requires spring.data.jpa;
+    requires spring.data.commons;
+    requires spring.context;
+    requires spring.tx;
 
     opens com.example.touchtyped to javafx.fxml;
     exports com.example.touchtyped.app;

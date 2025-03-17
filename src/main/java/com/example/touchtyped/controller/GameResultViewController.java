@@ -1,8 +1,12 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
+import com.example.touchtyped.model.UserProfile;
+import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import javafx.concurrent.Task;
@@ -22,11 +26,17 @@ public class GameResultViewController {
     @FXML private Label finalWpmLabel;
     @FXML private Label finalAccLabel;
     @FXML private Label finalCharLabel;
+    @FXML private Label globalRankLabel;
 
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
+    @FXML private Button viewRankingsButton;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
+    private int wpm;
+    private double accuracy;
+    private String gameMode = "Standard Mode"; // 默认游戏模式
+    private PlayerRanking currentRanking;
 
     /**
      * Navigate to learn view
@@ -74,6 +84,21 @@ public class GameResultViewController {
     }
 
     /**
+     * Navigate to rankings view
+     */
+    @FXML
+    public void onViewRankingsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
+            Scene rankingScene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            stage.setScene(rankingScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Set game result data and update the display.
      * @param wpm Words per minute achieved
      * @param correctKeystrokes Number of correctly typed keystrokes
@@ -89,6 +114,68 @@ public class GameResultViewController {
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
             totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+            
+        // 保存数据
+        this.wpm = wpm;
+        this.accuracy = accuracy;
+        
+        // 创建排名并提交到全球服务器
+        submitRanking();
+    }
+    
+    /**
+     * 设置游戏模式
+     * @param gameMode 游戏模式
+     */
+    public void setGameMode(String gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    /**
+     * 提交排名到本地和全球服务器
+     */
+    private void submitRanking() {
+        try {
+            // 获取用户名称
+            String playerName = UserProfile.getInstance().getPlayerName();
+            
+            // 创建排名对象
+            currentRanking = new PlayerRanking(playerName, wpm, accuracy, gameMode);
+            
+            // 更新全球排名标签
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("正在提交到全球排名服务器...");
+            }
+            
+            // 提交排名
+            Application.submitGameRanking(currentRanking);
+            
+            // 异步获取并显示全球排名位置
+            GlobalRankingService.getInstance().getPlayerPosition(playerName)
+                .thenAccept(position -> {
+                    if (position > 0) {
+                        javafx.application.Platform.runLater(() -> {
+                            if (globalRankLabel != null) {
+                                globalRankLabel.setText("全球排名: 第 " + position + " 名");
+                            }
+                        });
+                    } else {
+                        javafx.application.Platform.runLater(() -> {
+                            if (globalRankLabel != null) {
+                                globalRankLabel.setText("无法获取全球排名");
+                            }
+                        });
+                    }
+                });
+            
+        } catch (Exception e) {
+            System.err.println("提交排名时出错: " + e.getMessage());
+            e.printStackTrace();
+            
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("提交排名失败");
+            }
+        }
     }
 
     /**

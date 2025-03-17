@@ -40,7 +40,8 @@
                                    fitHeight="69.0" fitWidth="175.0"
                                    layoutX="1111.0" layoutY="26.0"
                                    pickOnBounds="true"
-                                   preserveRatio="true">
+                                   preserveRatio="true"
+                                   onMouseClicked="#onOptionButtonClick">
                             <Image url="@images/nav-bar/options.png" />
                         </ImageView>
                     </children>
@@ -70,6 +71,12 @@
                     <Label fx:id="finalCharLabel" styleClass="result-value"/>
                 </VBox>
             </HBox>
+            
+            <!-- Global Ranking Information -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Global Ranking" styleClass="section-title"/>
+                <Label fx:id="globalRankLabel" text="Connecting to server..." styleClass="global-rank-label"/>
+            </VBox>
 
             <!-- Advanced Statistics Button and Description -->
             <VBox alignment="CENTER" spacing="10">
@@ -93,6 +100,13 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                
+                <!-- View Rankings Button -->
+                <Button fx:id="viewRankingsButton" 
+                        onAction="#onViewRankingsButtonClick"
+                        text="View Rankings"
+                        styleClass="control-button"
+                        focusTraversable="false"/>
             </HBox>
         </VBox>
     </center>
