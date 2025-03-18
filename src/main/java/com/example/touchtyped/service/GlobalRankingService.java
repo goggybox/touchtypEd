@@ -18,16 +18,12 @@ import java.util.concurrent.Executors;
  * 全球排名服务，用于与排名服务器通信
  */
 public class GlobalRankingService {
-    // 服务器地址 - 修改此处连接到你的服务器
-    private static final String SERVER_IP = "localhost";
-    
-    // 服务器端口 - 默认为8080
+    private static final String SERVER_IP = "10.124.113.224";
+
     private static final int SERVER_PORT = 8080;
-    
-    // 服务器API路径
+
     private static final String API_PATH = "/api/rankings";
-    
-    // 完整服务器URL
+
     private static final String SERVER_URL = "http://" + SERVER_IP + ":" + SERVER_PORT + API_PATH;
     
     private static GlobalRankingService instance;
@@ -35,9 +31,7 @@ public class GlobalRankingService {
     
     private GlobalRankingService() {
         this.objectMapper = new ObjectMapper();
-        // 注册Java 8日期时间模块，用于处理LocalDateTime等类型
         objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-        System.out.println("排名服务器URL: " + SERVER_URL);
     }
     
     public static synchronized GlobalRankingService getInstance() {
