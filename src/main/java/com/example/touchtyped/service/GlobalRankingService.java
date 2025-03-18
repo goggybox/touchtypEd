@@ -35,6 +35,8 @@ public class GlobalRankingService {
     
     private GlobalRankingService() {
         this.objectMapper = new ObjectMapper();
+        // 注册Java 8日期时间模块，用于处理LocalDateTime等类型
+        objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
         System.out.println("排名服务器URL: " + SERVER_URL);
     }
     
