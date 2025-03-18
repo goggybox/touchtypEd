@@ -4,14 +4,9 @@ import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
-import com.example.touchtyped.model.TypingPlan;
-import com.example.touchtyped.service.RESTClient;
-import com.example.touchtyped.service.RESTResponseWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.VPos;
@@ -127,7 +122,6 @@ public class GameViewController {
 
     @FXML
     public void initialize(){
-        keyboardInterface = new KeyboardInterface();
         keyPressListener  = new GameKeypressListener(this, keyboardInterface);
 
         loadSentencesFromFile();
@@ -154,6 +148,9 @@ public class GameViewController {
         cursorLabel.setTextOrigin(VPos.BASELINE);
 
         resetGame();
+    }
+    public void setKeyboardInterface(KeyboardInterface keyboardInterface){
+        this.keyboardInterface = keyboardInterface;
     }
 
     private void loadSentencesFromFile(){
@@ -851,6 +848,7 @@ public class GameViewController {
         try{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene=new Scene(loader.load(),1200,700);
+            LearnViewController lVController = loader.getController();
             Stage stage=(Stage)taskLabel.getScene().getWindow();
             stage.setScene(scene);
         }catch(IOException e){

@@ -60,7 +60,7 @@ public class Module {
                     Scene scene = new Scene(loader.load(), 1200, 700);
                     Stage stage = (Stage) buttonGrid.getScene().getWindow();
                     ModuleViewController controller = loader.getController();
-
+                    //controller.setKeyboardInterface(keyboardInterface);
                     Platform.runLater(() -> controller.setModule(this));
                     stage.setScene(scene);
                 } catch (IOException e) {

@@ -106,6 +106,10 @@ public class ModuleViewController implements KeypressListener {
 
     }
 
+    public void setKeyboardInterface(KeyboardInterface keyboardInterface){
+        this.keyboardInterface = keyboardInterface;
+    }
+
     /**
      * set the Module to display
      * @param module is the Module to display
@@ -265,6 +269,8 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            LearnViewController lvController = loader.getController();
+            lvController.setKeyboardInterface(keyboardInterface);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -278,6 +284,8 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            GameViewController gVController = loader.getController();
+            gVController.setKeyboardInterface(keyboardInterface);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);

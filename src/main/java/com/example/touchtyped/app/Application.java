@@ -19,6 +19,8 @@ public class Application extends javafx.application.Application {
     public static KeyboardInterface keyboardInterface;
     @Override
     public void start(Stage stage) throws IOException {
+        keyboardConnected = false;
+        keyboardInterface = new KeyboardInterface();
         // Load custom fonts
         Font customFont = Font.loadFont(
             getClass().getResourceAsStream("/fonts/consola.ttf"),
@@ -34,6 +36,8 @@ public class Application extends javafx.application.Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/example/touchtyped/learn-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+        LearnViewController lVController = fxmlLoader.getController();
+        lVController.setKeyboardInterface(keyboardInterface);
 
         // set properties of stage
         stage.setMinWidth(1200);
@@ -41,9 +45,6 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
-
-        keyboardConnected = false;
-        keyboardInterface = new KeyboardInterface();
         try {
             ioPort = SerialPort.getCommPort("/dev/ttyACM0");
             SerialPort[] ports = SerialPort.getCommPorts();

@@ -19,6 +19,9 @@ public class KeyboardInterface {
 
 
     private final List<KeypressListener> listeners;
+    private int stopKeyPressQueue = 0;
+    //keys stop vibrating when another key is pressed, so we only need to actively stop them when vibrations durations
+    //wouldn't overlap. this keeps track of whether they're overlapping
 
     /**
      * constructor
@@ -157,16 +160,32 @@ public class KeyboardInterface {
      */
     public void sendHapticCommand(String key, int duration, int strength) {
         // for now, this method will simply output to the console.
-        System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
-        if (Application.keyboardConnected) {
-            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
-            String keyLower = key.toLowerCase();
-            if (keyLower.matches("[a-z]")) {
+        String keyLower = key.toLowerCase();
+        if (keyLower.matches("[a-z]")) {
+            if (Application.keyboardConnected) {
+                PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
                 keyCommand.print(keyLower);
                 keyCommand.flush();
-            } else {
-                stopHaptic();
+                keyCommand.close();
             }
+            System.out.println(String.format("Key %s is vibrating for %d ms at strength %d", key, duration, strength));
+            stopKeyPressQueue++;
+            Thread thread = new Thread(() -> {
+                try {
+                    Thread.sleep(duration);
+                    if (stopKeyPressQueue==1){
+                        stopHaptic();
+                        System.out.println(String.format("Key %s has stopped vibrating after %d ms", key, duration));
+                    }
+                    stopKeyPressQueue--;
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            thread.start();
+        } else {
+            stopHaptic();
+        }
 
         /*switch (keyLower) {
             case "b" :
@@ -200,8 +219,8 @@ public class KeyboardInterface {
             default:
                 stopHaptic();
         }*/
-            keyCommand.close();
-        }
+
+
     }
 
 

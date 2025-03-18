@@ -2,24 +2,18 @@ package com.example.touchtyped.controller;
 
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.*;
-import com.example.touchtyped.model.Module;
-import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
 public class LearnViewController {
 
@@ -47,7 +41,7 @@ public class LearnViewController {
     @FXML
     private VBox vbox;
 
-    private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private KeyboardInterface keyboardInterface;
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -73,10 +67,16 @@ public class LearnViewController {
         vbox.getChildren().add(divider);
     }
 
+    public void setKeyboardInterface(KeyboardInterface keyboardInterface){
+        this.keyboardInterface = keyboardInterface;
+    }
+
     @FXML
     public void onGamesButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
+            GameViewController gameViewController = loader.getController();
+            gameViewController.setKeyboardInterface(keyboardInterface);
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
