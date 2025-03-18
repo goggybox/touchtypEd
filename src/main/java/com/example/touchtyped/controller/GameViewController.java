@@ -4,13 +4,7 @@ import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
-import com.example.touchtyped.model.PlayerRanking;
-import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.UserProfile;
-import com.example.touchtyped.service.MatchClient;
-import com.example.touchtyped.service.RESTClient;
-import com.example.touchtyped.service.RESTResponseWrapper;
-import com.example.touchtyped.service.RankingService;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -23,18 +17,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-
-import com.example.touchtyped.websocket.ScoreWebSocketClient;
-//import org.json.JSONObject;
 
 public class GameViewController {
 
@@ -1062,73 +1054,6 @@ public class GameViewController {
         alert.showAndWait();
         inputField.requestFocus();
     }
-
-    @FXML
-    private void onOnlineMatchClick() {
-        // 1) Ask user for a playerId, or use from profile
-        String playerId = UserProfile.getInstance().getPlayerName();
-        if (playerId == null || playerId.trim().isEmpty()) {
-            playerId = "Anonymous" + new Random().nextInt(1000);
-            UserProfile.getInstance().setPlayerName(playerId);
-        }
-
-        // 2) Make a HTTP request to /match/queue?playerId=xxx
-        String finalPlayerId1 = playerId;
-        Task<String> matchTask = new Task<>() {
-            @Override
-            protected String call() throws Exception {
-                return MatchClient.queuePlayer("http://localhost:8080", finalPlayerId1);
-            }
-        };
-
-        String finalPlayerId = playerId;
-        matchTask.setOnSucceeded(evt -> {
-            String matchId = matchTask.getValue();
-            if (matchId.isEmpty()) {
-                // 说明还在等待
-                showInfo("Waiting for an opponent to join...");
-            } else {
-                // 匹配成功!
-                showInfo("Match success! matchId = " + matchId);
-                // 3) 用 matchId 开始连接 WebSocket
-                connectWebSocket(matchId, finalPlayerId);
-            }
-        });
-
-        matchTask.setOnFailed(evt -> {
-            showInfo("Error: " + matchTask.getException().getMessage());
-        });
-
-        new Thread(matchTask).start();
-    }
-
-
-
-    private ScoreWebSocketClient wsClient; // 作为一个字段
-
-    private void connectWebSocket(String matchId, String playerId) {
-        try {
-            // 后端的WebSocket端点: ws://localhost:8080/ws
-            URI serverUri = new URI("ws://localhost:8080/ws");
-            wsClient = new ScoreWebSocketClient(serverUri, this, matchId, playerId);
-            wsClient.connect(); // 异步连接
-        } catch (Exception e) {
-            e.printStackTrace();
-            showInfo("Failed to connect WebSocket: " + e.getMessage());
-        }
-    }
-
-
-    private void showInfo(String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Info");
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.show();
-        });
-    }
-
 
 
     /**
