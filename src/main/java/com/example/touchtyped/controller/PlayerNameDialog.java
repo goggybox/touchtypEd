@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.model.UserProfile;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -100,6 +101,13 @@ public class PlayerNameDialog {
         // Set button actions
         confirmButton.setOnAction(e -> {
             result = nameField.getText();
+            // 保存用户名并标记为首次使用
+            if (result != null && !result.trim().isEmpty()) {
+                UserProfile profile = UserProfile.getInstance();
+                profile.setPlayerName(result.trim());
+                // 重置教程状态，确保用户第一次输入名字时会显示教程
+                profile.setCompletedTutorial(false);
+            }
             dialog.close();
         });
         
@@ -111,6 +119,13 @@ public class PlayerNameDialog {
         // Set Enter key to confirm
         nameField.setOnAction(e -> {
             result = nameField.getText();
+            // 保存用户名并标记为首次使用
+            if (result != null && !result.trim().isEmpty()) {
+                UserProfile profile = UserProfile.getInstance();
+                profile.setPlayerName(result.trim());
+                // 重置教程状态，确保用户第一次输入名字时会显示教程
+                profile.setCompletedTutorial(false);
+            }
             dialog.close();
         });
         

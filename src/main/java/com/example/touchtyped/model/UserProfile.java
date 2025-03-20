@@ -12,6 +12,7 @@ public class UserProfile {
     private static UserProfile instance;
     
     private String playerName;
+    private Boolean completedTutorial = false;
     
     private UserProfile() {
         loadProfile();
@@ -74,5 +75,17 @@ public class UserProfile {
         } catch (IOException e) {
             System.err.println("Error saving user profile: " + e.getMessage());
         }
+    }
+    
+    public Boolean getCompletedTutorial() {
+        return completedTutorial;
+    }
+    
+    public void setCompletedTutorial(Boolean completedTutorial) {
+        this.completedTutorial = completedTutorial;
+    }
+    
+    public boolean isFirstTimeUser() {
+        return playerName != null && !playerName.isEmpty() && !Boolean.TRUE.equals(completedTutorial);
     }
 } 

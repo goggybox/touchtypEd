@@ -50,6 +50,80 @@
     -fx-border-radius: 4;
 }
 
+/* 信息按钮样式 */
+.info-button {
+    -fx-background-color: #263F68;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 5 10;
+    -fx-background-radius: 50%;
+    -fx-min-width: 30;
+    -fx-min-height: 30;
+    -fx-max-width: 30;
+    -fx-max-height: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0.5, 0, 0);
+}
+
+.info-button:hover {
+    -fx-background-color: #3A5B8C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0.5, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* 信息弹窗样式 */
+.info-dialog {
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+
+.info-dialog .dialog-pane {
+    -fx-background-color: white;
+}
+
+.info-dialog .header-panel {
+    -fx-background-color: white;
+}
+
+.info-dialog .content {
+    -fx-background-color: white;
+    -fx-padding: 0;
+}
+
+.info-scroll-pane {
+    -fx-background: white;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.info-scroll-pane .viewport {
+    -fx-background-color: white;
+}
+
+.info-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.info-icon {
+    -fx-background-radius: 50%;
+}
+
+.info-close-button {
+    -fx-background-color: #263F68;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 20;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+
+.info-close-button:hover {
+    -fx-background-color: #3A5B8C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
+}
+
 .game-info {
     -fx-text-fill: #3C3C3C;
     -fx-font-size: 32px;
@@ -338,6 +412,54 @@
 
 .generate-button:hover {
     -fx-background-color: #263F68;
+}
+
+/* 教程对话框样式 */
+.tutorial-dialog {
+    -fx-background-color: white;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.tutorial-dialog .dialog-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+}
+
+.tutorial-dialog .header-panel {
+    -fx-background-color: white;
+}
+
+.tutorial-dialog .content {
+    -fx-background-color: white;
+    -fx-padding: 0;
+}
+
+.tutorial-button {
+    -fx-cursor: hand;
+    -fx-transition: -fx-background-color 0.2s, -fx-effect 0.2s, -fx-scale-x 0.2s, -fx-scale-y 0.2s;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+.tutorial-button:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.tutorial-button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: white;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: white;
 }
 
 

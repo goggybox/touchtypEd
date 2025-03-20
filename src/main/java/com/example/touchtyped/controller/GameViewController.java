@@ -14,16 +14,38 @@ import com.example.touchtyped.service.RankingService;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -58,6 +80,9 @@ public class GameViewController {
     @FXML private RadioButton articleModeRadio;
     @FXML private RadioButton competitionModeRadio;
 
+    @FXML private Button timedModeInfoButton;
+    @FXML private Button returnButton;
+
     // ========== Competition UI ==========
     @FXML private VBox competitionContainer;
     @FXML private Label compTimerLabel;
@@ -70,6 +95,27 @@ public class GameViewController {
     @FXML private Text rightCursor;
 
     @FXML private Label comboLabel;
+    
+    // ========== 新手引导相关变量 ==========
+    /**
+     * 当前引导步骤
+     */
+    private int tutorialStep = 0;
+    
+    /**
+     * 新手引导对话框
+     */
+    private Dialog<ButtonType> tutorialDialog;
+    
+    /**
+     * 引导文本标签
+     */
+    private Label tutorialLabel;
+    
+    /**
+     * 下一步和完成按钮
+     */
+    private Button nextButton, finishButton;
 
     private Timeline timeline;
     private boolean gameStarted = false;
@@ -189,11 +235,22 @@ public class GameViewController {
         gameContainer.sceneProperty().addListener((obs, oldScene, newScene)->{
             if(newScene!=null){
                 keyboardInterface.attachToScene(newScene);
+                
+                // 场景加载完成后检查是否是第一次使用
+                Platform.runLater(() -> {
+                    if (checkFirstTimeUser()) {
+                        showSimpleTutorial();
+                    }
+                });
             }
         });
+        
         modeToggleGroup.selectedToggleProperty().addListener((obs, oldVal, newVal)->{
             resetGame();
+            updateInfoButtonVisibility();
         });
+        
+        updateInfoButtonVisibility();
 
         leftCursor.setTextOrigin(VPos.BASELINE);
         rightCursor.setTextOrigin(VPos.BASELINE);
@@ -1141,5 +1198,445 @@ public class GameViewController {
             playerName = "Anonymous";
         }
         UserProfile.getInstance().setPlayerName(playerName);
+    }
+
+    /**
+     * 显示计时模式的说明弹窗
+     */
+    @FXML
+    private void showTimedModeInfo() {
+        // 创建弹窗
+        Dialog<ButtonType> infoDialog = new Dialog<>();
+        infoDialog.setTitle("Timed Mode Instructions");
+        infoDialog.setHeaderText(null);
+        
+        // Set dialog style
+        DialogPane dialogPane = infoDialog.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/com/example/touchtyped/game-view-style.css").toExternalForm());
+        dialogPane.getStyleClass().add("info-dialog");
+        dialogPane.setPrefWidth(650);
+        dialogPane.setPrefHeight(500);
+        
+        // 创建内容区域
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(10, 20, 10, 20));
+        content.setMaxWidth(600);
+        
+        // Add title
+        Label titleLabel = new Label("HOW TO PLAY TIMED MODE");
+        titleLabel.setStyle("-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2D7EE8;");
+        content.getChildren().add(titleLabel);
+        
+        // Add separator
+        Separator separator = new Separator();
+        separator.setStyle("-fx-background-color: #2D7EE8;");
+        content.getChildren().add(separator);
+        
+        // Create instruction list with icons
+        VBox instructionsBox = new VBox(12);
+        
+        addInstructionWithIcon(instructionsBox, "keyboard", 
+            "The keyboard will highlight the next character to type with lights and vibration.");
+        
+        addInstructionWithIcon(instructionsBox, "timer", 
+            "The timer starts only after you type the first character correctly.");
+        
+        addInstructionWithIcon(instructionsBox, "error", 
+            "If you make a mistake, the character will turn red. You must use backspace to correct it.");
+        
+        addInstructionWithIcon(instructionsBox, "warning", 
+            "Until the error is corrected, the keyboard will remind you with lights and vibration.");
+        
+        addInstructionWithIcon(instructionsBox, "stats", 
+            "When time runs out, your typing speed (WPM) and accuracy will be displayed.");
+        
+        content.getChildren().add(instructionsBox);
+        
+        // Add tips section
+        VBox tipsBox = new VBox(10);
+        tipsBox.setStyle("-fx-background-color: rgba(45, 126, 232, 0.05); -fx-padding: 15; -fx-background-radius: 5;");
+        
+        Label tipsTitle = new Label("TIPS FOR BEST RESULTS");
+        tipsTitle.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2D7EE8;");
+        tipsBox.getChildren().add(tipsTitle);
+        
+        // Tips content
+        VBox tipsList = new VBox(8);
+        addTip(tipsList, "Maintain a smooth typing rhythm to improve speed.");
+        addTip(tipsList, "Focus on accuracy - errors will decrease your overall performance.");
+        addTip(tipsList, "Regular practice is the best way to improve typing speed.");
+        
+        tipsBox.getChildren().add(tipsList);
+        content.getChildren().add(tipsBox);
+        
+        // Set content and show
+        ScrollPane scrollPane = new ScrollPane(content);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.getStyleClass().add("info-scroll-pane");
+        
+        dialogPane.setContent(scrollPane);
+        
+        // Add close button
+        ButtonType closeButton = new ButtonType("Got it!", ButtonBar.ButtonData.OK_DONE);
+        infoDialog.getDialogPane().getButtonTypes().setAll(closeButton);
+        
+        // Focus management
+        Platform.runLater(() -> {
+            Button okButton = (Button) dialogPane.lookupButton(closeButton);
+            okButton.setDefaultButton(true);
+            okButton.getStyleClass().add("info-close-button");
+        });
+        
+        // Show dialog
+        infoDialog.showAndWait();
+    }
+    
+    /**
+     * Helper method to add an instruction with an icon
+     */
+    private void addInstructionWithIcon(VBox container, String iconType, String text) {
+        HBox item = new HBox(15);
+        item.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        // Create icon based on type
+        Region icon = new Region();
+        icon.setPrefSize(24, 24);
+        icon.setMinSize(24, 24);
+        icon.setMaxSize(24, 24);
+        icon.getStyleClass().add("info-icon");
+        
+        // Apply specific icon style based on type
+        switch (iconType) {
+            case "keyboard" -> icon.setStyle("-fx-background-color: #2D7EE8;");
+            case "timer" -> icon.setStyle("-fx-background-color: #3A5B8C;");
+            case "error" -> icon.setStyle("-fx-background-color: #F5102F;");
+            case "warning" -> icon.setStyle("-fx-background-color: #E2B714;");
+            case "stats" -> icon.setStyle("-fx-background-color: #4CAF50;");
+            default -> icon.setStyle("-fx-background-color: #2D7EE8;");
+        }
+        
+        // Text content
+        Text instructionText = new Text(text);
+        instructionText.setWrappingWidth(480);
+        instructionText.setStyle("-fx-font-size: 16px;");
+        
+        item.getChildren().addAll(icon, instructionText);
+        container.getChildren().add(item);
+    }
+    
+    /**
+     * Helper method to add a tip item
+     */
+    private void addTip(VBox container, String tipText) {
+        HBox item = new HBox(10);
+        item.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        // Bullet point
+        Text bullet = new Text("•");
+        bullet.setStyle("-fx-font-size: 16px; -fx-fill: #2D7EE8;");
+        
+        // Tip text
+        Text tip = new Text(tipText);
+        tip.setWrappingWidth(500);
+        tip.setStyle("-fx-font-size: 14px; -fx-font-style: italic;");
+        
+        item.getChildren().addAll(bullet, tip);
+        container.getChildren().add(item);
+    }
+
+    /**
+     * 更新信息按钮的可见性
+     */
+    private void updateInfoButtonVisibility() {
+        // 只有在"计时模式"下才显示信息按钮
+        boolean isTimedMode = timedModeRadio.isSelected();
+        timedModeInfoButton.setVisible(isTimedMode);
+    }
+
+    /**
+     * 检查是否是第一次使用
+     */
+    private boolean checkFirstTimeUser() {
+        UserProfile profile = UserProfile.getInstance();
+        
+        // 使用UserProfile的isFirstTimeUser方法检查是否是首次使用
+        return profile.isFirstTimeUser();
+    }
+    
+    /**
+     * 显示简化版的新手引导对话框
+     */
+    private void showSimpleTutorial() {
+        // 确保没有活跃的教程对话框
+        if (tutorialDialog != null) {
+            try {
+                tutorialDialog.close();
+            } catch (Exception e) {
+                // 忽略可能的异常
+            }
+            tutorialDialog = null;
+        }
+        
+        tutorialStep = 0;
+        
+        // 创建对话框
+        tutorialDialog = new Dialog<>();
+        tutorialDialog.setTitle("TouchTypEd Tutorial");
+        tutorialDialog.setHeaderText(null); // 移除标题，我们将使用自定义标题
+        
+        // 设置对话框样式
+        DialogPane dialogPane = tutorialDialog.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("/com/example/touchtyped/game-view-style.css").toExternalForm());
+        dialogPane.getStyleClass().add("tutorial-dialog");
+        dialogPane.setPrefWidth(600);
+        dialogPane.setPrefHeight(400);
+        
+        // 添加关闭按钮类型
+        tutorialDialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        // 隐藏默认的关闭按钮
+        Button closeButton = (Button) tutorialDialog.getDialogPane().lookupButton(ButtonType.CLOSE);
+        closeButton.setVisible(false);
+        closeButton.setManaged(false);
+        
+        // 创建内容区域
+        VBox content = new VBox(20);
+        content.setPadding(new Insets(20));
+        content.setStyle("-fx-background-color: white;");
+        
+        // 关闭提示标签
+        HBox closeHintBox = new HBox(10);
+        closeHintBox.setAlignment(Pos.CENTER_LEFT);
+        closeHintBox.setPadding(new Insets(5, 10, 10, 5));
+        closeHintBox.setStyle("-fx-background-color: #F0F8FF; -fx-background-radius: 6; -fx-border-color: #ADD8E6; -fx-border-radius: 6; -fx-border-width: 1;");
+        
+        // 信息图标
+        Label infoIcon = new Label("ⓘ");
+        infoIcon.setStyle("-fx-text-fill: #2D7EE8; -fx-font-weight: bold; -fx-font-size: 16px;");
+        
+        // 提示文本
+        Label closeHintText = new Label("Already know? Click X to close");
+        closeHintText.setStyle("-fx-text-fill: #2D7EE8; -fx-font-size: 14px;");
+        
+        closeHintBox.getChildren().addAll(infoIcon, closeHintText);
+        content.getChildren().add(closeHintBox);
+        
+        // 引导说明区域
+        VBox tutorialContent = new VBox(15);
+        tutorialContent.setStyle("-fx-background-color: #F8F9FA; -fx-background-radius: 8; -fx-padding: 20;");
+        
+        // 图标和标题区域
+        HBox headerBox = new HBox(15);
+        headerBox.setAlignment(Pos.CENTER_LEFT);
+        
+        // 步骤指示器
+        Label stepIndicator = new Label("1");
+        stepIndicator.setStyle("-fx-background-color: #2D7EE8; -fx-text-fill: white; " +
+                "-fx-font-weight: bold; -fx-padding: 5 10; -fx-background-radius: 50%;");
+        
+        // 引导标题
+        Label stepTitle = new Label("Welcome");
+        stepTitle.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        
+        headerBox.getChildren().addAll(stepIndicator, stepTitle);
+        tutorialContent.getChildren().add(headerBox);
+        
+        // 分隔线
+        Separator separator = new Separator();
+        separator.setStyle("-fx-background-color: #E0E0E0;");
+        tutorialContent.getChildren().add(separator);
+        
+        // 引导文本
+        tutorialLabel = new Label("Welcome to TouchTypEd!");
+        tutorialLabel.setWrapText(true);
+        tutorialLabel.setStyle("-fx-font-size: 16px; -fx-line-spacing: 1.2;");
+        tutorialContent.getChildren().add(tutorialLabel);
+        
+        content.getChildren().add(tutorialContent);
+        
+        // 按钮区
+        HBox buttonBox = new HBox(10);
+        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+        
+        // 下一步按钮
+        nextButton = new Button("Next");
+        nextButton.getStyleClass().add("tutorial-button");
+        nextButton.setStyle("-fx-background-color: #2D7EE8; -fx-text-fill: white; -fx-font-weight: bold; " +
+                "-fx-padding: 8 20; -fx-background-radius: 4;");
+        nextButton.setDisable(true); // 初始禁用，等内容加载完成后启用
+        nextButton.setOnAction(e -> showNextTutorialStep());
+        
+        // 完成按钮
+        finishButton = new Button("Got it!");
+        finishButton.getStyleClass().add("tutorial-button");
+        finishButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; " +
+                "-fx-padding: 8 20; -fx-background-radius: 4;");
+        finishButton.setOnAction(e -> {
+            endTutorial();
+        });
+        finishButton.setVisible(false);
+        
+        buttonBox.getChildren().addAll(nextButton, finishButton);
+        content.getChildren().add(buttonBox);
+        
+        dialogPane.setContent(content);
+        
+        // 设置关闭行为
+        tutorialDialog.setOnCloseRequest(event -> {
+            // 直接调用endTutorial，不要消费事件
+            endTutorial();
+        });
+        
+        // 显示对话框（不阻塞）
+        Platform.runLater(() -> {
+            tutorialDialog.show();
+            
+            // 对话框显示后，启动动画并加载内容
+            animateDialogEntry(closeHintBox, tutorialContent, buttonBox);
+        });
+    }
+
+    /**
+     * 显示下一步引导
+     */
+    private void showNextTutorialStep() {
+        String tutorialText;
+        String nextTitle;
+        
+        switch (tutorialStep) {
+            case 0 -> {
+                tutorialText = "Welcome to TouchTypEd, your personal typing assistant!\n\n" +
+                        "This brief tutorial will guide you through the main features of the application. " +
+                        "Click 'Next' to continue.";
+                nextTitle = "Welcome";
+            }
+            case 1 -> {
+                tutorialText = "At the top of the screen, you can select between different typing modes:\n\n" +
+                        "• Timed Mode: Practice typing with a time limit to improve your speed\n\n" +
+                        "• Article Mode: Type complete paragraphs without time pressure to focus on accuracy\n\n" +
+                        "• Competition Mode: Challenge another player in a typing race to test your skills";
+                nextTitle = "Mode Selection";
+            }
+            case 2 -> {
+                tutorialText = "In Timed Mode, you can choose how much time you want for your practice session:\n\n" +
+                        "• 15 seconds: Quick practice for experienced typists\n\n" +
+                        "• 30 seconds: Short session for warm-up\n\n" +
+                        "• 60 seconds: Standard session to track your progress\n\n" +
+                        "• 120 seconds: Extended practice for endurance";
+                nextTitle = "Time Selection";
+            }
+            case 3 -> {
+                tutorialText = "While typing, real-time statistics help you track your performance:\n\n" +
+                        "• WPM (Words Per Minute): Measures your typing speed\n\n" +
+                        "• Accuracy: Shows the percentage of correct keystrokes\n\n" +
+                        "These metrics help you identify areas for improvement.";
+                nextTitle = "Statistics";
+            }
+            case 4 -> {
+                tutorialText = "The main area displays the text you need to type:\n\n" +
+                        "• Blue text: Characters you've typed correctly\n\n" +
+                        "• Red text: Typing errors that need correction\n\n" +
+                        "• Grey text: Remaining text to type\n\n" +
+                        "Use Backspace to correct errors before continuing.";
+                nextTitle = "Typing Area";
+            }
+            case 5 -> {
+                tutorialText = "The circular button with the return arrow at the bottom:\n\n" +
+                        "• Resets your current typing session\n\n" +
+                        "• Generates a new text for practice\n\n" +
+                        "Use this button whenever you want to start fresh.";
+                nextTitle = "Reset Button";
+            }
+            case 6 -> {
+                tutorialText = "In Timed Mode, the 'i' button in the bottom right corner provides:\n\n" +
+                        "• Detailed instructions about typing rules\n\n" +
+                        "• Tips for improving your typing skills\n\n" +
+                        "• Keyboard shortcuts and guidance\n\n" +
+                        "Click it anytime you need help!";
+                nextTitle = "Information Button";
+                
+                // 显示完成按钮
+                nextButton.setVisible(false);
+                finishButton.setVisible(true);
+            }
+            default -> {
+                endTutorial();
+                return;
+            }
+        }
+        
+        // 找到引导对话框中的步骤指示器和标题标签
+        Label stepIndicator = (Label) ((HBox) ((VBox) tutorialLabel.getParent()).getChildren().get(0)).getChildren().get(0);
+        Label stepTitle = (Label) ((HBox) ((VBox) tutorialLabel.getParent()).getChildren().get(0)).getChildren().get(1);
+        
+        // 更新步骤指示器和标题
+        stepIndicator.setText(String.valueOf(tutorialStep + 1));
+        stepTitle.setText(nextTitle);
+        
+        tutorialLabel.setText(tutorialText);
+        tutorialStep++;
+    }
+    
+    /**
+     * 结束引导
+     */
+    private void endTutorial() {
+        // 标记用户已完成教程
+        UserProfile.getInstance().setCompletedTutorial(true);
+        
+        // 立即关闭对话框，不使用动画
+        if (tutorialDialog != null) {
+            tutorialDialog.close();
+            tutorialDialog = null;
+        }
+    }
+    
+    /**
+     * 为对话框添加入场动画
+     */
+    private void animateDialogEntry(Node hintNode, VBox tutorialContent, HBox buttonBox) {
+        // 标题淡入动画
+        FadeTransition hintFade = new FadeTransition(Duration.millis(300), hintNode);
+        hintFade.setFromValue(0);
+        hintFade.setToValue(1);
+        
+        // 文本内容淡入动画
+        FadeTransition textFade = new FadeTransition(Duration.millis(500), tutorialLabel);
+        textFade.setFromValue(0);
+        textFade.setToValue(1);
+        textFade.setDelay(Duration.millis(300));
+        
+        // 内容向上移动并淡入动画
+        tutorialContent.setTranslateY(20);
+        FadeTransition contentFade = new FadeTransition(Duration.millis(500), tutorialContent);
+        contentFade.setFromValue(0);
+        contentFade.setToValue(1);
+        contentFade.setDelay(Duration.millis(200));
+        
+        TranslateTransition contentSlide = new TranslateTransition(Duration.millis(500), tutorialContent);
+        contentSlide.setFromY(20);
+        contentSlide.setToY(0);
+        contentSlide.setDelay(Duration.millis(200));
+        
+        // 按钮淡入动画
+        FadeTransition buttonFade = new FadeTransition(Duration.millis(300), buttonBox);
+        buttonFade.setFromValue(0);
+        buttonFade.setToValue(1);
+        buttonFade.setDelay(Duration.millis(400));
+        
+        // 把所有动画放在一起
+        ParallelTransition parallelTransition = new ParallelTransition(
+                hintFade, contentFade, contentSlide, buttonFade, textFade
+        );
+        
+        // 动画完成后，显示第一步教程
+        parallelTransition.setOnFinished(e -> {
+            showNextTutorialStep();
+            nextButton.setDisable(false);
+        });
+        
+        parallelTransition.play();
     }
 }
