@@ -93,13 +93,23 @@ public class TypingPlanManager {
     }
 
     private TypingPlan loadTypingPlan() {
+        File saveFile = new File(SAVED_TYPING_PLAN_FILE);
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            TypingPlan loadedPlan = objectMapper.readValue(new File(SAVED_TYPING_PLAN_FILE), TypingPlan.class);
+            TypingPlan loadedPlan = objectMapper.readValue(saveFile, TypingPlan.class);
             System.out.println("TypingPlan loaded from save file.");
             return loadedPlan;
         } catch (IOException e) {
             System.out.println("Error while loading TypingPlan from file: " + e.getMessage());
+            // 删除损坏的文件
+            if (saveFile.exists()) {
+                boolean deleted = saveFile.delete();
+                if (deleted) {
+                    System.out.println("Deleted corrupted typing plan file.");
+                } else {
+                    System.out.println("Failed to delete corrupted typing plan file.");
+                }
+            }
             return null;
         }
     }

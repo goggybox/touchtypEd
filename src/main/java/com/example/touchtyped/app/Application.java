@@ -6,8 +6,10 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.UserProfile;
-import javafx.application.Platform;
+import com.example.touchtyped.service.GlobalRankingService;
+import com.example.touchtyped.service.RankingService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,6 +20,7 @@ import com.example.touchtyped.service.RankingService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
@@ -26,7 +29,6 @@ public class Application extends javafx.application.Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-        // Initialize user profile
         initUserProfile();
         
         // Load custom fonts
@@ -76,47 +78,44 @@ public class Application extends javafx.application.Application {
     }
     
     /**
-     * Initialize user profile, prompt for input if no username exists
+     * 初始化用户配置文件，如果没有用户名则请求输入
      */
     private void initUserProfile() {
         UserProfile userProfile = UserProfile.getInstance();
-        System.out.println("Checking user profile...");
-        System.out.println("Username exists: " + userProfile.hasPlayerName());
+        System.out.println("正在检查用户配置文件...");
+        System.out.println("是否已有用户名: " + userProfile.hasPlayerName());
         
         if (!userProfile.hasPlayerName()) {
-            System.out.println("Need to request user to input name");
+            System.out.println("需要请求用户输入名称");
             
-            // Delete existing profile file (if exists) to ensure requesting name input again
+            // 删除现有的配置文件（如果存在），确保重新请求输入名称
             try {
                 java.io.File profileFile = new java.io.File("user_profile.dat");
                 if (profileFile.exists()) {
                     profileFile.delete();
-                    System.out.println("Deleted existing profile file");
+                    System.out.println("已删除现有配置文件");
                 }
             } catch (Exception e) {
-                System.err.println("Error deleting profile file: " + e.getMessage());
+                System.err.println("删除配置文件时出错: " + e.getMessage());
             }
             
-            // Show dialog directly, without using Platform.runLater
+            // 直接显示对话框，不使用Platform.runLater
             String playerName = PlayerNameDialog.showDialog();
-            System.out.println("User input name: " + playerName);
+            System.out.println("用户输入的名称: " + playerName);
             
             if (playerName == null || playerName.trim().isEmpty()) {
                 playerName = "Anonymous";
-                System.out.println("Using default name: Anonymous");
+                System.out.println("使用默认名称: Anonymous");
             }
             
             userProfile.setPlayerName(playerName);
-            System.out.println("Username set: " + playerName);
+            System.out.println("已设置用户名称: " + playerName);
         } else {
-            System.out.println("Existing username: " + userProfile.getPlayerName());
+            System.out.println("已有用户名称: " + userProfile.getPlayerName());
         }
     }
 
     public static void main(String[] args) {
-        // Test RankingService
-        testRankingService();
-
         // shutdown hook to save TypingPlan if it has been modified
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             TypingPlanManager manager = TypingPlanManager.getInstance();
@@ -135,42 +134,49 @@ public class Application extends javafx.application.Application {
 
         launch();
     }
-    
+
     /**
-     * Test the RankingService
+     * 提交游戏结束时的排名数据到全球排名服务器
+     * @param ranking 要提交的排名数据
      */
-    private static void testRankingService() {
+    public static void submitGameRanking(PlayerRanking ranking) {
         try {
-            System.out.println("Testing RankingService...");
-            RankingService rankingService = RankingService.getInstance();
+            // 首先保存到本地排名
+            RankingService localRankingService = RankingService.getInstance();
+            boolean addedLocally = localRankingService.addRanking(ranking);
             
-            // Test adding a new ranking
-            PlayerRanking ranking1 = new PlayerRanking("TestUser", 50, 90.0, "Timed Mode");
-            rankingService.addRanking(ranking1);
-            
-            // Test adding a ranking with the same name but better stats
-            PlayerRanking ranking2 = new PlayerRanking("TestUser", 60, 95.0, "Timed Mode");
-            rankingService.addRanking(ranking2);
-            
-            // Test adding a ranking with the same name but worse stats
-            PlayerRanking ranking3 = new PlayerRanking("TestUser", 40, 85.0, "Timed Mode");
-            rankingService.addRanking(ranking3);
-            
-            // Print all rankings
-            List<PlayerRanking> rankings = rankingService.getRankings();
-            System.out.println("Current rankings list:");
-            for (int i = 0; i < rankings.size(); i++) {
-                PlayerRanking ranking = rankings.get(i);
-                System.out.println((i + 1) + ". " + ranking.getPlayerName() + 
+            if (addedLocally) {
+                System.out.println("排名已添加到本地: " + ranking.getPlayerName() + 
                                   " - WPM: " + ranking.getWpm() + 
-                                  " - Accuracy: " + ranking.getAccuracy() + "% - " + 
-                                  ranking.getGameMode());
+                                  " - 准确率: " + ranking.getAccuracy() + "%");
+            } else {
+                System.out.println("本地已有更好的排名，未更新");
             }
             
-            System.out.println("RankingService test completed");
+            // 然后提交到全球排名服务器
+            GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
+            CompletableFuture<Boolean> future = globalRankingService.submitRanking(ranking);
+            
+            future.thenAccept(success -> {
+                if (success) {
+                    System.out.println("排名已成功提交到全球服务器");
+                    
+                    // 获取玩家在全球排名中的位置
+                    globalRankingService.getPlayerPosition(ranking.getPlayerName())
+                        .thenAccept(position -> {
+                            if (position > 0) {
+                                System.out.println("玩家 " + ranking.getPlayerName() + 
+                                                  " 在全球排名中的位置: " + position);
+                            } else {
+                                System.out.println("无法获取玩家在全球排名中的位置");
+                            }
+                        });
+                } else {
+                    System.out.println("提交到全球服务器失败");
+                }
+            });
         } catch (Exception e) {
-            System.err.println("RankingService test error: " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("提交排名时出错: " + e.getMessage());
         }
     }
 }

@@ -10,26 +10,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service for managing player rankings
- */
+
 public class RankingService {
     private static final String RANKINGS_FILE = "player_rankings.dat";
     private static final int MAX_RANKINGS = 100;
     private static RankingService instance;
     
     private List<PlayerRanking> rankings;
-    private Map<String, PlayerRanking> rankingMap; // HashMap for quickly finding player rankings
+    private Map<String, PlayerRanking> rankingMap; // 用于快速查找玩家排名的HashMap
     
     private RankingService() {
         rankings = loadRankings();
-        // Initialize the HashMap and populate with existing rankings
+        // 初始化HashMap并填充现有排名
         rankingMap = new HashMap<>();
         for (PlayerRanking ranking : rankings) {
             rankingMap.put(ranking.getPlayerName(), ranking);
         }
     }
     
+    /**
+     * 获取单例实例
+     * @return RankingService实例
+     */
     public static synchronized RankingService getInstance() {
         if (instance == null) {
             instance = new RankingService();
@@ -38,86 +40,86 @@ public class RankingService {
     }
     
     /**
-     * Add a new player ranking
-     * If a ranking with the same name already exists, only keep the better one
-     * @param ranking The player ranking to add
-     * @return true if the ranking was added to the top 100, false otherwise
+     * 添加新排名
+     * 如果已存在相同名称的排名，只保留更好的那个
+     * @param ranking 要添加的排名
+     * @return true如果排名被添加到前100，false否则
      */
     public boolean addRanking(PlayerRanking ranking) {
-        // Use HashMap to quickly find if a ranking with the same name already exists
+        // 使用HashMap快速查找是否已存在相同名称的排名
         PlayerRanking existingRanking = rankingMap.get(ranking.getPlayerName());
         
         if (existingRanking != null) {
-            // If a ranking with the same name exists, compare the old and new rankings
+            // 如果存在相同名称的排名，比较旧排名和新排名
             if (ranking.compareTo(existingRanking) < 0) {
-                // If the new ranking is better, remove the old one
+                // 如果新排名更好，删除旧排名
                 rankings.remove(existingRanking);
-                System.out.println("Removed old ranking: " + existingRanking.getPlayerName() + 
+                System.out.println("删除旧排名: " + existingRanking.getPlayerName() + 
                                   " (WPM: " + existingRanking.getWpm() + 
-                                  ", Accuracy: " + existingRanking.getAccuracy() + "%)");
+                                  ", 准确率: " + existingRanking.getAccuracy() + "%)");
                 
-                // Add the new ranking
+                // 添加新排名
                 rankings.add(ranking);
                 rankingMap.put(ranking.getPlayerName(), ranking);
-                System.out.println("Added better new ranking: " + ranking.getPlayerName() + 
+                System.out.println("添加更好的新排名: " + ranking.getPlayerName() + 
                                   " (WPM: " + ranking.getWpm() + 
-                                  ", Accuracy: " + ranking.getAccuracy() + "%)");
+                                  ", 准确率: " + ranking.getAccuracy() + "%)");
             } else {
-                // If the old ranking is better, don't add the new one
-                System.out.println("Keeping existing better ranking: " + existingRanking.getPlayerName() + 
+                // 如果旧排名更好，不添加新排名
+                System.out.println("保留现有更好的排名: " + existingRanking.getPlayerName() + 
                                   " (WPM: " + existingRanking.getWpm() + 
-                                  ", Accuracy: " + existingRanking.getAccuracy() + "%)");
+                                  ", 准确率: " + existingRanking.getAccuracy() + "%)");
                 return false;
             }
         } else {
-            // If no ranking with the same name exists, add the new ranking directly
+            // 如果不存在相同名称的排名，直接添加新排名
             rankings.add(ranking);
             rankingMap.put(ranking.getPlayerName(), ranking);
-            System.out.println("Added new ranking: " + ranking.getPlayerName() + 
+            System.out.println("添加新排名: " + ranking.getPlayerName() + 
                               " (WPM: " + ranking.getWpm() + 
-                              ", Accuracy: " + ranking.getAccuracy() + "%)");
+                              ", 准确率: " + ranking.getAccuracy() + "%)");
         }
         
-        // Sort rankings
+        // 排序排名
         Collections.sort(rankings);
         
-        // Keep only the top MAX_RANKINGS
+        // 只保留前MAX_RANKINGS名
         if (rankings.size() > MAX_RANKINGS) {
-            // Get the top MAX_RANKINGS to keep
+            // 获取前MAX_RANKINGS名保留
             List<PlayerRanking> topRankings = new ArrayList<>(rankings.subList(0, MAX_RANKINGS));
             
-            // Update rankingMap, remove rankings not in the top MAX_RANKINGS
+            // 更新rankingMap，删除不在前MAX_RANKINGS名的排名
             rankingMap.clear();
             for (PlayerRanking r : topRankings) {
                 rankingMap.put(r.getPlayerName(), r);
             }
             
-            // Update rankings list
+            // 更新排名列表
             rankings = topRankings;
         }
         
         saveRankings();
         
-        // Return true if the ranking is in the top 100
+        // 如果排名在前100名，返回true
         return rankings.contains(ranking);
     }
     
     /**
-     * Get all rankings
-     * @return List of player rankings
+     * 获取所有排名
+     * @return 排名列表
      */
     public List<PlayerRanking> getRankings() {
         return new ArrayList<>(rankings);
     }
     
     /**
-     * Get the player's position in the rankings
-     * @param ranking The player ranking
-     * @return The position (1-based) or -1 if not in the rankings
+     * 获取玩家在排名中的位置
+     * @param playerName 玩家名称
+     * @return 位置（从1开始），如果不在排名中则返回-1
      */
-    public int getPlayerPosition(PlayerRanking ranking) {
-        // Use HashMap to quickly find the player's ranking
-        PlayerRanking existingRanking = rankingMap.get(ranking.getPlayerName());
+    public int getPlayerPosition(String playerName) {
+        // 使用HashMap快速查找玩家排名
+        PlayerRanking existingRanking = rankingMap.get(playerName);
         if (existingRanking != null) {
             return rankings.indexOf(existingRanking) + 1;
         }
@@ -125,30 +127,79 @@ public class RankingService {
     }
     
     /**
-     * Load rankings from file
-     * @return List of player rankings
+     * 从文件加载排名
+     * @return 排名列表
      */
     @SuppressWarnings("unchecked")
     private List<PlayerRanking> loadRankings() {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(RANKINGS_FILE))) {
             return (List<PlayerRanking>) ois.readObject();
         } catch (FileNotFoundException e) {
-            System.out.println("Rankings file not found. Creating new rankings list.");
+            System.out.println("排名文件不存在，创建新排名列表");
             return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error loading rankings: " + e.getMessage());
+            System.err.println("加载排名时出错: " + e.getMessage());
             return new ArrayList<>();
         }
     }
     
     /**
-     * Save rankings to file
+     * 保存排名到文件
      */
     private void saveRankings() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(RANKINGS_FILE))) {
             oos.writeObject(rankings);
         } catch (IOException e) {
-            System.err.println("Error saving rankings: " + e.getMessage());
+            System.err.println("保存排名时出错: " + e.getMessage());
         }
+    }
+    
+    /**
+     * 获取前N名排名
+     * @param n 要获取的排名数量
+     * @return 前N名排名
+     */
+    public List<PlayerRanking> getTopRankings(int n) {
+        int count = Math.min(n, rankings.size());
+        return new ArrayList<>(rankings.subList(0, count));
+    }
+    
+    /**
+     * 获取特定游戏模式的排名
+     * @param gameMode 游戏模式
+     * @return 指定游戏模式的排名列表
+     */
+    public List<PlayerRanking> getRankingsByGameMode(String gameMode) {
+        List<PlayerRanking> filteredRankings = new ArrayList<>();
+        for (PlayerRanking ranking : rankings) {
+            if (ranking.getGameMode().equals(gameMode)) {
+                filteredRankings.add(ranking);
+            }
+        }
+        return filteredRankings;
+    }
+    
+    /**
+     * 获取特定玩家的所有排名
+     * @param playerName 玩家名称
+     * @return 玩家的排名列表
+     */
+    public List<PlayerRanking> getPlayerRankings(String playerName) {
+        List<PlayerRanking> playerRankings = new ArrayList<>();
+        for (PlayerRanking ranking : rankings) {
+            if (ranking.getPlayerName().equals(playerName)) {
+                playerRankings.add(ranking);
+            }
+        }
+        return playerRankings;
+    }
+    
+    /**
+     * 清除所有排名数据
+     */
+    public void clearRankings() {
+        rankings.clear();
+        rankingMap.clear();
+        saveRankings();
     }
 } 

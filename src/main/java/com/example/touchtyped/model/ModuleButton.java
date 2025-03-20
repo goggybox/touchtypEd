@@ -3,7 +3,6 @@ package com.example.touchtyped.model;
 import com.example.touchtyped.constants.StyleConstants;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -14,9 +13,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 
-/**
- * this class contains the createLessonButton method
- */
+import java.io.InputStream;
+
 public class ModuleButton {
 
     /**
@@ -33,17 +31,15 @@ public class ModuleButton {
         int arcWidth = 10;
         int blueCircleRadius = 40;
 
-        // create pane; this allows us to manually centre arcs and circle
         Pane pane = new Pane();
         pane.setPrefWidth(250);
 
-        Font antipastoFont = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 26);
+        // Safely load AntipastoPro.ttf at initial size 26
+        Font antipastoFont = loadSafeFont("/fonts/AntipastoPro.ttf", 26);
 
-        // centre position
         double centerX = pane.getPrefWidth() / 2;
         double centerY = arcRadius + arcWidth / 2;
 
-        // is module locked?
         boolean locked = module.isLocked();
 
         // Gray arc (full circle)
@@ -58,7 +54,7 @@ public class ModuleButton {
         greyArc.setStroke(Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.GREY_COLOUR));
         greyArc.setStrokeWidth(arcWidth);
 
-        // Red progress arc (half circle)
+        // Red progress arc
         Arc redArc = new Arc();
         redArc.setCenterX(centerX);
         redArc.setCenterY(centerY);
@@ -69,62 +65,95 @@ public class ModuleButton {
         redArc.setFill(Color.TRANSPARENT);
         redArc.setStroke(Color.web(StyleConstants.RED_COLOUR));
         redArc.setStrokeWidth(arcWidth);
-        redArc.setStrokeLineCap(StrokeLineCap.ROUND); // rounded edge
+        redArc.setStrokeLineCap(StrokeLineCap.ROUND);
 
-        // Blue circle background
-        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius, Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.BLUE_COLOUR));
+        // Blue circle
+        Circle blueCircle = new Circle(centerX, centerY, blueCircleRadius,
+                Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.BLUE_COLOUR));
 
-        // Add the arcs and circle to the Pane
+        // Add arcs/circle
         pane.getChildren().addAll(greyArc, redArc, blueCircle);
 
-        // Lesson label
+        // Module name label
         Label label = new Label(moduleName);
-        label.setFont(antipastoFont);
+        label.setFont(antipastoFont); // set the loaded font
         label.setTextFill(Color.web((locked) ? StyleConstants.LIGHTER_GREY_COLOUR : StyleConstants.GREY_COLOUR));
-
-        // adjust font size and truncate if needed
-        adjustFontSizeAndTruncate(label, 300, 26, 22);
         label.setAlignment(Pos.CENTER);
 
-        // Wrap in VBox to include the label
+        // Adjust/truncate if needed
+        adjustFontSizeAndTruncate(label, 300, 26, 22);
+
+        // Put the arcs + label into a VBox
         VBox vbox = new VBox(pane, label);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(5);
 
-        // create StackPane
+        // create a StackPane for the final button
         StackPane stackPane = new StackPane(vbox);
+        stackPane.setStyle("-fx-cursor: hand;");
 
-        // make it clickable
+        // Make it clickable
         stackPane.setOnMouseClicked(event -> {
             if (onClickAction != null) {
                 onClickAction.run();
             }
         });
 
-        // set cursor to be a hand
-        stackPane.setStyle("-fx-cursor: hand;");
-
-        // Return the final StackPane
         return stackPane;
     }
 
     private static void adjustFontSizeAndTruncate(Label label, double maxWidth, int maxFontSize, int minFontSize) {
-        String text = label.getText();
-        Font font = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), maxFontSize);
+        // Start the label at maxFontSize
+        Font font = loadSafeFont("/fonts/AntipastoPro.ttf", maxFontSize);
+        label.setFont(font);
 
-        // start with the maximum font size, and decrease until text fits or the min font size is reached
-        while (font.getSize() > minFontSize && label.getFont().getSize() * text.length() > maxWidth) {
-            font = Font.loadFont(ModuleButton.class.getResource("/fonts/AntipastoPro.ttf").toExternalForm(), font.getSize() - 1);
-            label.setFont(font);
+        // Decrease font size until the text fits or we reach minFontSize
+        while (label.getFont().getSize() > minFontSize
+                && measureTextWidth(label) > maxWidth) {
+
+            double newSize = label.getFont().getSize() - 1;
+            Font smaller = loadSafeFont("/fonts/AntipastoPro.ttf", newSize);
+            label.setFont(smaller);
         }
 
-        // if the text still doesn't fit, truncate it
-        if (label.getFont().getSize() == minFontSize && label.getWidth() > maxWidth) {
-            while (label.getWidth() > maxWidth && text.length() > 3) {
-                text = text.substring(0, text.length() - 3);
+        // If it's still too wide at minFontSize, truncate with "..."
+        if (label.getFont().getSize() == minFontSize && measureTextWidth(label) > maxWidth) {
+            String text = label.getText();
+            while (measureTextWidth(label) > maxWidth && text.length() > 3) {
+                text = text.substring(0, text.length() - 1);
                 label.setText(text + "...");
             }
         }
-
     }
+
+    /**
+     * Safely loads a font from the given resource path at the specified size.
+     * Returns a fallback system font if loading fails.
+     */
+    private static Font loadSafeFont(String resourcePath, double size) {
+        try (InputStream fontStream = ModuleButton.class.getResourceAsStream(resourcePath)) {
+            if (fontStream != null) {
+                Font loaded = Font.loadFont(fontStream, size);
+                if (loaded != null) {
+                    return loaded;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // fallback to a system font if the custom font can't load
+        return Font.font("System", size);
+    }
+
+    /**
+     * A helper to measure the current text width in the label,
+     * forcing a layout pass so we get an accurate measurement.
+     */
+    private static double measureTextWidth(Label label) {
+        // make sure CSS is applied
+        label.applyCss();
+        // measure its layout bounds
+        return label.getLayoutBounds().getWidth();
+    }
+
 }
