@@ -45,8 +45,6 @@ import javafx.scene.media.MediaPlayer;
 import java.io.IOException;
 import java.net.URI;
 import java.util.*;
-
-import com.example.touchtyped.websocket.ScoreWebSocketClient;
 //import org.json.JSONObject;
 
 public class GameViewController {

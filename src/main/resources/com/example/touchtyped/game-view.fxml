@@ -105,7 +105,6 @@
 
                     <Button fx:id="onlineMatchButton"
                             text="Online Match"
-                            onAction="#onOnlineMatchClick"
                             style="-fx-cursor: hand;" />
 
                     <!-- Time left -->

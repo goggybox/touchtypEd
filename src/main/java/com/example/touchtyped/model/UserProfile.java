@@ -101,42 +101,28 @@ public class UserProfile implements Serializable {
     public boolean hasPlayerName() {
         return playerName != null && !playerName.trim().isEmpty();
     }
-    
-    /**
-     * Load user profile from file
-     */
-    private void loadProfile() {
-        try {
-            if (Files.exists(Paths.get(PROFILE_FILE))) {
-                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PROFILE_FILE))) {
-                    playerName = (String) ois.readObject();
-                }
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Error loading user profile: " + e.getMessage());
-            playerName = null;
-        }
-    }
-    
-    /**
-     * Save user profile to file
-     */
-    private void saveProfile() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PROFILE_FILE))) {
-            oos.writeObject(playerName);
-        } catch (IOException e) {
-            System.err.println("Error saving user profile: " + e.getMessage());
-        }
-    }
 
+    /**
+     * 获取教程完成状态
+     * @return 教程是否已完成
+     */
     public Boolean getCompletedTutorial() {
         return completedTutorial;
     }
 
+    /**
+     * 设置教程完成状态
+     * @param completedTutorial 教程完成状态
+     */
     public void setCompletedTutorial(Boolean completedTutorial) {
         this.completedTutorial = completedTutorial;
+        saveProfile();
     }
 
+    /**
+     * 检查是否是首次使用（有用户名但未完成教程）
+     * @return true如果是首次使用，false否则
+     */
     public boolean isFirstTimeUser() {
         return playerName != null && !playerName.isEmpty() && !Boolean.TRUE.equals(completedTutorial);
     }
