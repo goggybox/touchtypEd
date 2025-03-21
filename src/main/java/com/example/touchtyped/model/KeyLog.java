@@ -7,6 +7,10 @@ public class KeyLog {
     private long timestamp;
     private boolean error;
 
+    public KeyLog() {
+
+    }
+
     /**
      * constructor
      */
@@ -26,7 +30,7 @@ public class KeyLog {
     /**
      * Getters and setters
      */
-    public boolean isError() {
+    public boolean getError() {
         return error;
     }
 

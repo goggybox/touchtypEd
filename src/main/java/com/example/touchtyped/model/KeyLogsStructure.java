@@ -147,6 +147,22 @@ public class KeyLogsStructure {
         this.wordsGiven = wordsGiven.toUpperCase();
     }
 
+    public int getCharPosition() {
+        return charPosition;
+    }
+
+    public void setCharPosition(int charPosition) {
+        this.charPosition = charPosition;
+    }
+
+    public int getErrors() {
+        return errors;
+    }
+
+    public void setErrors(int errors) {
+        this.errors = errors;
+    }
+
     public void setTimeCreated(long timeCreated) {
         this.timeCreated = timeCreated;
     }
