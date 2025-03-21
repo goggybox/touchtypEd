@@ -353,6 +353,7 @@ public class ClassroomViewController {
                     } else {
                         if (ClassroomDAO.usernameExistsInClassroom(classroomID, username)) {
                             // logging in to existing account
+                            ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
                                 joinFormDescription.setText("Logged in successfully!");
                                 joinFormDescription.setTextFill(Color.GREEN);
