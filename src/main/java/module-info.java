@@ -10,6 +10,7 @@ module com.example.touchtyped {
     requires com.google.auth;
     requires com.google.auth.oauth2;
     requires com.google.api.apicommon;
+    requires java.sql;
 
     opens com.example.touchtyped to javafx.fxml;
     exports com.example.touchtyped.app;
