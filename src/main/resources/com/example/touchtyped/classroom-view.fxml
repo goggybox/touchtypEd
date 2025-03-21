@@ -8,69 +8,103 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@classroom-view-style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.ClassroomViewController">
 
     <center>
-        <!-- ScrollPane to allow vertical scrolling -->
-        <StackPane fx:id="stackPane">
-            <VBox fx:id="studentTeacherContainer" alignment="CENTER" spacing="15">
-                <Label text="Are you a student or a teacher?" style="-fx-font-size: 24px;"/>
-                <HBox spacing="20" alignment="CENTER">
-                    <Button text="Student" fx:id="studentButton" style="-fx-font-size: 18px;"
-                            prefWidth="200" onAction="#displayStudent"/>
-                    <Button text="Teacher" fx:id="teacherButton" style="-fx-font-size: 18px;"
-                            prefWidth="200" onAction="#displayTeacher"/>
-                </HBox>
-            </VBox>
+        <HBox alignment="CENTER">
+            <!-- Left Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+            <!-- ScrollPane to allow vertical scrolling -->
+            <StackPane fx:id="stackPane" prefWidth="1200.0">
+                <VBox fx:id="studentTeacherContainer" alignment="CENTER" spacing="15">
+                    <Label text="Are you a student or a teacher?" style="-fx-font-size: 24px;"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Student" fx:id="studentButton" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayStudent"/>
+                        <Button text="Teacher" fx:id="teacherButton" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
 
-            <!-- Loading Message -->
-            <VBox fx:id="loadingContainer" alignment="CENTER" spacing="15">
-                <Label text="Loading..." style="-fx-font-size: 26px;"/>
-            </VBox>
+                <!-- Loading Message -->
+                <VBox fx:id="loadingContainer" alignment="CENTER" spacing="15">
+                    <Label text="Loading..." style="-fx-font-size: 26px;"/>
+                </VBox>
 
-            <!-- Display Cached Information -->
-            <VBox fx:id="userAccountDisplayContainer" alignment="CENTER" spacing="15">
-                <Label fx:id="userGreeting" style="-fx-font-size: 26px;"/>
-                <Label fx:id="userDescription" style="-fx-font-size: 18px;"/>
-            </VBox>
+                <!-- Display Cached Information -->
+                <VBox fx:id="userAccountDisplayContainer" spacing="10">
+                    <Label fx:id="userGreeting"/>
+                    <Label fx:id="userDescription"/>
 
-            <!-- Student Join Classroom Form -->
-            <VBox fx:id="joinForm" alignment="CENTER" spacing="15" visible="false">
-                <Label text="Join Classroom" style="-fx-font-size: 26px;"/>
-                <Label fx:id="joinFormDescription" text="" style="-fx-font-size: 16px;"/>
-                <TextField fx:id="classroomIDField" promptText="Classroom ID"/>
-                <TextField fx:id="studentNameField" promptText="Your Name"/>
-                <HBox spacing="20" alignment="CENTER">
-                    <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
-                    <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayStudentTeacherContainer"/>
-                </HBox>
-            </VBox>
+                    <!-- Teacher-specific container -->
+                    <VBox fx:id="teacherContainer" spacing="5" visible="false">
+                        <Label fx:id="studentListDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                        <ScrollPane fx:id="studentListContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                            <VBox fx:id="studentListContainer" spacing="5"/>
+                        </ScrollPane>
+                    </VBox>
 
-            <!-- Teacher Select "Create" or "Log in" Form -->
-            <VBox fx:id="teacherSelectionForm" alignment="CENTER" spacing="15" visible="false">
-                <Label text="Teacher Form" style="-fx-font-size: 26px;"/>
-                <Label fx:id="teacherSelectionFormDescription" text="Login to an existing account, or create a new account."
-                       style="-fx-font-size: 16px;"/>
-                <HBox spacing="20" alignment="CENTER">
-                    <Button text="Login" style="-fx-font-size: 18px;"
-                            prefWidth="200"/>
-                    <Button text="Create" style="-fx-font-size: 18px;"
-                            prefWidth="200" onAction="#displayCreateForm"/>
-                    <Button text="Back" style="-fx-font-size: 18px" onAction="#displayStudentTeacherContainer"/>
-                </HBox>
-            </VBox>
+                    <!-- Student-specific container -->
+                    <VBox fx:id="studentContainer" spacing="10" visible="false">
 
-            <!-- Create form -->
-            <VBox fx:id="createForm" alignment="CENTER" spacing="15" visible="false">
-                <Label text="Create Classroom" style="-fx-font-size: 26px;"/>
-                <Label fx:id="createFormDescription" text="Please fill in the details below. A unique classroom ID will then be generated for you to share with your students. Passwords must be between 6-16 characters and contain at least one digit."
-                       style="-fx-font-size: 16px;"/>
-                <TextField fx:id="classroomNameField" promptText="Classroom Name"/>
-                <TextField fx:id="teacherNameField" promptText="Teacher Name"/>
-                <TextField fx:id="passwordField" promptText="Password"/>
-                <HBox spacing="20" alignment="CENTER">
-                    <Button text="Create" style="-fx-font-size: 18px;" onAction="#createClassroom"/>
-                    <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayTeacher"/>
-                </HBox>
-            </VBox>
-        </StackPane>
+                    </VBox>
+
+                </VBox>
+
+                <!-- Student Join Classroom Form -->
+                <VBox fx:id="joinForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Join Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="joinFormDescription" text="" style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="classroomIDField" promptText="Classroom ID"/>
+                    <TextField fx:id="studentNameField" promptText="Your Name"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayStudentTeacherContainer"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Teacher Select "Create" or "Log in" Form -->
+                <VBox fx:id="teacherSelectionForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Teacher Form" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="teacherSelectionFormDescription" text="Login to an existing account, or create a new account."
+                           style="-fx-font-size: 16px;"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Login" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayLoginForm"/>
+                        <Button text="Create" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayCreateForm"/>
+                        <Button text="Back" style="-fx-font-size: 18px" onAction="#displayStudentTeacherContainer"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Create form -->
+                <VBox fx:id="createForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Create Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="createFormDescription" text="Please fill in the details below. A unique classroom ID will then be generated for you to share with your students. Passwords must be between 6-16 characters and contain at least one digit."
+                           style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="classroomNameField" promptText="Classroom Name"/>
+                    <TextField fx:id="teacherNameField" promptText="Teacher Name"/>
+                    <TextField fx:id="passwordField" promptText="Password"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Create" style="-fx-font-size: 18px;" onAction="#createClassroom"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Log-in Form -->
+                <VBox fx:id="loginForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Create Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="loginFormDescription" text="Fill in the details below to log-in to your existing teacher account." style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="loginClassroomID" promptText="Classroom ID"/>
+                    <TextField fx:id="loginPassword" promptText="Teacher Password"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Login" style="-fx-font-size: 18px;" onAction="#teacherLogin"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+
+            <!-- Right Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+        </HBox>
 
     </center>
 

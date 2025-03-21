@@ -12,11 +12,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -26,6 +28,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
@@ -34,6 +37,9 @@ public class ClassroomViewController {
 
     @FXML
     private VBox joinCreateContainer;
+
+    @FXML
+    private ScrollPane studentListContainerScrollPane;
 
     @FXML
     private VBox studentTeacherContainer;
@@ -45,6 +51,9 @@ public class ClassroomViewController {
     private VBox userAccountDisplayContainer;
 
     @FXML
+    private VBox loginForm;
+
+    @FXML
     private VBox joinForm;
 
     @FXML
@@ -54,6 +63,15 @@ public class ClassroomViewController {
     private VBox loadingContainer;
 
     @FXML
+    private VBox teacherContainer;
+
+    @FXML
+    private VBox studentContainer;
+
+    @FXML
+    private VBox studentListContainer;
+
+    @FXML
     private ImageView gamesButton;
 
     @FXML
@@ -61,6 +79,9 @@ public class ClassroomViewController {
 
     @FXML
     private Label joinFormDescription;
+
+    @FXML
+    private Label studentListDescriptor;
 
     @FXML
     private Label teacherSelectionFormDescription;
@@ -75,7 +96,16 @@ public class ClassroomViewController {
     private Label userDescription;
 
     @FXML
+    private Label loginFormDescription;
+
+    @FXML
     private TextField classroomIDField;
+
+    @FXML
+    private TextField loginClassroomID;
+
+    @FXML
+    private TextField loginPassword;
 
     @FXML
     private TextField studentNameField;
@@ -89,10 +119,12 @@ public class ClassroomViewController {
     @FXML
     private TextField passwordField;
 
-    @FXML
-    private StackPane stackPane;
-
     private static final String file_path = "user_cache.txt";
+
+    private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
+    private final Font secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
+
+    private Label selectedStudentLabel = null;
 
     /**
      * if the user has logged in before, and there account information is stored in the cache, load this information
@@ -101,6 +133,7 @@ public class ClassroomViewController {
     public void initialize() {
         hideAllForms();
         loadingContainer.setVisible(true);
+
 
         Task<Void> initialisation = new Task<>() {
             @Override
@@ -151,15 +184,59 @@ public class ClassroomViewController {
 
     public void displayUserAccount(UserAccount userAccount) {
         hideAllForms();
+        teacherContainer.setVisible(false);
+        studentContainer.setVisible(false);
         userAccountDisplayContainer.setVisible(true);
+        userGreeting.setFont(primary_font);
+        userDescription.setFont(secondary_font);
+        userDescription.setWrapText(true);
         userGreeting.setText("Hello, "+userAccount.getUsername());
         Classroom classroom = ClassroomDAO.getClassroom(userAccount.getClassroomID());
         boolean teacher = Objects.equals(classroom.getTeacherID(), userAccount.getUserID()); // is this user the owner of the classroom?
         if (teacher) {
-            userDescription.setText("You are the owner of the classroom '" + classroom.getClassroomName() + "'. You can view your students' progress below.");
+            userDescription.setText("You are the owner of the classroom '" + classroom.getClassroomName() + "', with " +
+                    "ID '"+ classroom.getClassroomID() + "'. You can view your students' progress below.");
+            teacherContainer.setVisible(true);
+            populateStudentList(classroom);
         } else {
             userDescription.setText("You are already a part of the classroom '" + classroom.getClassroomName() + "'. Your progress will be sent to your teacher.");
         }
+    }
+
+    private void populateStudentList(Classroom classroom) {
+        studentListContainer.getChildren().clear();
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                List<String> students = classroom.getStudentUsernames();
+                students.sort(String.CASE_INSENSITIVE_ORDER);
+                Platform.runLater(() -> {
+                    studentListDescriptor.setFont(secondary_font);
+                    studentListDescriptor.setText("Students");
+                    for (String student : students) {
+                        Label studentLabel = new Label(student);
+                        studentLabel.setFont(secondary_font);
+                        studentLabel.getStyleClass().add("student");
+                        studentLabel.setPrefWidth((students.size() > 10) ? 225 : 242);
+
+                        // Add click handler
+                        studentLabel.setOnMouseClicked(e -> {
+                            // Reset previous selection
+                            if (selectedStudentLabel != null) {
+                                selectedStudentLabel.getStyleClass().remove("student-selected");
+                            }
+                            // Set new selection
+                            studentLabel.getStyleClass().add("student-selected");
+                            selectedStudentLabel = studentLabel;
+                        });
+
+                        studentListContainer.getChildren().add(studentLabel);
+                    }
+                });
+                return null;
+            }
+        };
+        new Thread(task).start();
     }
 
     /**
@@ -182,6 +259,7 @@ public class ClassroomViewController {
         loadingContainer.setVisible(false);
         joinForm.setVisible(false);
         createForm.setVisible(false);
+        loginForm.setVisible(false);
     }
 
     /**
@@ -229,6 +307,17 @@ public class ClassroomViewController {
         createFormDescription.setPrefHeight(100);
         createFormDescription.setTextAlignment(TextAlignment.CENTER);
         createFormDescription.setWrapText(true);
+    }
+
+    @FXML
+    public void displayLoginForm() {
+        hideAllForms();
+        loginForm.setVisible(true);
+        loginForm.requestFocus();
+        loginFormDescription.setMaxWidth(450);
+        loginFormDescription.setPrefHeight(100);
+        loginFormDescription.setTextAlignment(TextAlignment.CENTER);
+        loginFormDescription.setWrapText(true);
     }
 
     /**
@@ -298,6 +387,7 @@ public class ClassroomViewController {
         String classroomName = classroomNameField.getText();
         String teacherName = teacherNameField.getText();
         String password = passwordField.getText();
+        createFormDescription.setAlignment(Pos.CENTER);
 
         // ensure fields are not empty
         if (classroomName.isBlank() || teacherName.isBlank() || password.isBlank()) {
@@ -317,7 +407,6 @@ public class ClassroomViewController {
         // display loading message
         createFormDescription.setText("Creating classroom...");
         createFormDescription.setTextFill(Color.BLACK);
-        createFormDescription.setAlignment(Pos.CENTER);
 
         Task<Void> createTask = new Task<>() {
             @Override
@@ -343,6 +432,63 @@ public class ClassroomViewController {
 
         };
         new Thread(createTask).start();
+
+    }
+
+    @FXML
+    public void teacherLogin() {
+        String classroomID = loginClassroomID.getText();
+        String password = loginPassword.getText();
+        loginFormDescription.setAlignment(Pos.CENTER);
+
+        if (classroomID.isBlank() || password.isBlank()) {
+            loginFormDescription.setText("Please ensure all the fields are filled in!");
+            loginFormDescription.setTextFill(Color.RED);
+            return;
+        }
+
+        // display loading message
+        loginFormDescription.setText("Checking credentials...");
+        loginFormDescription.setTextFill(Color.BLACK);
+        Task<Void> loginTask = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    Classroom classroom = ClassroomDAO.getClassroom(classroomID);
+                    if (classroom != null) {
+                        UserAccount teacher = UserDAO.getAccountByID(classroom.getTeacherID(), password);
+                        if (teacher != null) {
+                            // successfully logged in
+                            Platform.runLater(() -> {
+                                ClassroomDAO.saveUserCache(classroomID, teacher.getUsername(), password);
+                                loginFormDescription.setText("Logged in successfully!");
+                                loginFormDescription.setTextFill(Color.GREEN);
+                            });
+                        } else {
+                            // password was incorrect
+                            Platform.runLater(() -> {
+                                loginFormDescription.setText("Password is incorrect.");
+                                loginFormDescription.setTextFill(Color.RED);
+                            });
+                        }
+                    } else {
+                        Platform.runLater(() -> {
+                            loginFormDescription.setText("No classroom exists with the provided ID.");
+                            loginFormDescription.setTextFill(Color.RED);
+                        });
+                    }
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        System.out.println("DATABASE FAILURE. Failed to log in to classroom as teacher");
+                        loginFormDescription.setText("An error occurred while attempting to login. Please try again later.");
+                        loginFormDescription.setTextFill(Color.RED);
+                    });
+                }
+                return null;
+            }
+        };
+        new Thread(loginTask).start();
+
 
     }
 

@@ -1,3 +1,5 @@
+
+
 .nav-bar {
     -fx-background-color: #D8D8D8;
     -fx-font-size: 18px;
@@ -24,7 +26,6 @@
 .text-field {
     -fx-border-color: #263F68;
     -fx-background-color: transparent;
-    -fx-font-size: 18px;
     -fx-border-width: 3px;
     -fx-border-radius: 20px;
     -fx-max-width: 300px;
@@ -33,4 +34,39 @@
 .text-field:focused {
     -fx-border-color: #F5102F;
     -fx-background-color: transparent;
+}
+
+#userAccountDisplayContainer {
+    -fx-padding: 40px 30px 0px 30px;
+}
+
+#teacherContainer {
+    -fx-padding: 0px 0px 20px 0px;
+}
+
+#studentListDescriptor {
+    -fx-font-size: 16px;
+}
+
+#studentListContainerScrollPane {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgba(38, 63, 104, 0.2);
+    -fx-border-width: 3px;
+}
+
+.student {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-font-size: 16px;
+}
+
+.student:hover {
+    -fx-background-color: rgb(191, 191, 191);
+}
+
+.student-selected {
+    -fx-background-color: rgba(245, 16, 47, 0.5);
+}
+
+.student-selected:hover {
+    -fx-background-color: rgba(245, 16, 47, 0.5);
 }
