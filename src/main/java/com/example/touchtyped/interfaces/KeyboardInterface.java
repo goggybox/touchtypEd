@@ -19,16 +19,21 @@ public class KeyboardInterface {
 
 
     private final List<KeypressListener> listeners;
+    private static KeyboardInterface keyboardInterface;
+    private final SerialPort ioPort;
     private int stopKeyPressQueue = 0;
+    private int stopLightQueue = 0;
     //keys stop vibrating when another key is pressed, so we only need to actively stop them when vibrations durations
     //wouldn't overlap. this keeps track of whether they're overlapping
 
     /**
      * constructor
      */
-    public KeyboardInterface() {
+    public KeyboardInterface(SerialPort ioPort) {
         this.listeners = new ArrayList<>();
+        this.ioPort = ioPort;
     }
+
 
     /**
      * attach an event handler to the specified scene to handle key presses and notify listeners
@@ -163,7 +168,7 @@ public class KeyboardInterface {
         String keyLower = key.toLowerCase();
         if (keyLower.matches("[a-z]")) {
             if (Application.keyboardConnected) {
-                PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
+                PrintWriter keyCommand = new PrintWriter(ioPort.getOutputStream());
                 keyCommand.print(keyLower);
                 keyCommand.flush();
                 keyCommand.close();
@@ -176,8 +181,9 @@ public class KeyboardInterface {
                     if (stopKeyPressQueue==1){
                         stopHaptic();
                         System.out.println(String.format("Key %s has stopped vibrating after %d ms", key, duration));
+                    } else {
+                        stopKeyPressQueue--;
                     }
-                    stopKeyPressQueue--;
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -187,46 +193,14 @@ public class KeyboardInterface {
             stopHaptic();
         }
 
-        /*switch (keyLower) {
-            case "b" :
-                keyCommand.print(2);
-                keyCommand.flush();
-                break;
-            case "c":
-                keyCommand.print(3);
-                keyCommand.flush();
-                break;
-            case "d":
-                keyCommand.print(4);
-                keyCommand.flush();
-                break;
-            case "e":
-                keyCommand.print(5);
-                keyCommand.flush();
-                break;
-            case "f":
-                keyCommand.print(6);
-                keyCommand.flush();
-                break;
-            case "g":
-                keyCommand.print(7);
-                keyCommand.flush();
-                break;
-            case "h":
-                keyCommand.print(8);
-                keyCommand.flush();
-                break;
-            default:
-                stopHaptic();
-        }*/
-
 
     }
 
 
     public void stopHaptic(){
+        stopKeyPressQueue = 0;
         if (Application.keyboardConnected) {
-            PrintWriter keyCommand = new PrintWriter(Application.ioPort.getOutputStream());
+            PrintWriter keyCommand = new PrintWriter(ioPort.getOutputStream());
             keyCommand.print(0);
             keyCommand.flush();
             keyCommand.close();
@@ -240,6 +214,37 @@ public class KeyboardInterface {
     public void activateLights(int duration) {
         // for now, this method will simply output to the console
         System.out.println(String.format("Turned LED lights on for %d milliseconds", duration));
+        if (Application.keyboardConnected) {
+            PrintWriter lightCommand = new PrintWriter(ioPort.getOutputStream());
+            lightCommand.print("L");
+            lightCommand.flush();
+            lightCommand.close();
+        }
+
+        stopLightQueue ++;
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(duration);
+                if (stopKeyPressQueue==1){
+                    stopLight();
+                    System.out.println(String.format("Lights have turned off after %d ms", duration));
+                } else {
+                    stopLightQueue--;
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        thread.start();
+    }
+    public void stopLight(){
+        stopLightQueue = 0;
+        if (Application.keyboardConnected) {
+            PrintWriter keyCommand = new PrintWriter(ioPort.getOutputStream());
+            keyCommand.print("O");
+            keyCommand.flush();
+            keyCommand.close();
+        }
     }
 
 }

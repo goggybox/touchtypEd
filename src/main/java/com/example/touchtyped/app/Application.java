@@ -1,6 +1,7 @@
 package com.example.touchtyped.app;
 
 import com.example.touchtyped.controller.LearnViewController;
+import com.example.touchtyped.interfaces.ComputerVisionInterface;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
 import com.example.touchtyped.model.TypingPlan;
@@ -14,23 +15,24 @@ import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
 public class Application extends javafx.application.Application {
-    public static SerialPort ioPort;
+    private static SerialPort ioPort;
     public static boolean keyboardConnected;
     public static KeyboardInterface keyboardInterface;
+
     @Override
     public void start(Stage stage) throws IOException {
         keyboardConnected = false;
-        keyboardInterface = new KeyboardInterface();
+        keyboardInterface = new KeyboardInterface(ioPort);
         // Load custom fonts
         Font customFont = Font.loadFont(
-            getClass().getResourceAsStream("/fonts/consola.ttf"),
-            28
+                getClass().getResourceAsStream("/fonts/consola.ttf"),
+                28
         );
         System.out.println("Loaded font: " + (customFont != null ? customFont.getName() : "Failed to load"));
-        
+
         Font customBoldFont = Font.loadFont(
-            getClass().getResourceAsStream("/fonts/consolab.ttf"),
-            28
+                getClass().getResourceAsStream("/fonts/consolab.ttf"),
+                28
         );
         System.out.println("Loaded bold font: " + (customBoldFont != null ? customBoldFont.getName() : "Failed to load"));
 
@@ -86,4 +88,5 @@ public class Application extends javafx.application.Application {
 
         launch();
     }
+
 }

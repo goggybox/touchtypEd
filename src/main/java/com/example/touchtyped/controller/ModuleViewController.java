@@ -1,6 +1,8 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.constants.StyleConstants;
+import com.example.touchtyped.interfaces.ComputerVisionInterface;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.interfaces.KeypressListener;
 import com.example.touchtyped.model.*;
@@ -53,10 +55,11 @@ public class ModuleViewController implements KeypressListener {
     private Level level;
     private List<Label> letterLabels = new ArrayList<>();
     private int currentIndex;
-    private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private KeyboardInterface keyboardInterface = Application.keyboardInterface;
     private String typedString = "";
     private final int MAX_BOXES_PER_ROW = 16;
     private Map<String, Character> keyMap = new HashMap<String, Character>();
+    private ComputerVisionInterface computerVisionInterface;
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -68,6 +71,9 @@ public class ModuleViewController implements KeypressListener {
                 System.err.println("Scene is not available yet.");
             }
         });
+
+        computerVisionInterface = new ComputerVisionInterface();
+        computerVisionInterface.runCVProgramWithPopups();
 
         // register as a keypress listener
         keyboardInterface.addKeypressListener(this);
@@ -271,6 +277,7 @@ public class ModuleViewController implements KeypressListener {
             Scene scene = new Scene(loader.load(), 1200, 700);
             LearnViewController lvController = loader.getController();
             lvController.setKeyboardInterface(keyboardInterface);
+            computerVisionInterface.closeCVProgram();
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -286,6 +293,7 @@ public class ModuleViewController implements KeypressListener {
             Scene scene = new Scene(loader.load(), 1200, 700);
             GameViewController gVController = loader.getController();
             gVController.setKeyboardInterface(keyboardInterface);
+            computerVisionInterface.closeCVProgram();
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
@@ -304,7 +312,10 @@ public class ModuleViewController implements KeypressListener {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            LearnViewController learnViewController = loader.getController();
+            learnViewController.setKeyboardInterface(keyboardInterface);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            computerVisionInterface.closeCVProgram();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {

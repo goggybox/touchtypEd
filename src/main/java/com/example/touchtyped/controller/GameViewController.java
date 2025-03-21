@@ -849,6 +849,7 @@ public class GameViewController {
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene=new Scene(loader.load(),1200,700);
             LearnViewController lVController = loader.getController();
+            lVController.setKeyboardInterface(keyboardInterface);
             Stage stage=(Stage)taskLabel.getScene().getWindow();
             stage.setScene(scene);
         }catch(IOException e){
