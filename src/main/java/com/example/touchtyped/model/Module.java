@@ -105,11 +105,12 @@ public class Module {
 
     public Boolean isLocked() {
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
-        for (Phase phase : typingPlan.getPhases()) {
+        List<Phase> phases = typingPlan.getPhases();
+        for (Phase phase : phases) {
             if (phase.getModules().contains(this)) {
                 int index = phase.getModules().indexOf(this);
-                if (index == 0) { return false; }
-                if (phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+                if (index == 0 && phases.getFirst() == phase) { return false; }
+                if (index > 0 && phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
                 return true;
             }
         }

@@ -20,10 +20,20 @@ public class PDFViewer extends VBox {
 
             for (int page = 0; page < document.getNumberOfPages(); page++) {
                 BufferedImage pageImage = renderer.renderImageWithDPI(page, 96, ImageType.RGB);
-                WritableImage fxImage = SwingFXUtils.toFXImage(pageImage, null);
+
+                int xMargin = 40;
+                int yMargin = 30;
+                BufferedImage croppedImage = pageImage.getSubimage(
+                        xMargin,
+                        yMargin*3,
+                        pageImage.getWidth() - 2*xMargin,
+                        pageImage.getHeight() - 8*yMargin
+                );
+
+                WritableImage fxImage = SwingFXUtils.toFXImage(croppedImage, null);
                 ImageView imageView = new ImageView(fxImage);
                 imageView.setPreserveRatio(true);
-                imageView.setFitWidth(550);
+                imageView.setFitWidth(575);
                 getChildren().add(imageView);
             }
 

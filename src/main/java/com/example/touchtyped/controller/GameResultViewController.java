@@ -116,7 +116,7 @@ public class GameResultViewController {
             @Override
             protected RESTResponseWrapper call() throws Exception {
                 RESTClient restService = new RESTClient();
-                return restService.sendKeyLogs(keyLogsStructure, () ->
+                return restService.getPDF(keyLogsStructure, () ->
                         descriptionLabel.setText("Request failed. Trying again... (Please be patient!)"));
             }
         };

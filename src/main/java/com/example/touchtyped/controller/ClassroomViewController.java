@@ -5,7 +5,11 @@ import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PDFViewer;
 import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.service.RESTClient;
+import com.example.touchtyped.service.RESTResponseWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -26,6 +30,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import org.apache.pdfbox.rendering.PDFRenderer;
 
 import java.awt.*;
 import java.io.File;
@@ -281,7 +286,7 @@ public class ClassroomViewController {
     private void loadStudentKeyLogs(String classroomID, String username) {
         studentInfoContainer.setVisible(true);
         studentKeyLogsContainer.getChildren().clear();
-        studentKeyLogsDescriptor.setText("User's Key Logs (LOADING...)");
+        studentKeyLogsDescriptor.setText("User's Typing Tests (LOADING...)");
         Task<Void> task = new Task<>() {
             protected Void call() {
                 Platform.runLater(() -> {
@@ -316,7 +321,7 @@ public class ClassroomViewController {
                             }
                         }
 
-                        studentKeyLogsDescriptor.setText("User's Key Logs");
+                        studentKeyLogsDescriptor.setText("User's Typing Tests");
                     } catch (Exception e) {
                         System.out.println("DATABASE FAILURE. Failed to load student's key logs.");
                     }
@@ -330,11 +335,75 @@ public class ClassroomViewController {
     private void loadKeyLog(KeyLogsStructure log, String username) {
         keyLogContainer.setVisible(true);
         long time = log.getTimeCreated();
+        logContainer.getChildren().clear();
         String formattedTime = Instant.ofEpochMilli(time)
                 .atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("dd/MM '('EEE')' 'at' HH:mm"));
-        keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
+
+        // show loading message
+        keyLogDescriptor.setText("Loading results of typing test...");
         keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println(objectMapper.writeValueAsString(log));
+        } catch (IOException e) {
+            System.out.println("kys");
+        }
+
+        // call REST service to get PDF
+        Task<RESTResponseWrapper> restTask = new Task<>() {
+            @Override
+            protected RESTResponseWrapper call() throws Exception {
+                RESTClient restService = new RESTClient();
+                return restService.getPDF(log, () ->
+                        keyLogDescriptor.setText("Failed to load. Trying again... (Please be patient!)"));
+            }
+        };
+        restTask.setOnSucceeded(event -> {
+            try {
+                RESTResponseWrapper response = restTask.getValue();
+
+                // handle PDF
+                if (response.getPdfData() != null) {
+                    System.out.println("Decoded PDF size: " + response.getPdfData().length + " bytes");
+                    displayPDF(response.getPdfData());
+                }
+
+                keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
+                keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        restTask.setOnFailed(event -> {
+            Throwable exception = restTask.getException();
+            System.err.println("An error occurred while communicating with the REST service.");
+            exception.printStackTrace();
+
+            // notify the user.
+            keyLogDescriptor.setText("Failed to load analytics. Please try again later.");
+        });
+
+        new Thread(restTask).start();
+
+    }
+
+    private void displayPDF(byte[] pdfData) {
+
+        Task<Void> pdfTask = new Task<>() {
+            @Override
+            protected Void call() {
+                Platform.runLater(() -> {
+                    logContainer.getChildren().clear();
+                    PDFViewer pdfViewer = new PDFViewer(pdfData);
+                    logContainer.getChildren().add(pdfViewer);
+                });
+                return null;
+            }
+        };
+        new Thread(pdfTask).start();
     }
 
     /**

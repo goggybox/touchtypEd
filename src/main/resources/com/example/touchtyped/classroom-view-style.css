@@ -54,6 +54,10 @@
     -fx-border-width: 3px;
 }
 
+#logContainer, #logContainerScrollPane {
+    -fx-background-color: white;
+}
+
 
 .student, .log {
     -fx-padding: 5px 10px 5px 10px;

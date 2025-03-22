@@ -1,0 +1,243 @@
+{
+  "personalized_typing_plan": {
+    "phases": [
+      {
+        "phase": "Foundation Phase",
+        "duration": "Week 1-2",
+        "goal": "Fix errors and gain accuracy",
+        "modules": [
+          {
+            "name": "A & S",
+            "focus": "Improve error-prone letters",
+            "id": 1,
+            "levels": [
+              {"taskString": "as"},
+              {"taskString": "asas"},
+              {"taskString": "aass"},
+              {"taskString": "asasas"},
+              {"taskString": "aassaa"}
+            ]
+          },
+          {
+            "name": "D & F",
+            "focus": "Enhance finger coordination",
+            "id": 2,
+            "levels": [
+              {"taskString": "df"},
+              {"taskString": "dfdf"},
+              {"taskString": "ddff"},
+              {"taskString": "dfdfdf"},
+              {"taskString": "ddffdd"}
+            ]
+          },
+          {
+            "name": "J & K",
+            "focus": "Strengthen common letter pairs",
+            "id": 3,
+            "levels": [
+              {"taskString": "jk"},
+              {"taskString": "jkjk"},
+              {"taskString": "jjkk"},
+              {"taskString": "jkjkjk"},
+              {"taskString": "jjkkjj"}
+            ]
+          },
+          {
+            "name": "S & K",
+            "focus": "Refine finger independence",
+            "id": 4,
+            "levels": [
+              {"taskString": "sk"},
+              {"taskString": "sksk"},
+              {"taskString": "sskk"},
+              {"taskString": "sksksk"},
+              {"taskString": "sskks"}
+            ]
+          },
+          {
+            "name": "F & J",
+            "focus": "Boost finger speed",
+            "id": 5,
+            "levels": [
+              {"taskString": "fj"},
+              {"taskString": "fjfj"},
+              {"taskString": "ffjj"},
+              {"taskString": "fjfjfj"},
+              {"taskString": "ffjjff"}
+            ]
+          },
+          {
+            "name": "A & K",
+            "focus": "Sharpen finger control",
+            "id": 6,
+            "levels": [
+              {"taskString": "ak"},
+              {"taskString": "akak"},
+              {"taskString": "aakk"},
+              {"taskString": "akakak"},
+              {"taskString": "aakkaa"}
+            ]
+          }
+        ]
+      },
+      {
+        "phase": "Intermediate Drills Phase",
+        "duration": "Week 3-4",
+        "goal": "Build speed with letters",
+        "modules": [
+          {
+            "name": "Common Mistakes",
+            "focus": "Fix common mistakes",
+            "id": 7,
+            "levels": [
+              {"taskString": "tternpa"},
+              {"taskString": "ernpatt"},
+              {"taskString": "atternp"},
+              {"taskString": "ternpat"},
+              {"taskString": "patternt"}
+            ]
+          },
+          {
+            "name": "Letter Pairs",
+            "focus": "Improve pair accuracy",
+            "id": 8,
+            "levels": [
+              {"taskString": "chae"},
+              {"taskString": "teac"},
+              {"taskString": "each"},
+              {"taskString": "ache"},
+              {"taskString": "heatc"}
+            ]
+          },
+          {
+            "name": "Multi-Letter Sequences",
+            "focus": "Master groups",
+            "id": 9,
+            "levels": [
+              {"taskString": "picture"},
+              {"taskString": "teacher"},
+              {"taskString": "backstage"},
+              {"taskString": "disaster"},
+              {"taskString": "landscape"}
+            ]
+          },
+          {
+            "name": "Alternating Sequences",
+            "focus": "Boost hand coordination",
+            "id": 10,
+            "levels": [
+              {"taskString": "qwer tyui"},
+              {"taskString": "asdf ghjk"},
+              {"taskString": "zxcv bnml"},
+              {"taskString": "erty uiop"},
+              {"taskString": "iop asdfg"}
+            ]
+          },
+          {
+            "name": "Speed Patterns",
+            "focus": "Increase pattern fluency",
+            "id": 11,
+            "levels": [
+              {"taskString": "tternpa ernpatt"},
+              {"taskString": "atternp ternpat"},
+              {"taskString": "patternt tternpa"},
+              {"taskString": "ernpatt atternp"},
+              {"taskString": "ternpat patternt"}
+            ]
+          },
+          {
+            "name": "Advanced Sequences",
+            "focus": "Smooth complex shifts",
+            "id": 12,
+            "levels": [
+              {"taskString": "ernpatternpa"},
+              {"taskString": "tternpatterna"},
+              {"taskString": "patterntternpa"},
+              {"taskString": "atternpatterna"},
+              {"taskString": "ternpatternpa"}
+            ]
+          }
+        ]
+      },
+      {
+        "phase": "Real Vocabulary & Sentences Phase",
+        "duration": "Week 5-6",
+        "goal": "Apply skills with words",
+        "modules": [
+          {
+            "name": "Error Prone Words",
+            "focus": "Fix common mistakes",
+            "id": 13,
+            "levels": [
+              {"taskString": "picture"},
+              {"taskString": "teacher"},
+              {"taskString": "backstage"},
+              {"taskString": "disaster"},
+              {"taskString": "practice"}
+            ]
+          },
+          {
+            "name": "Finger Placement",
+            "focus": "Improve finger control",
+            "id": 14,
+            "levels": [
+              {"taskString": "cat hat"},
+              {"taskString": "dog log"},
+              {"taskString": "sun fun"},
+              {"taskString": "fox box"},
+              {"taskString": "pig cow"}
+            ]
+          },
+          {
+            "name": "Speed & Accuracy",
+            "focus": "Balance speed and accuracy",
+            "id": 15,
+            "levels": [
+              {"taskString": "the quick fox"},
+              {"taskString": "jump over log"},
+              {"taskString": "kids love play"},
+              {"taskString": "birds sing sweet"},
+              {"taskString": "time flies fast"}
+            ]
+          },
+          {
+            "name": "Short Sentences",
+            "focus": "Develop sentence fluency",
+            "id": 16,
+            "levels": [
+              {"taskString": "i love books"},
+              {"taskString": "we read daily"},
+              {"taskString": "kids learn fast"},
+              {"taskString": "try your best"},
+              {"taskString": "practice every day"}
+            ]
+          },
+          {
+            "name": "Punctuation & Fluency",
+            "focus": "Exercise punctuation and fluency",
+            "id": 17,
+            "levels": [
+              {"taskString": "hello friend"},
+              {"taskString": "good morning"},
+              {"taskString": "lets play now"},
+              {"taskString": "well done kid"},
+              {"taskString": "enjoy your day"}
+            ]
+          },
+          {
+            "name": "Difficult Sentences",
+            "focus": "Challenge typing with sentences",
+            "id": 18,
+            "levels": [
+              {"taskString": "type this sentence quickly"},
+              {"taskString": "keep calm and type on"},
+              {"taskString": "every key counts"},
+              {"taskString": "small steps make great progress"},
+              {"taskString": "your effort is amazing"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
