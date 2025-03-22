@@ -167,15 +167,11 @@ public final class UserDAO {
     public static UserAccount getAccount(String classroomID, String username, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
-            System.out.println("Got database client");
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID + "," + username);
-            System.out.println("Got user doc");
             DocumentSnapshot document = userDoc.get().get();
-            System.out.println("Got user doc snapshot");
 
             if (document.exists()) {
                 UserAccount userAccount = document.toObject(UserAccount.class);
-                System.out.println("Got user account");
 
                 // check if the account has a password. if so, ensure that the correct password was supplied to this function.
                 if (userAccount.getPassword() == null) {

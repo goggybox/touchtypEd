@@ -34,12 +34,38 @@
                     <Label fx:id="userDescription"/>
 
                     <!-- Teacher-specific container -->
-                    <VBox fx:id="teacherContainer" spacing="5" visible="false">
-                        <Label fx:id="studentListDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
-                        <ScrollPane fx:id="studentListContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
-                            <VBox fx:id="studentListContainer" spacing="5"/>
-                        </ScrollPane>
-                    </VBox>
+                    <HBox fx:id="teacherContainer" spacing="25" visible="false">
+
+                        <!-- Student list column -->
+                        <VBox spacing="5">
+                            <Label fx:id="studentListDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                            <ScrollPane fx:id="studentListContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                                <VBox fx:id="studentListContainer" spacing="5"/>
+                            </ScrollPane>
+                        </VBox>
+
+                        <HBox spacing="-3">
+                            <!-- Student data column -->
+                            <VBox fx:id="studentInfoContainer" spacing="5" visible="false">
+                                <Label fx:id="studentKeyLogsDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                                <ScrollPane fx:id="studentKeyLogsContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                                    <VBox fx:id="studentKeyLogsContainer" spacing="5"/>
+                                </ScrollPane>
+                            </VBox>
+
+                            <!-- Key logs column -->
+                            <VBox fx:id="keyLogContainer" spacing="5" visible="false">
+                                <HBox alignment="CENTER_RIGHT" prefWidth="600">
+                                    <Label fx:id="keyLogDescriptor" style="-fx-padding: 0px 3px 0px 0px;"/>
+                                </HBox>
+                                <ScrollPane fx:id="logContainerScrollPane" prefHeight="1600" fitToHeight="true" prefWidth="600" maxWidth="600">
+                                    <VBox fx:id="logContainer" spacing="5"/>
+                                </ScrollPane>
+                            </VBox>
+
+                        </HBox>
+
+                    </HBox>
 
                     <!-- Student-specific container -->
                     <VBox fx:id="studentContainer" spacing="10" visible="false">

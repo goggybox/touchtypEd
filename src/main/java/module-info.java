@@ -1,6 +1,8 @@
 module com.example.touchtyped {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.swing;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
     requires com.fazecast.jSerialComm;
@@ -11,6 +13,7 @@ module com.example.touchtyped {
     requires com.google.auth.oauth2;
     requires com.google.api.apicommon;
     requires java.sql;
+    requires org.apache.pdfbox;
 
     opens com.example.touchtyped to javafx.fxml;
     exports com.example.touchtyped.app;

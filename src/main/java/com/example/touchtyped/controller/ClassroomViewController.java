@@ -4,6 +4,7 @@ import com.example.touchtyped.firestore.Classroom;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
+import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.TypingPlan;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -14,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -28,6 +31,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +48,16 @@ public class ClassroomViewController {
     private ScrollPane studentListContainerScrollPane;
 
     @FXML
+    private ScrollPane studentKeyLogsContainerScrollPane;
+
+    @FXML
+    private ScrollPane logContainerScrollPane;
+
+    @FXML
     private VBox studentTeacherContainer;
+
+    @FXML
+    private VBox studentKeyLogsContainer;
 
     @FXML
     private VBox teacherSelectionForm;
@@ -57,19 +72,28 @@ public class ClassroomViewController {
     private VBox joinForm;
 
     @FXML
+    private VBox studentInfoContainer;
+
+    @FXML
     private VBox createForm;
 
     @FXML
     private VBox loadingContainer;
 
     @FXML
-    private VBox teacherContainer;
+    private HBox teacherContainer;
 
     @FXML
     private VBox studentContainer;
 
     @FXML
     private VBox studentListContainer;
+
+    @FXML
+    private VBox keyLogContainer;
+
+    @FXML
+    private VBox logContainer;
 
     @FXML
     private ImageView gamesButton;
@@ -82,6 +106,9 @@ public class ClassroomViewController {
 
     @FXML
     private Label studentListDescriptor;
+
+    @FXML
+    private Label studentKeyLogsDescriptor;
 
     @FXML
     private Label teacherSelectionFormDescription;
@@ -97,6 +124,9 @@ public class ClassroomViewController {
 
     @FXML
     private Label loginFormDescription;
+
+    @FXML
+    private Label keyLogDescriptor;
 
     @FXML
     private TextField classroomIDField;
@@ -125,6 +155,7 @@ public class ClassroomViewController {
     private final Font secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
 
     private Label selectedStudentLabel = null;
+    private Label selectedKeyLogLabel = null;
 
     /**
      * if the user has logged in before, and there account information is stored in the cache, load this information
@@ -225,9 +256,17 @@ public class ClassroomViewController {
                             if (selectedStudentLabel != null) {
                                 selectedStudentLabel.getStyleClass().remove("student-selected");
                             }
+                            if (selectedKeyLogLabel != null) {
+                                selectedKeyLogLabel.getStyleClass().remove("log-selected");
+                            }
+
                             // Set new selection
                             studentLabel.getStyleClass().add("student-selected");
                             selectedStudentLabel = studentLabel;
+
+                            // load student's keyLogsStructures
+                            loadStudentKeyLogs(classroom.getClassroomID(), student);
+
                         });
 
                         studentListContainer.getChildren().add(studentLabel);
@@ -237,6 +276,65 @@ public class ClassroomViewController {
             }
         };
         new Thread(task).start();
+    }
+
+    private void loadStudentKeyLogs(String classroomID, String username) {
+        studentInfoContainer.setVisible(true);
+        studentKeyLogsContainer.getChildren().clear();
+        studentKeyLogsDescriptor.setText("User's Key Logs (LOADING...)");
+        Task<Void> task = new Task<>() {
+            protected Void call() {
+                Platform.runLater(() -> {
+                    try {
+                        UserAccount user = UserDAO.getAccount(classroomID, username);
+                        List<KeyLogsStructure> logs = user.getKeyLogs();
+                        if (logs != null && logs.size() > 0) {
+                            for (KeyLogsStructure log : logs) {
+                                long time = log.getTimeCreated();
+                                String formattedTime = Instant.ofEpochMilli(time)
+                                        .atZone(ZoneId.systemDefault())
+                                        .format(DateTimeFormatter.ofPattern("dd/MM '('EEE')' 'at' HH:mm"));
+                                Label logLabel = new Label(formattedTime);
+                                logLabel.setFont(secondary_font);
+                                logLabel.getStyleClass().add("log");
+                                logLabel.setPrefWidth((logs.size() > 10) ? 225 : 242);
+
+                                logLabel.setOnMouseClicked(e -> {
+                                    // clear previous selection
+                                    if (selectedKeyLogLabel != null) {
+                                        selectedKeyLogLabel.getStyleClass().remove("log-selected");
+                                    }
+
+                                    logLabel.getStyleClass().add("log-selected");
+                                    selectedKeyLogLabel = logLabel;
+
+                                    // load selected key log
+                                    loadKeyLog(log, username);
+                                });
+
+                                studentKeyLogsContainer.getChildren().add(logLabel);
+                            }
+                        }
+
+                        studentKeyLogsDescriptor.setText("User's Key Logs");
+                    } catch (Exception e) {
+                        System.out.println("DATABASE FAILURE. Failed to load student's key logs.");
+                    }
+                });
+                return null;
+            }
+        };
+        new Thread(task).start();
+    }
+
+    private void loadKeyLog(KeyLogsStructure log, String username) {
+        keyLogContainer.setVisible(true);
+        long time = log.getTimeCreated();
+        String formattedTime = Instant.ofEpochMilli(time)
+                .atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("dd/MM '('EEE')' 'at' HH:mm"));
+        keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
+        keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
     }
 
     /**
@@ -260,6 +358,8 @@ public class ClassroomViewController {
         joinForm.setVisible(false);
         createForm.setVisible(false);
         loginForm.setVisible(false);
+        studentInfoContainer.setVisible(false);
+        keyLogContainer.setVisible(false);
     }
 
     /**

@@ -44,29 +44,30 @@
     -fx-padding: 0px 0px 20px 0px;
 }
 
-#studentListDescriptor {
+#studentListDescriptor, #studentKeyLogsDescriptor, #keyLogDescriptor {
     -fx-font-size: 16px;
 }
 
-#studentListContainerScrollPane {
+#studentListContainerScrollPane, #studentKeyLogsContainerScrollPane, #logContainerScrollPane {
     -fx-background-color: rgba(255,0,0,0);
-    -fx-border-color: rgba(38, 63, 104, 0.2);
+    -fx-border-color: rgb(127, 138, 156);
     -fx-border-width: 3px;
 }
 
-.student {
+
+.student, .log {
     -fx-padding: 5px 10px 5px 10px;
     -fx-font-size: 16px;
 }
 
-.student:hover {
+.student:hover, .log:hover {
     -fx-background-color: rgb(191, 191, 191);
 }
 
-.student-selected {
+.student-selected, .log-selected {
     -fx-background-color: rgba(245, 16, 47, 0.5);
 }
 
-.student-selected:hover {
+.student-selected:hover, .log-selected:hover {
     -fx-background-color: rgba(245, 16, 47, 0.5);
 }
