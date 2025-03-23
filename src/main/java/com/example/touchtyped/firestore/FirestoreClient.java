@@ -7,6 +7,9 @@ import com.google.cloud.firestore.FirestoreOptions;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * a class that gets interfaces with the database.
+ */
 public class FirestoreClient {
 
     private static Firestore db;

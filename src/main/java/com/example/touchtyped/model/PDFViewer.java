@@ -23,6 +23,7 @@ public class PDFViewer extends VBox {
 
                 int xMargin = 40;
                 int yMargin = 30;
+                // crop margins and title from PDF
                 BufferedImage croppedImage = pageImage.getSubimage(
                         xMargin,
                         yMargin*3,

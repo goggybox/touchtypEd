@@ -3,6 +3,10 @@ package com.example.touchtyped.model;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * keeps a cache of PDFs fetched from the REST service so that they can be fetched from here instead.
+ * the cache is of a fixed size, of 50. when full, the eldest entry is replaced with a new entry.
+ */
 public class PDFCache {
     private final int maxSize;
     private final LinkedHashMap<String, byte[]> cache;
@@ -31,6 +35,7 @@ public class PDFCache {
         cache.clear();
     }
 
+    // singleton instance
     private static final PDFCache instance = new PDFCache(50);
 
     public static PDFCache getInstance() {

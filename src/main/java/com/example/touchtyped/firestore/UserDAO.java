@@ -199,6 +199,9 @@ public final class UserDAO {
     }
 
 
+    /**
+     * adds a typing test result to the user's records.
+     */
     public static void addKeyLog(String classroomID, String username, KeyLogsStructure keyLogs, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();

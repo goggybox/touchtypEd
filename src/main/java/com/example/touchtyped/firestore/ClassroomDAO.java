@@ -91,6 +91,11 @@ public class ClassroomDAO {
 
     }
 
+    /**
+     * fetch a classroom from the database given an ID.
+     * @param classroomID is the classroom ID to search for.
+     * @return the specified Classroom, or null if it doesn't exist.
+     */
     public static Classroom getClassroom(String classroomID) {
         try {
             Firestore db = FirestoreClient.getFirestore();
@@ -121,6 +126,13 @@ public class ClassroomDAO {
         }
     }
 
+    /**
+     * add a student's username to a Classroom's list of students in the database. this does not create a new student
+     * account, so this assumes a student with this username + classroomID combination already exists in the database.
+     * @param classroomID is the classroomID to add the student to.
+     * @param username is the student's username.
+     * @return whether or not the operation was successful.
+     */
     public static boolean addStudentToClassroom(String classroomID, String username) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
@@ -135,6 +147,12 @@ public class ClassroomDAO {
         }
     }
 
+    /**
+     * check whether a student is in a classroom, by checking for their username in the list of students.
+     * @param classroomID is the classroom to check.
+     * @param username is the student's username.
+     * @return whether or not the student exists in the classroom, or null if the operation failed.
+     */
     public static Boolean usernameExistsInClassroom(String classroomID, String username) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
@@ -156,10 +174,20 @@ public class ClassroomDAO {
         }
     }
 
+    /**
+     * does the same as the following saveUserCache function, but making the password argument optional.
+     */
     public static boolean saveUserCache(String classroomID, String username) {
         return saveUserCache(classroomID, username, null);
     }
 
+    /**
+     * save the user's account information to be loaded next time the application starts.
+     * @param classroomID is the classroomID to store.
+     * @param username is the user's username to store.
+     * @param password (OPTIONAL) is the user's password to store.
+     * @return whether or not the operation was successful.
+     */
     public static boolean saveUserCache(String classroomID, String username, String password) {
         try {
             List<String> lines = new ArrayList<>();
@@ -179,6 +207,10 @@ public class ClassroomDAO {
         }
     }
 
+    /**
+     * load the user's information from cache.
+     * @return a Map of the information (with field "classroomID", "username", and (optionally) "password").
+     */
     public static Map<String, String> loadUserCache() {
         Path cachePath = Paths.get(CACHE_FILE);
         if (!Files.exists(cachePath)) {

@@ -219,6 +219,12 @@ public class ClassroomViewController {
         new Thread(initialisation).start();
     }
 
+    /**
+     * this function runs when the user has logged in previously, and their account information has been cached.
+     * this function will display a simple message to student users, but will display complex information to a teacher
+     * about all of their students and the students' typing tests results.
+     * @param userAccount is the user's account loaded from the cache.
+     */
     public void displayUserAccount(UserAccount userAccount) {
         hideAllForms();
         teacherContainer.setVisible(false);
@@ -240,6 +246,10 @@ public class ClassroomViewController {
         }
     }
 
+    /**
+     * this function displays to a teacher the list of students that are in their classroom.
+     * @param classroom is the classroom to load the students from.
+     */
     private void populateStudentList(Classroom classroom) {
         studentListContainer.getChildren().clear();
         Task<Void> task = new Task<>() {
@@ -284,6 +294,12 @@ public class ClassroomViewController {
         new Thread(task).start();
     }
 
+    /**
+     * this function loads a student's typing test results. this function is called when a teacher selects a student from
+     * the student list.
+     * @param classroomID is the classroomID to search for the student's account in.
+     * @param username is the student's username
+     */
     private void loadStudentKeyLogs(String classroomID, String username) {
         studentInfoContainer.setVisible(true);
         studentKeyLogsContainer.getChildren().clear();
@@ -335,6 +351,14 @@ public class ClassroomViewController {
         new Thread(task).start();
     }
 
+    /**
+     * this function loads the PDF results for a specific typing test. this is called when the teacher has already selected
+     * a student and then selects one of the student's typing tests to view.
+     * if a pdf is fetched from the REST service, it is cached temporarily so the teacher can view it again without a new
+     * call to the REST service.
+     * @param log is the specific typing test being reviewed.
+     * @param username is the student's username
+     */
     private void loadKeyLog(KeyLogsStructure log, String username) {
         keyLogContainer.setVisible(true);
         long time = log.getTimeCreated();
@@ -363,7 +387,7 @@ public class ClassroomViewController {
             ObjectMapper objectMapper = new ObjectMapper();
             System.out.println(objectMapper.writeValueAsString(log));
         } catch (IOException e) {
-            System.out.println("kys");
+            System.out.println("oh dear");
         }
 
         // call REST service to get PDF
@@ -410,6 +434,10 @@ public class ClassroomViewController {
 
     }
 
+    /**
+     * this function displays a loaded PDF in the VBox using PDFViewer, which uses the PDFBox library.
+     * @param pdfData is the pdf to display.
+     */
     private void displayPDF(byte[] pdfData) {
 
         Task<Void> pdfTask = new Task<>() {
