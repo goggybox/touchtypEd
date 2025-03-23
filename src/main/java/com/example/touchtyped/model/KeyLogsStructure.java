@@ -39,6 +39,10 @@ public class KeyLogsStructure {
     private int errors = 0;
     private long timeCreated = System.currentTimeMillis();
 
+    private int wpm;
+    private int correctKeystrokes;
+    private int incorrectKeystrokes;
+
     public KeyLogsStructure() { }
 
     /**
@@ -169,6 +173,30 @@ public class KeyLogsStructure {
 
     public long getTimeCreated() {
         return timeCreated;
+    }
+
+    public void setWpm(int wpm) {
+        this.wpm = wpm;
+    }
+
+    public int getWpm() {
+        return wpm;
+    }
+
+    public void setCorrectKeystrokes(int correctKeystrokes) {
+        this.correctKeystrokes = correctKeystrokes;
+    }
+
+    public int getCorrectKeystrokes() {
+        return correctKeystrokes;
+    }
+
+    public void setIncorrectKeystrokes(int incorrectKeystrokes) {
+        this.incorrectKeystrokes = incorrectKeystrokes;
+    }
+
+    public int getIncorrectKeystrokes() {
+        return incorrectKeystrokes;
     }
 
 }

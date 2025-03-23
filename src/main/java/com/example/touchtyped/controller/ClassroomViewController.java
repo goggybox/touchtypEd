@@ -371,7 +371,7 @@ public class ClassroomViewController {
         String cacheKey = username + time;
         byte[] cachedPDF = PDFCache.getInstance().getPDF(cacheKey);
         if (cachedPDF != null) {
-            displayPDF(cachedPDF);
+            displayPDF(cachedPDF, log);
             System.out.println("Loaded PDF from cache instead of fetching from REST service.");
             keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
             keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
@@ -409,7 +409,7 @@ public class ClassroomViewController {
                     // add the PDF to the pdf cache
                     PDFCache.getInstance().putPDF(cacheKey, response.getPdfData());
                     System.out.println("Added PDF to PDF cache.");
-                    displayPDF(response.getPdfData());
+                    displayPDF(response.getPdfData(), log);
 
                 }
 
@@ -438,7 +438,7 @@ public class ClassroomViewController {
      * this function displays a loaded PDF in the VBox using PDFViewer, which uses the PDFBox library.
      * @param pdfData is the pdf to display.
      */
-    private void displayPDF(byte[] pdfData) {
+    private void displayPDF(byte[] pdfData, KeyLogsStructure log) {
 
         Task<Void> pdfTask = new Task<>() {
             @Override
@@ -446,6 +446,22 @@ public class ClassroomViewController {
                 Platform.runLater(() -> {
                     logContainer.getChildren().clear();
                     PDFViewer pdfViewer = new PDFViewer(pdfData);
+                    // load simple statistics
+                    Label simpleDescriptor = new Label("Here is a simple analysis of the typing tests");
+                    simpleDescriptor.getStyleClass().add("stats-descriptor");
+                    Label wpmLabel = new Label("Words per Minute (wpm): " + log.getWpm());
+                    Label keyStrokes = new Label("Correct/Incorrect Keystrokes: " + log.getCorrectKeystrokes() + "/" + log.getIncorrectKeystrokes());
+                    Label totalKeyStrokes = new Label("Total Keystrokes: " + (log.getCorrectKeystrokes() + log.getIncorrectKeystrokes()));
+                    wpmLabel.getStyleClass().add("simple-stats");
+                    keyStrokes.getStyleClass().add("simple-stats");
+                    totalKeyStrokes.getStyleClass().add("simple-stats");
+                    Label advancedDescriptor = new Label("Here is an advanced analysis of the typing test:");
+                    advancedDescriptor.getStyleClass().add("stats-descriptor");
+                    logContainer.getChildren().add(simpleDescriptor);
+                    logContainer.getChildren().add(wpmLabel);
+                    logContainer.getChildren().add(keyStrokes);
+                    logContainer.getChildren().add(totalKeyStrokes);
+                    logContainer.getChildren().add(advancedDescriptor);
                     logContainer.getChildren().add(pdfViewer);
                 });
                 return null;

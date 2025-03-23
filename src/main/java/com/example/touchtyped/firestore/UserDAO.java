@@ -42,8 +42,6 @@ public final class UserDAO {
      * @param typingPlan is the user's personalised TypingPlan.
      * @param password is the user's password (only teachers will have passwords, for others this will be null).
      * @return the String user's ID, or null if unsuccessful.
-     * @throws InterruptedException idk database stuff
-     * @throws ExecutionException lol same
      */
     public static String createUser(String classroomID, String userID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
         try {

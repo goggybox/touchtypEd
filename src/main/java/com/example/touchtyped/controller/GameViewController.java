@@ -549,6 +549,11 @@ public class GameViewController {
                 resultController.setGameData((int)finalWpm, correctKeystrokes, wrongKeystrokes, totalKeystrokes);
                 resultController.setKeyLogsStructure(keyLogsStructure);
 
+                // add simple statistics to structure
+                keyLogsStructure.setWpm((int) finalWpm);
+                keyLogsStructure.setCorrectKeystrokes(correctKeystrokes);
+                keyLogsStructure.setIncorrectKeystrokes(wrongKeystrokes);
+
                 // save keyLogsStructure to database
                 Map<String, String> userDetails = ClassroomDAO.loadUserCache();
                 if (userDetails != null) {
