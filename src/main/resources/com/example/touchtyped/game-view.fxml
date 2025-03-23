@@ -29,7 +29,7 @@
                         <!-- Learn Button -->
                         <ImageView fx:id="learnButton"
                                    fitHeight="69.0" fitWidth="175.0"
-                                   layoutX="933.0" layoutY="26.0"
+                                   layoutX="844.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true"
                                    onMouseClicked="#onLearnButtonClick"
@@ -40,11 +40,21 @@
                         <!-- Games Button (Current) -->
                         <ImageView fx:id="gamesButton"
                                    fitHeight="69.0" fitWidth="71.0"
-                                   layoutX="1022.0" layoutY="26.0"
+                                   layoutX="933.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true"
                                    style="-fx-cursor: hand;">
                             <Image url="@images/nav-bar/gamesSelected.png" />
+                        </ImageView>
+
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onClassroomButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/classroom.png" />
                         </ImageView>
 
                         <!-- Options Button -->

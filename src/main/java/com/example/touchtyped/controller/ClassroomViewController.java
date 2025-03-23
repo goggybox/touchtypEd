@@ -90,6 +90,12 @@ public class ClassroomViewController {
     private HBox teacherContainer;
 
     @FXML
+    private HBox typingTestsContainer;
+
+    @FXML
+    private HBox selectorContainer;
+
+    @FXML
     private VBox studentContainer;
 
     @FXML
@@ -97,6 +103,12 @@ public class ClassroomViewController {
 
     @FXML
     private VBox keyLogContainer;
+
+    @FXML
+    private VBox studentAccountContainer;
+
+    @FXML
+    private VBox studentList;
 
     @FXML
     private VBox logContainer;
@@ -386,14 +398,14 @@ public class ClassroomViewController {
             displayPDF(cachedPDF, log);
             System.out.println("Loaded PDF from cache instead of fetching from REST service.");
             keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
-            keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+            keyLogDescriptor.setAlignment(Pos.CENTER);
             return;
         }
 
 
         // show loading message
         keyLogDescriptor.setText("Loading results of typing test...");
-        keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+        keyLogDescriptor.setAlignment(Pos.CENTER);
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -487,6 +499,7 @@ public class ClassroomViewController {
                     logContainer.getChildren().add(totalKeyStrokes);
                     logContainer.getChildren().add(advancedDescriptor);
                     logContainer.getChildren().add(pdfViewer);
+                    System.out.println(selectorContainer.getHeight());
                 });
                 return null;
             }

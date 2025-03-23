@@ -48,10 +48,39 @@
     -fx-font-size: 16px;
 }
 
-#studentListContainerScrollPane, #studentKeyLogsContainerScrollPane, #logContainerScrollPane {
+#typingTestsContainer, #studentList {
     -fx-background-color: rgba(255,0,0,0);
     -fx-border-color: rgb(127, 138, 156);
     -fx-border-width: 3px;
+}
+
+#studentKeyLogsContainerScrollPane {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-border-width: 3px 0px 0px 0px;
+}
+
+#logContainerScrollPane, #logContainer {
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+
+#studentInfoContainer {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-border-width: 0px 3px 0px 0px;
+}
+
+#studentListContainerScrollPane {
+    -fx-border-width: 3px 0px 0px 0px;
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+}
+
+#typingTestsContainer {
 }
 
 #logContainer, #logContainerScrollPane {
@@ -85,4 +114,14 @@
 .stats-descriptor {
     -fx-font-size: 16px;
     -fx-padding: 5px 0px 0px 5px;
+}
+
+#studentAccountContainer {
+    -fx-pref-width: 859px;
+}
+
+#selectorContainer {
+    -fx-border-color: orange;
+    -fx-border-width: 3px;
+    -fx-padding: 30px;
 }

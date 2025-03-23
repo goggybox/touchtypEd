@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -26,6 +27,7 @@ public class GameResultViewController {
 
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
+    @FXML private ImageView classroomButton;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
 
@@ -54,6 +56,18 @@ public class GameResultViewController {
             Scene optionScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
             stage.setScene(optionScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -62,6 +63,8 @@ public class GameViewController {
     @FXML private TextFlow rightTextFlow;
     @FXML private Text leftCursor;
     @FXML private Text rightCursor;
+
+    @FXML private ImageView classroomButton;
 
     // ========== 核心字段 ==========`
     private Timeline timeline;
@@ -889,6 +892,18 @@ public class GameViewController {
             Stage stage=(Stage)taskLabel.getScene().getWindow();
             stage.setScene(scene);
         }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

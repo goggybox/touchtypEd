@@ -37,33 +37,38 @@
                     <HBox fx:id="teacherContainer" spacing="25" visible="false">
 
                         <!-- Student list column -->
-                        <VBox spacing="5">
+                        <VBox fx:id="studentList" spacing="5">
                             <Label fx:id="studentListDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
                             <ScrollPane fx:id="studentListContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
                                 <VBox fx:id="studentListContainer" spacing="5"/>
                             </ScrollPane>
                         </VBox>
 
-                        <HBox spacing="-3">
-                            <!-- Student data column -->
-                            <VBox fx:id="studentInfoContainer" spacing="5" visible="false">
-                                <Label fx:id="studentKeyLogsDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
-                                <ScrollPane fx:id="studentKeyLogsContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
-                                    <VBox fx:id="studentKeyLogsContainer" spacing="5"/>
-                                </ScrollPane>
-                            </VBox>
+                        <VBox fx:id="studentAccountContainer">
+                            <HBox fx:id="selectorContainer">
+                                <Label text="Account Information"/>
+                            </HBox>
+                            <HBox fx:id="typingTestsContainer" spacing="0">
+                                <!-- Student data column -->
+                                <VBox fx:id="studentInfoContainer" spacing="5" visible="false">
+                                    <Label fx:id="studentKeyLogsDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                                    <ScrollPane fx:id="studentKeyLogsContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                                        <VBox fx:id="studentKeyLogsContainer" spacing="5"/>
+                                    </ScrollPane>
+                                </VBox>
 
-                            <!-- Key logs column -->
-                            <VBox fx:id="keyLogContainer" spacing="5" visible="false">
-                                <HBox alignment="CENTER_RIGHT" prefWidth="600">
-                                    <Label fx:id="keyLogDescriptor" style="-fx-padding: 0px 3px 0px 0px;"/>
-                                </HBox>
-                                <ScrollPane fx:id="logContainerScrollPane" prefHeight="1600" fitToHeight="true" prefWidth="600" maxWidth="600">
-                                    <VBox fx:id="logContainer" spacing="5"/>
-                                </ScrollPane>
-                            </VBox>
+                                <!-- Key logs column -->
+                                <VBox fx:id="keyLogContainer" spacing="5" visible="false">
+                                    <HBox fx:id="keyLogDescriptorContainer" alignment="CENTER" prefWidth="600">
+                                        <Label fx:id="keyLogDescriptor" style="-fx-padding: 0px 8px 0px 8px;"/>
+                                    </HBox>
+                                    <ScrollPane fx:id="logContainerScrollPane" prefHeight="1600" fitToHeight="true" prefWidth="600" maxWidth="600">
+                                        <VBox fx:id="logContainer" spacing="5"/>
+                                    </ScrollPane>
+                                </VBox>
 
-                        </HBox>
+                            </HBox>
+                        </VBox>
 
                     </HBox>
 
@@ -169,7 +174,7 @@
                                    layoutX="1022.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true">
-                            <Image url="@images/nav-bar/gamesSelected.png" />
+                            <Image url="@images/nav-bar/classroomSelected.png" />
                         </ImageView>
                         <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                             <Image url="@images/nav-bar/options.png" />
