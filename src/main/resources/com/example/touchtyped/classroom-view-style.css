@@ -75,3 +75,14 @@
 .student-selected:hover, .log-selected:hover {
     -fx-background-color: rgba(245, 16, 47, 0.5);
 }
+
+.simple-stats {
+    -fx-font-size: 14px;
+    -fx-padding: -5px 0px 0px 12px;
+    -fx-text-fill: #424242;
+}
+
+.stats-descriptor {
+    -fx-font-size: 16px;
+    -fx-padding: 5px 0px 0px 5px;
+}

@@ -471,7 +471,7 @@ public class ClassroomViewController {
                     logContainer.getChildren().clear();
                     PDFViewer pdfViewer = new PDFViewer(pdfData);
                     // load simple statistics
-                    Label simpleDescriptor = new Label("Here is a simple analysis of the typing tests");
+                    Label simpleDescriptor = new Label("Here is a simple analysis of the typing test:");
                     simpleDescriptor.getStyleClass().add("stats-descriptor");
                     Label wpmLabel = new Label("Words per Minute (wpm): " + log.getWpm());
                     Label keyStrokes = new Label("Correct/Incorrect Keystrokes: " + log.getCorrectKeystrokes() + "/" + log.getIncorrectKeystrokes());
