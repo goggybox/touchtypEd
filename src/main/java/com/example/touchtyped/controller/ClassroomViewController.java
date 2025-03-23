@@ -5,6 +5,7 @@ import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PDFCache;
 import com.example.touchtyped.model.PDFViewer;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.service.RESTClient;
@@ -286,6 +287,8 @@ public class ClassroomViewController {
     private void loadStudentKeyLogs(String classroomID, String username) {
         studentInfoContainer.setVisible(true);
         studentKeyLogsContainer.getChildren().clear();
+        logContainer.getChildren().clear();
+        keyLogDescriptor.setText("");
         studentKeyLogsDescriptor.setText("User's Typing Tests (LOADING...)");
         Task<Void> task = new Task<>() {
             protected Void call() {
@@ -340,6 +343,18 @@ public class ClassroomViewController {
                 .atZone(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofPattern("dd/MM '('EEE')' 'at' HH:mm"));
 
+        // CHECK CACHE FIRST
+        String cacheKey = username + time;
+        byte[] cachedPDF = PDFCache.getInstance().getPDF(cacheKey);
+        if (cachedPDF != null) {
+            displayPDF(cachedPDF);
+            System.out.println("Loaded PDF from cache instead of fetching from REST service.");
+            keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
+            keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+            return;
+        }
+
+
         // show loading message
         keyLogDescriptor.setText("Loading results of typing test...");
         keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
@@ -366,12 +381,17 @@ public class ClassroomViewController {
 
                 // handle PDF
                 if (response.getPdfData() != null) {
-                    System.out.println("Decoded PDF size: " + response.getPdfData().length + " bytes");
+                    System.out.println("Successfully fetched PDF from REST service.");
+                    // add the PDF to the pdf cache
+                    PDFCache.getInstance().putPDF(cacheKey, response.getPdfData());
+                    System.out.println("Added PDF to PDF cache.");
                     displayPDF(response.getPdfData());
+
                 }
 
                 keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
                 keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
+
 
             } catch (Exception e) {
                 e.printStackTrace();
