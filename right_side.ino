@@ -1,7 +1,8 @@
 #include <Keyboard.h>
+#include <Wire.h>
 
 const int numRows = 5;
-const int numCols = 7;
+const int numCols = 8;
 
 struct Key {
   char normal;
@@ -10,21 +11,19 @@ struct Key {
 
 // Define row and column pins
 const int rowPins[numRows] = {4, 3, 2, 1, 0};  
-const int colPins[numCols] = {5, 6, 7, 8, 9, 10, 11};  
+const int colPins[numCols] = {5, 6, 7, 8, 9, 10, 11, 12};
 
 // Key mapping
 Key keyMap[numRows][numCols] = {
-    {{'\0', 0}, {'\0', 0}, {'1', 0}, {'2', 0}, {'3', 0}, {'4', 0}, {'5', 0}},
-    {{'\0', KEY_TAB}, {'\0', 0}, {'q', 0}, {'w', 0}, {'e', 0}, {'r', 0}, {'t', 0}},
-    {{'\0', KEY_CAPS_LOCK}, {'\0', 0}, {'a', 0}, {'s', 0}, {'d', 0}, {'f', 0}, {'g', 0}},
-    {{'\0', KEY_LEFT_SHIFT}, {'\'', 0}, {'z', 0}, {'x', 0}, {'c', 0}, {'v', 0}, {'b', 0}},
-    {{'\0', KEY_LEFT_CTRL}, {'\0', KEY_LEFT_GUI}, {'\0', KEY_LEFT_ALT}, {'\0', 0}, {'\0', 0}, {' ', 0}, {'\0', 0}}
+    {{'6', 0}, {'7', 0}, {'8', 0}, {'9', 0}, {'0', 0}, {'-', 0}, {'=', 0}, {'\0', KEY_BACKSPACE}},
+    {{'y', 0}, {'u', 0}, {'i', 0}, {'o', 0}, {'p', 0}, {'[', 0}, {']', 0}, {'\0', KEY_RETURN}},
+    {{'h', 0}, {'j', 0}, {'k', 0}, {'l', 0}, {';', 0}, {'\'', 0}, {'#', 0}, {'\0', 0}},
+    {{'b', 0}, {'m', 0}, {',', 0}, {'.', 0}, {'/', 0}, {'v', 0}, {'\0', KEY_RIGHT_SHIFT}, {'\0', 0}},
+    {{' ', 0}, {'\0', 0}, {'\0', 0}, {'\0', KEY_RIGHT_ALT}, {'\0', KEY_RIGHT_GUI}, {'\0', 0}, {'\0', PLACEHOLDER}, {'\0', KEY_RIGHT_CTRL}}
 };
 
 Key last_press = {'\0', 0};  
 bool isShiftPressed = false;
-bool isCtrlPressed = false;
-bool isAltPressed = false;
 bool anyKeyPressed = false; 
 
 bool isSameKey(Key k1, Key k2) {
@@ -33,6 +32,7 @@ bool isSameKey(Key k1, Key k2) {
 
 void setup() {
   Keyboard.begin();
+  Wire.begin();
 
   // Set row pins as OUTPUT and initialize HIGH
   for (int row = 0; row < numRows; row++) {
@@ -57,9 +57,9 @@ void loop() {
         anyKeyPressed = true;  // At least one key is pressed
 
         if (!isSameKey(last_press, keyMap[row][col])) { // Avoid repeat presses
-          if (keyMap[row][col].special == KEY_LEFT_SHIFT) {
+          if (keyMap[row][col].special == KEY_RIGHT_SHIFT) {
             isShiftPressed = true;
-            Keyboard.press(KEY_LEFT_SHIFT);  // Physically press Shift
+            Keyboard.press(KEY_RIGHT_SHIFT);  // Physically press Shift
           } else if (keyMap[row][col].normal != '\0') {
             if (isShiftPressed) {
               Keyboard.write(toupper(keyMap[row][col].normal)); // Send uppercase version
@@ -83,7 +83,7 @@ void loop() {
 
   if (!anyKeyPressed) {
     if (isShiftPressed) {
-      Keyboard.release(KEY_LEFT_SHIFT);
+      Keyboard.release(KEY_RIGHT_SHIFT);
       isShiftPressed = false;
     }
     Keyboard.releaseAll();
