@@ -164,6 +164,11 @@ public class ClassroomViewController {
     private Label selectedKeyLogLabel = null;
 
     /**
+     * used to check if a PDF still needs to be displayed, or the user has clicked on a different keylog.
+     */
+    private Task<RESTResponseWrapper> currentPDFTask = null;
+
+    /**
      * if the user has logged in before, and there account information is stored in the cache, load this information
      * otherwise, display "Student" or "Teacher" buttons to allow them to join or create a class.
      */
@@ -324,6 +329,13 @@ public class ClassroomViewController {
                                 logLabel.setPrefWidth((logs.size() > 10) ? 225 : 242);
 
                                 logLabel.setOnMouseClicked(e -> {
+
+                                    // cancel previous task
+                                    if (currentPDFTask != null && !currentPDFTask.isDone()) {
+                                        currentPDFTask.cancel();
+                                        System.out.println("Canceled previous PDF task.");
+                                    }
+
                                     // clear previous selection
                                     if (selectedKeyLogLabel != null) {
                                         selectedKeyLogLabel.getStyleClass().remove("log-selected");
@@ -394,42 +406,54 @@ public class ClassroomViewController {
         Task<RESTResponseWrapper> restTask = new Task<>() {
             @Override
             protected RESTResponseWrapper call() throws Exception {
+
+                // check for cancellation
+                if (isCancelled()) { return null; }
+
                 RESTClient restService = new RESTClient();
-                return restService.getPDF(log, () ->
-                        keyLogDescriptor.setText("Failed to load. Trying again... (Please be patient!)"));
+                return restService.getPDF(log, () -> {
+                    if (!isCancelled()) {
+                        Platform.runLater(() ->
+                                keyLogDescriptor.setText("Failed to load. Trying again... (Please be patient!)"));
+                    }
+                });
             }
         };
         restTask.setOnSucceeded(event -> {
             try {
-                RESTResponseWrapper response = restTask.getValue();
+                if (restTask == currentPDFTask) {
+                    RESTResponseWrapper response = restTask.getValue();
 
-                // handle PDF
-                if (response.getPdfData() != null) {
-                    System.out.println("Successfully fetched PDF from REST service.");
-                    // add the PDF to the pdf cache
-                    PDFCache.getInstance().putPDF(cacheKey, response.getPdfData());
-                    System.out.println("Added PDF to PDF cache.");
-                    displayPDF(response.getPdfData(), log);
+                    // handle PDF
+                    if (response.getPdfData() != null) {
+                        System.out.println("Successfully fetched PDF from REST service.");
+                        // add the PDF to the pdf cache
+                        PDFCache.getInstance().putPDF(cacheKey, response.getPdfData());
+                        System.out.println("Added PDF to PDF cache.");
+                        displayPDF(response.getPdfData(), log);
 
+                    }
+
+                    keyLogDescriptor.setText("Results of " + username + "'s typing test on " + formattedTime + ".");
+                    keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
                 }
-
-                keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
-                keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
-
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         restTask.setOnFailed(event -> {
-            Throwable exception = restTask.getException();
-            System.err.println("An error occurred while communicating with the REST service.");
-            exception.printStackTrace();
+            if (restTask == currentPDFTask) {
+                Throwable exception = restTask.getException();
+                System.err.println("An error occurred while communicating with the REST service.");
+                exception.printStackTrace();
 
-            // notify the user.
-            keyLogDescriptor.setText("Failed to load analytics. Please try again later.");
+                // notify the user.
+                keyLogDescriptor.setText("Failed to load analytics. Please try again later.");
+            }
         });
 
+        currentPDFTask = restTask;
         new Thread(restTask).start();
 
     }
