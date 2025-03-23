@@ -45,10 +45,25 @@
                         </VBox>
 
                         <VBox fx:id="studentAccountContainer">
-                            <HBox fx:id="selectorContainer">
-                                <Label text="Account Information"/>
+                            <HBox fx:id="selectorContainer" visible="false" spacing="20">
+                                <ImageView fx:id="accountButton" onMouseClicked="#onAccountButtonClick"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <Image url="@images/classroom-content/accountSelected.png"/>
+                                </ImageView>
+                                <ImageView fx:id="statsButton" onMouseClicked="#onStatsButtonClick"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <Image url="@images/classroom-content/stats.png"/>
+                                </ImageView>
+
                             </HBox>
-                            <HBox fx:id="typingTestsContainer" spacing="0">
+
+                            <HBox fx:id="accountContainer" visible="false" prefHeight="1600">
+
+                            </HBox>
+
+                            <HBox fx:id="typingTestsContainer" spacing="0" visible="false">
                                 <!-- Student data column -->
                                 <VBox fx:id="studentInfoContainer" spacing="5" visible="false">
                                     <Label fx:id="studentKeyLogsDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>

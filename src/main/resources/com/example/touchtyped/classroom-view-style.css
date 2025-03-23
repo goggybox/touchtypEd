@@ -48,10 +48,15 @@
     -fx-font-size: 16px;
 }
 
-#typingTestsContainer, #studentList {
+#typingTestsContainer, #studentList, #accountContainer {
     -fx-background-color: rgba(255,0,0,0);
     -fx-border-color: rgb(127, 138, 156);
     -fx-border-width: 3px;
+}
+
+#accountContainer {
+    -fx-padding:50px;
+    -fx-pref-width:853px;
 }
 
 #studentKeyLogsContainerScrollPane {
@@ -116,12 +121,6 @@
     -fx-padding: 5px 0px 0px 5px;
 }
 
-#studentAccountContainer {
-    -fx-pref-width: 859px;
-}
-
 #selectorContainer {
-    -fx-border-color: orange;
-    -fx-border-width: 3px;
-    -fx-padding: 30px;
+    -fx-padding: 0px 0px 7px 10px;
 }

@@ -19,13 +19,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -96,6 +94,9 @@ public class ClassroomViewController {
     private HBox selectorContainer;
 
     @FXML
+    private HBox accountContainer;
+
+    @FXML
     private VBox studentContainer;
 
     @FXML
@@ -118,6 +119,12 @@ public class ClassroomViewController {
 
     @FXML
     private ImageView learnButton;
+
+    @FXML
+    private ImageView accountButton;
+
+    @FXML
+    private ImageView statsButton;
 
     @FXML
     private Label joinFormDescription;
@@ -175,6 +182,12 @@ public class ClassroomViewController {
     private Label selectedStudentLabel = null;
     private Label selectedKeyLogLabel = null;
 
+    private boolean isAccountSelected = true;
+    private boolean isStatsSelected = false;
+
+    private String ourClassroomID;
+    private String selectedStudentUsername;
+
     /**
      * used to check if a PDF still needs to be displayed, or the user has clicked on a different keylog.
      */
@@ -188,7 +201,6 @@ public class ClassroomViewController {
         hideAllForms();
         loadingContainer.setVisible(true);
 
-
         Task<Void> initialisation = new Task<>() {
             @Override
             protected Void call() {
@@ -197,6 +209,7 @@ public class ClassroomViewController {
                     if (localDataExists()) {
                         Map<String, String> userDetails = ClassroomDAO.loadUserCache();
                         String classroomID = userDetails.get("classroomID");
+                        ourClassroomID = classroomID;
                         String username = userDetails.get("username");
                         if (userDetails.containsKey("password")) {
                             String password = userDetails.get("password");
@@ -296,9 +309,20 @@ public class ClassroomViewController {
                             // Set new selection
                             studentLabel.getStyleClass().add("student-selected");
                             selectedStudentLabel = studentLabel;
+                            selectedStudentUsername = student;
 
-                            // load student's keyLogsStructures
-                            loadStudentKeyLogs(classroom.getClassroomID(), student);
+                            // load student's keyLogsStructures IF we have selected Stats
+                            if (isStatsSelected) {
+                                System.out.println("Loading user's key logs");
+                                loadStudentKeyLogs(classroom.getClassroomID(), student);
+                            }
+                            else {
+                                System.out.println("Loading user's account.");
+                                loadAccount(classroom.getClassroomID(), student);
+                            }
+
+                            // set selectorContainer to be visible
+                            selectorContainer.setVisible(true);
 
                         });
 
@@ -311,6 +335,13 @@ public class ClassroomViewController {
         new Thread(task).start();
     }
 
+    private void loadAccount(String classroomID, String student) {
+        typingTestsContainer.setVisible(false);
+        typingTestsContainer.setManaged(false);
+        accountContainer.setVisible(true);
+        accountContainer.setManaged(true);
+    }
+
     /**
      * this function loads a student's typing test results. this function is called when a teacher selects a student from
      * the student list.
@@ -318,7 +349,11 @@ public class ClassroomViewController {
      * @param username is the student's username
      */
     private void loadStudentKeyLogs(String classroomID, String username) {
+        accountContainer.setVisible(false);
+        accountContainer.setManaged(false);
         studentInfoContainer.setVisible(true);
+        typingTestsContainer.setVisible(true);
+        typingTestsContainer.setManaged(true);
         studentKeyLogsContainer.getChildren().clear();
         logContainer.getChildren().clear();
         keyLogDescriptor.setText("");
@@ -499,7 +534,6 @@ public class ClassroomViewController {
                     logContainer.getChildren().add(totalKeyStrokes);
                     logContainer.getChildren().add(advancedDescriptor);
                     logContainer.getChildren().add(pdfViewer);
-                    System.out.println(selectorContainer.getHeight());
                 });
                 return null;
             }
@@ -763,6 +797,33 @@ public class ClassroomViewController {
 
     }
 
+    @FXML
+    public void onAccountButtonClick() {
+        System.out.println("ACCOUNT BUTTON CLICKED");
+        if (!isAccountSelected) {
+            isStatsSelected = false;
+            isAccountSelected = true;
+            accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png").toExternalForm()));
+            statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png").toExternalForm()));
+            System.out.println("'"+selectedStudentUsername+"' account selected for classroom "+ourClassroomID);
+            loadAccount(ourClassroomID, selectedStudentUsername);
+        }
+
+    }
+
+    @FXML
+    public void onStatsButtonClick() {
+        System.out.println("STATS BUTTON CLICKED");
+        if (!isStatsSelected) {
+            isStatsSelected = true;
+            isAccountSelected = false;
+            System.out.println(getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png"));
+            accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png").toExternalForm()));
+            statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/statsSelected.png").toExternalForm()));
+            System.out.println("'"+selectedStudentUsername+"' stats selected for classroom "+ourClassroomID);
+            loadStudentKeyLogs(ourClassroomID, selectedStudentUsername);
+        }
+    }
 
     @FXML
     public void onLearnButtonClick(){
