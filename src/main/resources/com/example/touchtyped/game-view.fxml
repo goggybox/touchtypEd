@@ -103,10 +103,6 @@
                             onAction="#onCompetitionHelpButtonClick"
                             style="-fx-font-size: 14; -fx-cursor: hand;" />
 
-                    <Button fx:id="onlineMatchButton"
-                            text="Online Match"
-                            style="-fx-cursor: hand;" />
-
                     <!-- Time left -->
                     <HBox alignment="CENTER" spacing="30">
                         <Label fx:id="compTimerLabel"

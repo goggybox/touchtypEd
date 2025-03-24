@@ -848,7 +848,17 @@ public class GameViewController {
             wordStartIndex = currentCharIndex;
         }
 
-        if (isTimeMode() && currentSentence.length() - currentCharIndex < 30) {
+        // 如果是文章模式且已经完成了所有文本，结束游戏
+        if (isArticleMode() && currentCharIndex >= currentSentence.length()) {
+            // 短暂延迟后结束游戏，让用户看到最后一个字符
+            Platform.runLater(() -> {
+                // 更新一次UI确保显示最后一个字符
+                updateAllUI();
+                // 0.5秒延迟后结束游戏
+                Timeline delayedEnd = new Timeline(new KeyFrame(Duration.millis(500), e -> endGame()));
+                delayedEnd.play();
+            });
+        } else if (isTimeMode() && currentSentence.length() - currentCharIndex < 30) {
             addNewWord();
         }
 
@@ -968,7 +978,15 @@ public class GameViewController {
         if(!gameStarted||gameStartTime==0) return;
         long now=System.currentTimeMillis();
         double elapsedSec=(now-gameStartTime)/1000.0;
-        if(elapsedSec<=0) return;
+        
+        // 确保至少经过1秒钟才开始计算WPM，避免刚开始时数值异常大
+        if(elapsedSec < 1.0) {
+            wpmLabel.setText("WPM: 0.0");
+            int total = correctKeystrokes+wrongKeystrokes;
+            double acc = (total>0) ? (correctKeystrokes*100.0/total) : 0.0;
+            accuracyLabel.setText(String.format("Accuracy: %.1f%%", acc));
+            return;
+        }
 
         double elapsedMin=elapsedSec/60.0;
         double wpm=(correctKeystrokes/5.0)/elapsedMin;
@@ -1426,7 +1444,7 @@ public class GameViewController {
     }
 
     /**
-     * 显示下一步引导
+     * next step
      */
     private void showNextTutorialStep() {
         String tutorialText;
@@ -1484,7 +1502,7 @@ public class GameViewController {
                         "Click it anytime you need help!";
                 nextTitle = "Information Button";
 
-                // 显示完成按钮
+                //
                 nextButton.setVisible(false);
                 finishButton.setVisible(true);
             }
@@ -1494,11 +1512,9 @@ public class GameViewController {
             }
         }
 
-        // 找到引导对话框中的步骤指示器和标题标签
         Label stepIndicator = (Label) ((HBox) ((VBox) tutorialLabel.getParent()).getChildren().get(0)).getChildren().get(0);
         Label stepTitle = (Label) ((HBox) ((VBox) tutorialLabel.getParent()).getChildren().get(0)).getChildren().get(1);
 
-        // 更新步骤指示器和标题
         stepIndicator.setText(String.valueOf(tutorialStep + 1));
         stepTitle.setText(nextTitle);
 
@@ -1506,36 +1522,26 @@ public class GameViewController {
         tutorialStep++;
     }
 
-    /**
-     * 结束引导
-     */
-    private void endTutorial() {
-        // 标记用户已完成教程
-        UserProfile.getInstance().setCompletedTutorial(true);
 
-        // 立即关闭对话框，不使用动画
+    private void endTutorial() {
+        UserProfile.getInstance().setCompletedTutorial(true);
         if (tutorialDialog != null) {
             tutorialDialog.close();
             tutorialDialog = null;
         }
     }
 
-    /**
-     * 为对话框添加入场动画
-     */
+
     private void animateDialogEntry(Node hintNode, VBox tutorialContent, HBox buttonBox) {
-        // 标题淡入动画
         FadeTransition hintFade = new FadeTransition(Duration.millis(300), hintNode);
         hintFade.setFromValue(0);
         hintFade.setToValue(1);
 
-        // 文本内容淡入动画
         FadeTransition textFade = new FadeTransition(Duration.millis(500), tutorialLabel);
         textFade.setFromValue(0);
         textFade.setToValue(1);
         textFade.setDelay(Duration.millis(300));
 
-        // 内容向上移动并淡入动画
         tutorialContent.setTranslateY(20);
         FadeTransition contentFade = new FadeTransition(Duration.millis(500), tutorialContent);
         contentFade.setFromValue(0);
@@ -1547,18 +1553,15 @@ public class GameViewController {
         contentSlide.setToY(0);
         contentSlide.setDelay(Duration.millis(200));
 
-        // 按钮淡入动画
         FadeTransition buttonFade = new FadeTransition(Duration.millis(300), buttonBox);
         buttonFade.setFromValue(0);
         buttonFade.setToValue(1);
         buttonFade.setDelay(Duration.millis(400));
 
-        // 把所有动画放在一起
         ParallelTransition parallelTransition = new ParallelTransition(
                 hintFade, contentFade, contentSlide, buttonFade, textFade
         );
 
-        // 动画完成后，显示第一步教程
         parallelTransition.setOnFinished(e -> {
             showNextTutorialStep();
             nextButton.setDisable(false);
