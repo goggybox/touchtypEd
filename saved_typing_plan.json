@@ -10,23 +10,19 @@
       "levels" : [ {
         "taskString" : "fj",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ffffjjjj",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ffjfjjfj",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
       "locked" : false,
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "fj",
-        "displayText" : null,
-        "completed" : false
-      }
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
       "name" : "D & K Keys",
       "focus" : "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
@@ -35,27 +31,23 @@
       "levels" : [ {
         "taskString" : "dk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ddddkkkk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ddkdkdkdkkdk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "dkdkddkdkdkdkkkdkdkkkdkdk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "locked" : true,
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "dk",
-        "displayText" : null,
-        "completed" : false
-      }
+      "locked" : false,
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
       "name" : "S & L Keys",
       "focus" : "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
@@ -64,23 +56,23 @@
       "levels" : [ {
         "taskString" : "sl",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "ssssllll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
         "completed" : false
       } ],
-      "locked" : true,
-      "completion" : 0.0,
+      "locked" : false,
       "nextUncompletedLevel" : {
-        "taskString" : "sl",
+        "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
         "completed" : false
-      }
+      },
+      "completion" : 0.6666666666666666
     }, {
       "name" : "A & ; Keys",
       "focus" : "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
@@ -99,13 +91,13 @@
         "displayText" : null,
         "completed" : false
       } ],
-      "locked" : true,
-      "completion" : 0.0,
+      "locked" : false,
       "nextUncompletedLevel" : {
         "taskString" : "a;",
         "displayText" : null,
         "completed" : false
-      }
+      },
+      "completion" : 0.0
     }, {
       "name" : "G & H Keys",
       "focus" : "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
@@ -125,12 +117,12 @@
         "completed" : false
       } ],
       "locked" : true,
-      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
-      }
+      },
+      "completion" : 0.0
     }, {
       "name" : "Home Row",
       "focus" : "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
@@ -150,12 +142,12 @@
         "completed" : false
       } ],
       "locked" : true,
-      "completion" : 0.0,
       "nextUncompletedLevel" : {
         "taskString" : "asdfghjkl;",
         "displayText" : null,
         "completed" : false
-      }
+      },
+      "completion" : 0.0
     } ],
     "phase" : "Phase 1: Foundation"
   } ]

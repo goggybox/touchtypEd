@@ -1,6 +1,7 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.model.PlayerRanking;
+import com.example.touchtyped.service.AppSettingsService;
 import com.example.touchtyped.service.GlobalRankingService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class RankingViewController {
     @FXML private TableColumn<PlayerRanking, Double> accuracyColumn;
     @FXML private TableColumn<PlayerRanking, String> gameModeColumn;
     @FXML private TableColumn<PlayerRanking, LocalDateTime> dateColumn;
+    @FXML private BorderPane rootPane;
     
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     
@@ -37,6 +40,21 @@ public class RankingViewController {
      */
     @FXML
     public void initialize() {
+        // Apply theme settings to the scene when it becomes available
+        rankingTable.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                AppSettingsService.getInstance().applySettingsToScene(newValue);
+                
+                // Apply theme to table explicitly
+                String mode = AppSettingsService.getInstance().getDisplayMode();
+                if (AppSettingsService.NIGHT_MODE.equals(mode)) {
+                    rankingTable.getStyleClass().add("dark-mode-table");
+                } else if (AppSettingsService.COLORBLIND_MODE.equals(mode)) {
+                    rankingTable.getStyleClass().add("colorblind-mode-table");
+                }
+            }
+        });
+        
         // Set up the table columns
         rankColumn.setCellFactory(column -> new TableCell<>() {
             @Override
@@ -121,6 +139,10 @@ public class RankingViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) rankingTable.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +158,10 @@ public class RankingViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene gameScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) rankingTable.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(gameScene);
+            
             stage.setScene(gameScene);
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,7 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="700.0" maxWidth="1200.0" 
+<BorderPane fx:id="rootPane" maxHeight="700.0" maxWidth="1200.0" 
             minHeight="700.0" minWidth="1200.0" 
             prefHeight="700.0" prefWidth="1200.0" 
             stylesheets="@game-view-style.css"

@@ -6,6 +6,7 @@ import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
 import com.example.touchtyped.model.UserProfile;
+import com.example.touchtyped.service.AppSettingsService;
 import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 
 import java.awt.*;
 import java.io.File;
@@ -31,6 +33,7 @@ public class GameResultViewController {
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
     @FXML private Button viewRankingsButton;
+    @FXML private BorderPane rootPane;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
     private int wpm;
@@ -47,6 +50,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,6 +69,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/option-view.fxml"));
             Scene optionScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(optionScene);
+            
             stage.setScene(optionScene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,6 +88,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene gameScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(gameScene);
+            
             stage.setScene(gameScene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -92,6 +107,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
             Scene rankingScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(rankingScene);
+            
             stage.setScene(rankingScene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -278,5 +297,33 @@ public class GameResultViewController {
         } catch (IOException e) {
             System.err.println("An error occurred while displaying PDF.");
         }
+    }
+
+    @FXML
+    public void initialize() {
+        // Apply saved theme settings to the scene
+        finalWpmLabel.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                AppSettingsService.getInstance().applySettingsToScene(newValue);
+            }
+        });
+        
+        // Add direct application of theme to rootPane when it becomes available
+        rootPane.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String mode = AppSettingsService.getInstance().getDisplayMode();
+                switch (mode) {
+                    case AppSettingsService.NIGHT_MODE:
+                        rootPane.getStyleClass().add("dark-mode");
+                        break;
+                    case AppSettingsService.COLORBLIND_MODE:
+                        rootPane.getStyleClass().add("colorblind-mode");
+                        break;
+                    default:
+                        // Day mode (default) - no special class needed
+                        break;
+                }
+            }
+        });
     }
 } 
