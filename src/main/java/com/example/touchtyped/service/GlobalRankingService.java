@@ -18,7 +18,8 @@ import java.util.concurrent.Executors;
  * 全球排名服务，用于与排名服务器通信
  */
 public class GlobalRankingService {
-    private static final String SERVER_IP = "10.124.113.224";
+    // 请替换为您的全球排名服务器IP地址或域名
+    private static final String SERVER_IP = "192.168.1.105";
 
     private static final int SERVER_PORT = 8080;
 
@@ -142,23 +143,36 @@ public class GlobalRankingService {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 URL url = new URL(SERVER_URL + "/position/" + playerName);
+                System.out.println("Attempting to connect to: " + url);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(10000);
                 connection.setReadTimeout(10000);
                 
                 int statusCode = connection.getResponseCode();
+                System.out.println("Server response code: " + statusCode);
                 
                 if (statusCode == 200) {
                     try (Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8")) {
                         String responseBody = scanner.useDelimiter("\\A").next();
+                        System.out.println("Server response body: " + responseBody);
                         return Integer.parseInt(responseBody);
                     }
                 } else {
                     System.err.println("获取玩家位置失败，状态码: " + statusCode);
+                    // Try to read the error response
+                    try (Scanner scanner = new Scanner(connection.getErrorStream(), "UTF-8")) {
+                        if (scanner.hasNext()) {
+                            String errorBody = scanner.useDelimiter("\\A").next();
+                            System.err.println("服务器错误信息: " + errorBody);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("无法读取错误信息: " + e.getMessage());
+                    }
                 }
             } catch (Exception e) {
                 System.err.println("获取玩家位置时出错: " + e.getMessage());
+                e.printStackTrace();
             }
             
             return -1;

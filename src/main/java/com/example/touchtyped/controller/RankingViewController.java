@@ -1,7 +1,7 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.model.PlayerRanking;
-import com.example.touchtyped.service.RankingService;
+import com.example.touchtyped.service.GlobalRankingService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -89,11 +89,27 @@ public class RankingViewController {
      * Load the rankings from the service
      */
     private void loadRankings() {
-        RankingService rankingService = RankingService.getInstance();
-        List<PlayerRanking> rankings = rankingService.getRankings();
+        // 显示加载提示
+        ObservableList<PlayerRanking> emptyList = FXCollections.observableArrayList();
+        PlayerRanking loadingIndicator = new PlayerRanking("正在加载全球排名...", 0, 0, "");
+        emptyList.add(loadingIndicator);
+        rankingTable.setItems(emptyList);
         
-        ObservableList<PlayerRanking> observableRankings = FXCollections.observableArrayList(rankings);
-        rankingTable.setItems(observableRankings);
+        // 从全球服务器获取排名
+        GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
+        globalRankingService.getGlobalRankings().thenAccept(rankings -> {
+            javafx.application.Platform.runLater(() -> {
+                if (rankings != null && !rankings.isEmpty()) {
+                    ObservableList<PlayerRanking> observableRankings = FXCollections.observableArrayList(rankings);
+                    rankingTable.setItems(observableRankings);
+                } else {
+                    ObservableList<PlayerRanking> noDataList = FXCollections.observableArrayList();
+                    PlayerRanking noData = new PlayerRanking("无法获取全球排名数据", 0, 0, "");
+                    noDataList.add(noData);
+                    rankingTable.setItems(noDataList);
+                }
+            });
+        });
     }
     
     /**

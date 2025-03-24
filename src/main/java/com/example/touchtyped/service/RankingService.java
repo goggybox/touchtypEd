@@ -26,6 +26,9 @@ public class RankingService {
         for (PlayerRanking ranking : rankings) {
             rankingMap.put(ranking.getPlayerName(), ranking);
         }
+        
+        // 清空所有本地排名，因为我们现在只使用全球排名
+        clearRankings();
     }
     
     /**

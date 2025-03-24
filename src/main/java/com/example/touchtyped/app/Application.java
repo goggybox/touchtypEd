@@ -141,19 +141,7 @@ public class Application extends javafx.application.Application {
      */
     public static void submitGameRanking(PlayerRanking ranking) {
         try {
-            // 首先保存到本地排名
-            RankingService localRankingService = RankingService.getInstance();
-            boolean addedLocally = localRankingService.addRanking(ranking);
-            
-            if (addedLocally) {
-                System.out.println("排名已添加到本地: " + ranking.getPlayerName() + 
-                                  " - WPM: " + ranking.getWpm() + 
-                                  " - 准确率: " + ranking.getAccuracy() + "%");
-            } else {
-                System.out.println("本地已有更好的排名，未更新");
-            }
-            
-            // 然后提交到全球排名服务器
+            // 直接提交到全球排名服务器
             GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
             CompletableFuture<Boolean> future = globalRankingService.submitRanking(ranking);
             

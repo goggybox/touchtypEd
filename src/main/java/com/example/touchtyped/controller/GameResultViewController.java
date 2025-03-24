@@ -140,26 +140,41 @@ public class GameResultViewController {
                 globalRankLabel.setText("正在提交到全球排名服务器...");
             }
 
-            // 提交排名
-            Application.submitGameRanking(currentRanking);
-
-            // 异步获取并显示全球排名位置
-            GlobalRankingService.getInstance().getPlayerPosition(playerName)
-                    .thenAccept(position -> {
-                        if (position > 0) {
-                            javafx.application.Platform.runLater(() -> {
-                                if (globalRankLabel != null) {
-                                    globalRankLabel.setText("全球排名: 第 " + position + " 名");
+            // 测试服务器连接
+            GlobalRankingService.getInstance().testConnection()
+                .thenAccept(connected -> {
+                    if (connected) {
+                        System.out.println("成功连接到全球排名服务器");
+                        
+                        // 提交排名到全球服务器
+                        Application.submitGameRanking(currentRanking);
+                        
+                        // 获取玩家排名
+                        GlobalRankingService.getInstance().getPlayerPosition(playerName)
+                            .thenAccept(position -> {
+                                if (position > 0) {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("全球排名: 第 " + position + " 名");
+                                        }
+                                    });
+                                } else {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("无法获取全球排名位置信息");
+                                        }
+                                    });
                                 }
                             });
-                        } else {
-                            javafx.application.Platform.runLater(() -> {
-                                if (globalRankLabel != null) {
-                                    globalRankLabel.setText("无法获取全球排名");
-                                }
-                            });
-                        }
-                    });
+                    } else {
+                        System.out.println("无法连接到全球排名服务器");
+                        javafx.application.Platform.runLater(() -> {
+                            if (globalRankLabel != null) {
+                                globalRankLabel.setText("无法连接到全球排名服务器");
+                            }
+                        });
+                    }
+                });
 
         } catch (Exception e) {
             System.err.println("提交排名时出错: " + e.getMessage());
