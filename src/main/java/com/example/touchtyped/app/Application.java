@@ -8,6 +8,7 @@ import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
 import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.UserProfile;
+import com.example.touchtyped.service.AppSettingsService;
 import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RankingService;
 import javafx.fxml.FXMLLoader;
@@ -46,6 +47,11 @@ public class Application extends javafx.application.Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/example/touchtyped/learn-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
+        
+        // Apply settings to scene
+        AppSettingsService settingsService = AppSettingsService.getInstance();
+        settingsService.applySettingsToScene(scene);
+        System.out.println("Applied settings to initial scene");
 
         // set properties of stage
         stage.setMinWidth(1200);

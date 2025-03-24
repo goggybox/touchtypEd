@@ -1,0 +1,162 @@
+{
+  "phases" : [ {
+    "duration" : "Week 1-2",
+    "goal" : "Build muscle memory and accuracy.",
+    "modules" : [ {
+      "name" : "F & J Keys",
+      "focus" : "Without looking at the keyboard, rest your index fingers on the F and J key. You will be able to find them by feeling for the bump on the keys!",
+      "displayText" : "",
+      "id" : 1,
+      "levels" : [ {
+        "taskString" : "fj",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ffffjjjj",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ffjfjjfj",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : false,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "fj",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "D & K Keys",
+      "focus" : "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
+      "displayText" : "",
+      "id" : 2,
+      "levels" : [ {
+        "taskString" : "dk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ddddkkkk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ddkdkdkdkkdk",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "dkdkddkdkdkdkkkdkdkkkdkdk",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : true,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "dk",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "S & L Keys",
+      "focus" : "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
+      "displayText" : "",
+      "id" : 3,
+      "levels" : [ {
+        "taskString" : "sl",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ssssllll",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "slslslslllslllsssslslssllsll",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : true,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "sl",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "A & ; Keys",
+      "focus" : "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
+      "displayText" : "",
+      "id" : 4,
+      "levels" : [ {
+        "taskString" : "a;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "aaaa;;;;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "aa;a;a;;;;a;;;aaaaa;a;;;a;a;",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : true,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "a;",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "G & H Keys",
+      "focus" : "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
+      "displayText" : "",
+      "id" : 5,
+      "levels" : [ {
+        "taskString" : "gh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "gggghhhh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ghghghghghhghhghhhghhghg",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : true,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "gh",
+        "displayText" : null,
+        "completed" : false
+      }
+    }, {
+      "name" : "Home Row",
+      "focus" : "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
+      "displayText" : "",
+      "id" : 5,
+      "levels" : [ {
+        "taskString" : "asdfghjkl;",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "alslsakdf;jlksjflask",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "sad lad had salad",
+        "displayText" : null,
+        "completed" : false
+      } ],
+      "locked" : true,
+      "completion" : 0.0,
+      "nextUncompletedLevel" : {
+        "taskString" : "asdfghjkl;",
+        "displayText" : null,
+        "completed" : false
+      }
+    } ],
+    "phase" : "Phase 1: Foundation"
+  } ]
+}
