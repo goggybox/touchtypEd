@@ -10,8 +10,10 @@
       <!-- ScrollPane to allow vertical scrolling -->
       <ScrollPane fitToWidth="true">
          <VBox spacing="0">
-            <HBox fx:id="typingPlanToggleContainer" spacing="5">
-               <Button fx:id="typingPlanToggleButton" onAction="#toggleTypingPlan"/>
+            <HBox fx:id="typingPlanToggleContainer" spacing="5" onMouseClicked="#toggleTypingPlan">
+               <ImageView fx:id="typingPlanToggleButton">
+                  <Image url="@images/learn-content/tick.png"/>
+               </ImageView>
                <Label fx:id="typingPlanToggleLabel" text="Displaying personalised typing plan."/>
             </HBox>
             <VBox fx:id="vbox" alignment="TOP_CENTER">

@@ -15,6 +15,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -60,6 +61,8 @@ public class LearnViewController {
     private VBox vbox;
 
     @FXML private HBox typingPlanToggleContainer;
+
+    @FXML private ImageView typingPlanToggleButton;
 
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
 
@@ -142,9 +145,11 @@ public class LearnViewController {
         if (TypingPlanManager.getInstance().isDisplayingPersonalisedPlan()) {
             // we are now displaying the personalised plan.
             typingPlanToggleLabel.setText("Displaying personalised typing plan.");
+            typingPlanToggleButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/learn-content/tick.png").toExternalForm()));
         } else {
             // we are now displaying the default plan.
             typingPlanToggleLabel.setText("Displaying default typing plan.");
+            typingPlanToggleButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/learn-content/cross.png").toExternalForm()));
         }
     }
 
