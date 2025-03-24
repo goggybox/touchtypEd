@@ -653,8 +653,12 @@ public class GameViewController {
 
     @FXML
     public void handleKeyPress(String key){
+        // Add debugging info
+        System.out.println("Received key: " + key);
         
+        // Handle special keys with direct mapping
         if(SPECIAL_KEY_TO_CHAR.containsKey(key)){
+            System.out.println("Converting special key: " + key + " to: " + SPECIAL_KEY_TO_CHAR.get(key));
             key = SPECIAL_KEY_TO_CHAR.get(key);
         }
         if(inputField.isDisabled()) return;
@@ -702,7 +706,8 @@ public class GameViewController {
         // 3. Common logic for all modes
 
         // Only process visible characters and backspace
-        if(!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?!@#$%^&*()\\[\\]{}\\-_=+<>/\\\\|° ]")){
+        if(!key.equals("BACK_SPACE") && !key.matches("[a-zA-Z0-9,\\.;:'\"?!@#$%^&*()\\[\\]{}\\-_=+<>/\\\\|°` ]")){
+            System.out.println("Ignored key: " + key); // Add logging for debugging
             return;
         }
         if(keyLogsStructure!=null){
