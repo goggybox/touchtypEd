@@ -50,7 +50,7 @@
     -fx-border-radius: 4;
 }
 
-/* 信息按钮样式 */
+/* Info button styles */
 .info-button {
     -fx-background-color: #263F68;
     -fx-text-fill: white;
@@ -73,7 +73,7 @@
     -fx-scale-y: 1.1;
 }
 
-/* 信息弹窗样式 */
+/* Info popup styles */
 .info-dialog {
     -fx-background-color: white;
     -fx-padding: 20;
@@ -414,7 +414,7 @@
     -fx-background-color: #263F68;
 }
 
-/* 教程对话框样式 */
+/* Tutorial dialog styles */
 .tutorial-dialog {
     -fx-background-color: white;
     -fx-padding: 0;

@@ -80,7 +80,7 @@
             <version>[2.0.0,3.0.0)</version>
         </dependency>
         
-        <!-- Spring Boot 依赖 -->
+        <!-- Spring Boot dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -103,7 +103,7 @@
             <version>${spring.boot.version}</version>
         </dependency>
         
-        <!-- JSON处理 -->
+        <!-- JSON processing -->
         <dependency>
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
@@ -115,7 +115,7 @@
             <version>1.19</version>
         </dependency>
         
-        <!-- H2 数据库 -->
+        <!-- H2 database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

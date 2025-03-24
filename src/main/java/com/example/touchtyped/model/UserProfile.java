@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 /**
- * 用户配置文件，存储用户信息
+ * User profile, stores user information
  */
 public class UserProfile implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,14 +16,14 @@ public class UserProfile implements Serializable {
     private String playerName;
     private Boolean completedTutorial = false;
 
-    // 私有构造函数，防止外部实例化
+    // Private constructor to prevent external instantiation
     private UserProfile() {
         playerName = "";
     }
     
     /**
-     * 获取单例实例
-     * @return UserProfile实例
+     * Get singleton instance
+     * @return UserProfile instance
      */
     public static synchronized UserProfile getInstance() {
         if (instance == null) {
@@ -33,8 +33,8 @@ public class UserProfile implements Serializable {
     }
     
     /**
-     * 加载用户配置
-     * @return 加载的UserProfile实例，如果加载失败则返回新实例
+     * Load user configuration
+     * @return Loaded UserProfile instance, if loading fails return new instance
      */
     private static UserProfile loadProfile() {
         File profileFile = new File(PROFILE_FILE);
@@ -44,50 +44,50 @@ public class UserProfile implements Serializable {
             if (obj instanceof UserProfile) {
                 return (UserProfile) obj;
             } else {
-                System.err.println("文件格式不正确，包含非UserProfile对象: " + obj.getClass().getName());
-                // 删除损坏的文件
+                System.err.println("File format is incorrect, contains non-UserProfile object: " + obj.getClass().getName());
+                // Delete damaged file
                 if (profileFile.exists()) {
                     profileFile.delete();
-                    System.out.println("已删除损坏的配置文件");
+                    System.out.println("Damaged configuration file deleted");
                 }
                 return new UserProfile();
             }
         } catch (FileNotFoundException e) {
-            System.out.println("用户配置文件不存在，创建新配置");
+            System.out.println("User configuration file does not exist, creating new configuration");
             return new UserProfile();
         } catch (IOException | ClassNotFoundException | ClassCastException e) {
-            System.err.println("加载用户配置时出错: " + e.getMessage());
-            // 删除损坏的文件
+            System.err.println("Error loading user configuration: " + e.getMessage());
+            // Delete damaged file
             if (profileFile.exists()) {
                 profileFile.delete();
-                System.out.println("已删除损坏的配置文件");
+                System.out.println("Damaged configuration file deleted");
             }
             return new UserProfile();
         }
     }
 
     /**
-     * 保存用户配置
+     * Save user configuration
      */
     public void saveProfile() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PROFILE_FILE))) {
             oos.writeObject(this);
         } catch (IOException e) {
-            System.err.println("保存用户配置时出错: " + e.getMessage());
+            System.err.println("Error saving user configuration: " + e.getMessage());
         }
     }
 
     /**
-     * 获取玩家名称
-     * @return 玩家名称
+     * Get player name
+     * @return Player name
      */
     public String getPlayerName() {
         return playerName;
     }
     
     /**
-     * 设置玩家名称
-     * @param playerName 玩家名称
+     * Set player name
+     * @param playerName Player name
      */
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
@@ -95,24 +95,24 @@ public class UserProfile implements Serializable {
     }
     
     /**
-     * 检查是否已有玩家名称
-     * @return true如果已有玩家名称，false否则
+     * Check if there is already a player name
+     * @return true if there is already a player name, false otherwise
      */
     public boolean hasPlayerName() {
         return playerName != null && !playerName.trim().isEmpty();
     }
 
     /**
-     * 获取教程完成状态
-     * @return 教程是否已完成
+     * Get tutorial completion status
+     * @return Whether the tutorial is completed
      */
     public Boolean getCompletedTutorial() {
         return completedTutorial;
     }
 
     /**
-     * 设置教程完成状态
-     * @param completedTutorial 教程完成状态
+     * Set tutorial completion status
+     * @param completedTutorial Tutorial completion status
      */
     public void setCompletedTutorial(Boolean completedTutorial) {
         this.completedTutorial = completedTutorial;
@@ -120,8 +120,8 @@ public class UserProfile implements Serializable {
     }
 
     /**
-     * 检查是否是首次使用（有用户名但未完成教程）
-     * @return true如果是首次使用，false否则
+     * Check if it's the first time using (has a username but hasn't completed the tutorial)
+     * @return true if it's the first time using, false otherwise
      */
     public boolean isFirstTimeUser() {
         return playerName != null && !playerName.isEmpty() && !Boolean.TRUE.equals(completedTutorial);

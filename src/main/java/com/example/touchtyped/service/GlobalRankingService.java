@@ -15,10 +15,10 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 
 /**
- * 全球排名服务，用于与排名服务器通信
+ * Global ranking service for communicating with the ranking server
  */
 public class GlobalRankingService {
-    // 请替换为您的全球排名服务器IP地址或域名
+    // Please replace with your global ranking server IP address or domain name
     private static final String SERVER_IP = "192.168.1.105";
 
     private static final int SERVER_PORT = 8080;
@@ -43,8 +43,8 @@ public class GlobalRankingService {
     }
     
     /**
-     * 测试服务器连接
-     * @return 异步结果，true表示连接成功，false表示连接失败
+     * Test server connection
+     * @return Async result, true if connected successfully, false otherwise
      */
     public CompletableFuture<Boolean> testConnection() {
         return CompletableFuture.supplyAsync(() -> {
@@ -52,22 +52,22 @@ public class GlobalRankingService {
                 URL url = new URL(SERVER_URL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
-                connection.setConnectTimeout(5000); // 5秒连接超时
-                connection.setReadTimeout(5000);    // 5秒读取超时
+                connection.setConnectTimeout(5000); // 5 seconds connection timeout
+                connection.setReadTimeout(5000);    // 5 seconds read timeout
                 
                 int statusCode = connection.getResponseCode();
                 return statusCode >= 200 && statusCode < 300;
             } catch (Exception e) {
-                System.err.println("测试服务器连接时出错: " + e.getMessage());
+                System.err.println("Error testing server connection: " + e.getMessage());
                 return false;
             }
         }, Executors.newCachedThreadPool());
     }
     
     /**
-     * 提交排名到服务器
-     * @param ranking 要提交的排名
-     * @return 异步结果，true表示成功，false表示失败
+     * Submit ranking to server
+     * @param ranking Ranking to submit
+     * @return Async result, true if successful, false otherwise
      */
     public CompletableFuture<Boolean> submitRanking(PlayerRanking ranking) {
         return CompletableFuture.supplyAsync(() -> {
@@ -79,8 +79,8 @@ public class GlobalRankingService {
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
                 connection.setDoOutput(true);
-                connection.setConnectTimeout(10000); // 10秒连接超时
-                connection.setReadTimeout(10000);    // 10秒读取超时
+                connection.setConnectTimeout(10000); // 10 seconds connection timeout
+                connection.setReadTimeout(10000);    // 10 seconds read timeout
                 
                 try (OutputStream os = connection.getOutputStream()) {
                     byte[] input = jsonRanking.getBytes("utf-8");
@@ -90,22 +90,22 @@ public class GlobalRankingService {
                 int statusCode = connection.getResponseCode();
                 
                 if (statusCode >= 200 && statusCode < 300) {
-                    System.out.println("成功提交排名到服务器");
+                    System.out.println("Successfully submitted ranking to server");
                     return true;
                 } else {
-                    System.err.println("提交排名到服务器失败，状态码: " + statusCode);
+                    System.err.println("Failed to submit ranking to server, status code: " + statusCode);
                     return false;
                 }
             } catch (Exception e) {
-                System.err.println("提交排名时出错: " + e.getMessage());
+                System.err.println("Error submitting ranking: " + e.getMessage());
                 return false;
             }
         }, Executors.newCachedThreadPool());
     }
     
     /**
-     * 获取全球排名列表
-     * @return 排名列表
+     * Get global rankings list
+     * @return Rankings list
      */
     public CompletableFuture<List<PlayerRanking>> getGlobalRankings() {
         return CompletableFuture.supplyAsync(() -> {
@@ -124,10 +124,10 @@ public class GlobalRankingService {
                         return objectMapper.readValue(responseBody, new TypeReference<List<PlayerRanking>>() {});
                     }
                 } else {
-                    System.err.println("获取全球排名失败，状态码: " + statusCode);
+                    System.err.println("Failed to get global rankings, status code: " + statusCode);
                 }
             } catch (Exception e) {
-                System.err.println("获取全球排名时出错: " + e.getMessage());
+                System.err.println("Error getting global rankings: " + e.getMessage());
             }
             
             return new ArrayList<>();
@@ -135,9 +135,9 @@ public class GlobalRankingService {
     }
     
     /**
-     * 获取玩家在全球排名中的位置
-     * @param playerName 玩家名称
-     * @return 玩家位置（从1开始），如果不存在则返回-1
+     * Get player's position in global rankings
+     * @param playerName Player name
+     * @return Player position (starting from 1), returns -1 if not found
      */
     public CompletableFuture<Integer> getPlayerPosition(String playerName) {
         return CompletableFuture.supplyAsync(() -> {
@@ -159,19 +159,19 @@ public class GlobalRankingService {
                         return Integer.parseInt(responseBody);
                     }
                 } else {
-                    System.err.println("获取玩家位置失败，状态码: " + statusCode);
+                    System.err.println("Failed to get player position, status code: " + statusCode);
                     // Try to read the error response
                     try (Scanner scanner = new Scanner(connection.getErrorStream(), "UTF-8")) {
                         if (scanner.hasNext()) {
                             String errorBody = scanner.useDelimiter("\\A").next();
-                            System.err.println("服务器错误信息: " + errorBody);
+                            System.err.println("Server error message: " + errorBody);
                         }
                     } catch (Exception e) {
-                        System.err.println("无法读取错误信息: " + e.getMessage());
+                        System.err.println("Unable to read error message: " + e.getMessage());
                     }
                 }
             } catch (Exception e) {
-                System.err.println("获取玩家位置时出错: " + e.getMessage());
+                System.err.println("Error getting player position: " + e.getMessage());
                 e.printStackTrace();
             }
             

@@ -101,7 +101,7 @@ public class TypingPlanManager {
             return loadedPlan;
         } catch (IOException e) {
             System.out.println("Error while loading TypingPlan from file: " + e.getMessage());
-            // 删除损坏的文件
+            // Delete damaged file
             if (saveFile.exists()) {
                 boolean deleted = saveFile.delete();
                 if (deleted) {

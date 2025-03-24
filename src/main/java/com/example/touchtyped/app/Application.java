@@ -78,40 +78,40 @@ public class Application extends javafx.application.Application {
     }
     
     /**
-     * 初始化用户配置文件，如果没有用户名则请求输入
+     * Initialize user profile, request input if no username exists
      */
     private void initUserProfile() {
         UserProfile userProfile = UserProfile.getInstance();
-        System.out.println("正在检查用户配置文件...");
-        System.out.println("是否已有用户名: " + userProfile.hasPlayerName());
+        System.out.println("Checking user profile...");
+        System.out.println("Username exists: " + userProfile.hasPlayerName());
         
         if (!userProfile.hasPlayerName()) {
-            System.out.println("需要请求用户输入名称");
+            System.out.println("Need to request username input");
             
-            // 删除现有的配置文件（如果存在），确保重新请求输入名称
+            // Delete existing profile file (if any) to ensure username input is requested again
             try {
                 java.io.File profileFile = new java.io.File("user_profile.dat");
                 if (profileFile.exists()) {
                     profileFile.delete();
-                    System.out.println("已删除现有配置文件");
+                    System.out.println("Deleted existing profile file");
                 }
             } catch (Exception e) {
-                System.err.println("删除配置文件时出错: " + e.getMessage());
+                System.err.println("Error deleting profile file: " + e.getMessage());
             }
             
-            // 直接显示对话框，不使用Platform.runLater
+            // Display dialog directly, don't use Platform.runLater
             String playerName = PlayerNameDialog.showDialog();
-            System.out.println("用户输入的名称: " + playerName);
+            System.out.println("User entered name: " + playerName);
             
             if (playerName == null || playerName.trim().isEmpty()) {
                 playerName = "Anonymous";
-                System.out.println("使用默认名称: Anonymous");
+                System.out.println("Using default name: Anonymous");
             }
             
             userProfile.setPlayerName(playerName);
-            System.out.println("已设置用户名称: " + playerName);
+            System.out.println("Username set: " + playerName);
         } else {
-            System.out.println("已有用户名称: " + userProfile.getPlayerName());
+            System.out.println("Existing username: " + userProfile.getPlayerName());
         }
     }
 
@@ -136,35 +136,35 @@ public class Application extends javafx.application.Application {
     }
 
     /**
-     * 提交游戏结束时的排名数据到全球排名服务器
-     * @param ranking 要提交的排名数据
+     * Submit game ranking data to global ranking server
+     * @param ranking Ranking data to submit
      */
     public static void submitGameRanking(PlayerRanking ranking) {
         try {
-            // 直接提交到全球排名服务器
+            // Submit directly to global ranking server
             GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
             CompletableFuture<Boolean> future = globalRankingService.submitRanking(ranking);
             
             future.thenAccept(success -> {
                 if (success) {
-                    System.out.println("排名已成功提交到全球服务器");
+                    System.out.println("Ranking successfully submitted to global server");
                     
-                    // 获取玩家在全球排名中的位置
+                    // Get player position in global rankings
                     globalRankingService.getPlayerPosition(ranking.getPlayerName())
                         .thenAccept(position -> {
                             if (position > 0) {
-                                System.out.println("玩家 " + ranking.getPlayerName() + 
-                                                  " 在全球排名中的位置: " + position);
+                                System.out.println("Player " + ranking.getPlayerName() + 
+                                                  " position in global rankings: " + position);
                             } else {
-                                System.out.println("无法获取玩家在全球排名中的位置");
+                                System.out.println("Unable to get player position in global rankings");
                             }
                         });
                 } else {
-                    System.out.println("提交到全球服务器失败");
+                    System.out.println("Failed to submit to global server");
                 }
             });
         } catch (Exception e) {
-            System.err.println("提交排名时出错: " + e.getMessage());
+            System.err.println("Error submitting ranking: " + e.getMessage());
         }
     }
 }

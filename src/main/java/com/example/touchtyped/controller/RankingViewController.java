@@ -89,13 +89,13 @@ public class RankingViewController {
      * Load the rankings from the service
      */
     private void loadRankings() {
-        // 显示加载提示
+        // Show loading indicator
         ObservableList<PlayerRanking> emptyList = FXCollections.observableArrayList();
-        PlayerRanking loadingIndicator = new PlayerRanking("正在加载全球排名...", 0, 0, "");
+        PlayerRanking loadingIndicator = new PlayerRanking("Loading global rankings...", 0, 0, "");
         emptyList.add(loadingIndicator);
         rankingTable.setItems(emptyList);
         
-        // 从全球服务器获取排名
+        // Get rankings from global server
         GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
         globalRankingService.getGlobalRankings().thenAccept(rankings -> {
             javafx.application.Platform.runLater(() -> {
@@ -104,7 +104,7 @@ public class RankingViewController {
                     rankingTable.setItems(observableRankings);
                 } else {
                     ObservableList<PlayerRanking> noDataList = FXCollections.observableArrayList();
-                    PlayerRanking noData = new PlayerRanking("无法获取全球排名数据", 0, 0, "");
+                    PlayerRanking noData = new PlayerRanking("Unable to get global ranking data", 0, 0, "");
                     noDataList.add(noData);
                     rankingTable.setItems(noDataList);
                 }

@@ -2,72 +2,63 @@ package com.example.touchtyped.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for the difficulty selection view
+ */
 public class DifficultyViewController {
-
-    // 这个 VBox 对应 difficulty-view.fxml 里的根节点（fx:id="root"）
-    // 如果你需要用它获取当前 Stage，就可以通过 root.getScene().getWindow() 来拿到 Stage
+    // This VBox corresponds to the root node in difficulty-view.fxml (fx:id="root")
+    // If you need to get the current Stage, you can do so with root.getScene().getWindow()
     @FXML
-    private BorderPane rootPane; // 对应 fx:id="rootPane"
-
-    // 当点击 15s 按钮
+    private BorderPane rootPane; // Corresponds to fx:id="rootPane"
+    
+    // When 15s button is clicked
     @FXML
-    public void on15sSelect() {
-//        Stage stage = (Stage) rootPane.getScene().getWindow();
-        openGameWithTime(15);
+    private void on15sButtonClick() {
+        loadGameViewWithTime(15);
     }
-
-    // 当点击 30s 按钮
+    
+    // When 30s button is clicked
     @FXML
-    public void on30sSelect() {
-        openGameWithTime(30);
+    private void on30sButtonClick() {
+        loadGameViewWithTime(30);
     }
-
-    // 当点击 60s 按钮
+    
+    // When 60s button is clicked
     @FXML
-    public void on60sSelect() {
-        openGameWithTime(60);
+    private void on60sButtonClick() {
+        loadGameViewWithTime(60);
     }
-
-    // 当点击 120s 按钮
+    
+    // When 120s button is clicked
     @FXML
-    public void on120sSelect() {
-        openGameWithTime(120);
+    private void on120sButtonClick() {
+        loadGameViewWithTime(120);
     }
-
+    
     /**
-     * 通用方法：按下难度后，加载 GameView 并把时间参数带过去
-     * @param time 要设置的秒数 (15/30/60/120)
+     * Generic method: After selecting difficulty, load GameView with time parameter
+     * @param time Seconds to set (15/30/60/120)
      */
-    private void openGameWithTime(int time) {
+    private void loadGameViewWithTime(int time) {
         try {
-            // 1. 加载 GameView 的 FXML
+            // 1. Load GameView FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
-            Parent gameRoot = loader.load();
-
-            // 2. 获取对应的 GameViewController
-            GameViewController gameController = loader.getController();
-            // 这里可以直接调用它已有的 4 个按钮的逻辑
-            // 或者你也可以写个 setTimeOption(...) 方法
-            // 例如：
-            switch (time) {
-                case 15 -> gameController.select15s();
-                case 30 -> gameController.select30s();
-                case 60 -> gameController.select60s();
-                case 120 -> gameController.select120s();
-            }
-
-            // 3. 切换场景到 GameView
+            Scene gameScene = new Scene(loader.load(), 1200, 700);
+            
+            // 2. Get the corresponding GameViewController
+            GameViewController controller = loader.getController();
+            // You can directly call the logic for the 4 buttons here
+            controller.initTimedGame(time);
+            
+            // 3. Set the scene to the current stage
             Stage stage = (Stage) rootPane.getScene().getWindow();
-            stage.setScene(new Scene(gameRoot, 1200, 700));
-
+            stage.setScene(gameScene);
         } catch (IOException e) {
             e.printStackTrace();
         }

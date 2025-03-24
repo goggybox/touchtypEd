@@ -87,22 +87,22 @@ public class GameViewController {
     
     // ========== 新手引导相关变量 ==========
     /**
-     * 当前引导步骤
+     * Current tutorial step
      */
     private int tutorialStep = 0;
     
     /**
-     * 新手引导对话框
+     * Tutorial dialog
      */
     private Dialog<ButtonType> tutorialDialog;
     
     /**
-     * 引导文本标签
+     * Guide text label
      */
     private Label tutorialLabel;
     
     /**
-     * 下一步和完成按钮
+     * Next and finish buttons
      */
     private Button nextButton, finishButton;
 
@@ -725,11 +725,11 @@ public class GameViewController {
             return;
         }
         char typedChar = key.charAt(0);
-        // 检查字符是否属于左手或右手，不转换为小写
+        // Check if character belongs to left or right hand, without converting to lowercase
         boolean belongsToLeft = false;
         boolean belongsToRight = false;
         
-        // 检查字符是否属于左手字符（考虑大小写）
+        // Check if character belongs to left hand characters (considering case)
         for (char c : LEFT_HAND_CHARS) {
             if (c == Character.toLowerCase(typedChar) || c == Character.toUpperCase(typedChar)) {
                 belongsToLeft = true;
@@ -737,7 +737,7 @@ public class GameViewController {
             }
         }
         
-        // 检查字符是否属于右手字符（考虑大小写）
+        // Check if character belongs to right hand characters (considering case)
         if (!belongsToLeft) {
             for (char c : RIGHT_HAND_CHARS) {
                 if (c == Character.toLowerCase(typedChar) || c == Character.toUpperCase(typedChar)) {

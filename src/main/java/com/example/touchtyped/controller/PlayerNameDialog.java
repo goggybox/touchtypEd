@@ -101,11 +101,11 @@ public class PlayerNameDialog {
         // Set button actions
         confirmButton.setOnAction(e -> {
             result = nameField.getText();
-            // 保存用户名并标记为首次使用
+            // Save username and mark as first use
             if (result != null && !result.trim().isEmpty()) {
                 UserProfile profile = UserProfile.getInstance();
                 profile.setPlayerName(result.trim());
-                // 重置教程状态，确保用户第一次输入名字时会显示教程
+                // Reset tutorial status to ensure tutorial is shown when user first enters name
                 profile.setCompletedTutorial(false);
             }
             dialog.close();
@@ -119,11 +119,11 @@ public class PlayerNameDialog {
         // Set Enter key to confirm
         nameField.setOnAction(e -> {
             result = nameField.getText();
-            // 保存用户名并标记为首次使用
+            // Save username and mark as first use
             if (result != null && !result.trim().isEmpty()) {
                 UserProfile profile = UserProfile.getInstance();
                 profile.setPlayerName(result.trim());
-                // 重置教程状态，确保用户第一次输入名字时会显示教程
+                // Reset tutorial status to ensure tutorial is shown when user first enters name
                 profile.setCompletedTutorial(false);
             }
             dialog.close();

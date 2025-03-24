@@ -35,7 +35,7 @@ public class GameResultViewController {
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
     private int wpm;
     private double accuracy;
-    private String gameMode = "Standard Mode"; // 默认游戏模式
+    private String gameMode = "Standard Mode"; // Default game mode
     private PlayerRanking currentRanking;
 
     /**
@@ -117,71 +117,71 @@ public class GameResultViewController {
         finalCharLabel.setText(String.format("%d/%d/%d",
                 totalKeystrokes, correctKeystrokes, wrongKeystrokes));
 
-        // 保存数据
+        // Save data
         this.wpm = wpm;
         this.accuracy = accuracy;
         this.gameMode = gameMode;
         
-        // 创建排名并提交到全球服务器
+        // Create ranking and submit to global server
         submitRanking(playerName);
     }
 
     /**
-     * 提交排名到本地和全球服务器
-     * @param playerName 玩家名称
+     * Submit ranking to global server
+     * @param playerName Player name
      */
     private void submitRanking(String playerName) {
         try {
-            // 创建排名对象
+            // Create ranking object
             currentRanking = new PlayerRanking(playerName, wpm, accuracy, gameMode);
 
-            // 更新全球排名标签
+            // Update global ranking label
             if (globalRankLabel != null) {
-                globalRankLabel.setText("正在提交到全球排名服务器...");
+                globalRankLabel.setText("Submitting to global ranking server...");
             }
 
-            // 测试服务器连接
+            // Test server connection
             GlobalRankingService.getInstance().testConnection()
                 .thenAccept(connected -> {
                     if (connected) {
-                        System.out.println("成功连接到全球排名服务器");
+                        System.out.println("Successfully connected to global ranking server");
                         
-                        // 提交排名到全球服务器
+                        // Submit ranking to global server
                         Application.submitGameRanking(currentRanking);
                         
-                        // 获取玩家排名
+                        // Get player ranking
                         GlobalRankingService.getInstance().getPlayerPosition(playerName)
                             .thenAccept(position -> {
                                 if (position > 0) {
                                     javafx.application.Platform.runLater(() -> {
                                         if (globalRankLabel != null) {
-                                            globalRankLabel.setText("全球排名: 第 " + position + " 名");
+                                            globalRankLabel.setText("Global Rank: #" + position);
                                         }
                                     });
                                 } else {
                                     javafx.application.Platform.runLater(() -> {
                                         if (globalRankLabel != null) {
-                                            globalRankLabel.setText("无法获取全球排名位置信息");
+                                            globalRankLabel.setText("Unable to get global ranking position");
                                         }
                                     });
                                 }
                             });
                     } else {
-                        System.out.println("无法连接到全球排名服务器");
+                        System.out.println("Unable to connect to global ranking server");
                         javafx.application.Platform.runLater(() -> {
                             if (globalRankLabel != null) {
-                                globalRankLabel.setText("无法连接到全球排名服务器");
+                                globalRankLabel.setText("Unable to connect to global ranking server");
                             }
                         });
                     }
                 });
 
         } catch (Exception e) {
-            System.err.println("提交排名时出错: " + e.getMessage());
+            System.err.println("Error submitting ranking: " + e.getMessage());
             e.printStackTrace();
 
             if (globalRankLabel != null) {
-                globalRankLabel.setText("提交排名失败");
+                globalRankLabel.setText("Failed to submit ranking");
             }
         }
     }

@@ -62,7 +62,7 @@
         </HBox>
     </top>
 
-    <!-- ======================= 中心内容 ======================= -->
+    <!-- ======================= Main Content ======================= -->
     <center>
         <StackPane>
             <VBox fx:id="gameContainer"
@@ -70,12 +70,12 @@
                   spacing="20"
                   styleClass="game-container">
 
-                <!-- 定义模式切换 ToggleGroup -->
+                <!-- Define mode switching ToggleGroup -->
                 <fx:define>
                     <ToggleGroup fx:id="modeToggleGroup"/>
                 </fx:define>
 
-                <!-- 模式选择：Timed / Article / Competition -->
+                <!-- Mode selection: Timed / Article / Competition -->
                 <HBox alignment="CENTER" spacing="15" styleClass="time-options">
                     <Label text="Mode:" styleClass="time-label"/>
                     <RadioButton fx:id="timedModeRadio"
@@ -228,7 +228,7 @@
                 </VBox>
             </VBox>
             
-            <!-- 信息按钮 - 放在窗口最右下角 -->
+            <!-- Information button - placed at the bottom right corner of the window -->
             <Button fx:id="timedModeInfoButton"
                     text="i"
                     onAction="#showTimedModeInfo"

@@ -12,7 +12,7 @@ public class PlayerRanking implements Serializable, Comparable<PlayerRanking> {
     private LocalDateTime timestamp;
     private String gameMode;
 
-    // 默认构造函数，用于JSON反序列化
+    // Default constructor for JSON deserialization
     public PlayerRanking() {
         this.timestamp = LocalDateTime.now();
     }
@@ -67,20 +67,20 @@ public class PlayerRanking implements Serializable, Comparable<PlayerRanking> {
 
     @Override
     public int compareTo(PlayerRanking other) {
-        // 首先按WPM排序（降序）
+        // Sort first by WPM (descending)
         int wpmCompare = Integer.compare(other.wpm, this.wpm);
         if (wpmCompare != 0) {
             return wpmCompare;
         }
 
-        // 如果WPM相同，则按准确率排序（降序）
+        // If WPM is the same, sort by accuracy (descending)
         int accuracyCompare = Double.compare(other.accuracy, this.accuracy);
         
         if (accuracyCompare != 0) {
             return accuracyCompare;
         }
         
-        // 如果WPM和准确率都相同，则按时间戳排序（升序，较早的排在前面）
+        // If WPM and accuracy are the same, sort by timestamp (ascending, earlier comes first)
         return this.timestamp.compareTo(other.timestamp);
     }
 
