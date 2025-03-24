@@ -84,38 +84,31 @@ public class LearnViewController {
 
     @FXML
     public void onGamesButtonClick() {
-        System.out.println("onGamesButtonClick方法被调用");
+        System.out.println("onGamesButtonClick method called");
         try {
-            // 先尝试一个非常简单的测试，只显示一个警告对话框
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
-            alert.setTitle("测试");
-            alert.setHeaderText("测试游戏按钮点击");
-            alert.setContentText("如果你看到这个对话框，说明游戏按钮的点击事件正常工作！");
-            alert.showAndWait();
-            
-            System.out.println("尝试加载game-view.fxml");
+            System.out.println("Attempting to load game-view.fxml");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
-            System.out.println("开始调用loader.load()");
+            System.out.println("Starting loader.load()");
             Scene scene = new Scene(loader.load(), 1200, 700);
-            System.out.println("loader.load()调用完成");
+            System.out.println("loader.load() completed");
             
-            System.out.println("获取GameViewController");
+            System.out.println("Getting GameViewController");
             GameViewController gameViewController = loader.getController();
-            System.out.println("设置keyboardInterface");
+            System.out.println("Setting keyboardInterface");
             gameViewController.setKeyboardInterface(keyboardInterface);
             
-            System.out.println("应用场景设置");
+            System.out.println("Applying scene settings");
             settingsService.applySettingsToScene(scene);
             
-            System.out.println("获取当前窗口并切换场景");
+            System.out.println("Getting current window and switching scene");
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
-            System.out.println("场景切换完成");
+            System.out.println("Scene switch completed");
         } catch (IOException e) {
-            System.out.println("发生IO异常: " + e.getMessage());
+            System.out.println("IO Exception occurred: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.out.println("发生其他异常: " + e.getMessage());
+            System.out.println("Other exception occurred: " + e.getMessage());
             e.printStackTrace();
         }
     }
