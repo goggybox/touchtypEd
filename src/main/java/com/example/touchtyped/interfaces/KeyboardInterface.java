@@ -216,7 +216,7 @@ public class KeyboardInterface {
         System.out.println(String.format("Turned LED lights on for %d milliseconds", duration));
         if (Application.keyboardConnected) {
             PrintWriter lightCommand = new PrintWriter(ioPort.getOutputStream());
-            lightCommand.print("L");
+            lightCommand.print("*");
             lightCommand.flush();
             lightCommand.close();
         }

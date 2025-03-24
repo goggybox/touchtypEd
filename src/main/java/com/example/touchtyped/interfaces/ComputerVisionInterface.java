@@ -25,7 +25,7 @@ public class ComputerVisionInterface {
             label.setHorizontalAlignment(JLabel.CENTER);
             popup.add(label, BorderLayout.CENTER);
             try{
-                p = Runtime.getRuntime().exec("python MediaPipe/src/final.py");
+                p = Runtime.getRuntime().exec("python MediaPipe/src/final2.py");
 
                 BufferedReader stdInput = new BufferedReader(new
                         InputStreamReader(p.getInputStream()));
