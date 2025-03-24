@@ -20,3 +20,275 @@
     -fx-background-color: #D8D8D8;
     -fx-border-width: 0;
 }
+
+/* Dark mode styles - completely rewritten */
+.dark-mode {
+    -fx-background-color: #121212;
+}
+
+/* NavigationBar */
+.dark-mode .nav-bar {
+    -fx-background-color: #1F1F1F;
+}
+
+/* ScrollPane and all its internal components */
+.dark-mode .scroll-pane {
+    -fx-background-color: #121212;
+    -fx-background: #121212;
+}
+
+.dark-mode .scroll-pane > .viewport {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane > .corner {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane > .scroll-bar:vertical,
+.dark-mode .scroll-pane > .scroll-bar:horizontal {
+    -fx-background-color: #1F1F1F;
+}
+
+.dark-mode .scroll-pane > .scroll-bar:vertical .thumb,
+.dark-mode .scroll-pane > .scroll-bar:horizontal .thumb {
+    -fx-background-color: #333333;
+}
+
+/* All VBox and HBox containers */
+.dark-mode .scroll-pane VBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane HBox {
+    -fx-background-color: #121212;
+}
+
+/* Force all container elements to use dark background */
+.dark-mode BorderPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode AnchorPane {
+    -fx-background-color: transparent;
+}
+
+.dark-mode Region {
+    -fx-background-color: transparent;
+}
+
+/* Buttons and controls */
+.dark-mode .dynamic-button {
+    -fx-background-color: #2C3E50;
+    -fx-text-fill: white;
+}
+
+.dark-mode .dynamic-button:hover {
+    -fx-background-color: #34495E;
+}
+
+/* Text elements */
+.dark-mode Label,
+.dark-mode Text {
+    -fx-text-fill: #E0E0E0;
+}
+
+/* Phase title */
+.dark-mode Text.phase-title {
+    -fx-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* Circular buttons */
+.dark-mode .circle-outer {
+    -fx-stroke: #4D7CCE;
+    -fx-stroke-width: 2;
+}
+
+.dark-mode .circle-inner {
+    -fx-fill: #2C5AAA;
+}
+
+.dark-mode .circle-inner:hover {
+    -fx-fill: #3A6ABF;
+}
+
+.dark-mode .circle-inner.selected {
+    -fx-fill: #4D7CCE;
+}
+
+.dark-mode .circle-text {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Colorblind mode styles - expanded */
+.colorblind-mode {
+    -fx-background-color: #f5f5f5; /* Light gray background */
+}
+
+.colorblind-mode .nav-bar {
+    -fx-background-color: #17365D; /* Navy blue - more distinguishable */
+}
+
+.colorblind-mode .scroll-pane {
+    -fx-background-color: #f5f5f5;
+}
+
+.colorblind-mode .scroll-pane > .viewport {
+    -fx-background-color: #f5f5f5;
+}
+
+.colorblind-mode Label,
+.colorblind-mode Text {
+    -fx-text-fill: #000000; /* High contrast black text */
+}
+
+.colorblind-mode .dynamic-button {
+    -fx-background-color: #17365D; /* Navy blue */
+    -fx-text-fill: white;
+    -fx-border-color: #000000;
+    -fx-border-width: 1;
+}
+
+.colorblind-mode .dynamic-button:hover {
+    -fx-background-color: #006E51; /* A colorblind-friendly green */
+    -fx-effect: dropshadow(gaussian, #000000, 5, 0.5, 0, 0);
+}
+
+/* Improve circular buttons for colorblind mode */
+.colorblind-mode .circle-outer {
+    -fx-stroke: #17365D; /* Navy blue */
+    -fx-stroke-width: 3;
+}
+
+.colorblind-mode .circle-inner {
+    -fx-fill: #D8D8D8; /* Light gray */
+}
+
+.colorblind-mode .circle-inner:hover {
+    -fx-fill: #006E51; /* Colorblind-friendly green */
+}
+
+.colorblind-mode .circle-inner.selected {
+    -fx-fill: #17365D; /* Navy blue */
+    -fx-stroke: #000000;
+    -fx-stroke-width: 2;
+}
+
+.colorblind-mode .circle-text {
+    -fx-fill: #000000; /* Black text for contrast */
+    -fx-font-weight: bold;
+}
+
+/* Letter box styling for module view */
+.letter-label {
+    -fx-font-size: 32px;
+    -fx-font-family: 'Manjari';
+    -fx-text-fill: #777777; /* Default gray color */
+}
+
+.letter-box {
+    -fx-stroke: #777777;
+    -fx-stroke-width: 4;
+    -fx-fill: transparent;
+}
+
+/* Gray state */
+.letter-label-grey {
+    -fx-text-fill: #777777;
+}
+
+.letter-box-grey {
+    -fx-stroke: #777777;
+}
+
+/* Blue (correct) state */
+.letter-label-blue {
+    -fx-text-fill: #263F68;
+}
+
+.letter-box-blue {
+    -fx-stroke: #263F68;
+}
+
+/* Red (error) state */
+.letter-label-red {
+    -fx-text-fill: #F5102F;
+}
+
+.letter-box-red {
+    -fx-stroke: #F5102F;
+}
+
+/* Dark mode styles for letter boxes */
+.dark-mode .letter-label {
+    -fx-text-fill: #B0B0B0;
+}
+
+.dark-mode .letter-box {
+    -fx-stroke: #B0B0B0;
+}
+
+.dark-mode .letter-label-grey {
+    -fx-text-fill: #B0B0B0;
+}
+
+.dark-mode .letter-box-grey {
+    -fx-stroke: #B0B0B0;
+}
+
+.dark-mode .letter-label-blue {
+    -fx-text-fill: #6B9FFF;
+}
+
+.dark-mode .letter-box-blue {
+    -fx-stroke: #6B9FFF;
+}
+
+.dark-mode .letter-label-red {
+    -fx-text-fill: #FF5252;
+}
+
+.dark-mode .letter-box-red {
+    -fx-stroke: #FF5252;
+}
+
+/* Colorblind mode styles for letter boxes */
+.colorblind-mode .letter-label {
+    -fx-text-fill: #555555;
+}
+
+.colorblind-mode .letter-box {
+    -fx-stroke: #555555;
+}
+
+.colorblind-mode .letter-label-grey {
+    -fx-text-fill: #555555;
+}
+
+.colorblind-mode .letter-box-grey {
+    -fx-stroke: #555555;
+}
+
+.colorblind-mode .letter-label-blue {
+    -fx-text-fill: #0000FF;
+    -fx-font-weight: bold;
+}
+
+.colorblind-mode .letter-box-blue {
+    -fx-stroke: #0000FF;
+    -fx-stroke-width: 4;
+}
+
+.colorblind-mode .letter-label-red {
+    -fx-text-fill: #9F0500;
+    -fx-font-weight: bold;
+    -fx-underline: true;
+}
+
+.colorblind-mode .letter-box-red {
+    -fx-stroke: #9F0500;
+    -fx-stroke-width: 4;
+    -fx-stroke-dash-array: 5 3;
+}

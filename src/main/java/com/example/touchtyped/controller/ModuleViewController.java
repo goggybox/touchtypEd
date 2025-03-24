@@ -5,6 +5,7 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.interfaces.KeypressListener;
 import com.example.touchtyped.model.*;
 import com.example.touchtyped.model.Module;
+import com.example.touchtyped.service.AppSettingsService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,6 +49,9 @@ public class ModuleViewController implements KeypressListener {
     @FXML
     private Button nextButton;
 
+    @FXML
+    private ImageView optionsButton;
+
     // vars
     private Module module;
     private Level level;
@@ -58,12 +62,21 @@ public class ModuleViewController implements KeypressListener {
     private final int MAX_BOXES_PER_ROW = 16;
     private Map<String, Character> keyMap = new HashMap<String, Character>();
 
+    private AppSettingsService settingsService;
+
     public void initialize() {
+        // Get settings service
+        settingsService = AppSettingsService.getInstance();
+
         // Attach keyboard interface to scene, when scene is available
         Platform.runLater(() -> {
             Scene scene = closeButton.getScene();
             if (scene != null) {
                 keyboardInterface.attachToScene(scene);
+                
+                // Apply settings to the scene
+                settingsService.applySettingsToScene(scene);
+                System.out.println("Applied settings to module view scene");
             } else {
                 System.err.println("Scene is not available yet.");
             }
@@ -160,12 +173,17 @@ public class ModuleViewController implements KeypressListener {
         box.setStroke(Color.web(StyleConstants.GREY_COLOUR));
         box.setStrokeWidth(4);
         box.setFill(Color.TRANSPARENT);
+        
+        // Add style class to allow CSS styling
+        box.getStyleClass().add("letter-box");
 
         Label letter = new Label(String.valueOf(c));
-        letter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", StyleConstants.GREY_COLOUR));
+        letter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari';"));
+        letter.getStyleClass().add("letter-label");
         letterLabels.add(letter);
 
         StackPane container = new StackPane();
+        container.getStyleClass().add("letter-container");
         container.getChildren().addAll(box, letter);
         return container;
     }
@@ -247,6 +265,23 @@ public class ModuleViewController implements KeypressListener {
         StackPane currentLetterBox = (StackPane) charContainer.getChildren().get(index);
         Rectangle currentLetterRectangle = (Rectangle) currentLetterBox.getChildren().get(0);
 
+        // Remove any existing color classes
+        currentLetter.getStyleClass().removeAll("letter-label-grey", "letter-label-blue", "letter-label-red");
+        currentLetterRectangle.getStyleClass().removeAll("letter-box-grey", "letter-box-blue", "letter-box-red");
+        
+        // Add appropriate color class based on the color parameter
+        if (colour.equals(StyleConstants.GREY_COLOUR)) {
+            currentLetter.getStyleClass().add("letter-label-grey");
+            currentLetterRectangle.getStyleClass().add("letter-box-grey");
+        } else if (colour.equals(StyleConstants.BLUE_COLOUR)) {
+            currentLetter.getStyleClass().add("letter-label-blue");
+            currentLetterRectangle.getStyleClass().add("letter-box-blue");
+        } else if (colour.equals(StyleConstants.RED_COLOUR)) {
+            currentLetter.getStyleClass().add("letter-label-red");
+            currentLetterRectangle.getStyleClass().add("letter-box-red");
+        }
+        
+        // Fallback for backward compatibility
         currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", colour));
         currentLetterRectangle.setStroke(Color.web(colour));
     }
@@ -265,6 +300,10 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -278,6 +317,10 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
@@ -289,14 +332,34 @@ public class ModuleViewController implements KeypressListener {
     @FXML
     public void onBackButtonClick() {
         try {
-
             // update the module in the TypingPlan
             TypingPlanManager manager = TypingPlanManager.getInstance();
             manager.updateModule(module);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            keyboardInterface.stopHaptic();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onOptionsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
+            Stage stage = (Stage) optionsButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {

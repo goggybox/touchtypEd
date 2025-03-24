@@ -4,6 +4,7 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.*;
 import com.example.touchtyped.model.Module;
 import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
+import com.example.touchtyped.service.AppSettingsService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,7 +40,7 @@ public class LearnViewController {
      * reference to the optionsButton in learn-view.fxml
      */
     @FXML
-    private Button optionsButton;
+    private ImageView optionsButton;
 
     /**
      * reference to the VBox in learn-view.fxml
@@ -48,12 +49,19 @@ public class LearnViewController {
     private VBox vbox;
 
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private AppSettingsService settingsService;
 
     public void initialize() {
+        // Get settings service
+        settingsService = AppSettingsService.getInstance();
+        
         // Attach keyboard interface to scene, when scene is available
         Platform.runLater(() -> {
             Scene scene = vbox.getScene(); // Use vbox's scene instead of buttonGrid's
             if (scene != null) {
+                // Apply settings
+                settingsService.applySettingsToScene(scene);
+                
                 keyboardInterface.attachToScene(scene);
                 keyboardInterface.stopHaptic();
                 // Example keypress listener
@@ -78,6 +86,10 @@ public class LearnViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage = (Stage) gamesButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -87,7 +99,17 @@ public class LearnViewController {
 
     @FXML
     public void onOptionsButtonClick() {
-        System.out.println("Options button clicked!");
-        // Navigate to the "Options" screen
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
+            Stage stage = (Stage) optionsButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

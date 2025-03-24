@@ -5,6 +5,7 @@ import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.UserProfile;
+import com.example.touchtyped.service.AppSettingsService;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
@@ -205,8 +206,13 @@ public class GameViewController {
      */
     private int wordStartIndex = 0;
     
+    private AppSettingsService settingsService;
+    
     @FXML
     public void initialize(){
+        
+        // Get settings service
+        settingsService = AppSettingsService.getInstance();
         
         keyboardInterface = new KeyboardInterface();
         keyPressListener  = new GameKeypressListener(this, keyboardInterface);
@@ -223,6 +229,9 @@ public class GameViewController {
 
         gameContainer.sceneProperty().addListener((obs, oldScene, newScene)->{
             if(newScene!=null){
+                // Apply settings to the scene
+                settingsService.applySettingsToScene(newScene);
+                
                 keyboardInterface.attachToScene(newScene);
 
                 // 场景加载完成后检查是否是第一次使用
@@ -1092,6 +1101,26 @@ public class GameViewController {
         try{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene=new Scene(loader.load(),1200,700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
+            Stage stage=(Stage)taskLabel.getScene().getWindow();
+            stage.setScene(scene);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onOptionsButtonClick(){
+        try{
+            FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
+            Scene scene=new Scene(loader.load(),1200,700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage=(Stage)taskLabel.getScene().getWindow();
             stage.setScene(scene);
         }catch(IOException e){

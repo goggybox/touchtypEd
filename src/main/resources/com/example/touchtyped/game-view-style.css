@@ -462,4 +462,208 @@
     -fx-background-color: white;
 }
 
+/* Dark mode styles - completely rewritten */
+.dark-mode {
+    -fx-background-color: #121212;
+}
+
+/* NavigationBar */
+.dark-mode .nav-bar {
+    -fx-background-color: #1F1F1F;
+}
+
+/* Game container and main elements */
+.dark-mode .game-container {
+    -fx-background-color: #121212;
+}
+
+/* Force all containers to use dark background */
+.dark-mode VBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode HBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode StackPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode BorderPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode ScrollPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode ScrollPane > .viewport {
+    -fx-background-color: #121212;
+}
+
+.dark-mode AnchorPane {
+    -fx-background-color: transparent;
+}
+
+.dark-mode Region {
+    -fx-background-color: transparent;
+}
+
+/* Text elements */
+.dark-mode .time-options,
+.dark-mode .result-container,
+.dark-mode Label,
+.dark-mode Text,
+.dark-mode RadioButton,
+.dark-mode .task-text {
+    -fx-text-fill: #E0E0E0;
+}
+
+/* Buttons */
+.dark-mode .time-button {
+    -fx-background-color: #333333;
+    -fx-text-fill: #E0E0E0;
+    -fx-border-color: #555555;
+}
+
+.dark-mode .time-button:hover {
+    -fx-background-color: #444444;
+}
+
+.dark-mode .time-button.selected {
+    -fx-background-color: #2C5AAA;
+    -fx-text-fill: white;
+    -fx-border-color: #4D7CCE;
+}
+
+/* Improved text visibility */
+.dark-mode .typed-text {
+    -fx-fill: #6B9FFF; /* Brighter blue in dark mode */
+}
+
+.dark-mode .error-text {
+    -fx-fill: #FF5252; /* Brighter red in dark mode */
+}
+
+.dark-mode .remaining-text {
+    -fx-fill: #B0B0B0; /* Lighter grey in dark mode */
+}
+
+.dark-mode .cursor {
+    -fx-fill: #FFFFFF; /* White cursor in dark mode */
+}
+
+/* Selection controls */
+.dark-mode .toggle-button:selected {
+    -fx-background-color: #2C5AAA;
+    -fx-text-fill: white;
+}
+
+.dark-mode RadioButton:selected {
+    -fx-text-fill: white;
+}
+
+.dark-mode RadioButton .radio {
+    -fx-background-color: #333333;
+    -fx-border-color: #555555;
+}
+
+.dark-mode RadioButton:selected .radio {
+    -fx-background-color: #2C5AAA;
+    -fx-border-color: #4D7CCE;
+}
+
+.dark-mode RadioButton .dot {
+    -fx-background-color: transparent;
+}
+
+.dark-mode RadioButton:selected .dot {
+    -fx-background-color: white;
+}
+
+/* Colorblind mode styles */
+.colorblind-mode .cursor,
+.colorblind-mode .char-input-correct {
+    -fx-fill: #006E51; /* A colorblind-friendly green */
+}
+
+.colorblind-mode .char-input-wrong {
+    -fx-fill: #C8102E; /* A colorblind-friendly red */
+}
+
+.colorblind-mode .time-button.selected {
+    -fx-background-color: #006E51; /* A colorblind-friendly green */
+}
+
+/* Additional colorblind mode styles */
+.colorblind-mode {
+    -fx-background-color: #f5f5f5; /* Light gray background */
+}
+
+.colorblind-mode .nav-bar {
+    -fx-background-color: #17365D; /* Navy blue - more distinguishable */
+}
+
+.colorblind-mode .typed-text {
+    -fx-fill: #0000FF; /* Pure blue - better for color blindness */
+    -fx-font-weight: bold;
+}
+
+.colorblind-mode .error-text {
+    -fx-fill: #9F0500; /* Dark red - more visible */
+    -fx-font-weight: bold;
+    -fx-underline: true; /* Extra visual indicator */
+}
+
+.colorblind-mode .remaining-text {
+    -fx-fill: #555555; /* Dark gray for better contrast */
+}
+
+.colorblind-mode Label,
+.colorblind-mode .task-text,
+.colorblind-mode Text {
+    -fx-text-fill: #000000; /* Black text for better contrast */
+}
+
+.colorblind-mode RadioButton .radio {
+    -fx-background-color: white;
+    -fx-border-color: #17365D;
+    -fx-border-width: 2;
+}
+
+.colorblind-mode RadioButton:selected .radio {
+    -fx-background-color: white;
+    -fx-border-color: #17365D;
+    -fx-border-width: 2;
+}
+
+.colorblind-mode RadioButton:selected .dot {
+    -fx-background-color: #17365D;
+}
+
+.dark-mode .scroll-pane .viewport {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane .content {
+    -fx-background-color: #121212;
+}
+
+.dark-mode VBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode StackPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode HBox {
+    -fx-background-color: transparent;
+}
+
+.dark-mode BorderPane {
+    -fx-background-color: #121212;
+}
+
 
