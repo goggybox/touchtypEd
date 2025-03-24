@@ -76,7 +76,8 @@
                                         <HBox spacing="10" translateX="20">
                                             <Label fx:id="removeStudent" text="to remove from classroom, type student's username:"/>
                                             <TextField fx:id="removeStudentInput" promptText="Confirm Username" translateY="-1"/>
-                                            <Button fx:id="removeStudentButton" text="REMOVE" translateY="-1" translateX="-7"/>
+                                            <Button fx:id="removeStudentButton" text="REMOVE" translateY="-1" translateX="-7"
+                                                    onAction="#removeStudent"/>
                                         </HBox>
                                     </VBox>
                                 </VBox>

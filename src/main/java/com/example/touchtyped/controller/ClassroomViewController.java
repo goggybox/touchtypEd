@@ -319,45 +319,55 @@ public class ClassroomViewController {
                 Platform.runLater(() -> {
                     studentListDescriptor.setFont(secondary_font);
                     studentListDescriptor.setText("Students");
-                    for (String student : students) {
-                        Label studentLabel = new Label(student);
+                    if (!students.isEmpty()) {
+                        for (String student : students) {
+                            Label studentLabel = new Label(student);
+                            studentLabel.setFont(secondary_font);
+                            studentLabel.getStyleClass().add("student");
+                            studentLabel.setPrefWidth((students.size() > 10) ? 225 : 242);
+
+                            // Add click handler
+                            studentLabel.setOnMouseClicked(e -> {
+                                // Reset previous selection
+                                if (selectedStudentLabel != null) {
+                                    selectedStudentLabel.getStyleClass().remove("student-selected");
+                                }
+                                if (selectedKeyLogLabel != null) {
+                                    selectedKeyLogLabel.getStyleClass().remove("log-selected");
+                                }
+
+                                // Set new selection
+                                studentLabel.getStyleClass().add("student-selected");
+                                selectedStudentLabel = studentLabel;
+                                selectedStudentUsername = selectedStudentLabel.getText();
+                                System.out.println("Selected user: " + selectedStudentUsername);
+                                // hide error message if visible
+                                errorLabel.setVisible(false);
+
+                                // load student's keyLogsStructures IF we have selected Stats
+                                if (isStatsSelected) {
+                                    System.out.println("Loading user's key logs");
+                                    loadStudentKeyLogs(classroom.getClassroomID(), selectedStudentUsername);
+                                } else {
+                                    System.out.println("Loading user's account.");
+                                    loadAccount(classroom.getClassroomID(), selectedStudentUsername);
+                                }
+
+                                // set selectorContainer to be visible
+                                selectorContainer.setVisible(true);
+
+                            });
+
+                            studentListContainer.getChildren().add(studentLabel);
+                        }
+                    } else {
+                        Label studentLabel = new Label("No students yet.");
                         studentLabel.setFont(secondary_font);
-                        studentLabel.getStyleClass().add("student");
+                        studentLabel.setStyle("-fx-font-size: 16px;");
+                        studentLabel.setTextFill(Color.rgb(97,97,97));
                         studentLabel.setPrefWidth((students.size() > 10) ? 225 : 242);
-
-                        // Add click handler
-                        studentLabel.setOnMouseClicked(e -> {
-                            // Reset previous selection
-                            if (selectedStudentLabel != null) {
-                                selectedStudentLabel.getStyleClass().remove("student-selected");
-                            }
-                            if (selectedKeyLogLabel != null) {
-                                selectedKeyLogLabel.getStyleClass().remove("log-selected");
-                            }
-
-                            // Set new selection
-                            studentLabel.getStyleClass().add("student-selected");
-                            selectedStudentLabel = studentLabel;
-                            selectedStudentUsername = selectedStudentLabel.getText();
-                            System.out.println("Selected user: "+selectedStudentUsername);
-                            // hide error message if visible
-                            errorLabel.setVisible(false);
-
-                            // load student's keyLogsStructures IF we have selected Stats
-                            if (isStatsSelected) {
-                                System.out.println("Loading user's key logs");
-                                loadStudentKeyLogs(classroom.getClassroomID(), selectedStudentUsername);
-                            }
-                            else {
-                                System.out.println("Loading user's account.");
-                                loadAccount(classroom.getClassroomID(), selectedStudentUsername);
-                            }
-
-                            // set selectorContainer to be visible
-                            selectorContainer.setVisible(true);
-
-                        });
-
+                        studentLabel.setTextAlignment(TextAlignment.CENTER);
+                        studentLabel.setAlignment(Pos.CENTER);
                         studentListContainer.getChildren().add(studentLabel);
                     }
                 });
@@ -529,6 +539,64 @@ public class ClassroomViewController {
             pause.setOnFinished(event -> errorLabel.setVisible(false));
             pause.play();
         });
+    }
+
+    @FXML
+    private void removeStudent() {
+        String inputtedUsername = removeStudentInput.getText();
+
+        if (!inputtedUsername.equals(selectedStudentUsername)) {
+            showWarning("* Please confirm the student's username in order to remove them!");
+            return;
+        }
+
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    UserDAO.deleteUser(ourClassroomID, selectedStudentUsername);
+                    System.out.println("Deleted user "+selectedStudentUsername);
+                    List<String> studentsList = ClassroomDAO.getClassroom(ourClassroomID).getStudentUsernames();
+                    studentsList.remove(selectedStudentUsername);
+                    ClassroomDAO.replaceStudentList(ourClassroomID, studentsList);
+                    System.out.println("Updated students list in classroom to remove student.");
+
+                    Platform.runLater(() -> {
+                        studentListContainer.getChildren().remove(selectedStudentLabel);
+
+                        logContainer.getChildren().clear();
+                        keyLogContainer.setVisible(false);
+
+                        selectedStudentLabel = null;
+                        selectedStudentUsername = null;
+
+                        accountContainer.setVisible(false);
+                        accountContainer.setManaged(false);
+
+                        selectorContainer.setVisible(false);
+
+                        showSuccess("Student '" + inputtedUsername + "' removed successfully.");
+
+                        if (studentsList.isEmpty()) {
+                            Label studentLabel = new Label("No students yet.");
+                            studentLabel.setFont(secondary_font);
+                            studentLabel.setStyle("-fx-font-size: 16px;");
+                            studentLabel.setTextFill(Color.rgb(97,97,97));
+                            studentLabel.setPrefWidth((studentsList.size() > 10) ? 225 : 242);
+                            studentLabel.setTextAlignment(TextAlignment.CENTER);
+                            studentLabel.setAlignment(Pos.CENTER);
+                            studentListContainer.getChildren().add(studentLabel);
+                        }
+                    });
+
+                } catch (Exception e) {
+                    System.out.println("DATABASE FAILURE: Failed to remove student from classroom.");
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
+
     }
 
     /**
