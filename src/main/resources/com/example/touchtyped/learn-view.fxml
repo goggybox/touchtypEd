@@ -9,8 +9,14 @@
    <center>
       <!-- ScrollPane to allow vertical scrolling -->
       <ScrollPane fitToWidth="true">
-         <VBox fx:id="vbox" alignment="TOP_CENTER">
-            <!-- Buttons will appear here dynamically -->
+         <VBox spacing="0">
+            <HBox fx:id="typingPlanToggleContainer" spacing="5">
+               <Button fx:id="typingPlanToggleButton" onAction="#toggleTypingPlan"/>
+               <Label fx:id="typingPlanToggleLabel" text="Displaying personalised typing plan."/>
+            </HBox>
+            <VBox fx:id="vbox" alignment="TOP_CENTER">
+               <!-- Buttons will appear here dynamically -->
+            </VBox>
          </VBox>
       </ScrollPane>
    </center>

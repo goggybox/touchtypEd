@@ -13,32 +13,36 @@ public class TypingPlanManager {
 
     private static TypingPlanManager instance;
 
-    private TypingPlan typingPlan;
-
     private static final String SAVED_TYPING_PLAN_FILE = "saved_typing_plan.json";
     private boolean typingPlanModified = false;
+
+    private boolean personalisedPlanExists = true;
+    private boolean displayingPersonalisedPlan = true;
+    private TypingPlan personalisedPlan = null;
+    private TypingPlan defaultPlan = null;
 
 
     /**
      * private constructor to prevent instantiation
      */
     private TypingPlanManager() {
-        this.typingPlan = TypingPlanDeserialiser.getTypingPlan();
+        defaultPlan = TypingPlanDeserialiser.getTypingPlan();
 
         File saveFile = new File(SAVED_TYPING_PLAN_FILE);
         if (saveFile.exists()) {
             // if the TypingPlan has been saved, retrieve it.
-            typingPlan = loadTypingPlan();
-            if (typingPlan == null) {
+            personalisedPlan = loadTypingPlan();
+            if (personalisedPlan == null) {
                 // Fallback to default TypingPlan if loading fails
                 System.out.println("Failed to load TypingPlan from save file. Falling back to default.");
-                typingPlan = TypingPlanDeserialiser.getTypingPlan();
+                personalisedPlanExists = false;
+                displayingPersonalisedPlan = false;
             }
         } else {
-            // load TypingPlan from service (currently JSON file)
-            // TODO: implement getting TypingPlan from REST service.
-            System.out.println("TypingPlan loaded from REST service.");
-            typingPlan = TypingPlanDeserialiser.getTypingPlan();
+            // load default Typing Plan (currently JSON file)
+            System.out.println("Failed to load TypingPlan from save file. Falling back to default.");
+            personalisedPlanExists = false;
+            displayingPersonalisedPlan = false;
         }
     }
 
@@ -53,6 +57,19 @@ public class TypingPlanManager {
         return instance;
     }
 
+    public boolean personalisedPlanExists() {
+        return personalisedPlanExists;
+    }
+
+    public boolean isDisplayingPersonalisedPlan() {
+        return displayingPersonalisedPlan;
+    }
+
+    public void toggleTypingPlan() {
+        displayingPersonalisedPlan = !displayingPersonalisedPlan;
+
+    }
+
 
     /**
      * getters and setters for the TypingPlan
@@ -60,12 +77,18 @@ public class TypingPlanManager {
 
 
     public TypingPlan getTypingPlan() {
-        return typingPlan;
+        if (displayingPersonalisedPlan) {
+            return personalisedPlan;
+        } else {
+            return defaultPlan;
+        }
     }
 
     public void setTypingPlan(TypingPlan typingPlan) {
-        this.typingPlan = typingPlan;
+        this.personalisedPlan = typingPlan;
         typingPlanModified = true;
+        displayingPersonalisedPlan = true;
+        personalisedPlanExists = true;
     }
 
     public boolean getModified() {
@@ -79,14 +102,19 @@ public class TypingPlanManager {
      */
     public boolean updateModule(Module module) {
         typingPlanModified = true;
-        return typingPlan.updateModule(module);
+        if (displayingPersonalisedPlan) {
+            return personalisedPlan.updateModule(module);
+        } else {
+            return defaultPlan.updateModule(module);
+        }
     }
 
     public void saveTypingPlan() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_TYPING_PLAN_FILE), typingPlan);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_TYPING_PLAN_FILE), personalisedPlan);
             System.out.println("TypingPlan has been saved.");
+            personalisedPlanExists = true;
         } catch (IOException e) {
             System.out.println("Error while saving TypingPlan: " + e.getMessage());
         }

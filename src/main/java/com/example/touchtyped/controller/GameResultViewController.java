@@ -159,6 +159,7 @@ public class GameResultViewController {
                     // save this typing plan.
                     TypingPlanManager manager = TypingPlanManager.getInstance();
                     manager.setTypingPlan(typingPlan);
+                    TypingPlanManager.getInstance().saveTypingPlan();
 
                     // save to database - using cached credentials
                     Map<String, String> credentials = ClassroomDAO.loadUserCache();

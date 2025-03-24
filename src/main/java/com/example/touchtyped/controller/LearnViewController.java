@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
@@ -13,11 +14,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -51,13 +51,22 @@ public class LearnViewController {
     @FXML
     private Button optionsButton;
 
+    @FXML private Label typingPlanToggleLabel;
+
     /**
      * reference to the VBox in learn-view.fxml
      */
     @FXML
     private VBox vbox;
 
+    @FXML private HBox typingPlanToggleContainer;
+
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
+
+    private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
+    private final Font secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
+
+    private boolean displayPersonalisedPlan = true;
 
     public void initialize() {
         // Attach keyboard interface to scene, when scene is available
@@ -73,11 +82,24 @@ public class LearnViewController {
             }
         });
 
-        // Load font
-        Font antipastoFont = Font.loadFont(getClass().getResource("/fonts/AntipastoPro.ttf").toExternalForm(), 26);
+        typingPlanToggleLabel.setFont(secondary_font);
+        typingPlanToggleLabel.setTextFill(Color.web(StyleConstants.GREY_COLOUR));
 
         // load TypingPlan from JSON and display.
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
+
+        // if saved typing plan exists, display a button to toggle it
+        if (TypingPlanManager.getInstance().personalisedPlanExists()) {
+            System.out.println("Display toggle");
+            typingPlanToggleContainer.setManaged(true);
+            typingPlanToggleContainer.setVisible(true);
+        } else {
+            System.out.println("Do not display toggle");
+            typingPlanToggleContainer.setManaged(false);
+            typingPlanToggleContainer.setVisible(false);
+        }
+
+
         typingPlan.display(vbox);
         HBox divider = DividerLine.createDividerLineWithText("");
         vbox.getChildren().add(divider);
@@ -108,6 +130,22 @@ public class LearnViewController {
 //            System.out.println("FAILED TO GET ACCOUNT");
 //        }
 
+    }
+
+    @FXML
+    public void toggleTypingPlan() {
+        TypingPlanManager.getInstance().toggleTypingPlan();
+        TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
+        vbox.getChildren().clear();
+        typingPlan.display(vbox);
+
+        if (TypingPlanManager.getInstance().isDisplayingPersonalisedPlan()) {
+            // we are now displaying the personalised plan.
+            typingPlanToggleLabel.setText("Displaying personalised typing plan.");
+        } else {
+            // we are now displaying the default plan.
+            typingPlanToggleLabel.setText("Displaying default typing plan.");
+        }
     }
 
     @FXML
