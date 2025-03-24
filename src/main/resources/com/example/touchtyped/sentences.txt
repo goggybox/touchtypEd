@@ -1,20 +1,200 @@
-it is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife
-however little known the feelings or views of such a man may be on his first entering a neighbourhood this truth is so well fixed in the minds of the surrounding families that he is considered as the rightful property of someone or other of their daughters
-mr bennet was among the earliest of those who waited on mr bingley
-she is tolerable but not handsome enough to tempt me and i am in no humour at present to give consequence to young ladies who are slighted by other men
-i declare after all there is no enjoyment like reading how much sooner one tires of any thing than of a book
-vanity and pride are different things though the words are often used synonymously
-if a woman conceals her affection with the same skill from the object of it she may lose the opportunity of fixing him
-my good opinion once lost is lost for ever
-nothing is more deceitful than the appearance of humility it is often only carelessness of opinion and sometimes an indirect boast
-a ladys imagination is very rapid it jumps from admiration to love from love to matrimony in a moment
-happiness in marriage is entirely a matter of chance
-i could easily forgive his pride if he had not mortified mine
-we can all begin freely a slight preference is natural enough but there are very few of us who have heart enough to be really in love without encouragement
-you must allow me to tell you how ardently i admire and love you
-in vain i have struggled it will not do my feelings will not be repressed
-think only of the past as its remembrance gives you pleasure
-how despicably have i acted i who have prided myself on my discernment
-she began now to comprehend that he was exactly the man who in disposition and talents would most suit her
-there is a stubbornness about me that never can bear to be frightened at the will of others my courage always rises at every attempt to intimidate me
-i am only resolved to act in that manner which will in my own opinion constitute my happiness without reference to you or to any person so wholly unconnected with me
+The quick brown fox jumps over the lazy dog.
+She sells seashells by the seashore.
+Learning never exhausts the mind.
+A journey of a thousand miles begins with a single step.
+Hope is the thing with feathers that perches in the soul.
+Life is really simple, but we insist on making it complicated.
+He walked slowly to admire the sunset.
+Silence is sometimes the best answer.
+Books can take you to new worlds without leaving your room.
+Always do your best and be kind to others.
+The city lights shimmered in the midnight sky.
+An honest answer is a sign of true friendship.
+Every cloud has a silver lining.
+Music speaks what cannot be expressed in words.
+Patience is bitter, but its fruit is sweet.
+Good things come to those who hustle.
+The library is a haven for curious minds.
+Turn your wounds into wisdom.
+Hard work beats talent when talent doesn't work hard.
+He patiently waited for the traffic light to change.
+Let your smile change the world.
+Perseverance is the secret of all triumphs.
+Truth is powerful and it prevails.
+The waves crashed gently on the sandy shore.
+Ideas shape the course of history.
+A cheerful heart is good medicine.
+Reading expands our horizons in unexpected ways.
+Life is a daring adventure or nothing at all.
+She gazed at the moon with a sense of wonder.
+Yesterday is history, tomorrow is a mystery.
+Technology has changed our daily lives drastically.
+Success is never accidental.
+A goal without a plan is just a wish.
+The new cafe on the corner serves delicious coffee.
+Trust takes years to build and seconds to break.
+Gratitude turns what we have into enough.
+Courage is found in unlikely places.
+She traveled abroad to learn new cultures.
+A single kind word can keep someone going for days.
+Love all, trust a few, do wrong to none.
+Embrace the glorious mess that you are.
+The flowers in the meadow danced in the breeze.
+They argued fiercely, then made peace.
+A fresh start requires courage and faith.
+Always be kinder than you feel.
+The sun rose, painting the sky in golden hues.
+Work hard and stay humble.
+They cheered loudly at the final whistle.
+Small steps can lead to big changes.
+Every moment is a fresh beginning.
+The stars seemed brighter away from city lights.
+Laughter is the shortest distance between two people.
+Let your dreams be bigger than your fears.
+The old piano played notes of nostalgia.
+Learning is a treasure that will follow its owner everywhere.
+Diligence is the mother of good fortune.
+She carefully packed her belongings before moving.
+Hope anchors the soul.
+Enjoy the little things in life.
+Imagination is more important than knowledge.
+The bird perched on the fence, chirping happily.
+Be yourself; everyone else is already taken.
+Life is ten percent what happens to us and ninety percent how we respond.
+The rainbow appeared after the summer rain.
+They jumped for joy at the good news.
+Failure is not the opposite of success; it's part of success.
+Autumn leaves drifted to the ground.
+Time you enjoy wasting is not wasted time.
+Plan your work and work your plan.
+A friend to everyone is a friend to no one.
+Knowledge speaks, but wisdom listens.
+Bravery is being the only one who knows you're afraid.
+She wrote a short story late into the night.
+Let us always meet each other with a smile.
+Happiness depends upon ourselves.
+May your choices reflect your hopes, not your fears.
+The dog barked eagerly when he saw his owner.
+In the midst of chaos, find calm.
+He practiced the piano until his fingers ached.
+We rise by lifting others.
+The path to success is to take massive, determined action.
+Summer heat lingered well into the evening.
+Simple living often brings deep contentment.
+There is no substitute for hard work.
+The greatest glory in living lies not in never falling, but in rising every time we fall.
+She set goals and worked tirelessly to achieve them.
+Even the darkest night will end, and the sun will rise.
+Stay curious and keep exploring.
+A good laugh recharges your battery.
+Difficult roads often lead to beautiful destinations.
+She overcame fear by taking one small step at a time.
+You miss one hundred percent of the shots you don't take.
+The perfume of lilacs filled the garden air.
+Love is the only force capable of transforming an enemy into a friend.
+The fire crackled warmly in the cold night.
+Stay hungry, stay foolish.
+Courage doesn't mean you don't get afraid.
+Learn from yesterday, live for today, hope for tomorrow.
+Clouds drifted lazily across the blue sky.
+She arranged the flowers in a crystal vase.
+Wisdom begins in wonder.
+Hardships often prepare ordinary people for an extraordinary destiny.
+A grateful heart is a magnet for miracles.
+The cat purred contentedly on the windowsill.
+Listen to the whispers of your soul.
+Life is a balance of holding on and letting go.
+Opportunities don't happen; you create them.
+The wind whispered secrets through the trees.
+Memories warm you up from the inside.
+All our dreams can come true if we have the courage to pursue them.
+Early morning dew covered the grass.
+Keep going, everything you need will come to you at the perfect time.
+Let your faith be bigger than your fear.
+Education is the passport to the future.
+The universe is under no obligation to make sense to you.
+Strength grows in moments when you think you can't go on.
+Every accomplishment starts with the decision to try.
+Believe you can, and you're halfway there.
+Honesty is the first chapter in the book of wisdom.
+He walked barefoot on the warm beach sand.
+Where words fail, music speaks.
+Dreams don't work unless you do.
+The sun hid behind towering storm clouds.
+New beginnings are often disguised as painful endings.
+Set your goals high, and don't stop until you get there.
+The glow of the lantern guided our way.
+Happiness is found when you stop comparing yourself to others.
+A good book is a friend that never lets you down.
+Watch the stars, and see yourself running with them.
+Sometimes the wrong choices bring us to the right places.
+He studied every day to reach his ambition.
+Love the life you live, and live the life you love.
+The orchard was ripe with juicy apples.
+Success is not in what you have but who you are.
+Every flower must grow through dirt.
+Dare to be different.
+Her laughter echoed in the quiet library.
+Great things take time.
+Autumn taught us how beautiful it is to let things go.
+The pen is mightier than the sword.
+He tried a new recipe for dinner tonight.
+Rain gently tapped on the window.
+A smooth sea never made a skilled sailor.
+Love is patient, love is kind.
+Opportunities are like sunrises. If you wait too long, you miss them.
+He soared above the clouds in a small airplane.
+A smile is a curve that sets everything straight.
+One small positive thought can change your whole day.
+The bookstore felt like a treasure trove of knowledge.
+Change your thoughts and you change your world.
+Success is the sum of small efforts repeated day in and day out.
+Winter's chill lingered in the air.
+Out of difficulties grow miracles.
+Strive not to be a success, but rather to be of value.
+She carefully wrote a letter to her best friend.
+Be kind whenever possible. It is always possible.
+The empty house echoed with memories of the past.
+All you need is love.
+Pat yourself on the back for small victories.
+Worrying does not empty tomorrow of its troubles.
+They built a makeshift tent under the stars.
+Be the reason someone smiles today.
+A warm cup of tea can soothe a weary soul.
+The dark forest filled her with curiosity and awe.
+Our lives are defined by opportunities, even the ones we miss.
+Bloom where you are planted.
+He discovered his hidden talent for painting.
+Through struggle comes strength.
+She wrote her thoughts in a secret journal.
+To travel is to live.
+The calm sea reflected the moon's gentle glow.
+Believe in the magic of new beginnings.
+Choose kindness and laugh often.
+The old clock chimed every hour on the hour.
+Keep your eyes on the stars and your feet on the ground.
+The museum held ancient secrets of lost civilizations.
+Life isn't about finding yourself; it's about creating yourself.
+Be fearless in the pursuit of what sets your soul on fire.
+You are braver than you believe and stronger than you seem.
+Dream without fear and love without limits.
+The sweetest moment is the one you are in now.
+Sometimes you win, sometimes you learn.
+Enjoy the journey as much as the destination.
+The world breaks everyone, and afterward many are strong.
+Kind words can be short and easy to speak.
+Write it on your heart that every day is the best day of the year.
+Love yourself first and everything else falls into line.
+She found solace in the sound of raindrops.
+Keep calm and carry on.
+The mountains called, and he answered.
+Wake up with determination, go to bed with satisfaction.
+Mistakes are proof that you are trying.
+Darkness cannot drive out darkness; only light can do that.
+The grass was wet with morning dew.
+We don't grow when things are easy; we grow when we face challenges.
+Breath is the power behind all things.
+If opportunity doesn't knock, build a door.
+Sleep is the best meditation.
+The forest trail led to a hidden waterfall.
+For every storm, a rainbow will appear.

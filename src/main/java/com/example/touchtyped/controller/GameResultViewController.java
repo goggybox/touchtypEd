@@ -1,8 +1,13 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
+import com.example.touchtyped.model.UserProfile;
+import com.example.touchtyped.service.AppSettingsService;
+import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import javafx.concurrent.Task;
@@ -12,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 
 import java.awt.*;
 import java.io.File;
@@ -22,11 +28,18 @@ public class GameResultViewController {
     @FXML private Label finalWpmLabel;
     @FXML private Label finalAccLabel;
     @FXML private Label finalCharLabel;
+    @FXML private Label globalRankLabel;
 
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
+    @FXML private Button viewRankingsButton;
+    @FXML private BorderPane rootPane;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
+    private int wpm;
+    private double accuracy;
+    private String gameMode = "Standard Mode"; // Default game mode
+    private PlayerRanking currentRanking;
 
     /**
      * Navigate to learn view
@@ -37,6 +50,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,6 +69,10 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/option-view.fxml"));
             Scene optionScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(optionScene);
+            
             stage.setScene(optionScene);
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +88,30 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene gameScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(gameScene);
+            
             stage.setScene(gameScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Navigate to rankings view
+     */
+    @FXML
+    public void onViewRankingsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
+            Scene rankingScene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(rankingScene);
+            
+            stage.setScene(rankingScene);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,8 +123,10 @@ public class GameResultViewController {
      * @param correctKeystrokes Number of correctly typed keystrokes
      * @param wrongKeystrokes Number of incorrectly typed keystrokes
      * @param totalKeystrokes Total number of keystrokes
+     * @param gameMode Game mode (Timed, Article, Competition)
+     * @param playerName Player's name
      */
-    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
+    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes, String gameMode, String playerName) {
         // Calculate accuracy percentage
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
@@ -88,7 +134,75 @@ public class GameResultViewController {
         finalWpmLabel.setText(String.format("%d", wpm));
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
-            totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+                totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+
+        // Save data
+        this.wpm = wpm;
+        this.accuracy = accuracy;
+        this.gameMode = gameMode;
+        
+        // Create ranking and submit to global server
+        submitRanking(playerName);
+    }
+
+    /**
+     * Submit ranking to global server
+     * @param playerName Player name
+     */
+    private void submitRanking(String playerName) {
+        try {
+            // Create ranking object
+            currentRanking = new PlayerRanking(playerName, wpm, accuracy, gameMode);
+
+            // Update global ranking label
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("Submitting to global ranking server...");
+            }
+
+            // Test server connection
+            GlobalRankingService.getInstance().testConnection()
+                .thenAccept(connected -> {
+                    if (connected) {
+                        System.out.println("Successfully connected to global ranking server");
+                        
+                        // Submit ranking to global server
+                        Application.submitGameRanking(currentRanking);
+                        
+                        // Get player ranking
+                        GlobalRankingService.getInstance().getPlayerPosition(playerName)
+                            .thenAccept(position -> {
+                                if (position > 0) {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("Global Rank: #" + position);
+                                        }
+                                    });
+                                } else {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("Unable to get global ranking position");
+                                        }
+                                    });
+                                }
+                            });
+                    } else {
+                        System.out.println("Unable to connect to global ranking server");
+                        javafx.application.Platform.runLater(() -> {
+                            if (globalRankLabel != null) {
+                                globalRankLabel.setText("Unable to connect to global ranking server");
+                            }
+                        });
+                    }
+                });
+
+        } catch (Exception e) {
+            System.err.println("Error submitting ranking: " + e.getMessage());
+            e.printStackTrace();
+
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("Failed to submit ranking");
+            }
+        }
     }
 
     /**
@@ -183,5 +297,33 @@ public class GameResultViewController {
         } catch (IOException e) {
             System.err.println("An error occurred while displaying PDF.");
         }
+    }
+
+    @FXML
+    public void initialize() {
+        // Apply saved theme settings to the scene
+        finalWpmLabel.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                AppSettingsService.getInstance().applySettingsToScene(newValue);
+            }
+        });
+        
+        // Add direct application of theme to rootPane when it becomes available
+        rootPane.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String mode = AppSettingsService.getInstance().getDisplayMode();
+                switch (mode) {
+                    case AppSettingsService.NIGHT_MODE:
+                        rootPane.getStyleClass().add("dark-mode");
+                        break;
+                    case AppSettingsService.COLORBLIND_MODE:
+                        rootPane.getStyleClass().add("colorblind-mode");
+                        break;
+                    default:
+                        // Day mode (default) - no special class needed
+                        break;
+                }
+            }
+        });
     }
 } 

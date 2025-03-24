@@ -1,612 +1,154 @@
 {
   "phases" : [ {
     "duration" : "Week 1-2",
-    "goal" : "Fix errors and gain accuracy",
+    "goal" : "Build muscle memory and accuracy.",
     "modules" : [ {
-      "name" : "A & ;",
-      "focus" : "Refine pinky precision",
-      "displayText" : null,
+      "name" : "F & J Keys",
+      "focus" : "Without looking at the keyboard, rest your index fingers on the F and J key. You will be able to find them by feeling for the bump on the keys!",
+      "displayText" : "",
       "id" : 1,
       "levels" : [ {
-        "taskString" : "a;",
+        "taskString" : "fj",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "a;a;",
+        "taskString" : "ffffjjjj",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "aa;;",
+        "taskString" : "ffjfjjfj",
         "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "a;a;a;",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "aaa;;;",
-        "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "a;",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : false
+      "locked" : false,
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
-      "name" : "E & I",
-      "focus" : "Improve middle finger accuracy",
-      "displayText" : null,
+      "name" : "D & K Keys",
+      "focus" : "Rest your middle fingers on the D and K keys. Again, you shouldn't need to look at the keyboard; these keys are next to the F and J keys, where you should already have your index fingers!",
+      "displayText" : "",
       "id" : 2,
       "levels" : [ {
-        "taskString" : "ei",
+        "taskString" : "dk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eieie",
+        "taskString" : "ddddkkkk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eeiie",
+        "taskString" : "ddkdkdkdkkdk",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "eieieie",
+        "taskString" : "dkdkddkdkdkdkkkdkdkkkdkdk",
         "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "eeiieei",
-        "displayText" : null,
-        "completed" : false
+        "completed" : true
       } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "ei",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
+      "locked" : false,
+      "nextUncompletedLevel" : null,
+      "completion" : 1.0
     }, {
-      "name" : "C & ,",
-      "focus" : "Strengthen ring finger skills",
-      "displayText" : null,
+      "name" : "S & L Keys",
+      "focus" : "Without looking at the keyboard, rest your ring fingers on the S and L keys, next to your middle fingers.",
+      "displayText" : "",
       "id" : 3,
       "levels" : [ {
-        "taskString" : "c,",
+        "taskString" : "sl",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "c,c,",
+        "taskString" : "ssssllll",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
-        "taskString" : "cc,,c",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "c,c,c,",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ccc,,,c",
+        "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : false,
       "nextUncompletedLevel" : {
-        "taskString" : "c,",
+        "taskString" : "slslslslllslllsssslslssllsll",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.6666666666666666
     }, {
-      "name" : "F & J",
-      "focus" : "Improve primary key accuracy",
-      "displayText" : null,
+      "name" : "A & ; Keys",
+      "focus" : "Without looking at the keyboard, rest your pinky fingers on the A and ; keys, next to your ring fingers.",
+      "displayText" : "",
       "id" : 4,
       "levels" : [ {
-        "taskString" : "fj",
+        "taskString" : "a;",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "fjfj",
+        "taskString" : "aaaa;;;;",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ffjj",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "fjfjfj",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "fffjjj",
+        "taskString" : "aa;a;a;;;;a;;;aaaaa;a;;;a;a;",
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : false,
       "nextUncompletedLevel" : {
-        "taskString" : "fj",
+        "taskString" : "a;",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.0
     }, {
-      "name" : "G & H",
-      "focus" : "Boost index finger control",
-      "displayText" : null,
+      "name" : "G & H Keys",
+      "focus" : "You will see that the G and H keys are to the left and right of the F and J keys respectively. Your index fingers should always rest on the F and J keys, but can move to press the G and H keys when needed.",
+      "displayText" : "",
       "id" : 5,
       "levels" : [ {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ghgh",
+        "taskString" : "gggghhhh",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "gghhgh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ghgghhg",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "gghhgghh",
+        "taskString" : "ghghghghghhghhghhhghhghg",
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : true,
       "nextUncompletedLevel" : {
         "taskString" : "gh",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
+      "completion" : 0.0
     }, {
-      "name" : "R & U",
-      "focus" : "Enhance finger coordination",
-      "displayText" : null,
-      "id" : 6,
-      "levels" : [ {
-        "taskString" : "ru",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ruru",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "rruu",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "rururu",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "rruuruu",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "ru",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    } ],
-    "phase" : "Foundation Phase"
-  }, {
-    "duration" : "Week 3-4",
-    "goal" : "Build speed with letters",
-    "modules" : [ {
-      "name" : "WeakLetterGroups",
-      "focus" : "Fix a e",
-      "displayText" : null,
-      "id" : 1,
-      "levels" : [ {
-        "taskString" : "ace",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "eca",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "cae",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "eca ace",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ace eca",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "ace",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : false
-    }, {
-      "name" : "FingerPositioning",
-      "focus" : "Hand placement",
-      "displayText" : null,
-      "id" : 2,
-      "levels" : [ {
-        "taskString" : "ternpa",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ernpatt",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "tternpa",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ernpat",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "patternt",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "ternpa",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "KeyClusters",
-      "focus" : "Letter groups",
-      "displayText" : null,
-      "id" : 3,
-      "levels" : [ {
-        "taskString" : "asdfg",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "sdfgh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "dfghj",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "fghjk",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ghjkl",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "asdfg",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "AlternatingHands",
-      "focus" : "Hand coordination",
-      "displayText" : null,
-      "id" : 4,
-      "levels" : [ {
-        "taskString" : "qwert",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "wertu",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ertyu",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "rtyui",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "tyuio",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "qwert",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "AdvancedSequences",
-      "focus" : "Complex patterns",
-      "displayText" : null,
+      "name" : "Home Row",
+      "focus" : "You should now be familiar with the home row. Put your skills to the test! Try and complete these exercises without looking at the keyboard.",
+      "displayText" : "",
       "id" : 5,
       "levels" : [ {
-        "taskString" : "tternpat",
+        "taskString" : "asdfghjkl;",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ernpatter",
+        "taskString" : "alslsakdf;jlksjflask",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "patternt",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "atternpa",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ternpatt",
+        "taskString" : "sad lad had salad",
         "displayText" : null,
         "completed" : false
       } ],
-      "completion" : 0.0,
+      "locked" : true,
       "nextUncompletedLevel" : {
-        "taskString" : "tternpat",
+        "taskString" : "asdfghjkl;",
         "displayText" : null,
         "completed" : false
       },
-      "locked" : true
-    }, {
-      "name" : "SpeedFluency",
-      "focus" : "Fast typing",
-      "displayText" : null,
-      "id" : 6,
-      "levels" : [ {
-        "taskString" : "patterna",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "atternpa",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "tternpat",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ernpatter",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "patternta",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "patterna",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
+      "completion" : 0.0
     } ],
-    "phase" : "Intermediate Drills Phase"
-  }, {
-    "duration" : "Week 5-6",
-    "goal" : "Apply skills with words",
-    "modules" : [ {
-      "name" : "WeakLetterGroups",
-      "focus" : "Practice a c e",
-      "displayText" : null,
-      "id" : 1,
-      "levels" : [ {
-        "taskString" : "ace cat",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "care ace",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "each ace",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "face cat",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "pace ace",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "ace cat",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : false
-    }, {
-      "name" : "SimplePhrases",
-      "focus" : "Drill short phrases",
-      "displayText" : null,
-      "id" : 2,
-      "levels" : [ {
-        "taskString" : "The cat",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "Is fun",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "To play",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "With dog",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "And cat",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "The cat",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "FingerIndependence",
-      "focus" : "Improve finger independence",
-      "displayText" : null,
-      "id" : 3,
-      "levels" : [ {
-        "taskString" : "The quick",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "Brown fox",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "Jumps over",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "The lazy",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "Dog runs",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "The quick",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "ShortSentences",
-      "focus" : "Develop short sentence fluency",
-      "displayText" : null,
-      "id" : 4,
-      "levels" : [ {
-        "taskString" : "I am happy",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "You are fun",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "We are friends",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "They are nice",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "It is easy",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "I am happy",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "PunctuationDrills",
-      "focus" : "Exercise punctuation accuracy",
-      "displayText" : null,
-      "id" : 5,
-      "levels" : [ {
-        "taskString" : "Hello friend",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "What is fun",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "I like play",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "You are right",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "We are done",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "Hello friend",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    }, {
-      "name" : "ChallengingSentences",
-      "focus" : "Challenge typing with sentences",
-      "displayText" : null,
-      "id" : 6,
-      "levels" : [ {
-        "taskString" : "The sun is shining",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "The cat is sleeping",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "The dog is barking",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "The bird is singing",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "The kid is playing",
-        "displayText" : null,
-        "completed" : false
-      } ],
-      "completion" : 0.0,
-      "nextUncompletedLevel" : {
-        "taskString" : "The sun is shining",
-        "displayText" : null,
-        "completed" : false
-      },
-      "locked" : true
-    } ],
-    "phase" : "Real Vocabulary & Sentences Phase"
+    "phase" : "Phase 1: Foundation"
   } ]
 }

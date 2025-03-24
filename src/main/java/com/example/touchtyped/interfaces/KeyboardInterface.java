@@ -83,7 +83,7 @@ public class KeyboardInterface {
                         notifyListeners("SEMICOLON");
                         break;
                     case QUOTE:
-                        notifyListeners("QUOTE");
+                        notifyListeners("'");
                         break;
                     case NUMBER_SIGN: // this key represents the key with # on a British keyboard
                         notifyListeners("HASHTAG");

@@ -82,7 +82,7 @@ public class KeyLogsStructure {
         // calculate session duration to be the time between the first and most recent KeyLog's timestamps
         // if there is only 0 or 1 logs in the structure, keep sessionDuration at 0.
         if (keyLogs.size() > 1) {
-            sessionDuration = timestamp - keyLogs.getFirst().getTimestamp();
+            sessionDuration = timestamp - keyLogs.get(0).getTimestamp();
         }
 
         // if the key is a BACK_SPACE, decrement charPosition, otherwise increment it.
