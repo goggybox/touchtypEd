@@ -1,0 +1,3 @@
+classroomID=CALPDMO
+username=owen
+password=YYCyyc20031008
