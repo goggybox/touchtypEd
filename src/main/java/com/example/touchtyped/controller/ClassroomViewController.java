@@ -942,7 +942,13 @@ public class ClassroomViewController {
                             // logging in to existing account
                             ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
-                                joinFormDescription.setText("Logged in successfully!");
+                                joinFormDescription.setText("Logged in successfully! Loading...");
+                                try {
+                                    UserAccount user = UserDAO.getAccount(classroomID, username);
+                                    displayUserAccount(user);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 joinFormDescription.setTextFill(Color.GREEN);
                             });
                         } else {
@@ -951,7 +957,13 @@ public class ClassroomViewController {
                             UserDAO.createUser(classroomID, username, new TypingPlan());
                             ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
-                                joinFormDescription.setText("Joined classroom successfully!");
+                                joinFormDescription.setText("Joined classroom successfully! Loading...");
+                                try {
+                                    UserAccount user = UserDAO.getAccount(classroomID, username);
+                                    displayUserAccount(user);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                                 joinFormDescription.setTextFill(Color.GREEN);
                             });
                         }
@@ -1007,6 +1019,12 @@ public class ClassroomViewController {
                     Platform.runLater(() -> {
                         createFormDescription.setText("Classroom created! Classroom ID is: "+classroomID);
                         createFormDescription.setTextFill(Color.GREEN);
+                        try {
+                            UserAccount teacher = UserDAO.getAccount(classroomID, teacherName);
+                            displayUserAccount(teacher);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     });
                 } catch (Exception e) {
                     Platform.runLater(() -> {
@@ -1051,6 +1069,7 @@ public class ClassroomViewController {
                                 ClassroomDAO.saveUserCache(classroomID, teacher.getUsername(), password);
                                 loginFormDescription.setText("Logged in successfully!");
                                 loginFormDescription.setTextFill(Color.GREEN);
+                                displayUserAccount(teacher);
                             });
                         } else {
                             // password was incorrect
