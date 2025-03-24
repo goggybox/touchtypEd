@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.TypingPlan;
@@ -19,6 +20,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameResultViewController {
     @FXML private Label finalWpmLabel;
@@ -123,14 +126,14 @@ public class GameResultViewController {
 
         // Disable the button and show a loading message
         generateAdvancedStatsButton.setDisable(true);
-        descriptionLabel.setText("Generating advanced statistics... (Can take up to 30 seconds!)");
+        descriptionLabel.setText("Generating typing plan... (Can take up to 30 seconds!)");
 
-        // Create a Task to handle the REST service call
+        // Create a Task to handle the REST service call - should return a TypingPlan
         Task<RESTResponseWrapper> restTask = new Task<>() {
             @Override
             protected RESTResponseWrapper call() throws Exception {
                 RESTClient restService = new RESTClient();
-                return restService.getPDF(keyLogsStructure, () ->
+                return restService.getTypingPlan(keyLogsStructure, () ->
                         descriptionLabel.setText("Request failed. Trying again... (Please be patient!)"));
             }
         };
@@ -150,10 +153,24 @@ public class GameResultViewController {
                 TypingPlan typingPlan = response.getTypingPlan();
                 if (typingPlan != null) {
                     System.out.println("Received Typing Plan: " + typingPlan);
+                    descriptionLabel.setText("Successfully updated typing plan.");
+                    generateAdvancedStatsButton.setVisible(false);
 
                     // save this typing plan.
                     TypingPlanManager manager = TypingPlanManager.getInstance();
                     manager.setTypingPlan(typingPlan);
+
+                    // save to database - using cached credentials
+                    Map<String, String> credentials = ClassroomDAO.loadUserCache();
+                    if (credentials == null) {
+                        System.out.println("Not saved to database; not logged in.");
+                    } else {
+                        String classroomID = credentials.get("classroomID");
+                        String username = credentials.get("username");
+                        String password = credentials.getOrDefault("password", null);
+                        UserDAO.updateTypingPlan(classroomID, username, typingPlan, password);
+                        System.out.println("Saved typing plan to database.");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

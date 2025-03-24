@@ -82,10 +82,10 @@
 
             <!-- Advanced Statistics Button and Description -->
             <VBox alignment="CENTER" spacing="10">
-                <Label fx:id="descriptionLabel" text="Click below to generate advanced statistics and personalise your typing plan." styleClass="description-label"/>
+                <Label fx:id="descriptionLabel" text="Click below to personalise your typing plan based on these results." styleClass="description-label"/>
                 <Button fx:id="generateAdvancedStatsButton"
                         onAction="#onGenerateAdvancedStatsButtonClick"
-                        text="Generate Advanced Statistics"
+                        text="Personalise Typing Plan"
                         styleClass="generate-button"
                         focusTraversable="false"/>
             </VBox>

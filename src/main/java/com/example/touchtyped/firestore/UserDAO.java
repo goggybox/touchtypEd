@@ -264,4 +264,31 @@ public final class UserDAO {
         }
     }
 
+    public static boolean updateTypingPlan(String classroomID, String username, TypingPlan newPlan) throws InterruptedException, ExecutionException {
+        return updateTypingPlan(classroomID, username, newPlan, null);
+    }
+
+    public static boolean updateTypingPlan(String classroomID, String username, TypingPlan newPlan, String password) throws InterruptedException, ExecutionException {
+        UserAccount user = getAccount(classroomID, username, password);
+        if (user == null) {
+            System.out.println("DATABASE FAILURE: Credentials incorrect or user doesn't exist.");
+            return false;
+        }
+
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference userDoc = db.collection(USER_COLLECTION)
+                    .document(classroomID + "," + username);
+
+            ApiFuture<WriteResult> result = userDoc.update("typingPlan", newPlan);
+            System.out.println("Updated typing plan in database.");
+            result.get();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("DATABASE FAILURE: Failed to update typing plan - " + e.getMessage());
+            return false;
+        }
+    }
+
 }
