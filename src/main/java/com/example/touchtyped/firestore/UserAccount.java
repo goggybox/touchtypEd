@@ -12,6 +12,7 @@ public class UserAccount {
     private TypingPlan typingPlan;
     private List<KeyLogsStructure> keyLogs;
     private String password;
+    private long joinedDate = System.currentTimeMillis();
 
     public UserAccount() {}
 
@@ -71,5 +72,13 @@ public class UserAccount {
 
     public void setClassroomID(String classroomID) {
         this.classroomID = classroomID;
+    }
+
+    public long getJoinedDate() {
+        return joinedDate;
+    }
+
+    public void setJoinedDate(long joinedDate) {
+        this.joinedDate = joinedDate;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.firestore.Classroom;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
@@ -11,6 +12,7 @@ import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -29,6 +31,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
 import java.awt.*;
@@ -94,7 +97,7 @@ public class ClassroomViewController {
     private HBox selectorContainer;
 
     @FXML
-    private HBox accountContainer;
+    private VBox accountContainer;
 
     @FXML
     private VBox studentContainer;
@@ -136,6 +139,9 @@ public class ClassroomViewController {
     private Label studentKeyLogsDescriptor;
 
     @FXML
+    private Label accountJoinedDate;
+
+    @FXML
     private Label teacherSelectionFormDescription;
 
     @FXML
@@ -145,6 +151,9 @@ public class ClassroomViewController {
     private Label userGreeting;
 
     @FXML
+    private Label accountUsername;
+
+    @FXML
     private Label userDescription;
 
     @FXML
@@ -152,6 +161,12 @@ public class ClassroomViewController {
 
     @FXML
     private Label keyLogDescriptor;
+
+    @FXML
+    private Label changeTo;
+
+    @FXML
+    private Label accountTitle;
 
     @FXML
     private TextField classroomIDField;
@@ -173,6 +188,20 @@ public class ClassroomViewController {
 
     @FXML
     private TextField passwordField;
+
+    @FXML
+    private Button accountChangeUsernameButton;
+
+    @FXML private Label removeStudent;
+
+    @FXML private TextField removeStudentInput;
+    @FXML private Button removeStudentButton;
+
+    @FXML private Label errorLabel;
+
+
+    @FXML
+    private TextField accountChangeUsernameInput;
 
     private static final String file_path = "user_cache.txt";
 
@@ -309,16 +338,19 @@ public class ClassroomViewController {
                             // Set new selection
                             studentLabel.getStyleClass().add("student-selected");
                             selectedStudentLabel = studentLabel;
-                            selectedStudentUsername = student;
+                            selectedStudentUsername = selectedStudentLabel.getText();
+                            System.out.println("Selected user: "+selectedStudentUsername);
+                            // hide error message if visible
+                            errorLabel.setVisible(false);
 
                             // load student's keyLogsStructures IF we have selected Stats
                             if (isStatsSelected) {
                                 System.out.println("Loading user's key logs");
-                                loadStudentKeyLogs(classroom.getClassroomID(), student);
+                                loadStudentKeyLogs(classroom.getClassroomID(), selectedStudentUsername);
                             }
                             else {
                                 System.out.println("Loading user's account.");
-                                loadAccount(classroom.getClassroomID(), student);
+                                loadAccount(classroom.getClassroomID(), selectedStudentUsername);
                             }
 
                             // set selectorContainer to be visible
@@ -338,8 +370,165 @@ public class ClassroomViewController {
     private void loadAccount(String classroomID, String student) {
         typingTestsContainer.setVisible(false);
         typingTestsContainer.setManaged(false);
+        accountChangeUsernameInput.setText("");
+        removeStudentInput.setText("");
         accountContainer.setVisible(true);
         accountContainer.setManaged(true);
+
+        accountTitle.setFont(secondary_font);
+        accountTitle.setText("Account Details of "+student);
+
+        accountUsername.setFont(secondary_font);
+        accountUsername.setText("Student's Username: "+student);
+        changeTo.setFont(secondary_font);
+
+        // get user account
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    UserAccount user = UserDAO.getAccount(classroomID, student);
+                    Platform.runLater(() -> {
+                        String formattedTime = Instant.ofEpochMilli(user.getJoinedDate())
+                                .atZone(ZoneId.systemDefault())
+                                .format(DateTimeFormatter.ofPattern("dd/MM '('EEE')' 'at' HH:mm"));
+                        accountJoinedDate.setText("User joined classroom on "+formattedTime);
+                        accountJoinedDate.setFont(secondary_font);
+                    });
+                } catch (Exception e) {
+                    System.out.println("DATABASE FAILURE. Failed to fetch user.");
+                }
+
+                return null;
+            }
+        };
+        new Thread(task).start();
+
+    }
+
+    @FXML
+    private void changeUsername() {
+        String newUsername = accountChangeUsernameInput.getText();
+        if (newUsername.isBlank()) {
+            showWarning("* You must first enter a new username!");
+            return;
+        }
+
+        if (newUsername.length() < 5 || newUsername.length() > 25) {
+            showWarning("* New username must be between 5 and 25 characters long.");
+            return;
+        }
+
+        if (newUsername.equals(selectedStudentUsername)) {
+            showWarning("* New username must be different!");
+            return;
+        }
+
+        Task<Boolean> checkTask = new Task<>() {
+            @Override
+            protected Boolean call() throws Exception {
+                return ClassroomDAO.usernameExistsInClassroom(ourClassroomID, newUsername);
+            }
+        };
+
+        checkTask.setOnSucceeded(event -> {
+            boolean exists = checkTask.getValue();
+            if (exists) {
+                showWarning("* A user with that name already exists!");
+            } else {
+                // Proceed with username change
+                performUsernameChange(newUsername);
+            }
+        });
+
+        checkTask.setOnFailed(event -> {
+            System.out.println("DATABASE FAILURE: Failed to check username existence");
+            showWarning("* Failed to check username availability. Please try again.");
+        });
+
+        new Thread(checkTask).start();
+
+
+    }
+
+    private void performUsernameChange(String newUsername) {
+        // get the user
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+
+                    UserAccount user = UserDAO.getAccount(ourClassroomID, selectedStudentUsername);
+                    Classroom classroom = ClassroomDAO.getClassroom(ourClassroomID);
+                    Platform.runLater(() -> {
+                        String userID = user.getUserID();
+
+                        try {
+                            // delete user from db, change UserAccount username, then save user.
+                            UserDAO.deleteUser(ourClassroomID, selectedStudentUsername);
+                            System.out.println("Deleted user from database.");
+                            user.setUsername(newUsername);
+                            UserDAO.addUserAccount(ourClassroomID, user);
+                            System.out.println("Added user with new username to database.");
+
+                            // update classroom's student list
+                            List<String> students = classroom.getStudentUsernames();
+                            int index = students.indexOf(selectedStudentUsername);
+                            students.set(index, newUsername);
+                            ClassroomDAO.replaceStudentList(ourClassroomID, students);
+                            System.out.println("Replaced students list in classroom.");
+
+                            // update UI
+                            selectedStudentLabel.setText(newUsername);
+                            showSuccess("* Successfully updated '"+selectedStudentUsername+"' to '"+newUsername+"'.");
+                            selectedStudentUsername = newUsername;
+                            accountTitle.setText("Account Details of "+selectedStudentUsername);
+                            accountUsername.setText("Student's Username: "+selectedStudentUsername);
+
+                            // empty accountChangeUsernameInput
+                            accountChangeUsernameInput.setText("");
+
+                        } catch (Exception e) {
+                            System.out.println("DATABASE FAILURE: Failed to update user or classroom student list.");
+                        }
+
+                    });
+
+                } catch (Exception e) {
+                    System.out.println("DATABASE FAILURE: Failed to get user or classroom.");
+                }
+                return null;
+            }
+        };
+        new Thread(task).start();
+    }
+
+    /**
+     * used to display a warning message in the errorLabel in the Accounts view.
+     * @param message is the message to display
+     */
+    private void showWarning(String message) {
+        Platform.runLater(() -> {
+            errorLabel.setTextFill(Color.web(StyleConstants.RED_COLOUR));
+            errorLabel.setText(message);
+            errorLabel.setVisible(true);
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(event -> errorLabel.setVisible(false));
+            pause.play();
+        });
+    }
+
+    private void showSuccess(String message) {
+        Platform.runLater(() -> {
+            errorLabel.setTextFill(Color.web(StyleConstants.BLUE_COLOUR));
+            errorLabel.setText(message);
+            errorLabel.setVisible(true);
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(5));
+            pause.setOnFinished(event -> errorLabel.setVisible(false));
+            pause.play();
+        });
     }
 
     /**
@@ -351,6 +540,7 @@ public class ClassroomViewController {
     private void loadStudentKeyLogs(String classroomID, String username) {
         accountContainer.setVisible(false);
         accountContainer.setManaged(false);
+        errorLabel.setVisible(false);
         studentInfoContainer.setVisible(true);
         typingTestsContainer.setVisible(true);
         typingTestsContainer.setManaged(true);
@@ -397,6 +587,16 @@ public class ClassroomViewController {
 
                                 studentKeyLogsContainer.getChildren().add(logLabel);
                             }
+                        } else {
+                            // student has no logged typing tests results
+                            Label logLabel = new Label("None");
+                            logLabel.setFont(secondary_font);
+                            logLabel.setStyle("-fx-font-size: 16px;");
+                            logLabel.setTextFill(Color.rgb(97,97,97));
+                            logLabel.setTextAlignment(TextAlignment.CENTER);
+                            logLabel.setAlignment(Pos.CENTER);
+                            logLabel.setPrefWidth((logs.size() > 10) ? 225 : 242);
+                            studentKeyLogsContainer.getChildren().add(logLabel);
                         }
 
                         studentKeyLogsDescriptor.setText("User's Typing Tests");
@@ -432,6 +632,7 @@ public class ClassroomViewController {
         if (cachedPDF != null) {
             displayPDF(cachedPDF, log);
             System.out.println("Loaded PDF from cache instead of fetching from REST service.");
+            keyLogDescriptor.setFont(secondary_font);
             keyLogDescriptor.setText("Results of " + username + "'s typing test on "+formattedTime+".");
             keyLogDescriptor.setAlignment(Pos.CENTER);
             return;
@@ -439,6 +640,7 @@ public class ClassroomViewController {
 
 
         // show loading message
+        keyLogDescriptor.setFont(secondary_font);
         keyLogDescriptor.setText("Loading results of typing test...");
         keyLogDescriptor.setAlignment(Pos.CENTER);
 
@@ -481,6 +683,7 @@ public class ClassroomViewController {
 
                     }
 
+                    keyLogDescriptor.setFont(secondary_font);
                     keyLogDescriptor.setText("Results of " + username + "'s typing test on " + formattedTime + ".");
                     keyLogDescriptor.setAlignment(Pos.CENTER_RIGHT);
                 }
@@ -496,6 +699,7 @@ public class ClassroomViewController {
                 exception.printStackTrace();
 
                 // notify the user.
+                keyLogDescriptor.setFont(secondary_font);
                 keyLogDescriptor.setText("Failed to load analytics. Please try again later.");
             }
         });
@@ -519,14 +723,19 @@ public class ClassroomViewController {
                     PDFViewer pdfViewer = new PDFViewer(pdfData);
                     // load simple statistics
                     Label simpleDescriptor = new Label("Here is a simple analysis of the typing test:");
+                    simpleDescriptor.setFont(secondary_font);
                     simpleDescriptor.getStyleClass().add("stats-descriptor");
                     Label wpmLabel = new Label("Words per Minute (wpm): " + log.getWpm());
+                    wpmLabel.setFont(secondary_font);
                     Label keyStrokes = new Label("Correct/Incorrect Keystrokes: " + log.getCorrectKeystrokes() + "/" + log.getIncorrectKeystrokes());
+                    keyStrokes.setFont(secondary_font);
                     Label totalKeyStrokes = new Label("Total Keystrokes: " + (log.getCorrectKeystrokes() + log.getIncorrectKeystrokes()));
+                    totalKeyStrokes.setFont(secondary_font);
                     wpmLabel.getStyleClass().add("simple-stats");
                     keyStrokes.getStyleClass().add("simple-stats");
                     totalKeyStrokes.getStyleClass().add("simple-stats");
                     Label advancedDescriptor = new Label("Here is an advanced analysis of the typing test:");
+                    advancedDescriptor.setFont(secondary_font);
                     advancedDescriptor.getStyleClass().add("stats-descriptor");
                     logContainer.getChildren().add(simpleDescriptor);
                     logContainer.getChildren().add(wpmLabel);
@@ -635,6 +844,12 @@ public class ClassroomViewController {
         // check to ensure fields are not empty
         if (classroomID.isBlank() || username.isBlank()) {
             joinFormDescription.setText("Please enter the classroom ID and a username!");
+            joinFormDescription.setTextFill(Color.BLACK);
+            return;
+        }
+
+        if (username.length() < 5 || username.length() > 25) {
+            joinFormDescription.setText("Usernames must be between 5 and 25 characters long.");
             joinFormDescription.setTextFill(Color.BLACK);
             return;
         }
@@ -817,7 +1032,6 @@ public class ClassroomViewController {
         if (!isStatsSelected) {
             isStatsSelected = true;
             isAccountSelected = false;
-            System.out.println(getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png"));
             accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png").toExternalForm()));
             statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/statsSelected.png").toExternalForm()));
             System.out.println("'"+selectedStudentUsername+"' stats selected for classroom "+ourClassroomID);

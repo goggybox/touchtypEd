@@ -59,9 +59,34 @@
 
                             </HBox>
 
-                            <HBox fx:id="accountContainer" visible="false" prefHeight="1600">
+                            <VBox fx:id="accountContainer" visible="false" prefHeight="1600" spacing="2">
+                                <Label fx:id="accountTitle"/>
+                                <VBox spacing="15">
+                                    <VBox spacing="2">
+                                        <Label fx:id="accountUsername"/>
+                                        <HBox spacing="10" translateX="20">
+                                            <Label fx:id="changeTo" text="change to:"/>
+                                            <TextField fx:id="accountChangeUsernameInput" promptText="New Username" translateY="-1"/>
+                                            <Button fx:id="accountChangeUsernameButton" text="CHANGE" translateY="-1" translateX="-7"
+                                                    onAction="#changeUsername"/>
+                                        </HBox>
+                                    </VBox>
+                                    <VBox spacing="2">
+                                        <Label fx:id="accountJoinedDate"/>
+                                        <HBox spacing="10" translateX="20">
+                                            <Label fx:id="removeStudent" text="to remove from classroom, type student's username:"/>
+                                            <TextField fx:id="removeStudentInput" promptText="Confirm Username" translateY="-1"/>
+                                            <Button fx:id="removeStudentButton" text="REMOVE" translateY="-1" translateX="-7"/>
+                                        </HBox>
+                                    </VBox>
+                                </VBox>
 
-                            </HBox>
+                                <Region VBox.vgrow="ALWAYS"/>
+
+                                <HBox alignment="BOTTOM_RIGHT">
+                                    <Label fx:id="errorLabel" visible="false"/>
+                                </HBox>
+                            </VBox>
 
                             <HBox fx:id="typingTestsContainer" spacing="0" visible="false">
                                 <!-- Student data column -->

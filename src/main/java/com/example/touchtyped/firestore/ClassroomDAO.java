@@ -114,6 +114,23 @@ public class ClassroomDAO {
         }
     }
 
+    public static boolean replaceStudentList(String classroomID, List<String> studentList) throws InterruptedException, ExecutionException {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference docRef = db.collection(CLASSROOM_COLLECTION).document(classroomID);
+
+            // Update the list of students
+            ApiFuture<WriteResult> result = docRef.update("studentUsernames", studentList);
+            result.get(); // Ensure the update is successful by waiting for the result.
+
+            return true;
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
+            System.out.println("DATABASE FAILURE: Failed to update list of students in classroom "+classroomID);
+            return false;
+        }
+    }
+
     public static Boolean classroomExists(String classroomID) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();

@@ -55,8 +55,45 @@
 }
 
 #accountContainer {
-    -fx-padding:50px;
+    -fx-padding:25px;
     -fx-pref-width:853px;
+}
+
+#accountContainer Label{
+    -fx-font-size: 16px;
+}
+
+#accountChangeUsernameButton, #removeStudentButton {
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-padding: 0px 3px 0px 3px;
+}
+
+#accountChangeUsernameButton:hover, #removeStudentButton:hover {
+    -fx-border-color: rgba(245, 16, 47, 0.5);
+}
+
+#accountContainer TextField {
+    -fx-font-size: 14px;
+}
+
+#accountTitle {
+    -fx-font-size: 22px;
+    -fx-font-weight: 600;
+    -fx-padding: 0px 0px 5px 0px;
+}
+
+#changeTo, #removeStudent {
+    -fx-text-fill: #6e6d6d;
+}
+
+#accountChangeUsernameInput, #removeStudentInput {
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-padding: 0px 2px 0px 2px;
+    -fx-border-color: rgb(127, 138, 156);
 }
 
 #studentKeyLogsContainerScrollPane {
@@ -123,4 +160,9 @@
 
 #selectorContainer {
     -fx-padding: 0px 0px 7px 10px;
+}
+
+#errorLabel {
+    -fx-text-fill: rgba(245, 16, 47, 0.75);
+    -fx-padding: 0px -20px -20px 0px;
 }

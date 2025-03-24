@@ -70,6 +70,27 @@ public final class UserDAO {
         }
     }
 
+    public static String addUserAccount(String classroomID, UserAccount user) throws InterruptedException, ExecutionException {
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+user.getUsername());
+
+            // check if a user with that username already exists in the classroom
+            DocumentSnapshot document = userDoc.get().get();
+            if (document.exists()) {
+                // already exists
+                return null;
+            }
+
+            userDoc.set(user).get();
+            return user.getUserID();
+
+        } catch (Exception e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Failed to add existing user", e);
+        }
+    }
+
     /**
      * generate a random user ID, ensuring uniqueness in the database.
      * @return the generated userID, or null if unsuccessful.
@@ -187,6 +208,27 @@ public final class UserDAO {
         } catch (Exception e) {
             System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist. (2)");
             return null;
+        }
+    }
+
+    public static boolean deleteUser(String classroomID, String username) throws InterruptedException, ExecutionException {
+        return deleteUser(classroomID, username, null);
+    }
+
+    public static boolean deleteUser(String classroomID, String username, String password) throws InterruptedException, ExecutionException {
+        UserAccount user = getAccount(classroomID, username, password);
+        if (user == null) {
+            return false;
+        }
+
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID + "," + username);
+            userDoc.delete().get();
+            return true;
+        } catch (Exception e) {
+            System.out.println("DATABASE FAILURE. Failed to delete user");
+            return false;
         }
     }
 
