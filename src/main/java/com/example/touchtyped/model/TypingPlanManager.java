@@ -14,7 +14,9 @@ public class TypingPlanManager {
     private static TypingPlanManager instance;
 
     private static final String SAVED_TYPING_PLAN_FILE = "saved_typing_plan.json";
-    private boolean typingPlanModified = false;
+    private static final String SAVED_DEFAULT_PLAN = "saved_default_plan.json";
+    private boolean personalisedPlanModified = false;
+    private boolean defaultPlanModified = false;
 
     private boolean personalisedPlanExists = true;
     private boolean displayingPersonalisedPlan = true;
@@ -26,12 +28,24 @@ public class TypingPlanManager {
      * private constructor to prevent instantiation
      */
     private TypingPlanManager() {
-        defaultPlan = TypingPlanDeserialiser.getTypingPlan();
+        File defaultFile = new File(SAVED_DEFAULT_PLAN);
+        if (defaultFile.exists()) {
+            // if the typingplan has been saved, retrieve it.
+            defaultPlan = loadDefaultPlan();
+            if (defaultPlan == null) {
+                System.out.println("Failed to load saved default plan. Falling back to clean default.");
+                defaultPlan = TypingPlanDeserialiser.getTypingPlan();
+            }
+        } else {
+            // load clean default typing plan
+            defaultPlan = TypingPlanDeserialiser.getTypingPlan();
+            System.out.println("Loaded clean default plan.");
+        }
 
-        File saveFile = new File(SAVED_TYPING_PLAN_FILE);
-        if (saveFile.exists()) {
+        File personalisedFile = new File(SAVED_TYPING_PLAN_FILE);
+        if (personalisedFile.exists()) {
             // if the TypingPlan has been saved, retrieve it.
-            personalisedPlan = loadTypingPlan();
+            personalisedPlan = loadPersonalisedPlan();
             if (personalisedPlan == null) {
                 // Fallback to default TypingPlan if loading fails
                 System.out.println("Failed to load TypingPlan from save file. Falling back to default.");
@@ -39,7 +53,7 @@ public class TypingPlanManager {
                 displayingPersonalisedPlan = false;
             }
         } else {
-            // load default Typing Plan (currently JSON file)
+            // load default Typing Plan
             System.out.println("Failed to load TypingPlan from save file. Falling back to default.");
             personalisedPlanExists = false;
             displayingPersonalisedPlan = false;
@@ -86,13 +100,17 @@ public class TypingPlanManager {
 
     public void setTypingPlan(TypingPlan typingPlan) {
         this.personalisedPlan = typingPlan;
-        typingPlanModified = true;
+        personalisedPlanModified = true;
         displayingPersonalisedPlan = true;
         personalisedPlanExists = true;
     }
 
     public boolean getModified() {
-        return typingPlanModified;
+        if (displayingPersonalisedPlan) {
+            return personalisedPlanModified;
+        } else {
+            return defaultPlanModified;
+        }
     }
 
     /**
@@ -101,10 +119,11 @@ public class TypingPlanManager {
      * @return whether successfully updated
      */
     public boolean updateModule(Module module) {
-        typingPlanModified = true;
         if (displayingPersonalisedPlan) {
+            personalisedPlanModified = true;
             return personalisedPlan.updateModule(module);
         } else {
+            defaultPlanModified = true;
             return defaultPlan.updateModule(module);
         }
     }
@@ -113,21 +132,37 @@ public class TypingPlanManager {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_TYPING_PLAN_FILE), personalisedPlan);
-            System.out.println("TypingPlan has been saved.");
+            System.out.println("Personalised typing plan has been saved.");
             personalisedPlanExists = true;
+
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_DEFAULT_PLAN), defaultPlan);
+            System.out.println("Default typing plan has been saved.");
+
         } catch (IOException e) {
             System.out.println("Error while saving TypingPlan: " + e.getMessage());
         }
     }
 
-    private TypingPlan loadTypingPlan() {
+    private TypingPlan loadPersonalisedPlan() {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             TypingPlan loadedPlan = objectMapper.readValue(new File(SAVED_TYPING_PLAN_FILE), TypingPlan.class);
-            System.out.println("TypingPlan loaded from save file.");
+            System.out.println("Personalised typing plan loaded from save file.");
             return loadedPlan;
         } catch (IOException e) {
             System.out.println("Error while loading TypingPlan from file: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private TypingPlan loadDefaultPlan() {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            TypingPlan loadedPlan = objectMapper.readValue(new File(SAVED_DEFAULT_PLAN), TypingPlan.class);
+            System.out.println("Default typing plan loaded from save file.");
+            return loadedPlan;
+        } catch (IOException e) {
+            System.out.println("ERROR while loading saved default typing plan.");
             return null;
         }
     }

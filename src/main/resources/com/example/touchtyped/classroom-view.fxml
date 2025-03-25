@@ -15,6 +15,7 @@
             <StackPane fx:id="stackPane" prefWidth="1200.0">
                 <VBox fx:id="studentTeacherContainer" alignment="CENTER" spacing="15">
                     <Label text="Are you a student or a teacher?" style="-fx-font-size: 24px;"/>
+                    <Label fx:id="detailsChangedErrorLabel"/>
                     <HBox spacing="20" alignment="CENTER">
                         <Button text="Student" fx:id="studentButton" style="-fx-font-size: 18px;"
                                 prefWidth="200" onAction="#displayStudent"/>
@@ -30,7 +31,15 @@
 
                 <!-- Display Cached Information -->
                 <VBox fx:id="userAccountDisplayContainer" spacing="10">
-                    <Label fx:id="userGreeting"/>
+                    <HBox>
+                        <Label fx:id="userGreeting"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="logoutButton" onMouseClicked="#onLogoutButtonClicked"
+                                   pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@images/classroom-content/logout.png"/>
+                        </ImageView>
+                    </HBox>
                     <Label fx:id="userDescription"/>
 
                     <!-- Teacher-specific container -->
@@ -135,7 +144,7 @@
                 <!-- Teacher Select "Create" or "Log in" Form -->
                 <VBox fx:id="teacherSelectionForm" alignment="CENTER" spacing="15" visible="false">
                     <Label text="Teacher Form" style="-fx-font-size: 26px;"/>
-                    <Label fx:id="teacherSelectionFormDescription" text="Login to an existing account, or create a new account."
+                    <Label fx:id="teacherSelectionFormDescription" text="Login to an existing account, or create a new account and classroom."
                            style="-fx-font-size: 16px;"/>
                     <HBox spacing="20" alignment="CENTER">
                         <Button text="Login" style="-fx-font-size: 18px;"
@@ -162,7 +171,7 @@
 
                 <!-- Log-in Form -->
                 <VBox fx:id="loginForm" alignment="CENTER" spacing="15" visible="false">
-                    <Label text="Create Classroom" style="-fx-font-size: 26px;"/>
+                    <Label text="Log-in to Classroom" style="-fx-font-size: 26px;"/>
                     <Label fx:id="loginFormDescription" text="Fill in the details below to log-in to your existing teacher account." style="-fx-font-size: 16px;"/>
                     <TextField fx:id="loginClassroomID" promptText="Classroom ID"/>
                     <TextField fx:id="loginPassword" promptText="Teacher Password"/>

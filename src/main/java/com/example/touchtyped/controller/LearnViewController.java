@@ -9,6 +9,7 @@ import com.example.touchtyped.model.*;
 import com.example.touchtyped.model.Module;
 import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -64,6 +65,8 @@ public class LearnViewController {
 
     @FXML private ImageView typingPlanToggleButton;
 
+    @FXML private StackPane loadingOverlay;
+
     private KeyboardInterface keyboardInterface = new KeyboardInterface();
 
     private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
@@ -84,6 +87,50 @@ public class LearnViewController {
                 System.err.println("Scene is not available yet.");
             }
         });
+
+        // check cached information (if it exists), and ensure the details are valid
+        Task<Void> initialisation = new Task<>() {
+            @Override
+            protected Void call() {
+                try {
+                    Map<String, String> userCache = ClassroomDAO.loadUserCache();
+                    if (userCache != null) {
+                        String classroomID = userCache.get("classroomID");
+
+                        // check if the classroom exists
+                        if (!ClassroomDAO.classroomExists(classroomID)) {
+                            // go to Classroom page and change label to notify user.
+                            Platform.runLater(() -> {
+                                ClassroomDAO.deleteUserCache(); // delete the cache since it is now invalid
+                                String error = "You were logged out because your classroom no longer exists!";
+                                goToClassroomWithError(error);
+                            });
+                        }
+
+                        String username = userCache.get("username");
+                        String password = userCache.getOrDefault("password", null);
+                        UserAccount user = UserDAO.getAccount(classroomID, username, password);
+
+                        if (user == null) {
+                            // either the user doesn't exist anymore, or their password has changed.
+                            // go to Classroom page and change label to notify user.
+                            System.out.println("User credentials invalid: going to classroom...");
+                            Platform.runLater(() -> {
+                                ClassroomDAO.deleteUserCache(); // delete the cache since it is now invalid.
+                                String error = "You were logged out because either your account was deleted, or your password has changed.";
+                                goToClassroomWithError(error);
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // successfully confirmed cached user details to be valid
+                return null;
+            }
+        };
+        new Thread(initialisation).start();
 
         typingPlanToggleLabel.setFont(secondary_font);
         typingPlanToggleLabel.setTextFill(Color.web(StyleConstants.GREY_COLOUR));
@@ -135,12 +182,33 @@ public class LearnViewController {
 
     }
 
+    private void goToClassroomWithError(String error) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+
+            // Access the controller of the Classroom page
+            ClassroomViewController classroomController = loader.getController();
+
+            // Pass the error message to the Classroom controller
+            classroomController.displayUserDetailsChangedError(error);
+
+            // Navigate to the Classroom page
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void toggleTypingPlan() {
         TypingPlanManager.getInstance().toggleTypingPlan();
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
         vbox.getChildren().clear();
         typingPlan.display(vbox);
+        HBox divider = DividerLine.createDividerLineWithText("");
+        vbox.getChildren().add(divider);
 
         if (TypingPlanManager.getInstance().isDisplayingPersonalisedPlan()) {
             // we are now displaying the personalised plan.

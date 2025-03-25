@@ -166,3 +166,7 @@
     -fx-text-fill: rgba(245, 16, 47, 0.75);
     -fx-padding: 0px -20px -20px 0px;
 }
+
+#logoutButton {
+    -fx-cursor: hand;
+}

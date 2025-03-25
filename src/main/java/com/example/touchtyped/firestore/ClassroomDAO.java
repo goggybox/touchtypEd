@@ -224,6 +224,10 @@ public class ClassroomDAO {
         }
     }
 
+    public static boolean cacheExists() {
+        return Files.exists(Paths.get(CACHE_FILE));
+    }
+
     /**
      * load the user's information from cache.
      * @return a Map of the information (with field "classroomID", "username", and (optionally) "password").
@@ -248,6 +252,17 @@ public class ClassroomDAO {
             System.err.println("CACHE ERROR: Failed to load user cache");
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public static boolean deleteUserCache() {
+        try {
+            Path cachePath = Paths.get(CACHE_FILE);
+            return Files.deleteIfExists(cachePath);
+        } catch (IOException e) {
+            System.err.println("CACHE ERROR: Failed to delete user cache");
+            e.printStackTrace();
+            return false;
         }
     }
 

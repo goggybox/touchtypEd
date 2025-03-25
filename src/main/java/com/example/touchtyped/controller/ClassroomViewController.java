@@ -199,6 +199,8 @@ public class ClassroomViewController {
 
     @FXML private Label errorLabel;
 
+    @FXML private Label detailsChangedErrorLabel;
+
 
     @FXML
     private TextField accountChangeUsernameInput;
@@ -278,6 +280,17 @@ public class ClassroomViewController {
         new Thread(initialisation).start();
     }
 
+    public void displayUserDetailsChangedError(String message) {
+        Platform.runLater(() -> {
+            detailsChangedErrorLabel.setText(message);
+            detailsChangedErrorLabel.setTextFill(Color.web(StyleConstants.RED_COLOUR));
+            detailsChangedErrorLabel.setVisible(true);
+            System.out.println("Displaying error that the user's details have changed.");
+        });
+    }
+
+
+
     /**
      * this function runs when the user has logged in previously, and their account information has been cached.
      * this function will display a simple message to student users, but will display complex information to a teacher
@@ -286,10 +299,18 @@ public class ClassroomViewController {
      */
     public void displayUserAccount(UserAccount userAccount) {
         hideAllForms();
+        isAccountSelected = true;
+        isStatsSelected = false;
+        accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png").toExternalForm()));
+        statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png").toExternalForm()));
         teacherContainer.setVisible(false);
         studentContainer.setVisible(false);
         userAccountDisplayContainer.setVisible(true);
         userGreeting.setFont(primary_font);
+        selectorContainer.setVisible(false);
+        accountContainer.setVisible(false);
+        typingTestsContainer.setVisible(false);
+        keyLogContainer.setVisible(false);
         userDescription.setFont(secondary_font);
         userDescription.setWrapText(true);
         userGreeting.setText("Hello, "+userAccount.getUsername());
@@ -835,6 +856,7 @@ public class ClassroomViewController {
         studentTeacherContainer.setVisible(false);
         teacherSelectionForm.setVisible(false);
         userAccountDisplayContainer.setVisible(false);
+        detailsChangedErrorLabel.setVisible(false);
         loadingContainer.setVisible(false);
         joinForm.setVisible(false);
         createForm.setVisible(false);
@@ -860,6 +882,8 @@ public class ClassroomViewController {
         hideAllForms();
         joinForm.setVisible(true);
         joinForm.requestFocus();
+        classroomIDField.setText("");
+        studentNameField.setText("");
         joinFormDescription.setText("Enter the ID of the classroom you want to join, and choose a username!");
         joinFormDescription.setTextFill(Color.BLACK);
         joinFormDescription.setMaxWidth(350);
@@ -873,6 +897,8 @@ public class ClassroomViewController {
         hideAllForms();
         teacherSelectionForm.setVisible(true);
         teacherSelectionForm.requestFocus();
+        teacherSelectionFormDescription.setText("Login to an existing account, or create a new account and classroom.");
+        teacherSelectionFormDescription.setTextFill(Color.BLACK);
         joinFormDescription.setMaxWidth(350);
         joinFormDescription.setPrefHeight(50);
         joinFormDescription.setTextAlignment(TextAlignment.CENTER);
@@ -884,6 +910,11 @@ public class ClassroomViewController {
         hideAllForms();
         createForm.setVisible(true);
         createForm.requestFocus();
+        classroomNameField.setText("");
+        teacherNameField.setText("");
+        passwordField.setText("");
+        createFormDescription.setText("Please fill in the details below. A unique classroom ID will then be generated for you to share with your students. Passwords must be between 6-16 characters and contain at least one digit.");
+        createFormDescription.setTextFill(Color.BLACK);
         createFormDescription.setMaxWidth(450);
         createFormDescription.setPrefHeight(100);
         createFormDescription.setTextAlignment(TextAlignment.CENTER);
@@ -895,7 +926,11 @@ public class ClassroomViewController {
         hideAllForms();
         loginForm.setVisible(true);
         loginForm.requestFocus();
+        loginClassroomID.setText("");
+        loginPassword.setText("");
         loginFormDescription.setMaxWidth(450);
+        loginFormDescription.setText("Fill in the details below to log-in to your existing teacher account.");
+        loginFormDescription.setTextFill(Color.BLACK);
         loginFormDescription.setPrefHeight(100);
         loginFormDescription.setTextAlignment(TextAlignment.CENTER);
         loginFormDescription.setWrapText(true);
@@ -1124,6 +1159,12 @@ public class ClassroomViewController {
             System.out.println("'"+selectedStudentUsername+"' stats selected for classroom "+ourClassroomID);
             loadStudentKeyLogs(ourClassroomID, selectedStudentUsername);
         }
+    }
+
+    @FXML
+    public void onLogoutButtonClicked() {
+        ClassroomDAO.deleteUserCache();
+        displayStudentTeacherContainer();
     }
 
     @FXML
