@@ -3,146 +3,64 @@
     "duration" : "Week 1-2",
     "goal" : "Fix errors and gain accuracy",
     "modules" : [ {
-      "name" : "H & L",
-      "focus" : "Improve key accuracy",
+      "name" : "E & I",
+      "focus" : "Improve uppercase accuracy",
       "displayText" : null,
       "id" : 1,
       "levels" : [ {
-        "taskString" : "hl",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "hhl",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "hlhl",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "hllh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "hlhll",
-        "displayText" : null,
-        "completed" : false
-      } ]
-    }, {
-      "name" : "E & I",
-      "focus" : "Enhance finger speed",
-      "displayText" : null,
-      "id" : 2,
-      "levels" : [ {
         "taskString" : "ei",
         "displayText" : null,
-        "completed" : true
+        "completed" : false
       }, {
-        "taskString" : "eei",
-        "displayText" : null,
-        "completed" : true
-      }, {
-        "taskString" : "eiei",
-        "displayText" : null,
-        "completed" : true
-      }, {
-        "taskString" : "eiie",
+        "taskString" : "eieie",
         "displayText" : null,
         "completed" : false
       }, {
         "taskString" : "eeiie",
         "displayText" : null,
         "completed" : false
+      }, {
+        "taskString" : "eieieie",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "eeiieei",
+        "displayText" : null,
+        "completed" : false
       } ]
     }, {
       "name" : "R & U",
-      "focus" : "Strengthen finger control",
+      "focus" : "Enhance finger coordination",
       "displayText" : null,
-      "id" : 3,
+      "id" : 2,
       "levels" : [ {
         "taskString" : "ru",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "rru",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ruru",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ruur",
+        "taskString" : "rurur",
         "displayText" : null,
         "completed" : false
       }, {
         "taskString" : "rruur",
         "displayText" : null,
         "completed" : false
-      } ]
-    }, {
-      "name" : "G & H",
-      "focus" : "Boost finger dexterity",
-      "displayText" : null,
-      "id" : 4,
-      "levels" : [ {
-        "taskString" : "gh",
+      }, {
+        "taskString" : "rururur",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ggh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ghgh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "gghg",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ggghh",
-        "displayText" : null,
-        "completed" : false
-      } ]
-    }, {
-      "name" : "P & T",
-      "focus" : "Refine finger placement",
-      "displayText" : null,
-      "id" : 5,
-      "levels" : [ {
-        "taskString" : "pt",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ppt",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ptpt",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "pttp",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "ppptt",
+        "taskString" : "rruurr",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
       "name" : "W & O",
-      "focus" : "Sharpen finger coordination",
+      "focus" : "Strengthen ring finger skills",
       "displayText" : null,
-      "id" : 6,
+      "id" : 3,
       "levels" : [ {
         "taskString" : "wo",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "woo",
         "displayText" : null,
         "completed" : false
       }, {
@@ -150,11 +68,93 @@
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "woow",
+        "taskString" : "wwwoo",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "wooww",
+        "taskString" : "wowowow",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "wwwwwoo",
+        "displayText" : null,
+        "completed" : false
+      } ]
+    }, {
+      "name" : "P & T",
+      "focus" : "Refine pinky precision",
+      "displayText" : null,
+      "id" : 4,
+      "levels" : [ {
+        "taskString" : "pt",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ptpt",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ppttpt",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ptptpt",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ppttptt",
+        "displayText" : null,
+        "completed" : false
+      } ]
+    }, {
+      "name" : "G & H",
+      "focus" : "Boost index finger control",
+      "displayText" : null,
+      "id" : 5,
+      "levels" : [ {
+        "taskString" : "gh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ghgh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "gghhgh",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ghgghhg",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "gghhgghh",
+        "displayText" : null,
+        "completed" : false
+      } ]
+    }, {
+      "name" : "C & ,",
+      "focus" : "Sharpen pinky consistency",
+      "displayText" : null,
+      "id" : 6,
+      "levels" : [ {
+        "taskString" : "c,",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "c,c,",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "cc,,c",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "c,c,c,",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "cc,,cc,",
         "displayText" : null,
         "completed" : false
       } ]
@@ -164,42 +164,38 @@
     "duration" : "Week 3-4",
     "goal" : "Build speed with letters",
     "modules" : [ {
-      "name" : "LetterSequencing",
-      "focus" : "Fix errors",
+      "name" : "UppercaseShift",
+      "focus" : "Fix uppercase errors",
       "displayText" : null,
       "id" : 7,
       "levels" : [ {
-        "taskString" : "hlerp",
+        "taskString" : "ernpatt",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "lerph",
+        "taskString" : "tternpa",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "erphl",
+        "taskString" : "patter",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "rphle",
+        "taskString" : "ternpa",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "phler",
+        "taskString" : "attren",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
-      "name" : "HomeRowDrills",
-      "focus" : "Improve home row",
+      "name" : "LetterSequences",
+      "focus" : "Improve letter transitions",
       "displayText" : null,
       "id" : 8,
       "levels" : [ {
         "taskString" : "asdfg",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "sdfgh",
         "displayText" : null,
         "completed" : false
       }, {
@@ -211,111 +207,115 @@
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ghjkl",
+        "taskString" : "hjklm",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "jklmn",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
-      "name" : "AlternatingFingers",
-      "focus" : "Boost finger",
+      "name" : "HandCoordination",
+      "focus" : "Boost hand coordination",
       "displayText" : null,
       "id" : 9,
       "levels" : [ {
-        "taskString" : "heklu",
+        "taskString" : "ertyu",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ekluh",
+        "taskString" : "rtuyi",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "klueh",
+        "taskString" : "tyuio",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "luehk",
+        "taskString" : "yuioh",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "uehkl",
+        "taskString" : "uiohg",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
-      "name" : "CommonPatterns",
-      "focus" : "Practice patterns",
+      "name" : "HomeRowShifting",
+      "focus" : "Smooth home row shifts",
       "displayText" : null,
       "id" : 10,
       "levels" : [ {
-        "taskString" : "tternpa",
+        "taskString" : "homeh",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ernpatt",
+        "taskString" : "omeho",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "ternpat",
+        "taskString" : "mehom",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ehomo",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "homoe",
+        "displayText" : null,
+        "completed" : false
+      } ]
+    }, {
+      "name" : "PatternFluency",
+      "focus" : "Increase pattern fluency",
+      "displayText" : null,
+      "id" : 11,
+      "levels" : [ {
+        "taskString" : "ttern",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ternp",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "ernpa",
+        "displayText" : null,
+        "completed" : false
+      }, {
+        "taskString" : "npatt",
         "displayText" : null,
         "completed" : false
       }, {
         "taskString" : "patter",
         "displayText" : null,
         "completed" : false
-      }, {
-        "taskString" : "attren",
-        "displayText" : null,
-        "completed" : false
       } ]
     }, {
-      "name" : "SpeedPatterns",
-      "focus" : "Increase speed",
-      "displayText" : null,
-      "id" : 11,
-      "levels" : [ {
-        "taskString" : "lkearh",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "kearhl",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "earhkl",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "arhkle",
-        "displayText" : null,
-        "completed" : false
-      }, {
-        "taskString" : "rhklea",
-        "displayText" : null,
-        "completed" : false
-      } ]
-    }, {
-      "name" : "AdvancedSequencing",
-      "focus" : "Master sequencing",
+      "name" : "SpeedDrills",
+      "focus" : "Enhance baseline speed",
       "displayText" : null,
       "id" : 12,
       "levels" : [ {
-        "taskString" : "hleark",
+        "taskString" : "speeds",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "learkh",
+        "taskString" : "eedss",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "earkhle",
+        "taskString" : "edssp",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "arkhle",
+        "taskString" : "dsspe",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "rhleak",
+        "taskString" : "ssped",
         "displayText" : null,
         "completed" : false
       } ]
@@ -403,80 +403,80 @@
         "completed" : false
       } ]
     }, {
-      "name" : "WordGroups",
-      "focus" : "Practice word groups",
+      "name" : "BasicStories",
+      "focus" : "Create short stories",
       "displayText" : null,
       "id" : 16,
       "levels" : [ {
-        "taskString" : "hello friend",
+        "taskString" : "i have a pet",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "good morning",
+        "taskString" : "my mom is nice",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "go play now",
+        "taskString" : "i like to play",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "well done kid",
+        "taskString" : "we go to park",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "enjoy your day",
+        "taskString" : "fun in the sun",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
-      "name" : "ParagraphPractice",
-      "focus" : "Type longer structured passages",
+      "name" : "FunPhrases",
+      "focus" : "Practice fun phrases",
       "displayText" : null,
       "id" : 17,
       "levels" : [ {
-        "taskString" : "typing is fun for kids",
+        "taskString" : "i am happy",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "practice makes better skills",
+        "taskString" : "you are nice",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "learning types daily",
+        "taskString" : "we are friends",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "confidence builds success",
+        "taskString" : "i like cake",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "keep improving always",
+        "taskString" : "play with me",
         "displayText" : null,
         "completed" : false
       } ]
     }, {
-      "name" : "TypingChallenges",
-      "focus" : "Challenge typing with sentences",
+      "name" : "SimpleSentences",
+      "focus" : "Develop simple sentence skills",
       "displayText" : null,
       "id" : 18,
       "levels" : [ {
-        "taskString" : "type this sentence quickly",
+        "taskString" : "i like to read",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "keep calm and type on",
+        "taskString" : "we go to school",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "every key counts",
+        "taskString" : "my dad is tall",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "small steps make great progress",
+        "taskString" : "i have a bike",
         "displayText" : null,
         "completed" : false
       }, {
-        "taskString" : "your effort is amazing",
+        "taskString" : "i love my mom",
         "displayText" : null,
         "completed" : false
       } ]

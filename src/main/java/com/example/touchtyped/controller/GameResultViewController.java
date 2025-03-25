@@ -7,7 +7,6 @@ import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
-import com.example.touchtyped.model.UserProfile;
 import com.example.touchtyped.service.AppSettingsService;
 import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RESTClient;
@@ -26,7 +25,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class GameResultViewController {
@@ -323,7 +321,7 @@ public class GameResultViewController {
                         String classroomID = credentials.get("classroomID");
                         String username = credentials.get("username");
                         String password = credentials.getOrDefault("password", null);
-                        UserDAO.updateTypingPlan(classroomID, username, typingPlan, password);
+                        UserDAO.updateDefaultTypingPlan(classroomID, username, typingPlan, password);
                         System.out.println("Saved typing plan to database.");
                     }
                 }

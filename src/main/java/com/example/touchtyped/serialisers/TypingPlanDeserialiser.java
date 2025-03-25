@@ -11,7 +11,7 @@ public class TypingPlanDeserialiser {
      * gets a TypingPlan from a given JSON file
      * @return a TypingPlan
      */
-    public static TypingPlan getTypingPlan() {
+    public static TypingPlan getCleanDefaultTypingPlan() {
         String filePath = "src/main/resources/com/example/touchtyped/defaultTypingPlan.json";
         try {
 

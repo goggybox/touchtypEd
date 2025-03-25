@@ -4,12 +4,9 @@ import com.example.touchtyped.model.KeyLogsStructure;
 import com.example.touchtyped.model.TypingPlan;
 import com.google.cloud.firestore.*;
 import com.google.api.core.ApiFuture;
-import java.io.IOException;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public final class UserDAO {
@@ -22,28 +19,30 @@ public final class UserDAO {
      * allow creation of a user without providing a password (will be the case the majority of the time)
      * @param classroomID is the classroom the user is joining (all users must be associated with one classroom).
      * @param username is the username to give the user.
-     * @param typingPlan is the user's personalised TypingPlan.
+     * @param defaultTypingPlan is the user's default TypingPlan.
+     * @param personalisedTypingPlan is the user's personalised TypingPlan.
      * @return whether the creation was successful.
      * @throws InterruptedException idk database stuff
      * @throws ExecutionException lol same
      */
-    public static String createUser(String classroomID, String username, TypingPlan typingPlan) throws InterruptedException, ExecutionException {
-        return createUser(classroomID, username, typingPlan, null);
+    public static String createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan) throws InterruptedException, ExecutionException {
+        return createUser(classroomID, username, defaultTypingPlan, personalisedTypingPlan, null);
     }
 
-    public static String createUser(String classroomID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
-        return createUser(classroomID, null, username, typingPlan, password);
+    public static String createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
+        return createUser(classroomID, null, username, defaultTypingPlan, personalisedTypingPlan, password);
     }
 
     /***
      * create a user and add them to the database. will generate a unique random userID.
      * @param classroomID is the classroom the user is joining (all users must be associated with one classroom).
      * @param username is the username to give the user.
-     * @param typingPlan is the user's personalised TypingPlan.
+     * @param defaultTypingPlan is the user's default TypingPlan.
+     * @param personalisedTypingPlan is the user's personalised TypingPlan.
      * @param password is the user's password (only teachers will have passwords, for others this will be null).
      * @return the String user's ID, or null if unsuccessful.
      */
-    public static String createUser(String classroomID, String userID, String username, TypingPlan typingPlan, String password) throws InterruptedException, ExecutionException {
+    public static String createUser(String classroomID, String userID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
         try {
             Firestore db = FirestoreClient.getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+username);
@@ -60,7 +59,7 @@ public final class UserDAO {
                 userID = generateUserID();
             }
 
-            UserAccount user = new UserAccount(classroomID, userID, username, typingPlan, new ArrayList<>(), password);
+            UserAccount user = new UserAccount(classroomID, userID, username, defaultTypingPlan, personalisedTypingPlan, new ArrayList<>(), password);
             userDoc.set(user).get();
             return userID;
 
@@ -265,11 +264,11 @@ public final class UserDAO {
         }
     }
 
-    public static boolean updateTypingPlan(String classroomID, String username, TypingPlan newPlan) throws InterruptedException, ExecutionException {
-        return updateTypingPlan(classroomID, username, newPlan, null);
+    public static boolean updateDefaultTypingPlan (String classroomID, String username, TypingPlan newPlan) throws InterruptedException, ExecutionException {
+        return updateDefaultTypingPlan(classroomID, username, newPlan, null);
     }
 
-    public static boolean updateTypingPlan(String classroomID, String username, TypingPlan newPlan, String password) throws InterruptedException, ExecutionException {
+    public static boolean updateDefaultTypingPlan (String classroomID, String username, TypingPlan newPlan, String password) throws InterruptedException, ExecutionException {
         UserAccount user = getAccount(classroomID, username, password);
         if (user == null) {
             System.out.println("DATABASE FAILURE: Credentials incorrect or user doesn't exist.");
@@ -281,8 +280,8 @@ public final class UserDAO {
             DocumentReference userDoc = db.collection(USER_COLLECTION)
                     .document(classroomID + "," + username);
 
-            ApiFuture<WriteResult> result = userDoc.update("typingPlan", newPlan);
-            System.out.println("Updated typing plan in database.");
+            ApiFuture<WriteResult> result = userDoc.update("defaultTypingPlan", newPlan);
+            System.out.println("Updated default typing plan in database.");
             result.get();
             return true;
 
@@ -290,6 +289,51 @@ public final class UserDAO {
             System.out.println("DATABASE FAILURE: Failed to update typing plan - " + e.getMessage());
             return false;
         }
+    }
+
+    public static boolean updatePersonalisedTypingPlan(String classroomID, String username, TypingPlan newPlan) throws InterruptedException, ExecutionException {
+        return updatePersonalisedTypingPlan(classroomID, username, newPlan, null);
+    }
+
+    public static boolean updatePersonalisedTypingPlan (String classroomID, String username, TypingPlan newPlan, String password) throws InterruptedException, ExecutionException {
+        UserAccount user = getAccount(classroomID, username, password);
+        if (user == null) {
+            System.out.println("DATABASE FAILURE: Credentials incorrect or user doesn't exist.");
+            return false;
+        }
+
+        try {
+            Firestore db = FirestoreClient.getFirestore();
+            DocumentReference userDoc = db.collection(USER_COLLECTION)
+                    .document(classroomID + "," + username);
+
+            ApiFuture<WriteResult> result = userDoc.update("personalisedTypingPlan", newPlan);
+            System.out.println("Updated personalised typing plan in database.");
+            result.get();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("DATABASE FAILURE: Failed to update typing plan - " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static TypingPlan getDefaultTypingPlan(String classroomID, String username) throws InterruptedException, ExecutionException {
+        return getDefaultTypingPlan(classroomID, username, null);
+    }
+
+    public static TypingPlan getDefaultTypingPlan(String classroomID, String username, String password) throws InterruptedException, ExecutionException {
+        UserAccount user = getAccount(classroomID, username, password);
+        return user != null ? user.getDefaultTypingPlan() : null;
+    }
+
+    public static TypingPlan getPersonalisedTypingPlan(String classroomID, String username) throws InterruptedException, ExecutionException {
+        return getPersonalisedTypingPlan(classroomID, username, null);
+    }
+
+    public static TypingPlan getPersonalisedTypingPlan(String classroomID, String username, String password) throws InterruptedException, ExecutionException {
+        UserAccount user = getAccount(classroomID, username, password);
+        return user != null ? user.getPersonalisedTypingPlan() : null;
     }
 
 }

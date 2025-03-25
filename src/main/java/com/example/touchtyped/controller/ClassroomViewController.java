@@ -5,10 +5,8 @@ import com.example.touchtyped.firestore.Classroom;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
 import com.example.touchtyped.firestore.UserDAO;
-import com.example.touchtyped.model.KeyLogsStructure;
-import com.example.touchtyped.model.PDFCache;
-import com.example.touchtyped.model.PDFViewer;
-import com.example.touchtyped.model.TypingPlan;
+import com.example.touchtyped.model.*;
+import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,16 +25,12 @@ import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
-import org.apache.pdfbox.rendering.PDFRenderer;
 
-import java.awt.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -44,7 +38,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Scanner;
 
 public class ClassroomViewController {
 
@@ -992,7 +985,8 @@ public class ClassroomViewController {
                         } else {
                             // creating new account
                             ClassroomDAO.addStudentToClassroom(classroomID, username);
-                            UserDAO.createUser(classroomID, username, new TypingPlan());
+                            TypingPlanManager manager = TypingPlanManager.getInstance();
+                            UserDAO.createUser(classroomID, username, manager.getDefaultPlan(), manager.getPersonalisedPlan());
                             ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
                                 joinFormDescription.setText("Joined classroom successfully! Loading...");
@@ -1052,13 +1046,14 @@ public class ClassroomViewController {
                 try {
                     String userID = UserDAO.generateUserID();
                     String classroomID = ClassroomDAO.createClassroom(userID, classroomName);
-                    UserDAO.createUser(classroomID, userID, teacherName, new TypingPlan(), password);
+                    TypingPlanManager manager = TypingPlanManager.getInstance();
+                    UserDAO.createUser(classroomID, userID, teacherName, manager.getDefaultPlan(), manager.getPersonalisedPlan(), password);
                     ClassroomDAO.saveUserCache(classroomID, teacherName, password);
                     Platform.runLater(() -> {
                         createFormDescription.setText("Classroom created! Classroom ID is: "+classroomID);
                         createFormDescription.setTextFill(Color.GREEN);
                         try {
-                            UserAccount teacher = UserDAO.getAccount(classroomID, teacherName);
+                            UserAccount teacher = UserDAO.getAccount(classroomID, teacherName, password);
                             displayUserAccount(teacher);
                         } catch (Exception e) {
                             e.printStackTrace();

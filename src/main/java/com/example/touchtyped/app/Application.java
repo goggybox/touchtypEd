@@ -123,12 +123,9 @@ public class Application extends javafx.application.Application {
         // shutdown hook to save TypingPlan if it has been modified
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             TypingPlanManager manager = TypingPlanManager.getInstance();
-            if (manager.getModified()) {
-                manager.saveTypingPlan();
-                System.out.println("SAVING TYPING PLAN");
-            } else {
-                System.out.println("TypingPlan not changed. Not saving.");
-            }
+            manager.saveTypingPlan();
+            System.out.println("SAVING TYPING PLAN");
+
             if (keyboardConnected) {
                 keyboardInterface.stopHaptic();
                 ioPort.closePort();

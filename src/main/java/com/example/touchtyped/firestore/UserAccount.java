@@ -9,18 +9,20 @@ public class UserAccount {
     private String classroomID;
     private String username;
     private String userID;
-    private TypingPlan typingPlan;
+    private TypingPlan defaultTypingPlan;
+    private TypingPlan personalisedTypingPlan;
     private List<KeyLogsStructure> keyLogs;
     private String password;
     private long joinedDate = System.currentTimeMillis();
 
     public UserAccount() {}
 
-    public UserAccount(String classroomID, String userID, String username, TypingPlan typingPlan, List<KeyLogsStructure> keyLogs, String password) {
+    public UserAccount(String classroomID, String userID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, List<KeyLogsStructure> keyLogs, String password) {
         this.classroomID = classroomID;
         this.username = username;
         this.userID = userID;
-        this.typingPlan = typingPlan;
+        this.defaultTypingPlan = defaultTypingPlan;
+        this.personalisedTypingPlan = personalisedTypingPlan;
         this.keyLogs = keyLogs;
         this.password = password;
     }
@@ -50,12 +52,20 @@ public class UserAccount {
         this.keyLogs = keyLogs;
     }
 
-    public TypingPlan getTypingPlan() {
-        return typingPlan;
+    public TypingPlan getDefaultTypingPlan() {
+        return defaultTypingPlan;
     }
 
-    public void setTypingPlan(TypingPlan typingPlan) {
-        this.typingPlan = typingPlan;
+    public void setDefaultTypingPlan(TypingPlan typingPlan) {
+        this.defaultTypingPlan = typingPlan;
+    }
+
+    public TypingPlan getPersonalisedTypingPlan() {
+        return personalisedTypingPlan;
+    }
+
+    public void setPersonalisedTypingPlan(TypingPlan typingPlan) {
+        this.personalisedTypingPlan = typingPlan;
     }
 
     public String getUsername() {
