@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
@@ -21,7 +23,6 @@
     </properties>
 
     <dependencies>
-        <!-- JavaFX Dependencies -->
         <dependency>
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-firestore</artifactId>
@@ -38,7 +39,6 @@
             <version>1.20.0</version>
         </dependency>
 
-        <!-- JavaFX base dependencies without platform-specific classifier -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -104,8 +104,7 @@
             <artifactId>jSerialComm</artifactId>
             <version>[2.0.0,3.0.0)</version>
         </dependency>
-        
-        <!-- Spring Boot dependencies -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -127,8 +126,7 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-        
-        <!-- JSON processing -->
+
         <dependency>
             <groupId>javax.websocket</groupId>
             <artifactId>javax.websocket-api</artifactId>
@@ -139,15 +137,14 @@
             <artifactId>tyrus-standalone-client</artifactId>
             <version>1.19</version>
         </dependency>
-        
-        <!-- H2 database -->
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
         </dependency>
 
-        <!-- JFoenix - JavaFX Material Design Library -->
+
         <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
@@ -165,17 +162,15 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
-                    <compilerArgs>
-                    </compilerArgs>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <executions>
                     <execution>
-                        <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>com.example.touchtyped/com.example.touchtyped.app.Application</mainClass>
@@ -195,6 +190,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -203,10 +199,49 @@
                     <mainClass>com.example.touchtyped.app.Application</mainClass>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 不要生成 dependency-reduced-pom -->
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+
+                            <!-- 1) 在这里排除签名文件 -->
+                            <filters>
+                                <filter>
+                                    <!-- 匹配全部依赖 -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+
+                            <!-- 2) 指定入口类（Main-Class） -->
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.example.touchtyped.app.Application</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
-    
-    <!-- Profiles for different operating systems -->
+
+
     <profiles>
         <profile>
             <id>windows</id>
@@ -216,7 +251,6 @@
                 </os>
             </activation>
             <dependencies>
-                <!-- Windows-specific dependencies -->
                 <dependency>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-graphics</artifactId>
@@ -225,7 +259,7 @@
                 </dependency>
             </dependencies>
         </profile>
-        
+
         <profile>
             <id>mac</id>
             <activation>
@@ -234,7 +268,6 @@
                 </os>
             </activation>
             <dependencies>
-                <!-- MacOS-specific dependencies -->
                 <dependency>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-graphics</artifactId>
@@ -243,7 +276,7 @@
                 </dependency>
             </dependencies>
         </profile>
-        
+
         <profile>
             <id>mac-aarch64</id>
             <activation>
@@ -253,7 +286,6 @@
                 </os>
             </activation>
             <dependencies>
-                <!-- MacOS-specific dependencies for Apple Silicon -->
                 <dependency>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-graphics</artifactId>
@@ -262,7 +294,7 @@
                 </dependency>
             </dependencies>
         </profile>
-        
+
         <profile>
             <id>linux</id>
             <activation>
@@ -272,7 +304,6 @@
                 </os>
             </activation>
             <dependencies>
-                <!-- Linux-specific dependencies -->
                 <dependency>
                     <groupId>org.openjfx</groupId>
                     <artifactId>javafx-graphics</artifactId>
