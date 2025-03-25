@@ -24,6 +24,17 @@
     -fx-max-height: 580;
 }
 
+/* 确保游戏容器在暗黑模式下与其他页面背景一致 */
+.dark-mode .game-container {
+    -fx-background-color: #121212; /* 与其他页面一致的暗黑背景色 */
+    -fx-border-color: transparent;
+}
+
+/* 确保游戏容器在色盲模式下与其他页面背景一致 */
+.colorblind-mode .game-container {
+    -fx-background-color: #f5f5f5; /* 与其他页面一致的色盲模式背景色 */
+}
+
 .time-options {
     -fx-padding: 10;
 }
@@ -416,50 +427,121 @@
 
 /* Tutorial dialog styles */
 .tutorial-dialog {
-    -fx-background-color: white;
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f5f8ff);
     -fx-padding: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #d0e0ff;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 8);
 }
 
 .tutorial-dialog .dialog-pane {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
+    -fx-background-color: transparent;
+    -fx-background-radius: 15;
 }
 
 .tutorial-dialog .header-panel {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
+    -fx-padding: 15px 20px 5px 20px;
+}
+
+.tutorial-dialog .header-panel .label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263F68;
 }
 
 .tutorial-dialog .content {
-    -fx-background-color: white;
-    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-padding: 10px 20px;
+}
+
+.tutorial-dialog-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #263F68;
+    -fx-padding: 0 0 10 0;
+}
+
+.tutorial-content-area {
+    -fx-background-color: rgba(240, 247, 255, 0.6);
+    -fx-background-radius: 10;
+    -fx-padding: 25px;
+    -fx-border-color: #d0e0ff;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-font-size: 18px;
+    -fx-line-spacing: 1.3;
+}
+
+.tutorial-button-area {
+    -fx-padding: 15px 25px 20px 25px;
+    -fx-spacing: 15px;
+    -fx-alignment: center-right;
 }
 
 .tutorial-button {
     -fx-cursor: hand;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
     -fx-transition: -fx-background-color 0.2s, -fx-effect 0.2s, -fx-scale-x 0.2s, -fx-scale-y 0.2s;
-    -fx-font-size: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);
 }
 
-.tutorial-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+.tutorial-next-button {
+    -fx-background-color: linear-gradient(to bottom, #3054a5, #263F68);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.tutorial-next-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #3b64c0, #324f7d);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+}
+
+.tutorial-next-button:disabled {
+    -fx-background-color: #c0c0c0;
+    -fx-opacity: 0.7;
+}
+
+.tutorial-close-button {
+    -fx-background-color: white;
+    -fx-text-fill: #666666;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+}
+
+.tutorial-close-button:hover {
+    -fx-background-color: #f8f8f8;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.tutorial-close-hint {
+    -fx-font-size: 14px;
+    -fx-text-fill: #888888;
+    -fx-font-style: italic;
 }
 
 .tutorial-button:pressed {
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 2, 0, 0, 1);
 }
 
 .dialog-pane > .button-bar > .container {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
 }
 
 .dialog-pane:header .header-panel {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
 }
 
 /* Dark mode styles - completely rewritten */
@@ -899,719 +981,185 @@
     -fx-fill: #FFFFFF; /* White cursor in dark mode */
 }
 
-
-
-.nav-bar {
-    -fx-background-color: #D8D8D8;
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
+/* Dark mode tutorial dialog styles */
+.dark-mode .tutorial-dialog {
+    -fx-background-color: linear-gradient(to bottom right, #1F1F1F, #121212);
+    -fx-border-color: #383838;
 }
 
-.nav-button {
-    -fx-cursor: hand;
-    -fx-effect: null;
-    -fx-transition: -fx-scale-x 0.2s, -fx-scale-y 0.2s, -fx-effect 0.2s;
-}
-
-.nav-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-}
-
-.game-container {
-    -fx-background-color: white;
-    -fx-padding: 0;
-    -fx-spacing: 20;
-    -fx-min-height: 580;
-    -fx-max-height: 580;
-}
-
-.time-options {
-    -fx-padding: 10;
-}
-
-.time-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #D8D8D8;
-    -fx-font-size: 16px;
-    -fx-cursor: hand;
-    -fx-padding: 5 10;
-    -fx-background-radius: 4;
-}
-
-.time-button:hover {
-    -fx-text-fill: #263F68;
-    -fx-background-color: rgba(38, 63, 104, 0.1);
-}
-
-.time-button.selected {
-    -fx-text-fill: #263F68;
-    -fx-background-color: rgba(38, 63, 104, 0.2);
-    -fx-border-color: #263F68;
-    -fx-border-width: 1;
-    -fx-border-radius: 4;
-}
-
-/* Info button styles */
-.info-button {
-    -fx-background-color: #263F68;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-    -fx-padding: 5 10;
-    -fx-background-radius: 50%;
-    -fx-min-width: 30;
-    -fx-min-height: 30;
-    -fx-max-width: 30;
-    -fx-max-height: 30;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0.5, 0, 0);
-}
-
-.info-button:hover {
-    -fx-background-color: #3A5B8C;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0.5, 0, 0);
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-}
-
-/* Info popup styles */
-.info-dialog {
-    -fx-background-color: white;
-    -fx-padding: 20;
-}
-
-.info-dialog .dialog-pane {
-    -fx-background-color: white;
-}
-
-.info-dialog .header-panel {
-    -fx-background-color: white;
-}
-
-.info-dialog .content {
-    -fx-background-color: white;
-    -fx-padding: 0;
-}
-
-.info-scroll-pane {
-    -fx-background: white;
-    -fx-background-color: white;
-    -fx-border-color: transparent;
-}
-
-.info-scroll-pane .viewport {
-    -fx-background-color: white;
-}
-
-.info-scroll-pane .scroll-bar:vertical {
+.dark-mode .tutorial-dialog .dialog-pane {
     -fx-background-color: transparent;
 }
 
-.info-icon {
-    -fx-background-radius: 50%;
-}
-
-.info-close-button {
-    -fx-background-color: #263F68;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-padding: 8 20;
-    -fx-background-radius: 4;
-    -fx-cursor: hand;
-}
-
-.info-close-button:hover {
-    -fx-background-color: #3A5B8C;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 0);
-}
-
-.game-info {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 32px;
-}
-
-.typing-area {
-    -fx-padding: 20;
-    -fx-alignment: center;
-}
-
-.task-text {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 28px;
-    -fx-font-family: 'Consolas';
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-line-spacing: 0;
-    -fx-min-height: 40;
-    -fx-max-height: 40;
-    -fx-min-width: 800;
-    -fx-max-width: 800;
-}
-
-.typed-text, .remaining-text, .cursor {
-    -fx-font-family: 'Consolas';
-    -fx-font-size: 28px;
-    -fx-text-alignment: center;
-}
-
-.typed-text {
-    -fx-fill: #263F68;
-    -fx-font-weight: bold;
-}
-
-.remaining-text {
-    -fx-fill: #9B9B9B;
-    -fx-opacity: 0.8;
-}
-
-.cursor {
-    -fx-fill: #263F68;
-    -fx-font-family: 'Consolas';
-    -fx-font-size: 28px;
-    -fx-translate-y: -4;
-    -fx-opacity: 0.8;
-    -fx-stroke: none;
-    -fx-mouse-transparent: true;
-}
-
-.current-text {
-    -fx-fill: #263F68;
-    -fx-font-weight: bold;
-}
-
-.error-text {
-    -fx-fill: #F5102F;
-    -fx-font-weight: bold;
-}
-
-.input-field {
-    -fx-background-color: transparent;
-    -fx-text-fill: transparent;
-    -fx-cursor: none;
-}
-
-.control-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 16px;
-    -fx-cursor: hand;
-}
-
-.control-button:hover {
-    -fx-text-fill: #263F68;
-}
-
-#timerLabel, #wpmLabel, #accuracyLabel, #scoreLabel {
-    -fx-text-fill: #263F68;
-    -fx-font-weight: bold;
-}
-
-.time-label {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 16px;
-}
-
-/* Optional: Highlight the time label when hovering over time options */
-.time-options:hover .time-label {
-    -fx-text-fill: #263F68;
-}
-
-/* Results display */
-.result-container {
-    -fx-background-color: white;
-    -fx-padding: 40;
-    -fx-spacing: 30;
-}
-
-.result-title {
-    -fx-text-fill: #263F68;
-    -fx-font-size: 48px;
-    -fx-font-weight: bold;
-}
-
-.result-category {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 20px;
-}
-
-.result-value {
-    -fx-text-fill: #263F68;
-    -fx-font-size: 42px;
-    -fx-font-weight: bold;
-}
-
-.result-unit {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 18px;
-}
-
-.result-button {
-    -fx-background-color: transparent;
-    -fx-border-color: #263F68;
-    -fx-border-width: 2;
-    -fx-border-radius: 5;
-    -fx-text-fill: #263F68;
-    -fx-font-size: 16px;
-    -fx-padding: 10 20;
-    -fx-cursor: hand;
-}
-
-.result-button:hover {
-    -fx-background-color: #263F68;
-    -fx-text-fill: white;
-}
-
-.result-info {
-    -fx-padding: 20;
-    -fx-spacing: 80;
-}
-
-.result-item {
-    -fx-spacing: 10;
-    -fx-min-width: 150;
-    -fx-alignment: center;
-}
-
-.result-label {
-    -fx-text-fill: #3C3C3C;
-    -fx-font-size: 24px;
-}
-
-.stats-chart {
-    -fx-background-color: transparent;
-    -fx-plot-background-color: transparent;
-    -fx-padding: 20;
-}
-
-/* Modify chart background */
-.stats-chart .chart-plot-background {
-    -fx-background-color: transparent;
-    -fx-border-color: rgba(136, 136, 136, 0.1);
-    -fx-border-width: 1;
-}
-
-/* Modify grid lines */
-.stats-chart .chart-horizontal-grid-lines {
-    -fx-stroke: rgba(136, 136, 136, 0.1);
-    -fx-stroke-dash-array: 1 5;  /* Dashed line effect */
-}
-
-.stats-chart .chart-vertical-grid-lines {
-    -fx-stroke: rgba(136, 136, 136, 0.1);
-    -fx-stroke-dash-array: 1 5;
-}
-
-/* Modify axis */
-.stats-chart .axis {
-    -fx-tick-label-fill: #3C3C3C;
-    -fx-tick-length: 3;
-    -fx-minor-tick-length: 0;
-}
-
-.stats-chart .axis-tick-mark {
-    -fx-stroke: #3C3C3C;
-    -fx-stroke-width: 1;
-}
-
-/* Modify chart lines */
-.stats-chart .chart-series-line {
-    -fx-stroke: #e2b714;  /* Yellow line */
-    -fx-stroke-width: 2px;
-}
-
-/* Add data point styles */
-.stats-chart .chart-symbol {  /* Data point style */
-    -fx-background-color: #e2b714;
-    -fx-background-radius: 3px;
-    -fx-padding: 3px;
-}
-
-.stats-chart .default-color0.chart-series-line {
-    -fx-stroke: #e2b714;  /* Main line in yellow */
-}
-
-.stats-chart .default-color1.chart-series-line {
-    -fx-stroke: rgba(255, 255, 255, 0.3);  /* Secondary line in semi-transparent white */
-}
-
-.restart-button {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-    -fx-padding: 10;
-}
-
-.restart-button:hover {
-    -fx-effect: dropshadow(gaussian, #e2b714, 10, 0, 0, 0);
-}
-
-.result-buttons {
-    -fx-padding: 20;
-}
-
-.result-button ImageView {
-    -fx-opacity: 0.6;
-}
-
-.result-button:hover ImageView {
-    -fx-opacity: 1;
-}
-
-.large-region {
-    -fx-pref-height: 200;
-}
-
-
-.task-text {
-    -fx-font-family: "Consolas";
-    -fx-font-size: 28px;
-}
-
-
-@font-face {
-    font-family: 'Consolas Bold';
-    src: url('/fonts/consolab.ttf');
-}
-
-.error-text {
-    -fx-fill: #ff5555;
-    -fx-underline: true;
-}
-
-.typed-text {
-    -fx-fill: #263F68;
-}
-
-.remaining-text {
-    -fx-fill: #777777;
-}
-
-.cursor {
-    -fx-fill: #ffd700;
-    -fx-font-weight: bold;
-}
-
-.stats-label {
-    -fx-text-fill: #263F68;
-    -fx-font-weight: bold;
-    -fx-font-size: 32px;
-}
-
-.description-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #666666;
-    -fx-font-family: "Arial";
-}
-
-.generate-button {
-    -fx-background-color: #263F68;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-}
-
-.generate-button:hover {
-    -fx-background-color: #263F68;
-}
-
-/* Tutorial dialog styles */
-.tutorial-dialog {
-    -fx-background-color: white;
-    -fx-padding: 0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
-}
-
-.tutorial-dialog .dialog-pane {
-    -fx-background-color: white;
-    -fx-background-radius: 8;
-}
-
-.tutorial-dialog .header-panel {
-    -fx-background-color: white;
-}
-
-.tutorial-dialog .content {
-    -fx-background-color: white;
-    -fx-padding: 0;
-}
-
-.tutorial-button {
-    -fx-cursor: hand;
-    -fx-transition: -fx-background-color 0.2s, -fx-effect 0.2s, -fx-scale-x 0.2s, -fx-scale-y 0.2s;
-    -fx-font-size: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 0, 1);
-}
-
-.tutorial-button:hover {
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-}
-
-.tutorial-button:pressed {
-    -fx-scale-x: 0.98;
-    -fx-scale-y: 0.98;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0, 0, 1);
-}
-
-.dialog-pane > .button-bar > .container {
-    -fx-background-color: white;
-}
-
-.dialog-pane:header .header-panel {
-    -fx-background-color: white;
-}
-
-/* Dark mode styles - completely rewritten */
-.dark-mode {
-    -fx-background-color: #121212;
-}
-
-/* NavigationBar */
-.dark-mode .nav-bar {
-    -fx-background-color: #1F1F1F;
-}
-
-/* Game container and main elements */
-.dark-mode .game-container {
-    -fx-background-color: #121212;
-}
-
-/* Force all containers to use dark background */
-.dark-mode VBox {
-    -fx-background-color: #121212;
-}
-
-.dark-mode HBox {
-    -fx-background-color: #121212;
-}
-
-.dark-mode StackPane {
-    -fx-background-color: #121212;
-}
-
-.dark-mode BorderPane {
-    -fx-background-color: #121212;
-}
-
-.dark-mode ScrollPane {
-    -fx-background-color: #121212;
-}
-
-.dark-mode ScrollPane > .viewport {
-    -fx-background-color: #121212;
-}
-
-.dark-mode AnchorPane {
+.dark-mode .tutorial-dialog .header-panel {
     -fx-background-color: transparent;
 }
 
-.dark-mode Region {
+.dark-mode .tutorial-dialog .header-panel .label {
+    -fx-text-fill: #4D7CCE;
+}
+
+.dark-mode .tutorial-dialog .content {
     -fx-background-color: transparent;
 }
 
-/* Text elements */
-.dark-mode .time-options,
-.dark-mode .result-container,
-.dark-mode Label,
-.dark-mode Text,
-.dark-mode RadioButton,
-.dark-mode .task-text {
+.dark-mode .tutorial-dialog-title {
+    -fx-text-fill: #4D7CCE;
+}
+
+.dark-mode .tutorial-content-area {
+    -fx-background-color: rgba(40, 44, 52, 0.6);
+    -fx-border-color: #383838;
     -fx-text-fill: #E0E0E0;
 }
 
-/* Buttons */
-.dark-mode .time-button {
+.dark-mode .tutorial-next-button {
+    -fx-background-color: linear-gradient(to bottom, #4D7CCE, #2C5AAA);
+}
+
+.dark-mode .tutorial-next-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #6B9FFF, #4D7CCE);
+}
+
+.dark-mode .tutorial-close-button {
     -fx-background-color: #333333;
     -fx-text-fill: #E0E0E0;
     -fx-border-color: #555555;
 }
 
-.dark-mode .time-button:hover {
+.dark-mode .tutorial-close-button:hover {
     -fx-background-color: #444444;
-}
-
-.dark-mode .time-button.selected {
-    -fx-background-color: #2C5AAA;
-    -fx-text-fill: white;
-    -fx-border-color: #4D7CCE;
-}
-
-/* Improved text visibility */
-.dark-mode .typed-text {
-    -fx-fill: #6B9FFF; /* Brighter blue in dark mode */
-}
-
-.dark-mode .error-text {
-    -fx-fill: #FF5252; /* Brighter red in dark mode */
-}
-
-.dark-mode .remaining-text {
-    -fx-fill: #B0B0B0; /* Lighter grey in dark mode */
-}
-
-.dark-mode .cursor {
-    -fx-fill: #FFFFFF; /* White cursor in dark mode */
-}
-
-/* Selection controls */
-.dark-mode .toggle-button:selected {
-    -fx-background-color: #2C5AAA;
     -fx-text-fill: white;
 }
 
-.dark-mode RadioButton:selected {
-    -fx-text-fill: white;
+.dark-mode .tutorial-close-hint {
+    -fx-text-fill: #B0B0B0;
 }
 
-.dark-mode RadioButton .radio {
-    -fx-background-color: #333333;
-    -fx-border-color: #555555;
-}
-
-.dark-mode RadioButton:selected .radio {
-    -fx-background-color: #2C5AAA;
-    -fx-border-color: #4D7CCE;
-}
-
-.dark-mode RadioButton .dot {
-    -fx-background-color: transparent;
-}
-
-.dark-mode RadioButton:selected .dot {
-    -fx-background-color: white;
-}
-
-/* Colorblind mode styles */
-.colorblind-mode .cursor,
-.colorblind-mode .char-input-correct {
-    -fx-fill: #006E51; /* A colorblind-friendly green */
-}
-
-.colorblind-mode .char-input-wrong {
-    -fx-fill: #C8102E; /* A colorblind-friendly red */
-}
-
-.colorblind-mode .time-button.selected {
-    -fx-background-color: #006E51; /* A colorblind-friendly green */
-}
-
-/* Additional colorblind mode styles */
-.colorblind-mode {
-    -fx-background-color: #f5f5f5; /* Light gray background */
-}
-
-.colorblind-mode .nav-bar {
-    -fx-background-color: #17365D; /* Navy blue - more distinguishable */
-}
-
-.colorblind-mode .typed-text {
-    -fx-fill: #0000FF; /* Pure blue - better for color blindness */
-    -fx-font-weight: bold;
-}
-
-.colorblind-mode .error-text {
-    -fx-fill: #9F0500; /* Dark red - more visible */
-    -fx-font-weight: bold;
-    -fx-underline: true; /* Extra visual indicator */
-}
-
-.colorblind-mode .remaining-text {
-    -fx-fill: #555555; /* Dark gray for better contrast */
-}
-
-.colorblind-mode Label,
-.colorblind-mode .task-text,
-.colorblind-mode Text {
-    -fx-text-fill: #000000; /* Black text for better contrast */
-}
-
-.colorblind-mode RadioButton .radio {
-    -fx-background-color: white;
+/* Colorblind mode tutorial dialog styles */
+.colorblind-mode .tutorial-dialog {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f0f0f0);
     -fx-border-color: #17365D;
-    -fx-border-width: 2;
 }
 
-.colorblind-mode RadioButton:selected .radio {
-    -fx-background-color: white;
+.colorblind-mode .tutorial-dialog-title {
+    -fx-text-fill: #17365D;
+}
+
+.colorblind-mode .tutorial-content-area {
+    -fx-background-color: rgba(240, 240, 240, 0.6);
     -fx-border-color: #17365D;
-    -fx-border-width: 2;
 }
 
-.colorblind-mode RadioButton:selected .dot {
+.colorblind-mode .tutorial-next-button {
     -fx-background-color: #17365D;
 }
 
-.dark-mode .scroll-pane .viewport {
-    -fx-background-color: #121212;
+.colorblind-mode .tutorial-next-button:hover {
+    -fx-background-color: #254B80;
 }
 
-.dark-mode .scroll-pane .content {
-    -fx-background-color: #121212;
+/* Dark mode info dialog styles */
+.dark-mode .info-dialog {
+    -fx-background-color: #1F1F1F;
 }
 
-.dark-mode VBox {
-    -fx-background-color: #121212;
+.dark-mode .info-dialog .dialog-pane {
+    -fx-background-color: #1F1F1F;
 }
 
-.dark-mode StackPane {
-    -fx-background-color: #121212;
+.dark-mode .info-dialog .header-panel {
+    -fx-background-color: #1F1F1F;
 }
 
-.dark-mode HBox {
-    -fx-background-color: transparent;
+.dark-mode .info-dialog .content {
+    -fx-background-color: #1F1F1F;
 }
 
-.dark-mode BorderPane {
-    -fx-background-color: #121212;
+.dark-mode .info-dialog .content Text,
+.dark-mode .info-dialog .content Label {
+    -fx-fill: #E0E0E0;
+    -fx-text-fill: #E0E0E0;
 }
 
-/* Result page buttons in dark mode */
-.dark-mode .generate-button {
+.dark-mode .info-dialog .label {
+    -fx-text-fill: #E0E0E0;
+}
+
+.dark-mode .info-scroll-pane {
+    -fx-background: #1F1F1F;
+    -fx-background-color: #1F1F1F;
+}
+
+.dark-mode .info-scroll-pane .viewport {
+    -fx-background-color: #1F1F1F;
+}
+
+.dark-mode .info-scroll-pane .content {
+    -fx-background-color: #1F1F1F;
+}
+
+.dark-mode .info-icon {
+    -fx-background-color: #4D7CCE;
+}
+
+.dark-mode .info-close-button {
     -fx-background-color: #4D7CCE;
     -fx-text-fill: white;
+}
+
+.dark-mode .info-close-button:hover {
+    -fx-background-color: #6B9FFF;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 0);
+}
+
+/* 确保暗黑模式下文本内容可见 */
+.dark-mode .info-dialog VBox Label,
+.dark-mode .info-dialog HBox Label,
+.dark-mode .info-dialog Text {
+    -fx-text-fill: #E0E0E0;
+    -fx-fill: #E0E0E0;
+}
+
+/* Colorblind mode info dialog styles */
+.colorblind-mode .info-dialog {
+    -fx-background-color: #F5F5F5;
+}
+
+.colorblind-mode .info-dialog .dialog-pane {
+    -fx-background-color: #F5F5F5;
+}
+
+.colorblind-mode .info-close-button {
+    -fx-background-color: #17365D;
+}
+
+.info-instruction {
     -fx-font-size: 16px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.2), 4, 0, 0, 0);
+    -fx-wrap-text: true;
 }
 
-.dark-mode .generate-button:hover {
-    -fx-background-color: #6B9FFF;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 6, 0, 0, 0);
-}
-
-.dark-mode .control-button {
-    -fx-background-color: #4D7CCE;
-    -fx-text-fill: white;
-    -fx-padding: 8px 15px;
+.info-tip {
     -fx-font-size: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.2), 3, 0, 0, 0);
+    -fx-font-style: italic;
+    -fx-text-fill: #666666;
+    -fx-wrap-text: true;
 }
 
-.dark-mode .control-button:hover {
-    -fx-background-color: #6B9FFF;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 0);
+.dark-mode .info-instruction {
+    -fx-text-fill: #E0E0E0;
 }
 
-.dark-mode .result-button {
-    -fx-background-color: #4D7CCE;
-    -fx-text-fill: white;
-    -fx-padding: 8px 15px;
-    -fx-font-size: 14px;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.2), 3, 0, 0, 0);
+.dark-mode .info-tip {
+    -fx-text-fill: #B0B0B0;
 }
 
-.dark-mode .result-button:hover {
-    -fx-background-color: #6B9FFF;
-    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 0);
+.colorblind-mode .info-instruction {
+    -fx-text-fill: #000000;
 }
 
-.dark-mode .cursor {
-    -fx-fill: #FFFFFF; /* White cursor in dark mode */
+.colorblind-mode .info-tip {
+    -fx-text-fill: #555555;
 }
 
 

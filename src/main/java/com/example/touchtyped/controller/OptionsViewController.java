@@ -32,6 +32,9 @@ public class OptionsViewController {
     @FXML
     private ImageView gamesButton;
     
+    @FXML
+    private ImageView classroomButton;
+    
     private ToggleGroup displayMode;
     
     private AppSettingsService settingsService;
@@ -184,6 +187,22 @@ public class OptionsViewController {
             settingsService.applySettingsToScene(scene);
             
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply saved settings to new scene
+            settingsService.applySettingsToScene(scene);
+            
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();

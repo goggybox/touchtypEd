@@ -35,11 +35,34 @@ public class KeyboardInterface {
      * @param scene is the scene to attach to
      */
     public void attachToScene(Scene scene) {
+        // 添加变量跟踪Shift键状态
+        final boolean[] shiftPressed = {false};
+        
+        // 处理Shift键按下和释放
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.SHIFT) {
+                shiftPressed[0] = true;
+            }
+        });
+        
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+            if (event.getCode() == KeyCode.SHIFT) {
+                shiftPressed[0] = false;
+            }
+        });
+        
+        // 主要键盘事件处理
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             KeyCode keyCode = event.getCode();
 
             if (keyCode.isLetterKey() || keyCode.isDigitKey()) {
                 String key = event.getText();
+                
+                // 修复：处理Shift+键组合，保留大小写信息
+                if (shiftPressed[0] && key.length() > 0 && Character.isLowerCase(key.charAt(0))) {
+                    key = key.toUpperCase();
+                }
+                
                 notifyListeners(key);
             } else {
                 switch (keyCode) {
@@ -51,9 +74,6 @@ public class KeyboardInterface {
                         break;
                     case ESCAPE:
                         notifyListeners("ESCAPE");
-                        break;
-                    case SHIFT:
-                        notifyListeners("SHIFT");
                         break;
                     case CONTROL:
                         notifyListeners("CONTROL");
@@ -80,43 +100,91 @@ public class KeyboardInterface {
                         notifyListeners(" ");
                         break;
                     case SEMICOLON:
-                        notifyListeners("SEMICOLON");
+                        if (shiftPressed[0]) {
+                            notifyListeners(":");
+                        } else {
+                            notifyListeners(";");
+                        }
                         break;
                     case QUOTE:
-                        notifyListeners("'");
-                        break;
-                    case NUMBER_SIGN: // this key represents the key with # on a British keyboard
-                        notifyListeners("HASHTAG");
+                        if (shiftPressed[0]) {
+                            notifyListeners("\"");
+                        } else {
+                            notifyListeners("'");
+                        }
                         break;
                     case OPEN_BRACKET:
-                        notifyListeners("OPEN_BRACKET");
+                        if (shiftPressed[0]) {
+                            notifyListeners("{");
+                        } else {
+                            notifyListeners("[");
+                        }
                         break;
                     case CLOSE_BRACKET:
-                        notifyListeners("CLOSE_BRACKET");
+                        if (shiftPressed[0]) {
+                            notifyListeners("}");
+                        } else {
+                            notifyListeners("]");
+                        }
                         break;
                     case COMMA:
-                        notifyListeners("COMMA");
+                        if (shiftPressed[0]) {
+                            notifyListeners("<");
+                        } else {
+                            notifyListeners(",");
+                        }
                         break;
                     case CAPS:
                         notifyListeners("CAPS");
                         break;
+                    case NUMBER_SIGN: // this key represents the key with # on a British keyboard
+                        if (shiftPressed[0]) {
+                            notifyListeners("~");
+                        } else {
+                            notifyListeners("#");
+                        }
+                        break;
                     case PERIOD:
-                        notifyListeners("PERIOD");
+                        if (shiftPressed[0]) {
+                            notifyListeners(">");
+                        } else {
+                            notifyListeners(".");
+                        }
                         break;
                     case SLASH:
-                        notifyListeners("SLASH");
+                        if (shiftPressed[0]) {
+                            notifyListeners("?");
+                        } else {
+                            notifyListeners("/");
+                        }
                         break;
                     case BACK_SLASH:
-                        notifyListeners("BACK_SLASH");
+                        if (shiftPressed[0]) {
+                            notifyListeners("|");
+                        } else {
+                            notifyListeners("\\");
+                        }
                         break;
                     case BACK_QUOTE:
-                        notifyListeners("BACK_QUOTE");
+                        if (shiftPressed[0]) {
+                            notifyListeners("~");
+                        } else {
+                            notifyListeners("`");
+                        }
                         break;
                     case EQUALS:
-                        notifyListeners("EQUALS");
+                        if (shiftPressed[0]) {
+                            notifyListeners("+");
+                        } else {
+                            notifyListeners("=");
+                        }
                         break;
                     case MINUS:
-                        notifyListeners("MINUS");
+                        if (shiftPressed[0]) {
+                            notifyListeners("_");
+                        } else {
+                            notifyListeners("-");
+                        }
                         break;
                     default:
                         notifyListeners("UNKNOWN");

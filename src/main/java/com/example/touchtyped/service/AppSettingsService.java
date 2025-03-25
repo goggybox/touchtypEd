@@ -106,6 +106,20 @@ public class AppSettingsService {
     }
     
     /**
+     * 检查是否是暗黑模式
+     */
+    public boolean isDarkMode() {
+        return NIGHT_MODE.equals(getDisplayMode());
+    }
+    
+    /**
+     * 检查是否是色盲模式
+     */
+    public boolean isColorblindMode() {
+        return COLORBLIND_MODE.equals(getDisplayMode());
+    }
+    
+    /**
      * Apply settings to a scene
      */
     public void applySettingsToScene(Scene scene) {

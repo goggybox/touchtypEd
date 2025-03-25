@@ -130,6 +130,9 @@ public class ClassroomViewController {
     private ImageView statsButton;
 
     @FXML
+    private ImageView optionsButton;
+
+    @FXML
     private Label joinFormDescription;
 
     @FXML
@@ -1194,5 +1197,16 @@ public class ClassroomViewController {
         }
     }
 
+    @FXML
+    public void onOptionsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) optionsButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
