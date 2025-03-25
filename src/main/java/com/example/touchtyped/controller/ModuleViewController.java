@@ -198,63 +198,65 @@ public class ModuleViewController implements KeypressListener {
         // convert special characters to the character equivalent (so "OPEN_BRACKET" to '[')
         key = (keyMap.containsKey(key)) ? convertKeyToChar(key) : key;
 
-        // ignore any key press except for alphanumeric or BACK_SPACE
-        if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE") && !key.equals(" ")) {
-            return;
-        }
-
-        // check if BACK_SPACE , and that the level hasn't already been completed
-        if (key.equals("BACK_SPACE") && currentIndex > 0 && !level.isCompleted()) {
-            // move back a character, and turn the previous character grey
-            currentIndex--;
-            setLetterColour(currentIndex, StyleConstants.GREY_COLOUR);
-            typedString = typedString.substring(0, typedString.length() - 1);
-
-            // vibrate the next character to be pressed
-            char keyToVibrate = level.getTaskString().charAt(currentIndex);
-            keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
-
-            return;
-        }
-
-        // check if all characters have already been typed
-        if (currentIndex < letterLabels.size()) {
-            char expectedChar = level.getTaskString().charAt(currentIndex);
-
-            // keep track of typed string
-            typedString += key;
-
-            if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
-                // the user typed the expected character.
-                setLetterColour(currentIndex, StyleConstants.BLUE_COLOUR);
-                currentIndex++;
-
-                if (currentIndex < letterLabels.size()) {
-                    // vibrate the next key to be pressed
-                    char keyToVibrate = level.getTaskString().charAt(currentIndex);
-                    keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
-                }
-            } else {
-                // the user typed the wrong character.
-                setLetterColour(currentIndex, StyleConstants.RED_COLOUR);
-                currentIndex++;
-
-                // turn on LEDs
-                keyboardInterface.activateLights(1000);
-
-                // vibrate the BACK_SPACE key
-                keyboardInterface.sendHapticCommand("BACK_SPACE", 200, 50);
+        if (!(currentIndex == 0 && key.equals("BACK_SPACE"))) {
+            // ignore any key press except for alphanumeric or BACK_SPACE
+            if (!key.matches("[a-zA-Z0-9,./;'#\\[\\]\\-=`]") && !key.equals("BACK_SPACE") && !key.equals(" ")) {
+                return;
             }
 
-            if (currentIndex >= letterLabels.size()) {
-                if (typedString.equalsIgnoreCase(level.getTaskString())) {
-                    // level has been completed
-                    level.setCompleted(true);
+            // check if BACK_SPACE , and that the level hasn't already been completed
+            if (key.equals("BACK_SPACE") && currentIndex > 0 && !level.isCompleted()) {
+                // move back a character, and turn the previous character grey
+                currentIndex--;
+                setLetterColour(currentIndex, StyleConstants.GREY_COLOUR);
+                typedString = typedString.substring(0, typedString.length() - 1);
 
-                    // display the NEXT button
-                    nextButton.setVisible(true);
+                // vibrate the next character to be pressed
+                char keyToVibrate = level.getTaskString().charAt(currentIndex);
+                keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+
+                return;
+            }
+
+            // check if all characters have already been typed
+            if (currentIndex < letterLabels.size()) {
+                char expectedChar = level.getTaskString().charAt(currentIndex);
+
+                // keep track of typed string
+                typedString += key;
+
+                if (key.equalsIgnoreCase(String.valueOf(expectedChar))) {
+                    // the user typed the expected character.
+                    setLetterColour(currentIndex, StyleConstants.BLUE_COLOUR);
+                    currentIndex++;
+
+                    if (currentIndex < letterLabels.size()) {
+                        // vibrate the next key to be pressed
+                        char keyToVibrate = level.getTaskString().charAt(currentIndex);
+                        keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+                    }
                 } else {
-                    // user typed the whole string, but made a mistake.
+                    // the user typed the wrong character.
+                    setLetterColour(currentIndex, StyleConstants.RED_COLOUR);
+                    currentIndex++;
+
+                    // turn on LEDs
+                    keyboardInterface.activateLights(1000);
+
+                    // vibrate the BACK_SPACE key
+                    keyboardInterface.sendHapticCommand("BACK_SPACE", 200, 50);
+                }
+
+                if (currentIndex >= letterLabels.size()) {
+                    if (typedString.equalsIgnoreCase(level.getTaskString())) {
+                        // level has been completed
+                        level.setCompleted(true);
+
+                        // display the NEXT button
+                        nextButton.setVisible(true);
+                    } else {
+                        // user typed the whole string, but made a mistake.
+                    }
                 }
             }
         }

@@ -40,15 +40,15 @@
       }, {
         "taskString" : "a;a;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "aa;;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "a;a;a;",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "aaa;;;",
         "displayText" : null,
