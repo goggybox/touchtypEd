@@ -1011,8 +1011,21 @@ public class GameViewController {
         if (currentSentence == null) return;
 
         int visibleLen = 50;
-        int start = Math.max(0, currentCharIndex - visibleLen / 2);
-        int end   = Math.min(currentSentence.length(), start + visibleLen);
+        
+        // 调整起始位置的计算方式，确保在文章结束时显示最后部分内容
+        int start;
+        if (isArticleMode() && currentSentence.length() <= visibleLen) {
+            // 如果整个文章长度小于可视长度，直接显示全部
+            start = 0;
+        } else if (isArticleMode() && currentSentence.length() - currentCharIndex < visibleLen / 2) {
+            // 如果剩余字符不足以填充后半部分界面，调整起始位置确保显示全部剩余内容
+            start = Math.max(0, currentSentence.length() - visibleLen);
+        } else {
+            // 正常情况下，当前字符位于可视区域中间
+            start = Math.max(0, currentCharIndex - visibleLen / 2);
+        }
+        
+        int end = Math.min(currentSentence.length(), start + visibleLen);
 
         // Already typed part
         for (int i = start; i < currentCharIndex; i++) {
@@ -1042,6 +1055,7 @@ public class GameViewController {
             taskLabel.getChildren().add(remain);
         }
 
+        // 更新光标位置，确保即使在文章结束时也能正确显示
         double baseX = -(visibleLen * StyleConstants.charWidth / 2.0);
         double offset = (currentCharIndex - start) * StyleConstants.charWidth;
         cursorLabel.setTranslateX(baseX + offset);
