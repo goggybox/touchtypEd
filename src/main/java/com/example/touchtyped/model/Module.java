@@ -3,6 +3,7 @@ package com.example.touchtyped.model;
 import com.example.touchtyped.controller.ModuleViewController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.cloud.firestore.annotation.Exclude;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,6 +24,11 @@ public class Module {
     private String displayText;
     private int id;
     private List<Level> levels;
+
+    // dummy vars to shut firestore serialiser up
+    private boolean locked;
+    private double completion;
+    private Level nextUncompletedLevel;
 
     public Module(String name, String focus, String displayText, int id, List<Level> levels) {
         this.name = name;
@@ -83,6 +89,7 @@ public class Module {
      * @return the fraction of completed levels (like 3/4 - 0.75)
      */
     @JsonIgnore
+    @Exclude
     public double getCompletion() {
         int numCompletedLevels = 0;
         for (Level level : levels) {
@@ -97,6 +104,7 @@ public class Module {
      * @return the next uncompleted level
      */
     @JsonIgnore
+    @Exclude
     public Level getNextUncompletedLevel() {
         for (int i = 0; i < levels.size(); i++) {
             if (!levels.get(i).isCompleted()) { return levels.get(i); }
@@ -107,6 +115,7 @@ public class Module {
     }
 
     @JsonIgnore
+    @Exclude
     public Boolean isLocked() {
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
         List<Phase> phases = typingPlan.getPhases();
