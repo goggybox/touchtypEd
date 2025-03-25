@@ -171,7 +171,16 @@ public class OptionsViewController {
             settingsService.applySettingsToScene(scene);
             
             Stage stage = (Stage) learnButton.getScene().getWindow();
-            stage.setScene(scene);
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -187,7 +196,16 @@ public class OptionsViewController {
             settingsService.applySettingsToScene(scene);
             
             Stage stage = (Stage) gamesButton.getScene().getWindow();
-            stage.setScene(scene);
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,7 +221,16 @@ public class OptionsViewController {
             settingsService.applySettingsToScene(scene);
             
             Stage stage = (Stage) classroomButton.getScene().getWindow();
-            stage.setScene(scene);
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

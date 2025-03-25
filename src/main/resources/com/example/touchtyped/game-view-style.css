@@ -21,18 +21,16 @@
     -fx-padding: 0;
     -fx-spacing: 20;
     -fx-min-height: 580;
-    -fx-max-height: 580;
 }
 
-/* 确保游戏容器在暗黑模式下与其他页面背景一致 */
 .dark-mode .game-container {
-    -fx-background-color: #121212; /* 与其他页面一致的暗黑背景色 */
+    -fx-background-color: #121212;
     -fx-border-color: transparent;
 }
 
-/* 确保游戏容器在色盲模式下与其他页面背景一致 */
+
 .colorblind-mode .game-container {
-    -fx-background-color: #f5f5f5; /* 与其他页面一致的色盲模式背景色 */
+    -fx-background-color: #f5f5f5;
 }
 
 .time-options {
@@ -143,6 +141,7 @@
 .typing-area {
     -fx-padding: 20;
     -fx-alignment: center;
+    -fx-fill-height: true;
 }
 
 .task-text {
@@ -1113,7 +1112,7 @@
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 0);
 }
 
-/* 确保暗黑模式下文本内容可见 */
+
 .dark-mode .info-dialog VBox Label,
 .dark-mode .info-dialog HBox Label,
 .dark-mode .info-dialog Text {
@@ -1160,6 +1159,62 @@
 
 .colorblind-mode .info-tip {
     -fx-text-fill: #555555;
+}
+
+
+#mainContainer {
+    -fx-fill-height: true;
+    -fx-background-color: white;
+}
+
+.dark-mode #mainContainer {
+    -fx-background-color: #121212;
+}
+
+.colorblind-mode #mainContainer {
+    -fx-background-color: #f5f5f5;
+}
+
+
+.view-ranking-button {
+    -fx-background-color: #263F68;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 1);
+    -fx-min-width: 140px;
+    -fx-max-width: 140px;
+}
+
+.view-ranking-button:hover {
+    -fx-background-color: #3A5B8C;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0, 0, 2);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+
+.dark-mode .view-ranking-button {
+    -fx-background-color: #4D7CCE;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.2), 4, 0, 0, 1);
+}
+
+.dark-mode .view-ranking-button:hover {
+    -fx-background-color: #6B9FFF;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 6, 0, 0, 2);
+}
+
+
+.colorblind-mode .view-ranking-button {
+    -fx-background-color: #17365D;
+    -fx-text-fill: white;
+}
+
+.colorblind-mode .view-ranking-button:hover {
+    -fx-background-color: #254B80;
 }
 
 

@@ -71,6 +71,7 @@ public class GameViewController {
     @FXML private VBox resultContainer;
     @FXML private Label wpmLabel;
     @FXML private Label accuracyLabel;
+    @FXML private Button viewRankingButton;
 
     @FXML private ToggleGroup modeToggleGroup;
     @FXML private RadioButton timedModeRadio;
@@ -431,6 +432,7 @@ public class GameViewController {
         cursorLabel.setVisible(false);
         competitionContainer.setVisible(false);
         competitionContainer.setManaged(false);
+        viewRankingButton.setVisible(false); // 初始化时隐藏排名按钮
 
         timerLabel.setVisible(true);
         timerLabel.setManaged(true);
@@ -475,6 +477,7 @@ public class GameViewController {
             wpmLabel.setVisible(true);
             accuracyLabel.setVisible(true);
             taskLabel.setVisible(true);
+            viewRankingButton.setVisible(true); // 文章模式显示排名按钮
         }
 
         if(isCompetitionMode()){
@@ -494,6 +497,7 @@ public class GameViewController {
             rightScoreLabel.setText("PlayerB Score: 0");
             competitionContainer.setVisible(true);
             competitionContainer.setManaged(true);
+            viewRankingButton.setVisible(false); // 竞赛模式隐藏排名按钮
         }
 
         if (isTimeMode()){
@@ -506,6 +510,7 @@ public class GameViewController {
             wpmLabel.setVisible(true);
             accuracyLabel.setVisible(true);
             taskLabel.setVisible(true);
+            viewRankingButton.setVisible(true); // 计时模式显示排名按钮
         }
 
         generateNewTask();
@@ -1012,16 +1017,12 @@ public class GameViewController {
 
         int visibleLen = 50;
         
-        // 调整起始位置的计算方式，确保在文章结束时显示最后部分内容
         int start;
         if (isArticleMode() && currentSentence.length() <= visibleLen) {
-            // 如果整个文章长度小于可视长度，直接显示全部
             start = 0;
         } else if (isArticleMode() && currentSentence.length() - currentCharIndex < visibleLen / 2) {
-            // 如果剩余字符不足以填充后半部分界面，调整起始位置确保显示全部剩余内容
             start = Math.max(0, currentSentence.length() - visibleLen);
         } else {
-            // 正常情况下，当前字符位于可视区域中间
             start = Math.max(0, currentCharIndex - visibleLen / 2);
         }
         
@@ -1159,12 +1160,7 @@ public class GameViewController {
             rightScoreLabel.setText("PlayerA Score: " + scoreRight);
         }
     }
-
-    /**
-     * 更新比赛分数，由WebSocket客户端调用
-     * @param scoreA 玩家A的分数
-     * @param scoreB 玩家B的分数
-     */
+    
     public void updateCompetitionScores(int scoreA, int scoreB) {
         // 确保在JavaFX应用线程中更新UI
         Platform.runLater(() -> {
@@ -1189,7 +1185,27 @@ public class GameViewController {
             settingsService.applySettingsToScene(scene);
 
             Stage stage=(Stage)taskLabel.getScene().getWindow();
-            stage.setScene(scene);
+            
+            // 保存当前全屏状态和当前位置大小
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            if(wasFullScreen) {
+                // 如果是全屏状态，设置新场景时保持全屏
+                // 先设置场景不可见
+                stage.setOpacity(0);
+                
+                // 设置新场景
+                stage.setScene(scene);
+                
+                // 确保全屏设置正确
+                stage.setFullScreen(true);
+                
+                // 恢复可见性
+                stage.setOpacity(1);
+            } else {
+                // 非全屏状态正常切换
+                stage.setScene(scene);
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -1205,7 +1221,17 @@ public class GameViewController {
             settingsService.applySettingsToScene(scene);
 
             Stage stage=(Stage)taskLabel.getScene().getWindow();
+            
+            // 保存当前全屏状态
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            // 设置新场景
             stage.setScene(scene);
+            
+            // 恢复全屏状态
+            if(wasFullScreen) {
+                stage.setFullScreen(true);
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -1216,8 +1242,22 @@ public class GameViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            
             Stage stage = (Stage) classroomButton.getScene().getWindow();
+            
+            // 保存当前全屏状态
+            boolean wasFullScreen = stage.isFullScreen();
+            
+            // 设置新场景
             stage.setScene(scene);
+            
+            // 恢复全屏状态
+            if(wasFullScreen) {
+                stage.setFullScreen(true);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1422,7 +1462,7 @@ public class GameViewController {
         try {
             HBox tipBox = new HBox(10);
             tipBox.setAlignment(Pos.CENTER_LEFT);
-            tipBox.setPadding(new Insets(0, 0, 0, 34)); // 缩进与图标对齐
+            tipBox.setPadding(new Insets(0, 0, 0, 34));
             
             Label tipTextLabel = new Label("Tip: " + tipText);
             tipTextLabel.setWrapText(true);
@@ -1443,17 +1483,15 @@ public class GameViewController {
         }
     }
 
-    /**
-     * 更新信息按钮的可见性
-     */
+
     private void updateInfoButtonVisibility() {
-        // 只有在"计时模式"下才显示信息按钮
         boolean isTimedMode = timedModeRadio.isSelected();
         timedModeInfoButton.setVisible(isTimedMode);
+        viewRankingButton.setVisible(isTimeMode() || isArticleMode());
     }
 
     /**
-     * 检查是否是第一次使用
+     * check if it is first time use
      */
     private boolean checkFirstTimeUser() {
         UserProfile profile = UserProfile.getInstance();
@@ -1462,9 +1500,7 @@ public class GameViewController {
         return profile.isFirstTimeUser();
     }
 
-    /**
-     * 显示简化版的新手引导对话框
-     */
+
     private void showSimpleTutorial() {
         tutorialDialog = new Dialog<>();
         tutorialDialog.setTitle("TouchTypEd Tutorial");
@@ -1570,7 +1606,7 @@ public class GameViewController {
     }
 
     /**
-     * 显示下一步教程
+     * Next step instruction
      */
     private void showNextTutorialStep() {
         tutorialStep++;
@@ -1605,27 +1641,20 @@ public class GameViewController {
                 return;
         }
 
-        // 更新对话框内容
         VBox contentArea = (VBox) ((BorderPane) tutorialDialog.getDialogPane().getContent()).getCenter();
         Label titleLabel = (Label) contentArea.getChildren().get(0);
         titleLabel.setText(title);
         tutorialContent.setText(content);
-        
-        // 启用下一步按钮（可能在动画后被禁用）
         tutorialNextButton.setDisable(false);
     }
 
 
-    /**
-     * 结束教程
-     */
     private void endTutorial() {
         if (tutorialDialog != null) {
             tutorialDialog.close();
             tutorialDialog = null;
         }
-        
-        // 标记教程为已完成
+
         if (userProfile != null) {
             userProfile.setCompletedTutorial(true);
             userProfile.saveProfile();
@@ -1674,4 +1703,24 @@ public class GameViewController {
     @FXML
     private StackPane mainContainer;
     private UserProfile userProfile;
+
+
+    @FXML
+    public void onViewRankingButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            Stage stage = (Stage) viewRankingButton.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
+            stage.setScene(scene);
+            if(wasFullScreen) {
+                stage.setFullScreen(true);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

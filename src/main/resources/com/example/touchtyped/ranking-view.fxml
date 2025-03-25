@@ -75,7 +75,7 @@
                 <Button fx:id="returnButton" 
                         onAction="#onReturnButtonClick"
                         text="Return to Game"
-                        styleClass="control-button"
+                        styleClass="view-ranking-button"
                         focusTraversable="false"/>
             </HBox>
         </VBox>

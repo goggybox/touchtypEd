@@ -56,11 +56,19 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
 
             // Apply current theme settings to the new scene
             AppSettingsService.getInstance().applySettingsToScene(scene);
 
-            stage.setScene(scene);
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,11 +83,19 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/option-view.fxml"));
             Scene optionScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
 
             // Apply current theme settings to the new scene
             AppSettingsService.getInstance().applySettingsToScene(optionScene);
 
-            stage.setScene(optionScene);
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(optionScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(optionScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,7 +107,16 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) classroomButton.getScene().getWindow();
-            stage.setScene(scene);
+
+            boolean wasFullScreen = stage.isFullScreen();
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,11 +131,18 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene gameScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
 
             // Apply current theme settings to the new scene
             AppSettingsService.getInstance().applySettingsToScene(gameScene);
-
-            stage.setScene(gameScene);
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(gameScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(gameScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -125,11 +157,19 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
             Scene rankingScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
 
             // Apply current theme settings to the new scene
             AppSettingsService.getInstance().applySettingsToScene(rankingScene);
 
-            stage.setScene(rankingScene);
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(rankingScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(rankingScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
