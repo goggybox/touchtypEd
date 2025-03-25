@@ -1,6 +1,9 @@
 package com.example.touchtyped.controller;
 
 import com.example.touchtyped.constants.StyleConstants;
+import com.example.touchtyped.firestore.ClassroomDAO;
+import com.example.touchtyped.firestore.UserAccount;
+import com.example.touchtyped.firestore.UserDAO;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.GameKeypressListener;
 import com.example.touchtyped.model.KeyLogsStructure;
@@ -32,6 +35,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
@@ -84,6 +88,9 @@ public class GameViewController {
     @FXML private Text leftCursor;
     @FXML private Text rightCursor;
 
+    @FXML private ImageView classroomButton;
+
+    // ========== 核心字段 ==========`
     @FXML private Label comboLabel;
 
     // ========== 新手引导相关变量 ==========
@@ -633,6 +640,8 @@ public class GameViewController {
                 FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-result-view.fxml"));
                 Scene resultScene=new Scene(loader.load(),1200,700);
 
+                // game is over, display results and save keyLogsStructure.
+
                 GameResultViewController resultController=loader.getController();
 
                 // Get game mode
@@ -650,6 +659,36 @@ public class GameViewController {
                         playerName
                 );
                 resultController.setKeyLogsStructure(keyLogsStructure);
+
+                // add simple statistics to structure
+                keyLogsStructure.setWpm((int) finalWpm);
+                keyLogsStructure.setCorrectKeystrokes(correctKeystrokes);
+                keyLogsStructure.setIncorrectKeystrokes(wrongKeystrokes);
+
+                // save keyLogsStructure to database
+                Map<String, String> userDetails = ClassroomDAO.loadUserCache();
+                if (userDetails != null) {
+                    try {
+                        String classroomID = userDetails.get("classroomID");
+                        String username = userDetails.get("username");
+                        String password = userDetails.getOrDefault("password", null);
+
+                        UserAccount userAccount = UserDAO.getAccount(classroomID, username, password);
+
+                        if (userAccount == null) {
+                            // either the user doesn't exist or password is wrong.
+                        } else {
+                            UserDAO.addKeyLog(classroomID, username, keyLogsStructure, password);
+                            System.out.println("Added key logs structure to database.");
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println("DATABASE FAILURE. Failed to save keyLogsStructure to user account.");
+                    }
+
+                } else {
+                    // do nothing - user is not logged in
+                }
 
                 Stage stage=(Stage)gameContainer.getScene().getWindow();
                 stage.setScene(resultScene);
@@ -1135,6 +1174,18 @@ public class GameViewController {
             Stage stage=(Stage)taskLabel.getScene().getWindow();
             stage.setScene(scene);
         }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

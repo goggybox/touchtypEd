@@ -12,7 +12,7 @@ public class TypingPlanDeserialiser {
      * @return a TypingPlan
      */
     public static TypingPlan getTypingPlan() {
-        String filePath = "src/main/resources/com/example/touchtyped/testTypingPlan.json";
+        String filePath = "src/main/resources/com/example/touchtyped/defaultTypingPlan.json";
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();

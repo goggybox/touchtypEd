@@ -1,5 +1,6 @@
 package com.example.touchtyped.model;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -36,12 +37,20 @@ public class KeyLogsStructure {
     private String wordsGiven = "";
     private int charPosition = 0;
     private int errors = 0;
+    private long timeCreated = System.currentTimeMillis();
+
+    private int wpm;
+    private int correctKeystrokes;
+    private int incorrectKeystrokes;
+
+    public KeyLogsStructure() { }
 
     /**
      * constructor. This class must be given a wordsGiven.
      */
     public KeyLogsStructure(String wordsGiven) {
         this.wordsGiven = wordsGiven; // force the words to uppercase
+
     }
 
     /**
@@ -59,9 +68,7 @@ public class KeyLogsStructure {
 
         // determine the expected keypress based on the expected character in wordsGiven at charPosition.
         // if the last char was mistyped, errors == 1, and the user SHOULD be pressing BACK_SPACE to fix the error.
-        String expected = (charPosition < wordsGiven.length())
-                ? String.valueOf(wordsGiven.charAt(charPosition))
-                : null;
+        String expected = (charPosition < wordsGiven.length()) ? String.valueOf(wordsGiven.charAt(charPosition)) : null;
 
         // if the user HAS pressed BACK_SPACE, they are trying to fix the error.
         if (expected != null && expected.equals("BACK_SPACE") && key.equals("BACK_SPACE")) {
@@ -142,6 +149,54 @@ public class KeyLogsStructure {
 
     public void setWordsGiven(String wordsGiven) {
         this.wordsGiven = wordsGiven.toUpperCase();
+    }
+
+    public int getCharPosition() {
+        return charPosition;
+    }
+
+    public void setCharPosition(int charPosition) {
+        this.charPosition = charPosition;
+    }
+
+    public int getErrors() {
+        return errors;
+    }
+
+    public void setErrors(int errors) {
+        this.errors = errors;
+    }
+
+    public void setTimeCreated(long timeCreated) {
+        this.timeCreated = timeCreated;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
+    }
+
+    public void setWpm(int wpm) {
+        this.wpm = wpm;
+    }
+
+    public int getWpm() {
+        return wpm;
+    }
+
+    public void setCorrectKeystrokes(int correctKeystrokes) {
+        this.correctKeystrokes = correctKeystrokes;
+    }
+
+    public int getCorrectKeystrokes() {
+        return correctKeystrokes;
+    }
+
+    public void setIncorrectKeystrokes(int incorrectKeystrokes) {
+        this.incorrectKeystrokes = incorrectKeystrokes;
+    }
+
+    public int getIncorrectKeystrokes() {
+        return incorrectKeystrokes;
     }
 
 }

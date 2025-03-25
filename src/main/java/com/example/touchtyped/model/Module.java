@@ -1,6 +1,7 @@
 package com.example.touchtyped.model;
 
 import com.example.touchtyped.controller.ModuleViewController;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -81,6 +82,7 @@ public class Module {
      * determine what percentage of levels are completed
      * @return the fraction of completed levels (like 3/4 - 0.75)
      */
+    @JsonIgnore
     public double getCompletion() {
         int numCompletedLevels = 0;
         for (Level level : levels) {
@@ -94,6 +96,7 @@ public class Module {
      * gets the next level for the user to complete.
      * @return the next uncompleted level
      */
+    @JsonIgnore
     public Level getNextUncompletedLevel() {
         for (int i = 0; i < levels.size(); i++) {
             if (!levels.get(i).isCompleted()) { return levels.get(i); }
@@ -103,13 +106,15 @@ public class Module {
         return null;
     }
 
+    @JsonIgnore
     public Boolean isLocked() {
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
-        for (Phase phase : typingPlan.getPhases()) {
+        List<Phase> phases = typingPlan.getPhases();
+        for (Phase phase : phases) {
             if (phase.getModules().contains(this)) {
                 int index = phase.getModules().indexOf(this);
-                if (index == 0) { return false; }
-                if (phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+                if (index == 0 && phases.getFirst() == phase) { return false; }
+                if (index > 0 && phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
                 return true;
             }
         }

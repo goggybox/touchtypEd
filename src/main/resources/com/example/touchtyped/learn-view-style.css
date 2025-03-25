@@ -2,6 +2,9 @@
     -fx-background-color: #D8D8D8;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
 }
 
 /* styling for the ScrollPane */
@@ -291,4 +294,28 @@
     -fx-stroke: #9F0500;
     -fx-stroke-width: 4;
     -fx-stroke-dash-array: 5 3;
+}
+
+#typingPlanToggleContainer {
+    -fx-background-insets: 0;
+    -fx-padding: 0px -10px 10px 0px;
+    -fx-translate-x: 20px;
+    -fx-translate-y: 20px;
+    -fx-border-width: 0px;
+    -fx-max-width: 350px;
+    -fx-cursor: hand;
+}
+
+#typingPlanToggleButton {
+    -fx-opacity: 0.5;
+    -fx-scale-x: 0.8;
+    -fx-scale-y: 0.8;
+    -fx-translate-y: -10px;
+    -fx-cursor: hand;
+}
+
+#typingPlanToggleLabel {
+    -fx-font-size: 16px;
+    -fx-translate-y: 3px;
+    -fx-padding: 0px 0px 0px 3px;
 }

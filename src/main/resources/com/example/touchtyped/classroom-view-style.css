@@ -1,0 +1,172 @@
+
+
+.nav-bar {
+    -fx-background-color: #D8D8D8;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* styling for the ScrollPane */
+.scroll-pane {
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+}
+.scroll-pane:focused {
+    -fx-focus-color: transparent;
+}
+
+/* styling for the dynamically generated buttons */
+.dynamic-button {
+    -fx-border-color: transparent;
+    -fx-background-color: #D8D8D8;
+    -fx-border-width: 0;
+}
+
+.text-field {
+    -fx-border-color: #263F68;
+    -fx-background-color: transparent;
+    -fx-border-width: 3px;
+    -fx-border-radius: 20px;
+    -fx-max-width: 300px;
+}
+
+.text-field:focused {
+    -fx-border-color: #F5102F;
+    -fx-background-color: transparent;
+}
+
+#userAccountDisplayContainer {
+    -fx-padding: 40px 30px 0px 30px;
+}
+
+#teacherContainer {
+    -fx-padding: 0px 0px 20px 0px;
+}
+
+#studentListDescriptor, #studentKeyLogsDescriptor, #keyLogDescriptor {
+    -fx-font-size: 16px;
+}
+
+#typingTestsContainer, #studentList, #accountContainer {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-border-width: 3px;
+}
+
+#accountContainer {
+    -fx-padding:25px;
+    -fx-pref-width:853px;
+}
+
+#accountContainer Label{
+    -fx-font-size: 16px;
+}
+
+#accountChangeUsernameButton, #removeStudentButton {
+    -fx-background-color: transparent;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-padding: 0px 3px 0px 3px;
+}
+
+#accountChangeUsernameButton:hover, #removeStudentButton:hover {
+    -fx-border-color: rgba(245, 16, 47, 0.5);
+}
+
+#accountContainer TextField {
+    -fx-font-size: 14px;
+}
+
+#accountTitle {
+    -fx-font-size: 22px;
+    -fx-font-weight: 600;
+    -fx-padding: 0px 0px 5px 0px;
+}
+
+#changeTo, #removeStudent {
+    -fx-text-fill: #6e6d6d;
+}
+
+#accountChangeUsernameInput, #removeStudentInput {
+    -fx-border-width: 2px;
+    -fx-border-radius: 0px;
+    -fx-padding: 0px 2px 0px 2px;
+    -fx-border-color: rgb(127, 138, 156);
+}
+
+#studentKeyLogsContainerScrollPane {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-border-width: 3px 0px 0px 0px;
+}
+
+#logContainerScrollPane, #logContainer {
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+
+#studentInfoContainer {
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+    -fx-border-width: 0px 3px 0px 0px;
+}
+
+#studentListContainerScrollPane {
+    -fx-border-width: 3px 0px 0px 0px;
+    -fx-background-color: rgba(255,0,0,0);
+    -fx-border-color: rgb(127, 138, 156);
+}
+
+#typingTestsContainer {
+}
+
+#logContainer, #logContainerScrollPane {
+    -fx-background-color: white;
+}
+
+
+.student, .log {
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-font-size: 16px;
+}
+
+.student:hover, .log:hover {
+    -fx-background-color: rgb(191, 191, 191);
+}
+
+.student-selected, .log-selected {
+    -fx-background-color: rgba(245, 16, 47, 0.5);
+}
+
+.student-selected:hover, .log-selected:hover {
+    -fx-background-color: rgba(245, 16, 47, 0.5);
+}
+
+.simple-stats {
+    -fx-font-size: 14px;
+    -fx-padding: -5px 0px 0px 12px;
+    -fx-text-fill: #424242;
+}
+
+.stats-descriptor {
+    -fx-font-size: 16px;
+    -fx-padding: 5px 0px 0px 5px;
+}
+
+#selectorContainer {
+    -fx-padding: 0px 0px 7px 10px;
+}
+
+#errorLabel {
+    -fx-text-fill: rgba(245, 16, 47, 0.75);
+    -fx-padding: 0px -20px -20px 0px;
+}
+
+#logoutButton {
+    -fx-cursor: hand;
+}

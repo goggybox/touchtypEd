@@ -24,7 +24,7 @@
                         </ImageView>
                         <ImageView fx:id="learnButton"
                                    fitHeight="69.0" fitWidth="175.0"
-                                   layoutX="933.0" layoutY="26.0"
+                                   layoutX="844.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true"
                                    onMouseClicked="#onLearnButtonClick">
@@ -32,10 +32,19 @@
                         </ImageView>
                         <ImageView fx:id="gamesButton"
                                    fitHeight="69.0" fitWidth="71.0"
-                                   layoutX="1022.0" layoutY="26.0"
+                                   layoutX="933.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true">
                             <Image url="@images/nav-bar/gamesSelected.png" />
+                        </ImageView>
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onClassroomButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/classroom.png" />
                         </ImageView>
                         <ImageView fx:id="optionsButton"
                                    fitHeight="69.0" fitWidth="175.0"
@@ -81,10 +90,10 @@
 
             <!-- Advanced Statistics Button and Description -->
             <VBox alignment="CENTER" spacing="10">
-                <Label fx:id="descriptionLabel" text="Click below to generate advanced statistics and personalise your typing plan." styleClass="description-label"/>
+                <Label fx:id="descriptionLabel" text="Click below to personalise your typing plan based on these results." styleClass="description-label"/>
                 <Button fx:id="generateAdvancedStatsButton"
                         onAction="#onGenerateAdvancedStatsButtonClick"
-                        text="Generate Advanced Statistics"
+                        text="Personalise Typing Plan"
                         styleClass="generate-button"
                         focusTraversable="false"/>
             </VBox>
