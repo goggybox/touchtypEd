@@ -203,8 +203,8 @@ public class ClassroomViewController {
 
     private static final String file_path = "user_cache.txt";
 
-    private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
-    private final Font secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
+    private Font primary_font;
+    private Font secondary_font;
 
     private Label selectedStudentLabel = null;
     private Label selectedKeyLogLabel = null;
@@ -225,6 +225,11 @@ public class ClassroomViewController {
      * otherwise, display "Student" or "Teacher" buttons to allow them to join or create a class.
      */
     public void initialize() {
+        primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
+        secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
+        userGreeting.setFont(primary_font);
+        userDescription.setFont(secondary_font);
+
         hideAllForms();
         loadingContainer.setVisible(true);
 
