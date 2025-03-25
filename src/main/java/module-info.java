@@ -44,7 +44,7 @@ module com.example.touchtyped {
     requires org.apache.pdfbox;
 
     // 开放包供反射访问
-    opens com.example.touchtyped.model to spring.core, spring.beans, com.fasterxml.jackson.databind;
+    opens com.example.touchtyped.model to spring.core, spring.beans, com.fasterxml.jackson.databind, google.cloud.firestore;
     // 移除不存在的包的引用
     // opens com.example.touchtyped.server to spring.core, spring.beans, spring.context, spring.web;
     opens com.example.touchtyped.service to spring.core, spring.beans;

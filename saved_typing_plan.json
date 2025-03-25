@@ -36,15 +36,15 @@
       "levels" : [ {
         "taskString" : "ei",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "eei",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "eiei",
         "displayText" : null,
-        "completed" : false
+        "completed" : true
       }, {
         "taskString" : "eiie",
         "displayText" : null,

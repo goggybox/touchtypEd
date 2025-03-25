@@ -147,7 +147,7 @@ public final class UserDAO {
             QuerySnapshot snapshot = query.get().get();
 
             if (snapshot.isEmpty()) {
-                System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist.");
+                System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist. (1)");
                 return null;
             }
 
@@ -165,7 +165,8 @@ public final class UserDAO {
             }
 
         } catch (Exception e) {
-            System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist.");
+            System.out.println("DATABASE FAILURE. Failed to get user account: user doesn't exist. (2)");
+            e.printStackTrace();
             return null;
         }
     }
