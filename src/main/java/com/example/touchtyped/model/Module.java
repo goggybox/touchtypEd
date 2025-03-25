@@ -119,11 +119,28 @@ public class Module {
     public Boolean isLocked() {
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
         List<Phase> phases = typingPlan.getPhases();
-        for (Phase phase : phases) {
+
+        for (int i = 0; i < phases.size(); i++) {
+            Phase phase = phases.get(i);
+
             if (phase.getModules().contains(this)) {
                 int index = phase.getModules().indexOf(this);
+
+                // module is unlocked if it is the first module of the first phase.
                 if (index == 0 && phases.get(0) == phase) { return false; }
+
+                // module is unlocked if it is the first module of a phase (which isn't the first phase) and the last
+                // module of the previous phase has been somewhat completed
+                if (i != 0) {
+                    List<Module> previousPhaseModules = phases.get(i-1).getModules();
+                    Module finalModule = previousPhaseModules.get(previousPhaseModules.size()-1);
+                    if (index == 0 && finalModule.getCompletion() > 0.0) { return false; }
+                }
+
+                // module is unlocked if it is not the first module of a phase, but the previous module is unlocked and
+                // has been somewhat completed.
                 if (index > 0 && phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+
                 return true;
             }
         }
