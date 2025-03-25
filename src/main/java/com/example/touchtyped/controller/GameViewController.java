@@ -94,10 +94,8 @@ public class GameViewController {
 
     @FXML private ImageView classroomButton;
 
-    // ========== 核心字段 ==========`
     @FXML private Label comboLabel;
 
-    // ========== 新手引导相关变量 ==========
     /**
      * Current tutorial step
      */
@@ -128,7 +126,7 @@ public class GameViewController {
     private long gameStartTime;
     private int selectedTimeOption = 60; // Timed model time option 15/30/60/120
     private int timeLeft = 60;
-    private int competitionTime = 10;    // compttition model time
+    private int competitionTime = 30;    // compttition model time
 
     private int totalKeystrokes = 0;
     private int correctKeystrokes = 0;
