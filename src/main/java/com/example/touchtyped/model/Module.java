@@ -113,7 +113,7 @@ public class Module {
         for (Phase phase : phases) {
             if (phase.getModules().contains(this)) {
                 int index = phase.getModules().indexOf(this);
-                if (index == 0 && phases.getFirst() == phase) { return false; }
+                if (index == 0 && phases.get(0) == phase) { return false; }
                 if (index > 0 && phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
                 return true;
             }
