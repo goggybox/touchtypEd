@@ -230,6 +230,9 @@ public class ClassroomViewController {
         userGreeting.setFont(primary_font);
         userDescription.setFont(secondary_font);
 
+        userDescription.setWrapText(true);
+        userDescription.setMinHeight(Region.USE_PREF_SIZE);
+
         hideAllForms();
         loadingContainer.setVisible(true);
 
