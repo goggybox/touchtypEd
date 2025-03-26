@@ -55,4 +55,25 @@ public class UserAccountTest {
 
     }
 
+    @Test
+    void testKeyLogManagement() {
+        UserAccount userAccount = new UserAccount();
+        List<KeyLogsStructure> keyLogs = new ArrayList<>();
+        KeyLogsStructure keyLog1 = new KeyLogsStructure("keyLog1words");
+        KeyLogsStructure keyLog2 = new KeyLogsStructure("keyLog2words");
+        keyLogs.add(keyLog1);
+        keyLogs.add(keyLog2);
+
+        // act
+        userAccount.setKeyLogs(keyLogs);
+
+        // assert
+        assertEquals(2, userAccount.getKeyLogs().size());
+        assertEquals(keyLog1, userAccount.getKeyLogs().get(0));
+        assertEquals(keyLog2, userAccount.getKeyLogs().get(1));
+
+    }
+
+
+
 }
