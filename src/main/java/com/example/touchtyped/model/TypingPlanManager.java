@@ -47,6 +47,11 @@ public class TypingPlanManager {
 
     }
 
+    public void updatePlans() {
+        defaultPlan = loadDefaultPlan();
+        personalisedPlan = loadPersonalisedPlan();
+    }
+
     public TypingPlan loadDefaultPlan() {
         Map<String, String> userCache = ClassroomDAO.loadUserCache();
         if (userCache != null) {
@@ -164,6 +169,14 @@ public class TypingPlanManager {
         personalisedPlanExists = true;
     }
 
+    public void clearTypingPlans() {
+        personalisedPlan = null;
+        defaultPlan = TypingPlanDeserialiser.getCleanDefaultTypingPlan();
+        personalisedPlanExists = false;
+        displayingPersonalisedPlan = false;
+        personalisedPlanModified = false;
+    }
+
     public boolean getModified() {
         if (displayingPersonalisedPlan) {
             return personalisedPlanModified;
@@ -203,19 +216,18 @@ public class TypingPlanManager {
                 }
             } else {
                 System.out.println("User not logged in; typing plans not saved to database.");
-            }
+                // save plans to local files.
+                ObjectMapper objectMapper = new ObjectMapper();
+                if (personalisedPlan != null) {
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_TYPING_PLAN_FILE), personalisedPlan);
+                    System.out.println("Personalised typing plan has been saved.");
+                    personalisedPlanExists = true;
+                }
 
-            // save plans to local files.
-            ObjectMapper objectMapper = new ObjectMapper();
-            if (personalisedPlan != null) {
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_TYPING_PLAN_FILE), personalisedPlan);
-                System.out.println("Personalised typing plan has been saved.");
-                personalisedPlanExists = true;
-            }
-
-            if (defaultPlan != null) {
-                objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_DEFAULT_PLAN), defaultPlan);
-                System.out.println("Default typing plan has been saved.");
+                if (defaultPlan != null) {
+                    objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(SAVED_DEFAULT_PLAN), defaultPlan);
+                    System.out.println("Default typing plan has been saved.");
+                }
             }
 
         } catch (IOException e) {
@@ -280,6 +292,25 @@ public class TypingPlanManager {
             TypingPlan clean = TypingPlanDeserialiser.getCleanDefaultTypingPlan();
             System.out.println(clean);
             return clean;
+        }
+    }
+
+    public void deleteLocalFiles() {
+        File defaultFile = new File(SAVED_DEFAULT_PLAN);
+        File personalisedFile = new File(SAVED_TYPING_PLAN_FILE);
+
+        if (defaultFile.exists()) {
+            boolean deleted = defaultFile.delete();
+            if (deleted) {
+                System.out.println("Deleted default typing plan file.");
+            }
+        }
+
+        if (personalisedFile.exists()) {
+            boolean deleted = personalisedFile.delete();
+            if (deleted) {
+                System.out.println("Deleted personalised typing plan file.");
+            }
         }
     }
 

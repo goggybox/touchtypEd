@@ -120,6 +120,7 @@ public class LearnViewController {
                             // go to Classroom page and change label to notify user.
                             Platform.runLater(() -> {
                                 ClassroomDAO.deleteUserCache(); // delete the cache since it is now invalid
+                                TypingPlanManager.getInstance().clearTypingPlans();
                                 String error = "You were logged out because your classroom no longer exists!";
                                 goToClassroomWithError(error);
                             });

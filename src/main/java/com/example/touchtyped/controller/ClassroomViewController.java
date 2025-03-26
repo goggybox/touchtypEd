@@ -10,6 +10,7 @@ import com.example.touchtyped.serialisers.TypingPlanDeserialiser;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -980,6 +981,7 @@ public class ClassroomViewController {
                         if (ClassroomDAO.usernameExistsInClassroom(classroomID, username)) {
                             // logging in to existing account
                             ClassroomDAO.saveUserCache(classroomID, username);
+                            TypingPlanManager.getInstance().updatePlans();
                             Platform.runLater(() -> {
                                 joinFormDescription.setText("Logged in successfully! Loading...");
                                 try {
@@ -995,6 +997,7 @@ public class ClassroomViewController {
                             ClassroomDAO.addStudentToClassroom(classroomID, username);
                             TypingPlanManager manager = TypingPlanManager.getInstance();
                             UserDAO.createUser(classroomID, username, manager.getDefaultPlan(), manager.getPersonalisedPlan());
+                            manager.deleteLocalFiles();
                             ClassroomDAO.saveUserCache(classroomID, username);
                             Platform.runLater(() -> {
                                 joinFormDescription.setText("Joined classroom successfully! Loading...");
@@ -1056,6 +1059,10 @@ public class ClassroomViewController {
                     String classroomID = ClassroomDAO.createClassroom(userID, classroomName);
                     TypingPlanManager manager = TypingPlanManager.getInstance();
                     UserDAO.createUser(classroomID, userID, teacherName, manager.getDefaultPlan(), manager.getPersonalisedPlan(), password);
+
+                    // now that the user's typing plans are being saved in the database, delete local files.
+                    manager.deleteLocalFiles();
+
                     ClassroomDAO.saveUserCache(classroomID, teacherName, password);
                     Platform.runLater(() -> {
                         createFormDescription.setText("Classroom created! Classroom ID is: "+classroomID);
@@ -1108,6 +1115,7 @@ public class ClassroomViewController {
                             // successfully logged in
                             Platform.runLater(() -> {
                                 ClassroomDAO.saveUserCache(classroomID, teacher.getUsername(), password);
+                                TypingPlanManager.getInstance().updatePlans();
                                 loginFormDescription.setText("Logged in successfully!");
                                 loginFormDescription.setTextFill(Color.GREEN);
                                 displayUserAccount(teacher);
@@ -1171,6 +1179,8 @@ public class ClassroomViewController {
     public void onLogoutButtonClicked() {
         ClassroomDAO.deleteUserCache();
         displayStudentTeacherContainer();
+        TypingPlanManager manager = TypingPlanManager.getInstance();
+        manager.clearTypingPlans();
     }
 
     @FXML

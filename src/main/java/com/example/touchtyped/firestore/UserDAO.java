@@ -60,6 +60,7 @@ public final class UserDAO {
             }
 
             UserAccount user = new UserAccount(classroomID, userID, username, defaultTypingPlan, personalisedTypingPlan, new ArrayList<>(), password);
+
             userDoc.set(user).get();
             return userID;
 
