@@ -20,6 +20,7 @@ public class ComputerVisionInterface {
             popup.setSize(600, 100);
             popup.setLayout(new BorderLayout());
             popup.setLocationRelativeTo(null);
+            popup.setFocusableWindowState(false);
             JLabel label = new JLabel(" ");
             label.setFont(new Font("Consola",Font.PLAIN,20));
             label.setHorizontalAlignment(JLabel.CENTER);

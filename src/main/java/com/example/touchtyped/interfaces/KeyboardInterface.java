@@ -169,6 +169,7 @@ public class KeyboardInterface {
         if (keyLower.matches("[a-z]")) {
             if (Application.keyboardConnected) {
                 PrintWriter keyCommand = new PrintWriter(ioPort.getOutputStream());
+                System.out.println("flag");
                 keyCommand.print(keyLower);
                 keyCommand.flush();
                 keyCommand.close();

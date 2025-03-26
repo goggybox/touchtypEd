@@ -22,6 +22,25 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
         keyboardConnected = false;
+        try {
+            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+            SerialPort[] ports = SerialPort.getCommPorts();
+            int i = 0;
+            while (!ioPort.openPort() && i < ports.length) {
+                ioPort = ports[i];
+                i++;
+            }
+            if (ioPort.isOpen()) {
+                System.out.println("port opened successfully");
+                keyboardConnected = true;
+                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+            } else {
+                System.out.println("unable to open port");
+            }
+        } catch (Exception e) {
+            System.out.println("no keyboard connected");
+        }
         keyboardInterface = new KeyboardInterface(ioPort);
         // Load custom fonts
         Font customFont = Font.loadFont(
@@ -47,25 +66,6 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
-        try {
-            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-            SerialPort[] ports = SerialPort.getCommPorts();
-            int i = 0;
-            while (!ioPort.openPort() && i < ports.length) {
-                ioPort = ports[i];
-                i++;
-            }
-            if (ioPort.isOpen()) {
-                System.out.println("port opened successfully");
-                keyboardConnected = true;
-                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-            } else {
-                System.out.println("unable to open port");
-            }
-        } catch (Exception e) {
-            System.out.println("no keyboard connected");
-        }
     }
 
     public static void main(String[] args) {

@@ -91,14 +91,14 @@ def adjust_gamma(image, gamma=1.2):
 if not cap.isOpened():
     print("Error: Unable to access camera.")
 else:
-    print("Camera is working.")
+    #print("Camera is working.")
 
     # Continuously capture frames
     while True:
         ret, frame = cap.read()
 
         if not ret:
-            print("Error: Failed to capture image.")
+            #print("Error: Failed to capture image.")
             break
 
         # Process the frame to detect hands
@@ -253,7 +253,7 @@ else:
                 for idx, lm in enumerate(hand_landmarks.landmark):
                     h, w, c = frame.shape
                     cx, cy = int(lm.x * w), int(lm.y * h)
-                    print(f"Landmark {idx}: ({cx}, {cy})")
+                    #print(f"Landmark {idx}: ({cx}, {cy})")
 
                 if left_hand_correct and right_hand_correct:
                     print("Both hands correct")
