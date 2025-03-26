@@ -104,6 +104,10 @@ public class GameResultViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // 应用主题设置到场景
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             Stage stage = (Stage) classroomButton.getScene().getWindow();
 
             boolean wasFullScreen = stage.isFullScreen();

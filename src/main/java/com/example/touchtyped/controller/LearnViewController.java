@@ -206,6 +206,9 @@ public class LearnViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
 
+            // 应用主题设置到场景
+            settingsService.applySettingsToScene(scene);
+
             // Access the controller of the Classroom page
             ClassroomViewController classroomController = loader.getController();
 
@@ -214,7 +217,16 @@ public class LearnViewController {
 
             // Navigate to the Classroom page
             Stage stage = (Stage) classroomButton.getScene().getWindow();
-            stage.setScene(scene);
+            
+            boolean wasFullScreen = stage.isFullScreen();
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

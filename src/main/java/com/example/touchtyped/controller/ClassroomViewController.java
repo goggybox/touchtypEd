@@ -228,14 +228,48 @@ public class ClassroomViewController {
     public void initialize() {
         primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
         secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
-        userGreeting.setFont(primary_font);
-        userDescription.setFont(secondary_font);
-
-        userDescription.setWrapText(true);
-        userDescription.setMinHeight(Region.USE_PREF_SIZE);
+        
+        // 添加null检查
+        if (userGreeting != null) {
+            userGreeting.setFont(primary_font);
+        }
+        
+        if (userDescription != null) {
+            userDescription.setFont(secondary_font);
+            userDescription.setWrapText(true);
+            userDescription.setMinHeight(Region.USE_PREF_SIZE);
+        }
 
         hideAllForms();
-        loadingContainer.setVisible(true);
+        
+        if (loadingContainer != null) {
+            loadingContainer.setVisible(true);
+        }
+        
+        // 添加场景加载完成后的监听器，应用主题设置，并添加null检查
+        if (joinCreateContainer != null) {
+            joinCreateContainer.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    // 应用当前主题设置到场景
+                    com.example.touchtyped.service.AppSettingsService.getInstance().applySettingsToScene(newScene);
+                }
+            });
+        } else {
+            // 如果joinCreateContainer为null，尝试使用其他控件来添加监听器
+            Platform.runLater(() -> {
+                // 尝试从多个控件获取scene，以增加成功概率
+                Scene currentScene = null;
+                if (userGreeting != null && userGreeting.getScene() != null) {
+                    currentScene = userGreeting.getScene();
+                } else if (loadingContainer != null && loadingContainer.getScene() != null) {
+                    currentScene = loadingContainer.getScene();
+                }
+                
+                if (currentScene != null) {
+                    com.example.touchtyped.service.AppSettingsService.getInstance().applySettingsToScene(currentScene);
+                }
+            });
+        }
 
         Task<Void> initialisation = new Task<>() {
             @Override
@@ -306,8 +340,24 @@ public class ClassroomViewController {
         hideAllForms();
         isAccountSelected = true;
         isStatsSelected = false;
-        accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png").toExternalForm()));
-        statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png").toExternalForm()));
+        try {
+            // 添加资源存在性检查
+            java.net.URL accountSelectedUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png");
+            java.net.URL statsUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png");
+            
+            if (accountSelectedUrl != null && statsUrl != null) {
+                accountButton.setImage(new Image(accountSelectedUrl.toExternalForm()));
+                statsButton.setImage(new Image(statsUrl.toExternalForm()));
+            } else {
+                System.err.println("Warning: Could not load image resources for account/stats buttons");
+                // 使用备用方案：设置文本而不是图片
+                accountButton.setImage(null);
+                statsButton.setImage(null);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading button images: " + e.getMessage());
+            e.printStackTrace();
+        }
         teacherContainer.setVisible(false);
         studentContainer.setVisible(false);
         userAccountDisplayContainer.setVisible(true);
@@ -858,16 +908,37 @@ public class ClassroomViewController {
      * hide all forms
      */
     private void hideAllForms() {
-        studentTeacherContainer.setVisible(false);
-        teacherSelectionForm.setVisible(false);
-        userAccountDisplayContainer.setVisible(false);
-        detailsChangedErrorLabel.setVisible(false);
-        loadingContainer.setVisible(false);
-        joinForm.setVisible(false);
-        createForm.setVisible(false);
-        loginForm.setVisible(false);
-        studentInfoContainer.setVisible(false);
-        keyLogContainer.setVisible(false);
+        // 为所有UI元素添加null检查
+        if (studentTeacherContainer != null) {
+            studentTeacherContainer.setVisible(false);
+        }
+        if (teacherSelectionForm != null) {
+            teacherSelectionForm.setVisible(false);
+        }
+        if (userAccountDisplayContainer != null) {
+            userAccountDisplayContainer.setVisible(false);
+        }
+        if (detailsChangedErrorLabel != null) {
+            detailsChangedErrorLabel.setVisible(false);
+        }
+        if (loadingContainer != null) {
+            loadingContainer.setVisible(false);
+        }
+        if (joinForm != null) {
+            joinForm.setVisible(false);
+        }
+        if (createForm != null) {
+            createForm.setVisible(false);
+        }
+        if (loginForm != null) {
+            loginForm.setVisible(false);
+        }
+        if (studentInfoContainer != null) {
+            studentInfoContainer.setVisible(false);
+        }
+        if (keyLogContainer != null) {
+            keyLogContainer.setVisible(false);
+        }
     }
 
     /**
@@ -876,7 +947,9 @@ public class ClassroomViewController {
     @FXML
     private void displayStudentTeacherContainer() {
         hideAllForms();
-        studentTeacherContainer.setVisible(true);
+        if (studentTeacherContainer != null) {
+            studentTeacherContainer.setVisible(true);
+        }
     }
 
     /**
@@ -1154,8 +1227,21 @@ public class ClassroomViewController {
         if (!isAccountSelected) {
             isStatsSelected = false;
             isAccountSelected = true;
-            accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png").toExternalForm()));
-            statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png").toExternalForm()));
+            try {
+                // 添加资源存在性检查
+                java.net.URL accountSelectedUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/accountSelected.png");
+                java.net.URL statsUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/stats.png");
+                
+                if (accountSelectedUrl != null && statsUrl != null) {
+                    accountButton.setImage(new Image(accountSelectedUrl.toExternalForm()));
+                    statsButton.setImage(new Image(statsUrl.toExternalForm()));
+                } else {
+                    System.err.println("Warning: Could not load image resources for account/stats buttons");
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading button images: " + e.getMessage());
+                e.printStackTrace();
+            }
             System.out.println("'"+selectedStudentUsername+"' account selected for classroom "+ourClassroomID);
             loadAccount(ourClassroomID, selectedStudentUsername);
         }
@@ -1168,8 +1254,21 @@ public class ClassroomViewController {
         if (!isStatsSelected) {
             isStatsSelected = true;
             isAccountSelected = false;
-            accountButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png").toExternalForm()));
-            statsButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/classroom-content/statsSelected.png").toExternalForm()));
+            try {
+                // 添加资源存在性检查
+                java.net.URL accountUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/account.png");
+                java.net.URL statsSelectedUrl = getClass().getResource("/com/example/touchtyped/images/classroom-content/statsSelected.png");
+                
+                if (accountUrl != null && statsSelectedUrl != null) {
+                    accountButton.setImage(new Image(accountUrl.toExternalForm()));
+                    statsButton.setImage(new Image(statsSelectedUrl.toExternalForm()));
+                } else {
+                    System.err.println("Warning: Could not load image resources for account/stats buttons");
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading button images: " + e.getMessage());
+                e.printStackTrace();
+            }
             System.out.println("'"+selectedStudentUsername+"' stats selected for classroom "+ourClassroomID);
             loadStudentKeyLogs(ourClassroomID, selectedStudentUsername);
         }
@@ -1188,6 +1287,10 @@ public class ClassroomViewController {
         try{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene=new Scene(loader.load(),1200,700);
+            
+            // 应用主题设置到场景
+            com.example.touchtyped.service.AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             Stage stage= (Stage) learnButton.getScene().getWindow();
 
             boolean wasFullScreen = stage.isFullScreen();
@@ -1212,6 +1315,10 @@ public class ClassroomViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // 应用主题设置到场景
+            com.example.touchtyped.service.AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             Stage stage = (Stage) gamesButton.getScene().getWindow();
 
             boolean wasFullScreen = stage.isFullScreen();
@@ -1234,6 +1341,10 @@ public class ClassroomViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // 应用主题设置到场景
+            com.example.touchtyped.service.AppSettingsService.getInstance().applySettingsToScene(scene);
+            
             Stage stage = (Stage) optionsButton.getScene().getWindow();
 
             boolean wasFullScreen = stage.isFullScreen();

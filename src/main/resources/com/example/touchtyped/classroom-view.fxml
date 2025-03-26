@@ -226,7 +226,13 @@
                                    preserveRatio="true">
                             <Image url="@images/nav-bar/classroomSelected.png" />
                         </ImageView>
-                        <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="optionsButton"
+                                   fitHeight="69.0" fitWidth="175.0" 
+                                   layoutX="1111.0" layoutY="26.0" 
+                                   pickOnBounds="true" 
+                                   preserveRatio="true"
+                                   onMouseClicked="#onOptionsButtonClick"
+                                   style="-fx-cursor: hand;">
                             <Image url="@images/nav-bar/options.png" />
                         </ImageView>
                     </children>

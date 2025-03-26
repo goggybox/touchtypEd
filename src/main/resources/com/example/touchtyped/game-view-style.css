@@ -2,8 +2,10 @@
     -fx-background-color: #D8D8D8;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
+    -fx-background-insets: 0;
+    -fx-border-width: 0px;
+    -fx-border-color: transparent;
 }
-
 .nav-button {
     -fx-cursor: hand;
     -fx-effect: null;
@@ -17,7 +19,7 @@
 }
 
 .game-container {
-    -fx-background-color: white;
+    -fx-background-color: rgba(216, 216, 216, 0.25);
     -fx-padding: 0;
     -fx-spacing: 20;
     -fx-min-height: 580;
@@ -28,9 +30,27 @@
     -fx-border-color: transparent;
 }
 
+.colorblind-mode, .colorblind-mode * {
+    -fx-base: #f5f5f5;
+    -fx-control-inner-background: #f5f5f5;
+}
 
 .colorblind-mode .game-container {
     -fx-background-color: #f5f5f5;
+    -fx-padding: 0;
+    -fx-spacing: 20;
+    -fx-min-height: 580;
+}
+
+.colorblind-mode .nav-bar {
+    -fx-background-color: #004D40; /* 深绿色 - 对色盲友好且对比度高 */
+    -fx-border-color: #000000; /* 添加黑色边框增加对比度 */
+    -fx-border-width: 0 0 2 0; /* 底部边框 */
+}
+
+.colorblind-mode #mainContainer {
+    -fx-background-color: #f5f5f5;
+    -fx-fill-height: true;
 }
 
 .time-options {
@@ -369,12 +389,10 @@
     -fx-pref-height: 200;
 }
 
-
 .task-text {
     -fx-font-family: "Consolas";
     -fx-font-size: 28px;
 }
-
 
 @font-face {
     font-family: 'Consolas Bold';
@@ -871,7 +889,9 @@
 }
 
 .colorblind-mode .nav-bar {
-    -fx-background-color: #17365D; /* Navy blue - more distinguishable */
+    -fx-background-color: #004D40; /* 深绿色 - 对色盲友好且对比度高 */
+    -fx-border-color: #000000; /* 添加黑色边框增加对比度 */
+    -fx-border-width: 0 0 2 0; /* 底部边框 */
 }
 
 .colorblind-mode .typed-text {
@@ -1112,7 +1132,6 @@
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 5, 0, 0, 0);
 }
 
-
 .dark-mode .info-dialog VBox Label,
 .dark-mode .info-dialog HBox Label,
 .dark-mode .info-dialog Text {
@@ -1161,7 +1180,6 @@
     -fx-text-fill: #555555;
 }
 
-
 #mainContainer {
     -fx-fill-height: true;
     -fx-background-color: white;
@@ -1174,7 +1192,6 @@
 .colorblind-mode #mainContainer {
     -fx-background-color: #f5f5f5;
 }
-
 
 .view-ranking-button {
     -fx-background-color: #263F68;
@@ -1195,7 +1212,6 @@
     -fx-scale-y: 1.05;
 }
 
-
 .dark-mode .view-ranking-button {
     -fx-background-color: #4D7CCE;
     -fx-text-fill: white;
@@ -1206,7 +1222,6 @@
     -fx-background-color: #6B9FFF;
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 6, 0, 0, 2);
 }
-
 
 .colorblind-mode .view-ranking-button {
     -fx-background-color: #17365D;
