@@ -41,6 +41,9 @@ public class ModuleViewController implements KeypressListener {
     private ImageView learnButton;
 
     @FXML
+    private ImageView classroomButton;
+
+    @FXML
     private ImageView gamesButton;
 
     @FXML
@@ -159,7 +162,7 @@ public class ModuleViewController implements KeypressListener {
 
         // vibrate first key
         char key = level.getTaskString().toCharArray()[0];
-        keyboardInterface.sendHapticCommand(String.valueOf(key), 200, 50);
+        keyboardInterface.sendHapticCommand(String.valueOf(key), 500, 50);
 
     }
 
@@ -213,7 +216,7 @@ public class ModuleViewController implements KeypressListener {
 
                 // vibrate the next character to be pressed
                 char keyToVibrate = level.getTaskString().charAt(currentIndex);
-                keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+                keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 500, 50);
 
                 return;
             }
@@ -233,7 +236,7 @@ public class ModuleViewController implements KeypressListener {
                     if (currentIndex < letterLabels.size()) {
                         // vibrate the next key to be pressed
                         char keyToVibrate = level.getTaskString().charAt(currentIndex);
-                        keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 200, 50);
+                        keyboardInterface.sendHapticCommand(String.valueOf(keyToVibrate), 500, 50);
                     }
                 } else {
                     // the user typed the wrong character.
@@ -244,7 +247,7 @@ public class ModuleViewController implements KeypressListener {
                     keyboardInterface.activateLights(1000);
 
                     // vibrate the BACK_SPACE key
-                    keyboardInterface.sendHapticCommand("BACK_SPACE", 200, 50);
+                    keyboardInterface.sendHapticCommand("BACK_SPACE", 500, 50);
                 }
 
                 if (currentIndex >= letterLabels.size()) {
@@ -374,6 +377,29 @@ public class ModuleViewController implements KeypressListener {
             Stage stage = (Stage) optionsButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+
+            // Apply settings to the scene
+            settingsService.applySettingsToScene(scene);
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

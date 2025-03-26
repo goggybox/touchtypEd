@@ -1100,7 +1100,7 @@ public class GameViewController {
             if (ch.equals(" ")) {
                 ch = "SPACE";
             }
-            keyboardInterface.sendHapticCommand(ch.toUpperCase(), 200, 50);
+            keyboardInterface.sendHapticCommand(ch.toUpperCase(), 500, 50);
         }
     }
 

@@ -58,17 +58,26 @@
                         <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                             <Image url="@images/logo.png" />
                         </ImageView>
-                        <ImageView fx:id="learnButton" fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" onMouseClicked="#onLearnButtonClick">
+                        <ImageView fx:id="learnButton" fitHeight="69.0" fitWidth="175.0" layoutX="844.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;" onMouseClicked="#onLearnButtonClick">
                             <Image url="@images/nav-bar/learnSelected.png" />
                         </ImageView>
                         <ImageView fx:id="gamesButton"
                                    fitHeight="69.0" fitWidth="71.0"
-                                   layoutX="1022.0" layoutY="26.0"
+                                   layoutX="933.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true"
                                    onMouseClicked="#onGamesButtonClick"
                                    style="-fx-cursor: hand;">
                             <Image url="@images/nav-bar/games.png" />
+                        </ImageView>
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onClassroomButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/classroom.png" />
                         </ImageView>
                         <ImageView fx:id="optionsButton"
                                    fitHeight="69.0" fitWidth="71.0"

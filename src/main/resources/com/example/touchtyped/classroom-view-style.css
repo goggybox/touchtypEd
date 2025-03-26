@@ -107,6 +107,9 @@
     -fx-padding: 0;
 }
 
+TextField {
+    -fx-font-size: 16px
+}
 
 #studentInfoContainer {
     -fx-background-color: rgba(255,0,0,0);
@@ -227,4 +230,17 @@
 .dark-mode .student-selected:hover, 
 .dark-mode .log-selected:hover {
     -fx-background-color: #4D7CCE; /* 稍深一点的蓝色悬停背景 */
+}
+
+
+/* TEMP BEAUTIFICATION FOR DEMO */
+Button {
+    -fx-border-color: #263F68;
+    -fx-border-width: 3px;
+    -fx-border-radius: 3px;
+    -fx-background-color: white;
+}
+
+Button:hover {
+    -fx-border-color: #F5102F;
 }
