@@ -76,11 +76,19 @@ public class LearnViewController {
     private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
     private final Font secondary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Manjari.ttf"), 22);
 
-    private boolean displayPersonalisedPlan = true;
-
     public void initialize() {
         // Get settings service
         settingsService = AppSettingsService.getInstance();
+
+        if (TypingPlanManager.getInstance().isDisplayingPersonalisedPlan()) {
+            // we are now displaying the personalised plan.
+            typingPlanToggleLabel.setText("Displaying personalised typing plan.");
+            typingPlanToggleButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/learn-content/tick.png").toExternalForm()));
+        } else {
+            // we are now displaying the default plan.
+            typingPlanToggleLabel.setText("Displaying default typing plan.");
+            typingPlanToggleButton.setImage(new Image(getClass().getResource("/com/example/touchtyped/images/learn-content/cross.png").toExternalForm()));
+        }
 
         // Attach keyboard interface to scene, when scene is available
         Platform.runLater(() -> {
