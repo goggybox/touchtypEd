@@ -50,10 +50,12 @@ public class OptionsViewController {
         nightModeRadio.setToggleGroup(displayMode);
         colorblindModeRadio.setToggleGroup(displayMode);
         
-        // Add listener for font size slider changes
-        fontSizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            onFontSizeChanged();
-        });
+        // Add listener for font size slider changes if slider exists
+        if (fontSizeSlider != null) {
+            fontSizeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+                onFontSizeChanged();
+            });
+        }
         
         // Load saved settings
         loadSavedSettings();
@@ -77,9 +79,11 @@ public class OptionsViewController {
                 break;
         }
         
-        // Load font size setting
-        double savedFontSize = settingsService.getFontSize();
-        fontSizeSlider.setValue(savedFontSize);
+        // Load font size setting only if slider exists
+        if (fontSizeSlider != null) {
+            double savedFontSize = settingsService.getFontSize();
+            fontSizeSlider.setValue(savedFontSize);
+        }
     }
     
     @FXML
@@ -128,6 +132,9 @@ public class OptionsViewController {
     
     @FXML
     public void onFontSizeChanged() {
+        // Only proceed if slider exists
+        if (fontSizeSlider == null) return;
+        
         double fontSize = fontSizeSlider.getValue();
         // Apply font size changes to the UI
         Scene scene = fontSizeSlider.getScene();

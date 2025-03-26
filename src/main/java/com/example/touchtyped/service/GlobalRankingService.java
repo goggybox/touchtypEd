@@ -19,7 +19,7 @@ import java.util.concurrent.Executors;
  */
 public class GlobalRankingService {
     // Please replace with your global ranking server IP address or domain name
-    private static final String SERVER_IP = "10.124.113.224";
+    private static final String SERVER_IP = "10.124.30.50";
 
     private static final int SERVER_PORT = 8080;
 
