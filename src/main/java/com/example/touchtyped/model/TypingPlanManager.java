@@ -48,6 +48,7 @@ public class TypingPlanManager {
     }
 
     public void updatePlans() {
+        System.out.println("Updating plans...");
         defaultPlan = loadDefaultPlan();
         personalisedPlan = loadPersonalisedPlan();
     }
@@ -102,6 +103,8 @@ public class TypingPlanManager {
                 } else {
                     // successfully loaded the personalised plan from database.
                     System.out.println("Successfully loaded personalised plan from database.");
+                    personalisedPlanExists = true;
+                    displayingPersonalisedPlan = true;
                     return loadedPersonalised;
                 }
             } catch (Exception e) {
@@ -242,6 +245,8 @@ public class TypingPlanManager {
                 ObjectMapper objectMapper = new ObjectMapper();
                 TypingPlan loadedPlan = objectMapper.readValue(new File(SAVED_TYPING_PLAN_FILE), TypingPlan.class);
                 System.out.println("Successfully loaded personalised typing plan from local file.");
+                personalisedPlanExists = true;
+                displayingPersonalisedPlan = true;
                 return loadedPlan;
             } catch (IOException e) {
                 System.out.println("ERROR while loading saved personalised typing plan from local file.");
