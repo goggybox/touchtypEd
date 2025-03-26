@@ -253,6 +253,8 @@ public class KeyboardInterface {
                     } else {
                         stopKeyPressQueue--;
                     }
+                    stopHaptic();
+                    System.out.println(String.format("Key %s has stopped vibrating after %d ms", key, duration));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -290,16 +292,18 @@ public class KeyboardInterface {
             lightCommand.close();
         }
 
-        stopLightQueue ++;
+//        stopLightQueue ++;
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(duration);
+                Thread.sleep(duration);/*
                 if (stopKeyPressQueue==1){
                     stopLight();
                     System.out.println(String.format("Lights have turned off after %d ms", duration));
                 } else {
                     stopLightQueue--;
-                }
+                }*/
+                stopLight();
+                System.out.println(String.format("Lights have turned off after %d ms", duration));
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -307,7 +311,7 @@ public class KeyboardInterface {
         thread.start();
     }
     public void stopLight(){
-        stopLightQueue = 0;
+//        stopLightQueue = 0;
         if (Application.keyboardConnected) {
             PrintWriter keyCommand = new PrintWriter(ioPort.getOutputStream());
             keyCommand.print("O");

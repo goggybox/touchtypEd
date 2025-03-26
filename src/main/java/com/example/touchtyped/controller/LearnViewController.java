@@ -104,7 +104,6 @@ public class LearnViewController {
                 settingsService.applySettingsToScene(scene);
 
                 keyboardInterface.attachToScene(scene);
-                keyboardInterface.stopHaptic();
                 // Example keypress listener
                 new ExampleKeypressListener(keyboardInterface);
             } else {

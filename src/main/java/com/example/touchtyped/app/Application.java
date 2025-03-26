@@ -21,6 +21,7 @@ import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.service.RankingService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -34,13 +35,7 @@ public class Application extends javafx.application.Application {
         keyboardConnected = false;
         try {
             ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-            SerialPort[] ports = SerialPort.getCommPorts();
-            int i = 0;
-            while (!ioPort.openPort() && i < ports.length) {
-                ioPort = ports[i];
-                i++;
-            }
-            if (ioPort.isOpen()) {
+            if (ioPort.openPort()) {
                 System.out.println("port opened successfully");
                 keyboardConnected = true;
                 ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
@@ -52,7 +47,6 @@ public class Application extends javafx.application.Application {
             System.out.println("no keyboard connected");
         }
         keyboardInterface = new KeyboardInterface(ioPort);
-        initUserProfile();
 
         // Load custom fonts
         Font customFont = Font.loadFont(
@@ -130,10 +124,10 @@ public class Application extends javafx.application.Application {
             manager.saveTypingPlan();
             System.out.println("SAVING TYPING PLAN");
 
+            ioPort.closePort();
+            System.out.println(ioPort.isOpen());
             if (keyboardConnected) {
                 keyboardInterface.stopHaptic();
-                ioPort.closePort();
-                System.out.println(ioPort.isOpen());
             }
         }));
 
