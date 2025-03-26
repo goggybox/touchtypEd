@@ -131,7 +131,9 @@
 }
 
 .colorblind-mode .nav-bar {
-    -fx-background-color: #17365D; /* Navy blue - more distinguishable */
+    -fx-background-color: #004D40; /* 深绿色 - 对色盲友好且对比度高 */
+    -fx-border-color: #000000; /* 添加黑色边框增加对比度 */
+    -fx-border-width: 0 0 2 0; /* 底部边框 */
 }
 
 .colorblind-mode .scroll-pane {

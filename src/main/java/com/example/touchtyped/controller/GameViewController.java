@@ -258,7 +258,7 @@ public class GameViewController {
             if(newScene!=null){
                 // Apply settings to the scene
                 settingsService.applySettingsToScene(newScene);
-
+                
                 keyboardInterface.attachToScene(newScene);
 
                 // 场景加载完成后检查是否是第一次使用
@@ -1223,12 +1223,14 @@ public class GameViewController {
             // 保存当前全屏状态
             boolean wasFullScreen = stage.isFullScreen();
             
-            // 设置新场景
-            stage.setScene(scene);
-            
-            // 恢复全屏状态
+            // 设置新场景并保持全屏状态
             if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
                 stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
             }
         }catch(IOException e){
             e.printStackTrace();
@@ -1239,25 +1241,55 @@ public class GameViewController {
     public void onClassroomButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
-            Scene scene = new Scene(loader.load(), 1200, 700);
             
-            // Apply settings to the scene
-            settingsService.applySettingsToScene(scene);
+            // 添加加载异常处理
+            loader.setControllerFactory(controllerClass -> {
+                try {
+                    Object controller = controllerClass.getDeclaredConstructor().newInstance();
+                    return controller;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            });
             
-            Stage stage = (Stage) classroomButton.getScene().getWindow();
-            
-            // 保存当前全屏状态
-            boolean wasFullScreen = stage.isFullScreen();
-            
-            // 设置新场景
-            stage.setScene(scene);
-            
-            // 恢复全屏状态
-            if(wasFullScreen) {
-                stage.setFullScreen(true);
+            Scene scene = null;
+            try {
+                scene = new Scene(loader.load(), 1200, 700);
+                
+                // 应用主题设置到场景
+                settingsService.applySettingsToScene(scene);
+                
+                Stage stage = (Stage) classroomButton.getScene().getWindow();
+                
+                // 保存当前全屏状态
+                boolean wasFullScreen = stage.isFullScreen();
+                
+                // 设置新场景并保持全屏状态
+                if(wasFullScreen) {
+                    stage.setOpacity(0);
+                    stage.setScene(scene);
+                    stage.setFullScreen(true);
+                    stage.setOpacity(1);
+                } else {
+                    stage.setScene(scene);
+                }
+            } catch (Exception e) {
+                // 处理FXML加载错误
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("无法加载教室页面");
+                alert.setContentText("加载教室页面时发生错误。请稍后再试。\n\n错误详情: " + e.getMessage());
+                alert.showAndWait();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("无法加载教室页面");
+            alert.setContentText("加载教室页面时发生错误。请稍后再试。\n\n错误详情: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 
