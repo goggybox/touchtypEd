@@ -40,7 +40,6 @@ module com.example.touchtyped {
     requires java.sql;
     requires org.apache.pdfbox;
     requires opencensus.api;
-    requires junit;
     requires jdk.xml.dom;
 
     opens com.example.touchtyped.model to spring.core, spring.beans, com.fasterxml.jackson.databind, google.cloud.firestore;

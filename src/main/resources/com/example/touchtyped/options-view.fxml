@@ -45,7 +45,7 @@
             </VBox>
             
             <!-- Font Size Section -->
-            <VBox styleClass="options-section">
+            <VBox styleClass="options-section" visible="false" managed="false">
                <Label styleClass="section-title" text="Font Size" />
                
                <HBox styleClass="option-row" alignment="CENTER_LEFT" spacing="20">
