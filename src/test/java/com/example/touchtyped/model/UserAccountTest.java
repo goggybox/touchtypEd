@@ -1,8 +1,6 @@
-package com.example.touchtyped.firestore;
+package com.example.touchtyped.model;
 
-import com.example.touchtyped.model.KeyLogsStructure;
-import com.example.touchtyped.model.TypingPlan;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.touchtyped.firestore.UserAccount;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

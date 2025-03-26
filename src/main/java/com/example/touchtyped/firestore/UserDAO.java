@@ -5,6 +5,7 @@ import com.example.touchtyped.model.TypingPlan;
 import com.google.cloud.firestore.*;
 import com.google.api.core.ApiFuture;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -15,21 +16,37 @@ public final class UserDAO {
 
     private UserDAO() {}
 
+    private static Firestore testDb;
+    public static void setTestFirestore(Firestore firestore) {
+        testDb = firestore;
+    }
+
+    /**
+     * get the database; if we are running tests, we can set the testDB, and this is the DB that will be returned.
+     * otherwise, simply return the database loaded from FirestoreClient.
+     */
+    private static Firestore getFirestore() throws IOException {
+        if (testDb != null) {
+            return testDb;
+        }
+        return FirestoreClient.getFirestore();
+    }
+
     /**
      * allow creation of a user without providing a password (will be the case the majority of the time)
      * @param classroomID is the classroom the user is joining (all users must be associated with one classroom).
      * @param username is the username to give the user.
      * @param defaultTypingPlan is the user's default TypingPlan.
      * @param personalisedTypingPlan is the user's personalised TypingPlan.
-     * @return whether the creation was successful.
+     * @return the created user account
      * @throws InterruptedException idk database stuff
      * @throws ExecutionException lol same
      */
-    public static String createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan) throws InterruptedException, ExecutionException {
+    public static UserAccount createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan) throws InterruptedException, ExecutionException {
         return createUser(classroomID, username, defaultTypingPlan, personalisedTypingPlan, null);
     }
 
-    public static String createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
+    public static UserAccount createUser(String classroomID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
         return createUser(classroomID, null, username, defaultTypingPlan, personalisedTypingPlan, password);
     }
 
@@ -40,11 +57,11 @@ public final class UserDAO {
      * @param defaultTypingPlan is the user's default TypingPlan.
      * @param personalisedTypingPlan is the user's personalised TypingPlan.
      * @param password is the user's password (only teachers will have passwords, for others this will be null).
-     * @return the String user's ID, or null if unsuccessful.
+     * @return the created user account
      */
-    public static String createUser(String classroomID, String userID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
+    public static UserAccount createUser(String classroomID, String userID, String username, TypingPlan defaultTypingPlan, TypingPlan personalisedTypingPlan, String password) throws InterruptedException, ExecutionException {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+username);
 
             // check if a user with that username already exists in the classroom
@@ -62,7 +79,7 @@ public final class UserDAO {
             UserAccount user = new UserAccount(classroomID, userID, username, defaultTypingPlan, personalisedTypingPlan, new ArrayList<>(), password);
 
             userDoc.set(user).get();
-            return userID;
+            return user;
 
         } catch (Exception e) {
             Thread.currentThread().interrupt();
@@ -72,7 +89,7 @@ public final class UserDAO {
 
     public static String addUserAccount(String classroomID, UserAccount user) throws InterruptedException, ExecutionException {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID+","+user.getUsername());
 
             // check if a user with that username already exists in the classroom
@@ -97,7 +114,7 @@ public final class UserDAO {
      */
     public static String generateUserID() {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             SecureRandom random = new SecureRandom();
             String char_pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             int max_attempts = 100;
@@ -142,7 +159,7 @@ public final class UserDAO {
      */
     public static UserAccount getAccountByID(String userID, String password) throws InterruptedException, ExecutionException {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             Query query = db.collection(USER_COLLECTION).whereEqualTo("userID", userID).limit(1);
             QuerySnapshot snapshot = query.get().get();
 
@@ -186,7 +203,7 @@ public final class UserDAO {
      */
     public static UserAccount getAccount(String classroomID, String username, String password) throws InterruptedException, ExecutionException {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID + "," + username);
             DocumentSnapshot document = userDoc.get().get();
 
@@ -223,7 +240,7 @@ public final class UserDAO {
         }
 
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID + "," + username);
             userDoc.delete().get();
             return true;
@@ -245,7 +262,7 @@ public final class UserDAO {
      */
     public static void addKeyLog(String classroomID, String username, KeyLogsStructure keyLogs, String password) throws InterruptedException, ExecutionException {
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION).document(classroomID + "," + username);
             DocumentSnapshot document = userDoc.get().get();
             UserAccount userAccount = document.toObject(UserAccount.class);
@@ -277,7 +294,7 @@ public final class UserDAO {
         }
 
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION)
                     .document(classroomID + "," + username);
 
@@ -304,7 +321,7 @@ public final class UserDAO {
         }
 
         try {
-            Firestore db = FirestoreClient.getFirestore();
+            Firestore db = getFirestore();
             DocumentReference userDoc = db.collection(USER_COLLECTION)
                     .document(classroomID + "," + username);
 
