@@ -1,6 +1,8 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.constants.StyleConstants;
+import com.example.touchtyped.interfaces.ComputerVisionInterface;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.interfaces.KeypressListener;
 import com.example.touchtyped.model.*;
@@ -60,10 +62,11 @@ public class ModuleViewController implements KeypressListener {
     private Level level;
     private List<Label> letterLabels = new ArrayList<>();
     private int currentIndex;
-    private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private KeyboardInterface keyboardInterface = Application.keyboardInterface;
     private String typedString = "";
     private final int MAX_BOXES_PER_ROW = 16;
     private Map<String, Character> keyMap = new HashMap<String, Character>();
+    private ComputerVisionInterface computerVisionInterface;
 
     private AppSettingsService settingsService;
 
@@ -76,7 +79,7 @@ public class ModuleViewController implements KeypressListener {
             Scene scene = closeButton.getScene();
             if (scene != null) {
                 keyboardInterface.attachToScene(scene);
-                
+
                 // Apply settings to the scene
                 settingsService.applySettingsToScene(scene);
                 System.out.println("Applied settings to module view scene");
@@ -84,6 +87,9 @@ public class ModuleViewController implements KeypressListener {
                 System.err.println("Scene is not available yet.");
             }
         });
+
+        computerVisionInterface = new ComputerVisionInterface();
+        computerVisionInterface.runCVProgramWithPopups();
 
         // register as a keypress listener
         keyboardInterface.addKeypressListener(this);
@@ -180,7 +186,7 @@ public class ModuleViewController implements KeypressListener {
         box.setStroke(Color.web(StyleConstants.GREY_COLOUR));
         box.setStrokeWidth(4);
         box.setFill(Color.TRANSPARENT);
-        
+
         // Add style class to allow CSS styling
         box.getStyleClass().add("letter-box");
 
@@ -277,7 +283,7 @@ public class ModuleViewController implements KeypressListener {
         // Remove any existing color classes
         currentLetter.getStyleClass().removeAll("letter-label-grey", "letter-label-blue", "letter-label-red");
         currentLetterRectangle.getStyleClass().removeAll("letter-box-grey", "letter-box-blue", "letter-box-red");
-        
+
         // Add appropriate color class based on the color parameter
         if (colour.equals(StyleConstants.GREY_COLOUR)) {
             currentLetter.getStyleClass().add("letter-label-grey");
@@ -289,7 +295,7 @@ public class ModuleViewController implements KeypressListener {
             currentLetter.getStyleClass().add("letter-label-red");
             currentLetterRectangle.getStyleClass().add("letter-box-red");
         }
-        
+
         // Fallback for backward compatibility
         currentLetter.setStyle(String.format("-fx-font-size: 32px; -fx-font-family: 'Manjari'; -fx-text-fill: %s", colour));
         currentLetterRectangle.setStroke(Color.web(colour));
@@ -309,10 +315,11 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
-            
+
             LearnViewController lvController = loader.getController();
             lvController.setKeyboardInterface(keyboardInterface);
-            
+            computerVisionInterface.closeCVProgram();
+
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
 
@@ -329,10 +336,13 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
-            
+            GameViewController gVController = loader.getController();
+            gVController.setKeyboardInterface(keyboardInterface);
+            computerVisionInterface.closeCVProgram();
+
             GameViewController gameViewController = loader.getController();
             gameViewController.setKeyboardInterface(keyboardInterface);
-            
+
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
 
@@ -353,11 +363,14 @@ public class ModuleViewController implements KeypressListener {
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
-            
+
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
-            
+
+            LearnViewController learnViewController = loader.getController();
+            learnViewController.setKeyboardInterface(keyboardInterface);
             Stage stage = (Stage) gamesButton.getScene().getWindow();
+            computerVisionInterface.closeCVProgram();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);
         } catch (IOException e) {
@@ -370,10 +383,10 @@ public class ModuleViewController implements KeypressListener {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
-            
+
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
-            
+
             Stage stage = (Stage) optionsButton.getScene().getWindow();
             keyboardInterface.stopHaptic();
             stage.setScene(scene);

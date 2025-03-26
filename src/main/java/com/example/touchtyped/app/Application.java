@@ -2,6 +2,7 @@ package com.example.touchtyped.app;
 
 import com.example.touchtyped.controller.LearnViewController;
 import com.example.touchtyped.controller.PlayerNameDialog;
+import com.example.touchtyped.interfaces.ComputerVisionInterface;
 import com.example.touchtyped.interfaces.KeyboardInterface;
 import com.example.touchtyped.model.ExampleKeypressListener;
 import com.example.touchtyped.model.TypingPlan;
@@ -20,6 +21,7 @@ import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.service.RankingService;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -27,10 +29,24 @@ public class Application extends javafx.application.Application {
     public static SerialPort ioPort;
     public static boolean keyboardConnected;
     public static KeyboardInterface keyboardInterface;
-    
+
     @Override
     public void start(Stage stage) throws IOException {
-        initUserProfile();
+        keyboardConnected = false;
+        try {
+            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+            if (ioPort.openPort()) {
+                System.out.println("port opened successfully");
+                keyboardConnected = true;
+                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+            } else {
+                System.out.println("unable to open port");
+            }
+        } catch (Exception e) {
+            System.out.println("no keyboard connected");
+        }
+        keyboardInterface = new KeyboardInterface(ioPort);
 
         // Load custom fonts
         Font customFont = Font.loadFont(
@@ -47,12 +63,13 @@ public class Application extends javafx.application.Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/example/touchtyped/learn-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 700);
-        
+        LearnViewController lVController = fxmlLoader.getController();
+        lVController.setKeyboardInterface(keyboardInterface);
+
         // Apply settings to scene
         AppSettingsService settingsService = AppSettingsService.getInstance();
         settingsService.applySettingsToScene(scene);
         System.out.println("Applied settings to initial scene");
-
 
         // set properties of stage
         stage.setMinWidth(1200);
@@ -60,27 +77,8 @@ public class Application extends javafx.application.Application {
         stage.setTitle("TouchTypEd");
         stage.setScene(scene);
         stage.show();
-        try {
-            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-            SerialPort[] ports = SerialPort.getCommPorts();
-            int i = 0;
-            while (!ioPort.openPort() && i < ports.length) {
-                ioPort = ports[i];
-                i++;
-            }
-            if (ioPort.isOpen()) {
-                System.out.println("port opened successfully");
-                keyboardConnected = true;
-                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-            } else {
-                System.out.println("unable to open port");
-            }
-        } catch (Exception e) {
-            System.out.println("no keyboard connected");
-        }
     }
-    
+
     /**
      * Initialize user profile, request input if no username exists
      */
@@ -88,10 +86,10 @@ public class Application extends javafx.application.Application {
         UserProfile userProfile = UserProfile.getInstance();
         System.out.println("Checking user profile...");
         System.out.println("Username exists: " + userProfile.hasPlayerName());
-        
+
         if (!userProfile.hasPlayerName()) {
             System.out.println("Need to request username input");
-            
+
             // Delete existing profile file (if any) to ensure username input is requested again
             try {
                 java.io.File profileFile = new java.io.File("user_profile.dat");
@@ -102,16 +100,16 @@ public class Application extends javafx.application.Application {
             } catch (Exception e) {
                 System.err.println("Error deleting profile file: " + e.getMessage());
             }
-            
+
             // Display dialog directly, don't use Platform.runLater
             String playerName = PlayerNameDialog.showDialog();
             System.out.println("User entered name: " + playerName);
-            
+
             if (playerName == null || playerName.trim().isEmpty()) {
                 playerName = "Anonymous";
                 System.out.println("Using default name: Anonymous");
             }
-            
+
             userProfile.setPlayerName(playerName);
             System.out.println("Username set: " + playerName);
         } else {
@@ -126,10 +124,10 @@ public class Application extends javafx.application.Application {
             manager.saveTypingPlan();
             System.out.println("SAVING TYPING PLAN");
 
+            ioPort.closePort();
+            System.out.println(ioPort.isOpen());
             if (keyboardConnected) {
                 keyboardInterface.stopHaptic();
-                ioPort.closePort();
-                System.out.println(ioPort.isOpen());
             }
         }));
 
@@ -145,16 +143,16 @@ public class Application extends javafx.application.Application {
             // Submit directly to global ranking server
             GlobalRankingService globalRankingService = GlobalRankingService.getInstance();
             CompletableFuture<Boolean> future = globalRankingService.submitRanking(ranking);
-            
+
             future.thenAccept(success -> {
                 if (success) {
                     System.out.println("Ranking successfully submitted to global server");
-                    
+
                     // Get player position in global rankings
                     globalRankingService.getPlayerPosition(ranking.getPlayerName())
                         .thenAccept(position -> {
                             if (position > 0) {
-                                System.out.println("Player " + ranking.getPlayerName() + 
+                                System.out.println("Player " + ranking.getPlayerName() +
                                                   " position in global rankings: " + position);
                             } else {
                                 System.out.println("Unable to get player position in global rankings");

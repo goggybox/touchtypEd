@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
@@ -70,7 +71,7 @@ public class LearnViewController {
 
     @FXML private StackPane loadingOverlay;
 
-    private KeyboardInterface keyboardInterface = new KeyboardInterface();
+    private KeyboardInterface keyboardInterface;
     private AppSettingsService settingsService;
 
     private final Font primary_font = Font.loadFont(this.getClass().getResourceAsStream("/fonts/Antipasto_extrabold.otf"), 48);
@@ -79,6 +80,11 @@ public class LearnViewController {
     public void initialize() {
         // Get settings service
         settingsService = AppSettingsService.getInstance();
+
+        // Only create a new KeyboardInterface if one hasn't been set
+        if (keyboardInterface == null) {
+            keyboardInterface = Application.keyboardInterface;
+        }
 
         if (TypingPlanManager.getInstance().isDisplayingPersonalisedPlan()) {
             // we are now displaying the personalised plan.
@@ -98,7 +104,6 @@ public class LearnViewController {
                 settingsService.applySettingsToScene(scene);
 
                 keyboardInterface.attachToScene(scene);
-                keyboardInterface.stopHaptic();
                 // Example keypress listener
                 new ExampleKeypressListener(keyboardInterface);
             } else {

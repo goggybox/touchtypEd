@@ -23,6 +23,8 @@ Key keyMap[numRows][numCols] = {
 
 Key last_press = {'\0', 0};  
 bool isShiftPressed = false;
+bool isCtrlPressed = false;
+bool isAltPressed = false;
 bool anyKeyPressed = false; 
 
 bool isSameKey(Key k1, Key k2) {

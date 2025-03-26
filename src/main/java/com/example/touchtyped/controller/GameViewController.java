@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
@@ -151,6 +152,7 @@ public class GameViewController {
     private boolean isSecondRound = false;
     private boolean playerAOnLeft = true;
 
+    //physical ui
     private int scoreLeft;
     private int scoreRight;
 
@@ -240,7 +242,7 @@ public class GameViewController {
 
         // Only create a new KeyboardInterface if one hasn't been set
         if (keyboardInterface == null) {
-            keyboardInterface = new KeyboardInterface();
+            keyboardInterface = Application.keyboardInterface;
         }
         keyPressListener  = new GameKeypressListener(this, keyboardInterface);
 
@@ -258,7 +260,7 @@ public class GameViewController {
             if(newScene!=null){
                 // Apply settings to the scene
                 settingsService.applySettingsToScene(newScene);
-                
+
                 keyboardInterface.attachToScene(newScene);
 
                 // 场景加载完成后检查是否是第一次使用
@@ -349,6 +351,7 @@ public class GameViewController {
         int start= Math.max(0, leftIndex - COMP_VISIBLE_LEN/2);
         int end  = Math.min(len, start+COMP_VISIBLE_LEN);
 
+        // already typed
         for(int i=start; i<leftIndex && i<end; i++){
             Text t=new Text(String.valueOf(leftLetters.charAt(i)));
             t.setTextOrigin(VPos.BASELINE);
@@ -359,7 +362,7 @@ public class GameViewController {
             }
             leftTextFlow.getChildren().add(t);
         }
-
+        // cursor
         if(leftIndex<end){
             leftCursor.setText("|");
             leftCursor.setTextOrigin(VPos.BASELINE);
@@ -369,7 +372,7 @@ public class GameViewController {
         } else {
             leftCursor.setVisible(false);
         }
-
+        // not typed
         for(int i=Math.max(leftIndex, start); i<end; i++){
             Text t=new Text(String.valueOf(leftLetters.charAt(i)));
             t.setTextOrigin(VPos.BASELINE);
@@ -385,6 +388,7 @@ public class GameViewController {
         int start= Math.max(0, rightIndex - COMP_VISIBLE_LEN/2);
         int end  = Math.min(len, start+COMP_VISIBLE_LEN);
 
+        // already typed
         for(int i=start; i<rightIndex && i<end; i++){
             Text t=new Text(String.valueOf(rightLetters.charAt(i)));
             t.setTextOrigin(VPos.BASELINE);
@@ -395,7 +399,7 @@ public class GameViewController {
             }
             rightTextFlow.getChildren().add(t);
         }
-
+        // cursor
         if(rightIndex<end){
             rightCursor.setText("|");
             rightCursor.setTextOrigin(VPos.BASELINE);
@@ -405,7 +409,7 @@ public class GameViewController {
         } else {
             rightCursor.setVisible(false);
         }
-
+        // not typed
         for(int i=Math.max(rightIndex, start); i<end; i++){
             Text t=new Text(String.valueOf(rightLetters.charAt(i)));
             t.setTextOrigin(VPos.BASELINE);
@@ -469,6 +473,7 @@ public class GameViewController {
             rightTextFlow.getChildren().clear();
         }
 
+        // update ui
         if(isArticleMode()){
             timeLeft=0;
             timerLabel.setText("Article Mode");
@@ -499,6 +504,7 @@ public class GameViewController {
         }
 
         if (isTimeMode()){
+            // Timed
             timeLeft= selectedTimeOption;
             timerLabel.setText(String.valueOf(timeLeft));
             timerLabel.setVisible(true);
@@ -555,8 +561,10 @@ public class GameViewController {
             gameStarted=true;
             gameStartTime=System.currentTimeMillis();
             if(!isCompetitionMode()){
+                // only show player's cursor
                 cursorLabel.setVisible(true);
             }
+            // other model
             if(isCompetitionMode() || !isArticleMode()){
                 timeline=new Timeline(new KeyFrame(Duration.seconds(1), e->{
                     timeLeft--;
@@ -594,6 +602,8 @@ public class GameViewController {
 
                 // Switch positions
                 playerAOnLeft = !playerAOnLeft;
+
+                // generate next round letter
                 leftIndex=0;
                 rightIndex=0;
                 leftTextFlow.getChildren().clear();
@@ -605,6 +615,8 @@ public class GameViewController {
                 // Reset time and UI
                 timeLeft = competitionTime;
                 compTimerLabel.setText("Time Left: " + timeLeft);
+
+                // update score
                 refreshCompetitionScoreUI();
 
                 // Don't start the next round immediately, show a prompt first
@@ -801,12 +813,12 @@ public class GameViewController {
             // Competition mode does not allow backspace
             return;
         }
-        
+
         // 如果key长度大于1，说明是特殊键，忽略它
         if (key.length() != 1) {
             return;
         }
-        
+
         char typedChar = key.charAt(0);
         // Check if character belongs to left or right hand, without converting to lowercase
         boolean belongsToLeft = false;
@@ -814,7 +826,7 @@ public class GameViewController {
 
         // 使用toLowerCase进行比较，这样我们只需要定义小写版本的LEFT_HAND_CHARS和RIGHT_HAND_CHARS
         char lowerTypedChar = Character.toLowerCase(typedChar);
-        
+
         // 检查字符是否属于左手
         for (char c : LEFT_HAND_CHARS) {
             if (c == lowerTypedChar) {
@@ -850,6 +862,7 @@ public class GameViewController {
                 wrongKeystrokes++;
             }
         }
+        // right => scoreRight++
         else if(belongsToRight){
             if(rightIndex<rightLetters.length()){
                 char expected = rightLetters.charAt(rightIndex);
@@ -1014,7 +1027,7 @@ public class GameViewController {
         if (currentSentence == null) return;
 
         int visibleLen = 50;
-        
+
         int start;
         if (isArticleMode() && currentSentence.length() <= visibleLen) {
             start = 0;
@@ -1023,7 +1036,7 @@ public class GameViewController {
         } else {
             start = Math.max(0, currentCharIndex - visibleLen / 2);
         }
-        
+
         int end = Math.min(currentSentence.length(), start + visibleLen);
 
         // Already typed part
@@ -1158,7 +1171,7 @@ public class GameViewController {
             rightScoreLabel.setText("PlayerA Score: " + scoreRight);
         }
     }
-    
+
     public void updateCompetitionScores(int scoreA, int scoreB) {
         // 确保在JavaFX应用线程中更新UI
         Platform.runLater(() -> {
@@ -1178,26 +1191,28 @@ public class GameViewController {
         try{
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene=new Scene(loader.load(),1200,700);
+            LearnViewController lVController = loader.getController();
+            lVController.setKeyboardInterface(keyboardInterface);
 
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
 
             Stage stage=(Stage)taskLabel.getScene().getWindow();
-            
+
             // 保存当前全屏状态和当前位置大小
             boolean wasFullScreen = stage.isFullScreen();
-            
+
             if(wasFullScreen) {
                 // 如果是全屏状态，设置新场景时保持全屏
                 // 先设置场景不可见
                 stage.setOpacity(0);
-                
+
                 // 设置新场景
                 stage.setScene(scene);
-                
+
                 // 确保全屏设置正确
                 stage.setFullScreen(true);
-                
+
                 // 恢复可见性
                 stage.setOpacity(1);
             } else {
@@ -1219,10 +1234,10 @@ public class GameViewController {
             settingsService.applySettingsToScene(scene);
 
             Stage stage=(Stage)taskLabel.getScene().getWindow();
-            
+
             // 保存当前全屏状态
             boolean wasFullScreen = stage.isFullScreen();
-            
+
             // 设置新场景并保持全屏状态
             if(wasFullScreen) {
                 stage.setOpacity(0);
@@ -1241,7 +1256,7 @@ public class GameViewController {
     public void onClassroomButtonClick() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
-            
+
             // 添加加载异常处理
             loader.setControllerFactory(controllerClass -> {
                 try {
@@ -1252,19 +1267,19 @@ public class GameViewController {
                     return null;
                 }
             });
-            
+
             Scene scene = null;
             try {
                 scene = new Scene(loader.load(), 1200, 700);
-                
+
                 // 应用主题设置到场景
                 settingsService.applySettingsToScene(scene);
-                
+
                 Stage stage = (Stage) classroomButton.getScene().getWindow();
-                
+
                 // 保存当前全屏状态
                 boolean wasFullScreen = stage.isFullScreen();
-                
+
                 // 设置新场景并保持全屏状态
                 if(wasFullScreen) {
                     stage.setOpacity(0);
@@ -1353,14 +1368,14 @@ public class GameViewController {
         DialogPane dialogPane = infoDialog.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/com/example/touchtyped/game-view-style.css").toExternalForm());
         dialogPane.getStyleClass().add("info-dialog");
-        
+
         // 应用当前的主题设置
         if (settingsService.isDarkMode()) {
             dialogPane.getStyleClass().add("dark-mode");
         } else if (settingsService.isColorblindMode()) {
             dialogPane.getStyleClass().add("colorblind-mode");
         }
-        
+
         dialogPane.setPrefWidth(650);
         dialogPane.setPrefHeight(500);
 
@@ -1370,14 +1385,14 @@ public class GameViewController {
         // 创建标题
         Label titleLabel = new Label("How to Play Timed Mode");
         titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
-        
+
         // 如果是暗黑模式，手动设置标题颜色
         if (settingsService.isDarkMode()) {
             titleLabel.setTextFill(javafx.scene.paint.Color.web("#E0E0E0"));
         } else if (settingsService.isColorblindMode()) {
             titleLabel.setTextFill(javafx.scene.paint.Color.BLACK);
         }
-        
+
         content.getChildren().add(titleLabel);
 
         // 添加说明文字
@@ -1413,15 +1428,15 @@ public class GameViewController {
         Button closeButton = new Button("Got it!");
         closeButton.getStyleClass().add("info-close-button");
         closeButton.setOnAction(event -> infoDialog.close());
-        
+
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER_RIGHT);
         buttonBox.getChildren().add(closeButton);
-        
+
         content.getChildren().add(buttonBox);
 
         dialogPane.setContent(content);
-        
+
         // 添加但隐藏关闭按钮
         dialogPane.getButtonTypes().add(ButtonType.CLOSE);
         Button closeBtn = (Button) dialogPane.lookupButton(ButtonType.CLOSE);
@@ -1438,12 +1453,12 @@ public class GameViewController {
         try {
             HBox instructionBox = new HBox(10);
             instructionBox.setAlignment(Pos.CENTER_LEFT);
-            
+
             // 创建图标
             ImageView iconView = new ImageView();
             iconView.setFitWidth(24);
             iconView.setFitHeight(24);
-            
+
             // 根据类型设置不同图标
             String iconPath;
             switch (iconType) {
@@ -1463,51 +1478,51 @@ public class GameViewController {
                     iconPath = "/com/example/touchtyped/images/info-content/info.png";
                     break;
             }
-            
+
             Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
             iconView.setImage(icon);
             iconView.getStyleClass().add("info-icon");
-            
+
             // 创建文本标签
             Label instructionText = new Label(text);
             instructionText.setWrapText(true);
             instructionText.getStyleClass().add("info-instruction");
-            
+
             // 如果是暗黑模式，手动设置文本颜色
             if (settingsService.isDarkMode()) {
                 instructionText.setTextFill(javafx.scene.paint.Color.web("#E0E0E0"));
             } else if (settingsService.isColorblindMode()) {
                 instructionText.setTextFill(javafx.scene.paint.Color.BLACK);
             }
-            
+
             instructionBox.getChildren().addAll(iconView, instructionText);
             container.getChildren().add(instructionBox);
-            
+
         } catch (Exception e) {
             System.err.println("Error adding instruction: " + e.getMessage());
         }
     }
-    
+
     private void addTip(VBox container, String tipText) {
         try {
             HBox tipBox = new HBox(10);
             tipBox.setAlignment(Pos.CENTER_LEFT);
             tipBox.setPadding(new Insets(0, 0, 0, 34));
-            
+
             Label tipTextLabel = new Label("Tip: " + tipText);
             tipTextLabel.setWrapText(true);
             tipTextLabel.getStyleClass().add("info-tip");
-            
+
             // 如果是暗黑模式，手动设置文本颜色
             if (settingsService.isDarkMode()) {
                 tipTextLabel.setTextFill(javafx.scene.paint.Color.web("#B0B0B0"));
             } else if (settingsService.isColorblindMode()) {
                 tipTextLabel.setTextFill(javafx.scene.paint.Color.web("#555555"));
             }
-            
+
             tipBox.getChildren().add(tipTextLabel);
             container.getChildren().add(tipBox);
-            
+
         } catch (Exception e) {
             System.err.println("Error adding tip: " + e.getMessage());
         }
@@ -1535,39 +1550,39 @@ public class GameViewController {
         tutorialDialog = new Dialog<>();
         tutorialDialog.setTitle("TouchTypEd Tutorial");
         tutorialDialog.setHeaderText(null);
-        
+
         // 设置对话框样式
         DialogPane dialogPane = tutorialDialog.getDialogPane();
         dialogPane.getStylesheets().add(getClass().getResource("/com/example/touchtyped/game-view-style.css").toExternalForm());
         dialogPane.getStyleClass().add("tutorial-dialog");
-        
+
         // 应用当前的主题设置
         if (settingsService.isDarkMode()) {
             dialogPane.getStyleClass().add("dark-mode");
         } else if (settingsService.isColorblindMode()) {
             dialogPane.getStyleClass().add("colorblind-mode");
         }
-        
+
         dialogPane.setPrefWidth(750);  // 增大宽度
         dialogPane.setPrefHeight(550); // 增大高度
         dialogPane.setMinWidth(750);   // 增大最小宽度
         dialogPane.setMinHeight(550);  // 增大最小高度
-        
+
         tutorialStep = 0;
-        
+
         BorderPane dialogContent = new BorderPane();
         VBox contentArea = new VBox(20);
         contentArea.getStyleClass().add("tutorial-content-area");
-        
+
         // 创建对话框标题
         Label titleLabel = new Label("Welcome to TouchTypEd!");
         titleLabel.getStyleClass().add("tutorial-dialog-title");
-        
+
         // 创建内容区域
         tutorialContent = new Label();
         tutorialContent.setWrapText(true);
         tutorialContent.setMaxWidth(650);  // 增大最大宽度
-        
+
         // 添加关闭提示
         HBox topBar = new HBox();
         topBar.setAlignment(Pos.TOP_RIGHT);
@@ -1578,54 +1593,54 @@ public class GameViewController {
         closeButton.setOnAction(e -> endTutorial());
         topBar.getChildren().addAll(closeHint, closeButton);
         topBar.setSpacing(10);
-        
+
         contentArea.getChildren().addAll(titleLabel, tutorialContent);
-        
+
         // 创建按钮区域
         HBox buttonArea = new HBox(10);
         buttonArea.getStyleClass().add("tutorial-button-area");
         buttonArea.setAlignment(Pos.CENTER_RIGHT);
-        
+
         Button nextButton = new Button("Next");
         nextButton.getStyleClass().addAll("tutorial-button", "tutorial-next-button");
         nextButton.setDefaultButton(true);
         nextButton.setOnAction(e -> showNextTutorialStep());
-        
+
         Button finishButton = new Button("Got it!");
         finishButton.getStyleClass().addAll("tutorial-button", "tutorial-next-button");
         finishButton.setOnAction(e -> endTutorial());
         finishButton.setVisible(false);
-        
+
         tutorialNextButton = nextButton;
         tutorialFinishButton = finishButton;
-        
+
         buttonArea.getChildren().addAll(finishButton, nextButton);
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         buttonArea.getChildren().add(0, spacer);
-        
+
         // 组装对话框内容
         dialogContent.setTop(topBar);
         dialogContent.setCenter(contentArea);
         dialogContent.setBottom(buttonArea);
-        
+
         dialogPane.setContent(dialogContent);
-        
+
         // 添加但隐藏关闭按钮
         tutorialDialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
         Button closeBtn = (Button) tutorialDialog.getDialogPane().lookupButton(ButtonType.CLOSE);
         closeBtn.setManaged(false);
         closeBtn.setVisible(false);
-        
+
         dialogPane.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 endTutorial();
             }
         });
-        
+
         // 显示第一步教程
         showNextTutorialStep();
-        
+
         // 非阻塞式显示对话框
         Platform.runLater(() -> {
             tutorialDialog.show();
@@ -1740,7 +1755,7 @@ public class GameViewController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
-            
+
             // Apply settings to the scene
             settingsService.applySettingsToScene(scene);
             Stage stage = (Stage) viewRankingButton.getScene().getWindow();
