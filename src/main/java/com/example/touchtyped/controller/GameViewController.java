@@ -1,5 +1,6 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.constants.StyleConstants;
 import com.example.touchtyped.firestore.ClassroomDAO;
 import com.example.touchtyped.firestore.UserAccount;
@@ -241,7 +242,7 @@ public class GameViewController {
 
         // Only create a new KeyboardInterface if one hasn't been set
         if (keyboardInterface == null) {
-            keyboardInterface = new KeyboardInterface();
+            keyboardInterface = Application.keyboardInterface;
         }
         keyPressListener  = new GameKeypressListener(this, keyboardInterface);
 
