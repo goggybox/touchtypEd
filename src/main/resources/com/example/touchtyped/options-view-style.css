@@ -1,0 +1,317 @@
+.nav-bar {
+    -fx-background-color: #D8D8D8;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* styling for the ScrollPane */
+.scroll-pane {
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-color: white;
+}
+.scroll-pane:focused {
+    -fx-focus-color: transparent;
+}
+
+/* Options styling */
+.options-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-padding: 20px 0 30px 0;
+}
+
+.options-section {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-spacing: 15px;
+    -fx-min-width: 600px;
+}
+
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0;
+}
+
+.option-row {
+    -fx-padding: 10px 15px;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.option-row Label {
+    -fx-font-size: 18px;
+}
+
+.save-button {
+    -fx-background-color: #153E7E;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10px 30px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.save-button:hover {
+    -fx-background-color: #2C5AAA;
+}
+
+/* Dark mode styles - completely rewritten */
+.dark-mode {
+    -fx-background-color: #121212;
+}
+
+/* NavigationBar */
+.dark-mode .nav-bar {
+    -fx-background-color: #1F1F1F;
+}
+
+/* ScrollPane and all its internal components */
+.dark-mode .scroll-pane {
+    -fx-background-color: #121212;
+    -fx-background: #121212;
+}
+
+.dark-mode .scroll-pane > .viewport {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane > .corner {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane > .scroll-bar:vertical,
+.dark-mode .scroll-pane > .scroll-bar:horizontal {
+    -fx-background-color: #1F1F1F;
+}
+
+.dark-mode .scroll-pane > .scroll-bar:vertical .thumb,
+.dark-mode .scroll-pane > .scroll-bar:horizontal .thumb {
+    -fx-background-color: #333333;
+}
+
+/* All containers */
+.dark-mode .scroll-pane VBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane HBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode BorderPane {
+    -fx-background-color: #121212;
+}
+
+.dark-mode AnchorPane {
+    -fx-background-color: transparent;
+}
+
+.dark-mode Region {
+    -fx-background-color: transparent;
+}
+
+/* Text and titles */
+.dark-mode .options-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+.dark-mode .section-title {
+    -fx-text-fill: #E0E0E0;
+    -fx-font-weight: bold;
+}
+
+.dark-mode Label {
+    -fx-text-fill: #E0E0E0;
+}
+
+/* Option sections */
+.dark-mode .options-section {
+    -fx-background-color: #1F1F1F;
+    -fx-border-color: #3E3E3E;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.dark-mode .option-row {
+    -fx-border-color: #3E3E3E;
+}
+
+.dark-mode .option-row:hover {
+    -fx-background-color: #252525;
+}
+
+/* RadioButtons */
+.dark-mode RadioButton .radio {
+    -fx-background-color: #333333;
+    -fx-border-color: #555555;
+}
+
+.dark-mode RadioButton:selected .radio {
+    -fx-background-color: #5C9CE6;
+    -fx-border-color: #7EB8FF;
+}
+
+.dark-mode RadioButton .dot {
+    -fx-background-color: transparent;
+}
+
+.dark-mode RadioButton:selected .dot {
+    -fx-background-color: white;
+}
+
+/* Buttons */
+.dark-mode .save-button {
+    -fx-background-color: #3A7CCC;
+    -fx-text-fill: white;
+    -fx-border-color: #5C9CE6;
+}
+
+.dark-mode .save-button:hover {
+    -fx-background-color: #5C9CE6;
+}
+
+/* Slider */
+.dark-mode .slider .track {
+    -fx-background-color: #333333;
+}
+
+.dark-mode .slider .thumb {
+    -fx-background-color: #5C9CE6;
+}
+
+.dark-mode .slider:hover .thumb {
+    -fx-background-color: #7EB8FF;
+}
+
+.dark-mode .slider .axis {
+    -fx-tick-label-fill: #E0E0E0;
+}
+
+/* Colorblind mode styles - expanded and improved */
+.colorblind-mode {
+    -fx-background-color: #f5f5f5; /* Light gray background */
+}
+
+.colorblind-mode .nav-bar {
+    -fx-background-color: #004D40; /* 深绿色 - 对色盲友好且对比度高 */
+    -fx-border-color: #000000; /* 添加黑色边框增加对比度 */
+    -fx-border-width: 0 0 2 0; /* 底部边框 */
+}
+
+.colorblind-mode .scroll-pane {
+    -fx-background-color: #f5f5f5;
+}
+
+.colorblind-mode .scroll-pane > .viewport {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Text and section titles */
+.colorblind-mode .options-title {
+    -fx-text-fill: #000000; /* Black text */
+    -fx-font-weight: bold;
+}
+
+.colorblind-mode .section-title {
+    -fx-text-fill: #17365D; /* Navy blue */
+    -fx-font-weight: bold;
+}
+
+.colorblind-mode Label {
+    -fx-text-fill: #000000; /* Black text */
+}
+
+/* Options sections with clear borders */
+.colorblind-mode .options-section {
+    -fx-background-color: white;
+    -fx-border-color: #17365D; /* Navy blue border */
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+}
+
+.colorblind-mode .option-row {
+    -fx-border-color: #CCCCCC;
+    -fx-background-color: transparent;
+}
+
+.colorblind-mode .option-row:hover {
+    -fx-background-color: #E6EEF7; /* Light blue hover */
+}
+
+/* Radio buttons with clear visual indicators */
+.colorblind-mode RadioButton .radio {
+    -fx-background-color: white;
+    -fx-border-color: #17365D;
+    -fx-border-width: 2;
+}
+
+.colorblind-mode RadioButton:selected .radio {
+    -fx-background-color: white;
+    -fx-border-color: #17365D;
+    -fx-border-width: 2;
+}
+
+.colorblind-mode RadioButton .dot {
+    -fx-background-color: transparent;
+}
+
+.colorblind-mode RadioButton:selected .dot {
+    -fx-background-color: #17365D;
+    -fx-scale-x: 0.6;
+    -fx-scale-y: 0.6;
+}
+
+/* Save button with high visibility */
+.colorblind-mode .save-button {
+    -fx-background-color: #17365D; /* Navy blue */
+    -fx-text-fill: white;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-font-weight: bold;
+}
+
+.colorblind-mode .save-button:hover {
+    -fx-background-color: #006E51; /* Colorblind-friendly green */
+    -fx-effect: dropshadow(gaussian, #000000, 4, 0.5, 0, 0);
+}
+
+/* Slider improvements */
+.colorblind-mode .slider .track {
+    -fx-background-color: #CCCCCC;
+}
+
+.colorblind-mode .slider .thumb {
+    -fx-background-color: #17365D;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}
+
+.colorblind-mode .slider:hover .thumb {
+    -fx-background-color: #006E51; /* Colorblind-friendly green */
+    -fx-effect: dropshadow(gaussian, #000000, 4, 0.5, 0, 0);
+}
+
+.colorblind-mode .slider .axis {
+    -fx-tick-label-fill: #000000;
+}
+
+.dark-mode .scroll-pane .viewport {
+    -fx-background-color: #121212;
+}
+
+.dark-mode .scroll-pane .content {
+    -fx-background-color: #121212;
+}
+
+.dark-mode VBox {
+    -fx-background-color: #121212;
+}
+
+.dark-mode HBox {
+    -fx-background-color: transparent;
+} 

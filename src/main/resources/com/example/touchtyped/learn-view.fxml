@@ -9,8 +9,16 @@
    <center>
       <!-- ScrollPane to allow vertical scrolling -->
       <ScrollPane fitToWidth="true">
-         <VBox fx:id="vbox" alignment="TOP_CENTER">
-            <!-- Buttons will appear here dynamically -->
+         <VBox spacing="0">
+            <HBox fx:id="typingPlanToggleContainer" spacing="5" onMouseClicked="#toggleTypingPlan">
+               <ImageView fx:id="typingPlanToggleButton">
+                  <Image url="@images/learn-content/tick.png"/>
+               </ImageView>
+               <Label fx:id="typingPlanToggleLabel" text="Displaying personalised typing plan."/>
+            </HBox>
+            <VBox fx:id="vbox" alignment="TOP_CENTER">
+               <!-- Buttons will appear here dynamically -->
+            </VBox>
          </VBox>
       </ScrollPane>
    </center>
@@ -27,19 +35,34 @@
                   <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <Image url="@images/logo.png" />
                   </ImageView>
-                  <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="933.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                  <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="844.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                      <Image url="@images/nav-bar/learnSelected.png" />
                   </ImageView>
                   <ImageView fx:id="gamesButton"
                              fitHeight="69.0" fitWidth="71.0"
-                             layoutX="1022.0" layoutY="26.0"
+                             layoutX="933.0" layoutY="26.0"
                              pickOnBounds="true"
                              preserveRatio="true"
                              onMouseClicked="#onGamesButtonClick"
                              style="-fx-cursor: hand;">
                      <Image url="@images/nav-bar/games.png" />
                   </ImageView>
-                  <ImageView fitHeight="69.0" fitWidth="175.0" layoutX="1111.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="classroomButton"
+                             fitHeight="69.0" fitWidth="175.0"
+                             layoutX="1022.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             onMouseClicked="#onClassroomButtonClick"
+                             style="-fx-cursor: hand;">
+                     <Image url="@images/nav-bar/classroom.png" />
+                  </ImageView>
+                  <ImageView fx:id="optionsButton"
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="1111.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             onMouseClicked="#onOptionsButtonClick"
+                             style="-fx-cursor: hand;">
                      <Image url="@images/nav-bar/options.png" />
                   </ImageView>
                </children>

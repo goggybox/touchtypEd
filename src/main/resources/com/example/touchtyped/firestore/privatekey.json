@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "bustling-bay-453020-k9",
+  "private_key_id": "76b0b86e3cc2e7857d758fccf724b865553a888c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCsL8lm6BIxg1KL\nZVVhtP4gvOFyHPsetKksI+yxGW8v0fj0zb5kzd6koVbcEptC75RRUNnuM2kvQeFC\nzhNOOSoH3i6spbXqyTCZQx1Sayn7BW5Qdko50EjBRSE7kImjzx4f9+BudD4Ysn5V\nGM9nFos3qB7OFhoCa/FPrVF8fp055ND//wpH/tq6pRHdU7qZfUn+33sP9wDJHZ4D\nKOehywSin47r6mZKRESq2mNSRHuvK8S5bwA7Ofo8PQbsIL1kSqXiohb2UZw+c/4I\n6d2wjGBUnohD35OO7S/BFXOm7u4iKnLuGj7k04Le1JJulUgSoEseAJiA9wzBS+jp\nwWd/WKlRAgMBAAECggEASKWOyVKfnnFEKdjyqZsl3yUhzzYIA2AAwkVT7zKGdTwX\nWB3YNwqe5YHGtmpJRHf1cUt17yiUt+IJStjMT2QR5ijpM2Fk++6viPJGlEfved/E\nN8F4tqS4lYZ3q3xjfg/8K0u3TpLPwjbI01l45AsgaLaPbK7pgV0OfmnnJ+n5pvs/\n6zBLVHTuayBml6QMwST14aJ3i86QWMGMJ9XtmIqSI/anJd9hsSdtquJ7fIGHiycC\n6jMDW9qMArqFG5NThTC7kY4TYz9eYRJcs9+b/KcTKKAZM3FST+P6A8iACygSFcBX\nAFh0q9Ec2RETpxJ9vvdWLhRdF6MJa68FXEbHxeE3wwKBgQDndh7stdb5v3GOI50+\n3XhqAxrLsEiihSDQ6JfTEpVsOFviAlBg9qjdGwW5BEYZ9PYyLY5OxGahhRiz7KoB\n64egY2zMU4MbtJOYra7ZMk4no/xbbZR8DWwBrXsKR/pnwvMxOxFPvW2vuiuiK7xb\nv3H/p5kO1Ii47mcnwR6R6su6MwKBgQC+cPH3MBQyU0FP7JdWxxSztEWDqrXaLDZ9\nwWvVlXr7HmqpYCQ+axcFH5boe/1Hj7ecafb7eisyQzsVOr3QHiuhRsWpzN/iNMtG\nYVCn4PN+bCyhv1dr8zIDGLkSjaFlWnnqOVxx7AVXWz+OoAN2cBW56DHWXG6wH6RN\nNneDgLzSawKBgBv7cMOnPCUXWvAXKCR4e909INktJ6rWM2BuLiSrY3sg2SLaqsL+\nLu4EHU3/0UXEEpuAXGrzXYD7aUAfRXJT+iKOwpF1Ky2HSCy2GqRRa5dpQNIAzmms\n6bjOM0jL6N7wd5wlCvO77+3FsQ67ANuKqoqAxYVAdoL892Wb+EklvJl3AoGAbL41\njD5J6gqcKrUgHY8EBTEU2IAr4u6IFvrRRl5aoPXXVevuBi5EMMq+8vWJxMkNwSTI\nwQQbklHNdOvb4vC3XRn6WGECHjqjMAb1dUcAAtpmCd4mXx+5GQeO9kclN6iYIOSs\nIujwi9cwzZIVKBYMceFiQ9L36V3IBcbqK47hQw0CgYBsfDsgxlVXm4oQIWOIfDrL\nkfAxzjk47+kAHhs+JB/mMnc5THMyMSaZI7dj1ESsONSVHUeL/asonFVGO2z3RUeY\naP6I7Tw1aaqv8bLCLDq6bWCMaERwxJijegIrEqpxdOT3JARlooz1IhX5qTG6+4la\nQcuRF1u2ytjT/LYdesIZXw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firestoreaccess@bustling-bay-453020-k9.iam.gserviceaccount.com",
+  "client_id": "102219023118430983426",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firestoreaccess%40bustling-bay-453020-k9.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

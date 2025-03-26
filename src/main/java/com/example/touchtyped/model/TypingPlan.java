@@ -49,6 +49,7 @@ public class TypingPlan {
         // try each Phase.
         for (Phase phase : phases) {
             if (phase.updateModule(module)) {
+                System.out.println("UPDATED THE MODULE in "+phase.getName());
                 return true;
             }
         }

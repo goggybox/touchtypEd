@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.text.Text?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@classroom-view-style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.ClassroomViewController">
+
+    <center>
+        <HBox alignment="CENTER">
+            <!-- Left Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+            <!-- ScrollPane to allow vertical scrolling -->
+            <StackPane fx:id="stackPane" prefWidth="1200.0">
+                <VBox fx:id="studentTeacherContainer" alignment="CENTER" spacing="15">
+                    <Label text="Are you a student or a teacher?" style="-fx-font-size: 24px;"/>
+                    <Label fx:id="detailsChangedErrorLabel"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Student" fx:id="studentButton" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayStudent"/>
+                        <Button text="Teacher" fx:id="teacherButton" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Loading Message -->
+                <VBox fx:id="loadingContainer" alignment="CENTER" spacing="15">
+                    <Label text="Loading..." style="-fx-font-size: 26px;"/>
+                </VBox>
+
+                <!-- Display Cached Information -->
+                <VBox fx:id="userAccountDisplayContainer" spacing="10">
+                    <HBox>
+                        <Label fx:id="userGreeting"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <ImageView fx:id="logoutButton" onMouseClicked="#onLogoutButtonClicked"
+                                   pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@images/classroom-content/logout.png"/>
+                        </ImageView>
+                    </HBox>
+                    <Label fx:id="userDescription"/>
+
+                    <!-- Teacher-specific container -->
+                    <HBox fx:id="teacherContainer" spacing="25" visible="false">
+
+                        <!-- Student list column -->
+                        <VBox fx:id="studentList" spacing="5">
+                            <Label fx:id="studentListDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                            <ScrollPane fx:id="studentListContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                                <VBox fx:id="studentListContainer" spacing="5"/>
+                            </ScrollPane>
+                        </VBox>
+
+                        <VBox fx:id="studentAccountContainer">
+                            <HBox fx:id="selectorContainer" visible="false" spacing="20">
+                                <ImageView fx:id="accountButton" onMouseClicked="#onAccountButtonClick"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <Image url="@images/classroom-content/accountSelected.png"/>
+                                </ImageView>
+                                <ImageView fx:id="statsButton" onMouseClicked="#onStatsButtonClick"
+                                           pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <Image url="@images/classroom-content/stats.png"/>
+                                </ImageView>
+
+                            </HBox>
+
+                            <VBox fx:id="accountContainer" visible="false" prefHeight="1600" spacing="2">
+                                <Label fx:id="accountTitle"/>
+                                <VBox spacing="15">
+                                    <VBox spacing="2">
+                                        <Label fx:id="accountUsername"/>
+                                        <HBox spacing="10" translateX="20">
+                                            <Label fx:id="changeTo" text="change to:"/>
+                                            <TextField fx:id="accountChangeUsernameInput" promptText="New Username" translateY="-1"/>
+                                            <Button fx:id="accountChangeUsernameButton" text="CHANGE" translateY="-1" translateX="-7"
+                                                    onAction="#changeUsername"/>
+                                        </HBox>
+                                    </VBox>
+                                    <VBox spacing="2">
+                                        <Label fx:id="accountJoinedDate"/>
+                                        <HBox spacing="10" translateX="20">
+                                            <Label fx:id="removeStudent" text="to remove from classroom, type student's username:"/>
+                                            <TextField fx:id="removeStudentInput" promptText="Confirm Username" translateY="-1"/>
+                                            <Button fx:id="removeStudentButton" text="REMOVE" translateY="-1" translateX="-7"
+                                                    onAction="#removeStudent"/>
+                                        </HBox>
+                                    </VBox>
+                                </VBox>
+
+                                <Region VBox.vgrow="ALWAYS"/>
+
+                                <HBox alignment="BOTTOM_RIGHT">
+                                    <Label fx:id="errorLabel" visible="false"/>
+                                </HBox>
+                            </VBox>
+
+                            <HBox fx:id="typingTestsContainer" spacing="0" visible="false">
+                                <!-- Student data column -->
+                                <VBox fx:id="studentInfoContainer" spacing="5" visible="false">
+                                    <Label fx:id="studentKeyLogsDescriptor" style="-fx-padding: 0px 0px 0px 3px;"/>
+                                    <ScrollPane fx:id="studentKeyLogsContainerScrollPane" prefHeight="1600" fitToHeight="true" maxWidth="250">
+                                        <VBox fx:id="studentKeyLogsContainer" spacing="5"/>
+                                    </ScrollPane>
+                                </VBox>
+
+                                <!-- Key logs column -->
+                                <VBox fx:id="keyLogContainer" spacing="5" visible="false">
+                                    <HBox fx:id="keyLogDescriptorContainer" alignment="CENTER" prefWidth="600">
+                                        <Label fx:id="keyLogDescriptor" style="-fx-padding: 0px 8px 0px 8px;"/>
+                                    </HBox>
+                                    <ScrollPane fx:id="logContainerScrollPane" prefHeight="1600" fitToHeight="true" prefWidth="600" maxWidth="600">
+                                        <VBox fx:id="logContainer" spacing="5"/>
+                                    </ScrollPane>
+                                </VBox>
+
+                            </HBox>
+                        </VBox>
+
+                    </HBox>
+
+                    <!-- Student-specific container -->
+                    <VBox fx:id="studentContainer" spacing="10" visible="false">
+
+                    </VBox>
+
+                </VBox>
+
+                <!-- Student Join Classroom Form -->
+                <VBox fx:id="joinForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Join Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="joinFormDescription" text="" style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="classroomIDField" promptText="Classroom ID"/>
+                    <TextField fx:id="studentNameField" promptText="Your Name"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Join" style="-fx-font-size: 18px;" onAction="#joinClassroom"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayStudentTeacherContainer"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Teacher Select "Create" or "Log in" Form -->
+                <VBox fx:id="teacherSelectionForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Teacher Form" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="teacherSelectionFormDescription" text="Login to an existing account, or create a new account and classroom."
+                           style="-fx-font-size: 16px;"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Login" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayLoginForm"/>
+                        <Button text="Create" style="-fx-font-size: 18px;"
+                                prefWidth="200" onAction="#displayCreateForm"/>
+                        <Button text="Back" style="-fx-font-size: 18px" onAction="#displayStudentTeacherContainer"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Create form -->
+                <VBox fx:id="createForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Create Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="createFormDescription" text="Please fill in the details below. A unique classroom ID will then be generated for you to share with your students. Passwords must be between 6-16 characters and contain at least one digit."
+                           style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="classroomNameField" promptText="Classroom Name"/>
+                    <TextField fx:id="teacherNameField" promptText="Teacher Name"/>
+                    <TextField fx:id="passwordField" promptText="Password"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Create" style="-fx-font-size: 18px;" onAction="#createClassroom"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Log-in Form -->
+                <VBox fx:id="loginForm" alignment="CENTER" spacing="15" visible="false">
+                    <Label text="Log-in to Classroom" style="-fx-font-size: 26px;"/>
+                    <Label fx:id="loginFormDescription" text="Fill in the details below to log-in to your existing teacher account." style="-fx-font-size: 16px;"/>
+                    <TextField fx:id="loginClassroomID" promptText="Classroom ID"/>
+                    <TextField fx:id="loginPassword" promptText="Teacher Password"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Button text="Login" style="-fx-font-size: 18px;" onAction="#teacherLogin"/>
+                        <Button text="Back" style="-fx-font-size: 18px;" onAction="#displayTeacher"/>
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+
+            <!-- Right Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+        </HBox>
+
+    </center>
+
+    <top>
+        <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
+            <children>
+                <!-- Left Spacer -->
+                <Region fx:id="leftSpacer" HBox.hgrow="ALWAYS" />
+
+                <!-- Central Area (1200px fixed width) -->
+                <AnchorPane prefHeight="120.0" prefWidth="1200.0">
+                    <children>
+                        <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@images/logo.png" />
+                        </ImageView>
+                        <ImageView fx:id="learnButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="844.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onLearnButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/learn.png" />
+                        </ImageView>
+                        <ImageView fx:id="gamesButton"
+                                   fitHeight="69.0" fitWidth="71.0"
+                                   layoutX="933.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onGamesButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/games.png" />
+                        </ImageView>
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@images/nav-bar/classroomSelected.png" />
+                        </ImageView>
+                        <ImageView fx:id="optionsButton"
+                                   fitHeight="69.0" fitWidth="175.0" 
+                                   layoutX="1111.0" layoutY="26.0" 
+                                   pickOnBounds="true" 
+                                   preserveRatio="true"
+                                   onMouseClicked="#onOptionsButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/options.png" />
+                        </ImageView>
+                    </children>
+                </AnchorPane>
+
+                <!-- Right Spacer -->
+                <Region fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </top>
+
+</BorderPane>

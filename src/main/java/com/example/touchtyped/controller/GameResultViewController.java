@@ -1,8 +1,14 @@
 package com.example.touchtyped.controller;
 
+import com.example.touchtyped.firestore.ClassroomDAO;
+import com.example.touchtyped.firestore.UserDAO;
+import com.example.touchtyped.app.Application;
 import com.example.touchtyped.model.KeyLogsStructure;
+import com.example.touchtyped.model.PlayerRanking;
 import com.example.touchtyped.model.TypingPlan;
 import com.example.touchtyped.model.TypingPlanManager;
+import com.example.touchtyped.service.AppSettingsService;
+import com.example.touchtyped.service.GlobalRankingService;
 import com.example.touchtyped.service.RESTClient;
 import com.example.touchtyped.service.RESTResponseWrapper;
 import javafx.concurrent.Task;
@@ -11,22 +17,33 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.scene.layout.BorderPane;
 
 import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 public class GameResultViewController {
     @FXML private Label finalWpmLabel;
     @FXML private Label finalAccLabel;
     @FXML private Label finalCharLabel;
+    @FXML private Label globalRankLabel;
 
     @FXML private Button generateAdvancedStatsButton; // option to contact REST service for more advanced stats
     @FXML private Label descriptionLabel;
+    @FXML private Button viewRankingsButton;
+    @FXML private BorderPane rootPane;
+    @FXML private ImageView classroomButton;
 
     private KeyLogsStructure keyLogsStructure; // receive the structure from GameView
+    private int wpm;
+    private double accuracy;
+    private String gameMode = "Standard Mode"; // Default game mode
+    private PlayerRanking currentRanking;
 
     /**
      * Navigate to learn view
@@ -37,7 +54,19 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
-            stage.setScene(scene);
+            boolean wasFullScreen = stage.isFullScreen();
+
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +81,44 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/option-view.fxml"));
             Scene optionScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
-            stage.setScene(optionScene);
+            boolean wasFullScreen = stage.isFullScreen();
+
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(optionScene);
+
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(optionScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(optionScene);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void onClassroomButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            // 应用主题设置到场景
+            AppSettingsService.getInstance().applySettingsToScene(scene);
+            
+            Stage stage = (Stage) classroomButton.getScene().getWindow();
+
+            boolean wasFullScreen = stage.isFullScreen();
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(scene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(scene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,7 +133,45 @@ public class GameResultViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene gameScene = new Scene(loader.load(), 1200, 700);
             Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
-            stage.setScene(gameScene);
+            boolean wasFullScreen = stage.isFullScreen();
+
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(gameScene);
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(gameScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(gameScene);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Navigate to rankings view
+     */
+    @FXML
+    public void onViewRankingsButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/ranking-view.fxml"));
+            Scene rankingScene = new Scene(loader.load(), 1200, 700);
+            Stage stage = (Stage) finalWpmLabel.getScene().getWindow();
+            boolean wasFullScreen = stage.isFullScreen();
+
+            // Apply current theme settings to the new scene
+            AppSettingsService.getInstance().applySettingsToScene(rankingScene);
+
+            if(wasFullScreen) {
+                stage.setOpacity(0);
+                stage.setScene(rankingScene);
+                stage.setFullScreen(true);
+                stage.setOpacity(1);
+            } else {
+                stage.setScene(rankingScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,8 +183,10 @@ public class GameResultViewController {
      * @param correctKeystrokes Number of correctly typed keystrokes
      * @param wrongKeystrokes Number of incorrectly typed keystrokes
      * @param totalKeystrokes Total number of keystrokes
+     * @param gameMode Game mode (Timed, Article, Competition)
+     * @param playerName Player's name
      */
-    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes) {
+    public void setGameData(int wpm, int correctKeystrokes, int wrongKeystrokes, int totalKeystrokes, String gameMode, String playerName) {
         // Calculate accuracy percentage
         double accuracy = totalKeystrokes > 0 ? (double) correctKeystrokes / totalKeystrokes * 100 : 0;
 
@@ -88,7 +194,75 @@ public class GameResultViewController {
         finalWpmLabel.setText(String.format("%d", wpm));
         finalAccLabel.setText(String.format("%.0f%%", accuracy));
         finalCharLabel.setText(String.format("%d/%d/%d",
-            totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+                totalKeystrokes, correctKeystrokes, wrongKeystrokes));
+
+        // Save data
+        this.wpm = wpm;
+        this.accuracy = accuracy;
+        this.gameMode = gameMode;
+
+        // Create ranking and submit to global server
+        submitRanking(playerName);
+    }
+
+    /**
+     * Submit ranking to global server
+     * @param playerName Player name
+     */
+    private void submitRanking(String playerName) {
+        try {
+            // Create ranking object
+            currentRanking = new PlayerRanking(playerName, wpm, accuracy, gameMode);
+
+            // Update global ranking label
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("Submitting to global ranking server...");
+            }
+
+            // Test server connection
+            GlobalRankingService.getInstance().testConnection()
+                .thenAccept(connected -> {
+                    if (connected) {
+                        System.out.println("Successfully connected to global ranking server");
+
+                        // Submit ranking to global server
+                        Application.submitGameRanking(currentRanking);
+
+                        // Get player ranking
+                        GlobalRankingService.getInstance().getPlayerPosition(playerName)
+                            .thenAccept(position -> {
+                                if (position > 0) {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("Global Rank: #" + position);
+                                        }
+                                    });
+                                } else {
+                                    javafx.application.Platform.runLater(() -> {
+                                        if (globalRankLabel != null) {
+                                            globalRankLabel.setText("Unable to get global ranking position");
+                                        }
+                                    });
+                                }
+                            });
+                    } else {
+                        System.out.println("Unable to connect to global ranking server");
+                        javafx.application.Platform.runLater(() -> {
+                            if (globalRankLabel != null) {
+                                globalRankLabel.setText("Unable to connect to global ranking server");
+                            }
+                        });
+                    }
+                });
+
+        } catch (Exception e) {
+            System.err.println("Error submitting ranking: " + e.getMessage());
+            e.printStackTrace();
+
+            if (globalRankLabel != null) {
+                globalRankLabel.setText("Failed to submit ranking");
+            }
+        }
     }
 
     /**
@@ -108,14 +282,14 @@ public class GameResultViewController {
 
         // Disable the button and show a loading message
         generateAdvancedStatsButton.setDisable(true);
-        descriptionLabel.setText("Generating advanced statistics... (Can take up to 30 seconds!)");
+        descriptionLabel.setText("Generating typing plan... (Can take up to 30 seconds!)");
 
-        // Create a Task to handle the REST service call
+        // Create a Task to handle the REST service call - should return a TypingPlan
         Task<RESTResponseWrapper> restTask = new Task<>() {
             @Override
             protected RESTResponseWrapper call() throws Exception {
                 RESTClient restService = new RESTClient();
-                return restService.sendKeyLogs(keyLogsStructure, () ->
+                return restService.getTypingPlan(keyLogsStructure, () ->
                         descriptionLabel.setText("Request failed. Trying again... (Please be patient!)"));
             }
         };
@@ -135,10 +309,25 @@ public class GameResultViewController {
                 TypingPlan typingPlan = response.getTypingPlan();
                 if (typingPlan != null) {
                     System.out.println("Received Typing Plan: " + typingPlan);
+                    descriptionLabel.setText("Successfully updated typing plan.");
+                    generateAdvancedStatsButton.setVisible(false);
 
                     // save this typing plan.
                     TypingPlanManager manager = TypingPlanManager.getInstance();
                     manager.setTypingPlan(typingPlan);
+                    TypingPlanManager.getInstance().saveTypingPlan();
+
+                    // save to database - using cached credentials
+                    Map<String, String> credentials = ClassroomDAO.loadUserCache();
+                    if (credentials == null) {
+                        System.out.println("Not saved to database; not logged in.");
+                    } else {
+                        String classroomID = credentials.get("classroomID");
+                        String username = credentials.get("username");
+                        String password = credentials.getOrDefault("password", null);
+                        UserDAO.updateDefaultTypingPlan(classroomID, username, typingPlan, password);
+                        System.out.println("Saved typing plan to database.");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -184,4 +373,32 @@ public class GameResultViewController {
             System.err.println("An error occurred while displaying PDF.");
         }
     }
-} 
+
+    @FXML
+    public void initialize() {
+        // Apply saved theme settings to the scene
+        finalWpmLabel.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                AppSettingsService.getInstance().applySettingsToScene(newValue);
+            }
+        });
+
+        // Add direct application of theme to rootPane when it becomes available
+        rootPane.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                String mode = AppSettingsService.getInstance().getDisplayMode();
+                switch (mode) {
+                    case AppSettingsService.NIGHT_MODE:
+                        rootPane.getStyleClass().add("dark-mode");
+                        break;
+                    case AppSettingsService.COLORBLIND_MODE:
+                        rootPane.getStyleClass().add("colorblind-mode");
+                        break;
+                    default:
+                        // Day mode (default) - no special class needed
+                        break;
+                }
+            }
+        });
+    }
+}

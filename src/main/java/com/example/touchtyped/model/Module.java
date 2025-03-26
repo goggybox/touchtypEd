@@ -1,7 +1,9 @@
 package com.example.touchtyped.model;
 
 import com.example.touchtyped.controller.ModuleViewController;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.cloud.firestore.annotation.Exclude;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,6 +24,11 @@ public class Module {
     private String displayText;
     private int id;
     private List<Level> levels;
+
+    // dummy vars to shut firestore serialiser up
+    private boolean locked;
+    private double completion;
+    private Level nextUncompletedLevel;
 
     public Module(String name, String focus, String displayText, int id, List<Level> levels) {
         this.name = name;
@@ -81,6 +88,8 @@ public class Module {
      * determine what percentage of levels are completed
      * @return the fraction of completed levels (like 3/4 - 0.75)
      */
+    @JsonIgnore
+    @Exclude
     public double getCompletion() {
         int numCompletedLevels = 0;
         for (Level level : levels) {
@@ -94,6 +103,8 @@ public class Module {
      * gets the next level for the user to complete.
      * @return the next uncompleted level
      */
+    @JsonIgnore
+    @Exclude
     public Level getNextUncompletedLevel() {
         for (int i = 0; i < levels.size(); i++) {
             if (!levels.get(i).isCompleted()) { return levels.get(i); }
@@ -103,13 +114,33 @@ public class Module {
         return null;
     }
 
+    @JsonIgnore
+    @Exclude
     public Boolean isLocked() {
         TypingPlan typingPlan = TypingPlanManager.getInstance().getTypingPlan();
-        for (Phase phase : typingPlan.getPhases()) {
+        List<Phase> phases = typingPlan.getPhases();
+
+        for (int i = 0; i < phases.size(); i++) {
+            Phase phase = phases.get(i);
+
             if (phase.getModules().contains(this)) {
                 int index = phase.getModules().indexOf(this);
-                if (index == 0) { return false; }
-                if (phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+
+                // module is unlocked if it is the first module of the first phase.
+                if (index == 0 && phases.get(0) == phase) { return false; }
+
+                // module is unlocked if it is the first module of a phase (which isn't the first phase) and the last
+                // module of the previous phase has been somewhat completed
+                if (i != 0) {
+                    List<Module> previousPhaseModules = phases.get(i-1).getModules();
+                    Module finalModule = previousPhaseModules.get(previousPhaseModules.size()-1);
+                    if (index == 0 && finalModule.getCompletion() > 0.0) { return false; }
+                }
+
+                // module is unlocked if it is not the first module of a phase, but the previous module is unlocked and
+                // has been somewhat completed.
+                if (index > 0 && phase.getModules().get(index - 1).getCompletion() > 0) { return false; }
+
                 return true;
             }
         }

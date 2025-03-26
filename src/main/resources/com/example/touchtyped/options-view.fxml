@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" stylesheets="@options-view-style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.touchtyped.controller.OptionsViewController">
+
+   <center>
+      <!-- ScrollPane to allow vertical scrolling -->
+      <ScrollPane fitToWidth="true">
+         <VBox fx:id="vbox" alignment="TOP_CENTER" spacing="30">
+            <padding>
+               <Insets top="40" bottom="40" left="50" right="50" />
+            </padding>
+            
+            <!-- Options Title -->
+            <Label styleClass="options-title" text="Options" />
+            
+            <!-- Color Mode Section -->
+            <VBox styleClass="options-section">
+               <Label styleClass="section-title" text="Display Settings" />
+               
+               <!-- Day Mode -->
+               <HBox styleClass="option-row" alignment="CENTER_LEFT" spacing="20">
+                  <Label text="Day Mode" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <RadioButton fx:id="dayModeRadio" toggleGroup="$displayMode" selected="true" onAction="#onDisplayModeChanged" />
+               </HBox>
+               
+               <!-- Night Mode -->
+               <HBox styleClass="option-row" alignment="CENTER_LEFT" spacing="20">
+                  <Label text="Night Mode" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <RadioButton fx:id="nightModeRadio" toggleGroup="$displayMode" onAction="#onDisplayModeChanged" />
+               </HBox>
+               
+               <!-- Colorblind Mode -->
+               <HBox styleClass="option-row" alignment="CENTER_LEFT" spacing="20">
+                  <Label text="Colorblind Mode" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <RadioButton fx:id="colorblindModeRadio" toggleGroup="$displayMode" onAction="#onDisplayModeChanged" />
+               </HBox>
+            </VBox>
+            
+            <!-- Font Size Section -->
+            <VBox styleClass="options-section">
+               <Label styleClass="section-title" text="Font Size" />
+               
+               <HBox styleClass="option-row" alignment="CENTER_LEFT" spacing="20">
+                  <Label text="Font Size" />
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Slider fx:id="fontSizeSlider" min="12" max="32" value="18" showTickMarks="true" 
+                          showTickLabels="true" majorTickUnit="4" blockIncrement="2" />
+               </HBox>
+            </VBox>
+            
+            <!-- Save Button -->
+            <Button fx:id="saveButton" text="Save Settings" onAction="#onSaveButtonClick" styleClass="save-button" />
+         </VBox>
+      </ScrollPane>
+   </center>
+
+   <top>
+      <HBox styleClass="nav-bar" BorderPane.alignment="CENTER">
+         <children>
+            <!-- Left Spacer -->
+            <Region fx:id="leftSpacer" HBox.hgrow="ALWAYS" />
+
+            <!-- Central Area (1200px fixed width) -->
+            <AnchorPane prefHeight="120.0" prefWidth="1200.0">
+               <children>
+                  <ImageView fitHeight="104.0" fitWidth="389.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <Image url="@images/logo.png" />
+                  </ImageView>
+                  <ImageView fx:id="learnButton"
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="844.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             onMouseClicked="#onLearnButtonClick"
+                             style="-fx-cursor: hand;">
+                     <Image url="@images/nav-bar/learn.png" />
+                  </ImageView>
+                  <ImageView fx:id="gamesButton"
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="933.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             onMouseClicked="#onGamesButtonClick"
+                             style="-fx-cursor: hand;">
+                     <Image url="@images/nav-bar/games.png" />
+                  </ImageView>
+                  <ImageView fx:id="classroomButton"
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="1022.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             onMouseClicked="#onClassroomButtonClick"
+                             style="-fx-cursor: hand;">
+                     <Image url="@images/nav-bar/classroom.png" />
+                  </ImageView>
+                  <ImageView 
+                             fitHeight="69.0" fitWidth="71.0"
+                             layoutX="1111.0" layoutY="26.0"
+                             pickOnBounds="true"
+                             preserveRatio="true"
+                             style="-fx-cursor: hand;">
+                     <Image url="@images/nav-bar/optionsSelected.png" />
+                  </ImageView>
+               </children>
+            </AnchorPane>
+
+            <!-- Right Spacer -->
+            <Region fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </top>
+
+</BorderPane> 

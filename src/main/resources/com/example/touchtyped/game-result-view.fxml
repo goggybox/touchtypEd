@@ -4,7 +4,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 
-<BorderPane maxHeight="700.0" maxWidth="1200.0" 
+<BorderPane fx:id="rootPane"
+            maxHeight="700.0" maxWidth="1200.0" 
             minHeight="700.0" minWidth="1200.0" 
             prefHeight="700.0" prefWidth="1200.0" 
             stylesheets="@game-view-style.css"
@@ -23,7 +24,7 @@
                         </ImageView>
                         <ImageView fx:id="learnButton"
                                    fitHeight="69.0" fitWidth="175.0"
-                                   layoutX="933.0" layoutY="26.0"
+                                   layoutX="844.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true"
                                    onMouseClicked="#onLearnButtonClick">
@@ -31,16 +32,26 @@
                         </ImageView>
                         <ImageView fx:id="gamesButton"
                                    fitHeight="69.0" fitWidth="71.0"
-                                   layoutX="1022.0" layoutY="26.0"
+                                   layoutX="933.0" layoutY="26.0"
                                    pickOnBounds="true"
                                    preserveRatio="true">
                             <Image url="@images/nav-bar/gamesSelected.png" />
+                        </ImageView>
+                        <ImageView fx:id="classroomButton"
+                                   fitHeight="69.0" fitWidth="175.0"
+                                   layoutX="1022.0" layoutY="26.0"
+                                   pickOnBounds="true"
+                                   preserveRatio="true"
+                                   onMouseClicked="#onClassroomButtonClick"
+                                   style="-fx-cursor: hand;">
+                            <Image url="@images/nav-bar/classroom.png" />
                         </ImageView>
                         <ImageView fx:id="optionsButton"
                                    fitHeight="69.0" fitWidth="175.0"
                                    layoutX="1111.0" layoutY="26.0"
                                    pickOnBounds="true"
-                                   preserveRatio="true">
+                                   preserveRatio="true"
+                                   onMouseClicked="#onOptionButtonClick">
                             <Image url="@images/nav-bar/options.png" />
                         </ImageView>
                     </children>
@@ -70,13 +81,19 @@
                     <Label fx:id="finalCharLabel" styleClass="result-value"/>
                 </VBox>
             </HBox>
+            
+            <!-- Global Ranking Information -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="Global Ranking" styleClass="section-title"/>
+                <Label fx:id="globalRankLabel" text="Connecting to server..." styleClass="global-rank-label"/>
+            </VBox>
 
             <!-- Advanced Statistics Button and Description -->
             <VBox alignment="CENTER" spacing="10">
-                <Label fx:id="descriptionLabel" text="Click below to generate advanced statistics and personalise your typing plan." styleClass="description-label"/>
+                <Label fx:id="descriptionLabel" text="Click below to personalise your typing plan based on these results." styleClass="description-label"/>
                 <Button fx:id="generateAdvancedStatsButton"
                         onAction="#onGenerateAdvancedStatsButtonClick"
-                        text="Generate Advanced Statistics"
+                        text="Personalise Typing Plan"
                         styleClass="generate-button"
                         focusTraversable="false"/>
             </VBox>
@@ -93,6 +110,13 @@
                         </ImageView>
                     </graphic>
                 </Button>
+                
+                <!-- View Rankings Button -->
+                <Button fx:id="viewRankingsButton" 
+                        onAction="#onViewRankingsButtonClick"
+                        text="View Rankings"
+                        styleClass="control-button"
+                        focusTraversable="false"/>
             </HBox>
         </VBox>
     </center>
