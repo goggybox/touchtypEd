@@ -260,6 +260,7 @@ public class ModuleViewController implements KeypressListener {
                     if (typedString.equalsIgnoreCase(level.getTaskString())) {
                         // level has been completed
                         level.setCompleted(true);
+                        System.out.println("COMPLETED LEVEL !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
                         // display the NEXT button
                         nextButton.setVisible(true);
@@ -312,6 +313,10 @@ public class ModuleViewController implements KeypressListener {
      */
     @FXML
     public void onLearnButtonClick() {
+
+        // remove this class as a keypress listener
+        keyboardInterface.removeKeypressListener(this);
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/learn-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
@@ -333,6 +338,10 @@ public class ModuleViewController implements KeypressListener {
 
     @FXML
     public void onGamesButtonClick() {
+
+        // remove this class as a keypress listener
+        keyboardInterface.removeKeypressListener(this);
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/game-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
@@ -356,6 +365,10 @@ public class ModuleViewController implements KeypressListener {
 
     @FXML
     public void onBackButtonClick() {
+
+        // remove this class as a keypress listener
+        keyboardInterface.removeKeypressListener(this);
+
         try {
             // update the module in the TypingPlan
             TypingPlanManager manager = TypingPlanManager.getInstance();
@@ -380,6 +393,10 @@ public class ModuleViewController implements KeypressListener {
 
     @FXML
     public void onOptionsButtonClick() {
+
+        // remove this class as a keypress listener
+        keyboardInterface.removeKeypressListener(this);
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/options-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
@@ -397,6 +414,10 @@ public class ModuleViewController implements KeypressListener {
 
     @FXML
     public void onClassroomButtonClick() {
+
+        // remove this class as a keypress listener
+        keyboardInterface.removeKeypressListener(this);
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/touchtyped/classroom-view.fxml"));
             Scene scene = new Scene(loader.load(), 1200, 700);
