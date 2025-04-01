@@ -15,13 +15,13 @@ public class ComputerVisionInterface {
         Thread thread = new Thread(() -> {
             boolean placementIsCorrect = true;
             String s = null;
-            boolean left_hand_correct = false;
-            boolean right_hand_correct = false;
+            boolean left_hand_correct = true;
+            boolean right_hand_correct = true;
             popup = new JFrame();
             popup.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            popup.setSize(600, 100);
+            popup.setSize(800, 100);
             popup.setLayout(new BorderLayout());
-            popup.setLocationRelativeTo(null);
+            popup.setLocation(560,880);
             popup.setFocusableWindowState(false);
             JLabel label = new JLabel(" ");
             label.setFont(new Font("Consola",Font.PLAIN,20));
@@ -43,20 +43,23 @@ public class ComputerVisionInterface {
                         left_hand_correct = true;
                     } else if (s.equals("left hand incorrect")){
                         left_hand_correct = false;
+                    } else if (s.equals("Error: Unable to access camera.")) {
+                        closeCVProgram();
+                        return;
                     }
                     System.out.println(s + " " + left_hand_correct + " " + right_hand_correct);
                     if (left_hand_correct && right_hand_correct) {
                         label.setVisible(false);
                         popup.setVisible(false);
-                    } else if (left_hand_correct) {
+                    } else if (left_hand_correct && !right_hand_correct) {
                         label.setText("Your right hand is not in the correct position on the keyboard.");
                         label.setVisible(true);
                         popup.setVisible(true);
-                    } else if (right_hand_correct) {
+                    } else if (!left_hand_correct && right_hand_correct) {
                         label.setText("Your left hand is not in the correct position on the keyboard.");
                         label.setVisible(true);
                         popup.setVisible(true);
-                    } else {
+                    } else if (!left_hand_correct && !right_hand_correct){
                         label.setText("Your hands are not in their correct positions on the keyboard.");
                         label.setVisible(true);
                         popup.setVisible(true);

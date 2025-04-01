@@ -168,7 +168,7 @@ public class ModuleViewController implements KeypressListener {
 
         // vibrate first key
         char key = level.getTaskString().toCharArray()[0];
-        keyboardInterface.sendHapticCommand(String.valueOf(key), 500, 50);
+        keyboardInterface.sendHapticCommand(String.valueOf(key), 2000, 50);
 
     }
 
