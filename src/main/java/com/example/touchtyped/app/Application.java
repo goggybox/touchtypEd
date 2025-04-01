@@ -32,21 +32,7 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        keyboardConnected = false;
-        try {
-            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
-            if (ioPort.openPort()) {
-                System.out.println("port opened successfully");
-                keyboardConnected = true;
-                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
-                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
-            } else {
-                System.out.println("unable to open port");
-            }
-        } catch (Exception e) {
-            System.out.println("no keyboard connected");
-        }
-        keyboardInterface = new KeyboardInterface(ioPort);
+        initKeyboard();
 
         // Load custom fonts
         Font customFont = Font.loadFont(
@@ -165,5 +151,22 @@ public class Application extends javafx.application.Application {
         } catch (Exception e) {
             System.err.println("Error submitting ranking: " + e.getMessage());
         }
+    }
+    private void initKeyboard(){
+        keyboardConnected = false;
+        try {
+            ioPort = SerialPort.getCommPort("/dev/ttyACM0");
+            if (ioPort.openPort()) {
+                System.out.println("port opened successfully");
+                keyboardConnected = true;
+                ioPort.setComPortParameters(9600, 8, 1, SerialPort.NO_PARITY);
+                ioPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 0, 0);
+            } else {
+                System.out.println("unable to open port");
+            }
+        } catch (Exception e) {
+            System.out.println("no keyboard connected");
+        }
+        keyboardInterface = new KeyboardInterface(ioPort);
     }
 }

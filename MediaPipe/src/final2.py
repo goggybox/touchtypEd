@@ -235,18 +235,31 @@ else:
                         # If the hand is fully covering a contour, consider placement to be incorrect
                         except:
                             right_hand_index = False
-                left_hand_correct = False;
-                right_hand_correct = False;
+                # left_hand_correct = False;
+                # right_hand_correct = False;
 
                 # release message if hands are placed correctly
                 if (left_hand_pinky and left_hand_index):
                     cv2.putText(frame, f"Correct placement of right hand", (75, 350), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-                    left_hand_correct = True
+                    print("right hand correct")
+                else:
+                    print("right hand incorrect")
 
                 if (right_hand_pinky and right_hand_index):
                     cv2.putText(frame, f"Correct placement of left hand", (75, 300), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-                    right_hand_correct = True
+                    print("left hand correct")
+                    # left_hand_correct = True
+                else:
+                    print("left hand incorrect")
 
+                # if left_hand_correct and right_hand_correct:
+                #     print("Both hands correct")
+                # elif left_hand_correct and not right_hand_correct:
+                #     print("Your right hand is not in the correct position on the keyboard.")
+                # elif right_hand_correct:
+                #     print("Your left hand is not in the correct position on the keyboard.")
+                # else:
+                #     print("Your hands are not in their correct positions on the keyboard.")
 
                 mp_draw.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
@@ -255,14 +268,6 @@ else:
                     cx, cy = int(lm.x * w), int(lm.y * h)
                     #print(f"Landmark {idx}: ({cx}, {cy})")
 
-                if left_hand_correct and right_hand_correct:
-                    print("Both hands correct")
-                elif left_hand_correct and not right_hand_correct:
-                    print("Your right hand is not in the correct position on the keyboard.")
-                elif right_hand_correct:
-                    print("Your left hand is not in the correct position on the keyboard.")
-                else:
-                    print("Your hands are not in their correct positions on the keyboard.")
 
         # Draw the three largest green contours
         for contour in largest_contours_green:
